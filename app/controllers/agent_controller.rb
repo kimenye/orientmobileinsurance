@@ -22,4 +22,11 @@ class AgentsController < ApplicationController
     agent.destroy
     redirect_to agents_path, :notice => "Agent deleted."
   end
+
+  def create
+    @agent = Agent.new
+    @agent.attributes = params[:agent]
+    @agent.save
+    redirect_to agents_path, :notice => "Agent created"
+  end
 end
