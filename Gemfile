@@ -7,13 +7,14 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 end
-gem 'jquery-rails'
+gem 'jquery-rails', '2.3.0'
 gem 'cancan'
 gem 'devise'
 gem 'figaro'
 gem 'haml-rails'
 gem 'rolify'
 gem 'thin'
+gem 'activeadmin'
 group :assets do
   gem 'compass-rails'
   gem 'zurb-foundation'
