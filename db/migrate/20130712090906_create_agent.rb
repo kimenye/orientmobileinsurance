@@ -1,6 +1,6 @@
 class CreateAgent < ActiveRecord::Migration
   def change
-    create_table :agent do |t|
+    create_table(:agents) do |t|
       t.string "town"
       t.string "brand"
       t.string "outlet"
