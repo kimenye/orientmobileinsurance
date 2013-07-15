@@ -1,0 +1,20 @@
+!!! 5
+%html
+  %head
+    %meta{'name' => 'viewport', 'content' => 'width=device-width, initial-scale=1'}
+    -#%link{'rel' => 'stylesheet', 'href' => '/stylesheets/jquery.mobile-1.3.1.min.css'}
+    %title= content_for?(:title) ? yield(:title) : "Kenya Orient Mobile Insurance"
+    %meta{:content => content_for?(:description) ? yield(:description) : "Kenya Orient Mobile Insurance", :name => "description"}
+      = stylesheet_link_tag "mobile"
+      = javascript_include_tag "mobile"
+      = csrf_meta_tags
+
+  %body
+
+    /! start the main body
+    = yield
+    /! end the main body
+
+    /! start of scripts
+    -#%script{'src' => 'http://code.jquery.com/jquery-1.9.1.min.js'}
+    -#%script{'src' => '/javascripts/jquery.mobile-1.3.1.min.js'}
