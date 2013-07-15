@@ -1,4 +1,5 @@
 ActiveAdmin.register Brand do
+  menu false
   index do
     column :name
   end

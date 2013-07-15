@@ -15,6 +15,7 @@ gem 'haml-rails'
 gem 'rolify'
 gem 'thin'
 gem 'activeadmin'
+gem 'active_admin_importable'
 group :assets do
   gem 'compass-rails'
   gem 'zurb-foundation'

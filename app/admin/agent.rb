@@ -1,4 +1,5 @@
 ActiveAdmin.register Agent do
+  active_admin_importable
   index do
     column :town
     column :brand
@@ -10,7 +11,7 @@ ActiveAdmin.register Agent do
     column :phone_number
   end
 
-  filter :name
+  filter :town
 
   form do |f|
     f.inputs "User Details" do
