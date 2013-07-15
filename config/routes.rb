@@ -10,10 +10,10 @@ Orientmobileinsurance::Application.routes.draw do
   root :to => "home#index"
   devise_for :users
   ActiveAdmin.routes(self)
-  resources :users, :mobile
+  resources :users, :mobile, :messages
 
   match 'administration' => 'admin#index', :as => :admin_area
 
-  match 'notification' => 'home#notification', :as => :notifications
+  match 'notification' => 'message#notification', :as => :notifications
 
 end
