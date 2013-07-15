@@ -14,4 +14,6 @@ Orientmobileinsurance::Application.routes.draw do
 
   match 'administration' => 'admin#index', :as => :admin_area
 
+  match 'notification' => 'home#notification', :as => :notifications
+
 end
