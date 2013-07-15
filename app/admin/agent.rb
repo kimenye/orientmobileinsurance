@@ -3,6 +3,7 @@ ActiveAdmin.register Agent do
     column :town
     column :brand
     column :outlet
+    column :outlet_name
     column :location
     column :code
     column :email
@@ -17,6 +18,7 @@ ActiveAdmin.register Agent do
       f.input :town
       f.input :brand
       f.input :outlet
+      f.input :outlet_name
       f.input :location
       f.input :phone_number
       f.input :email
