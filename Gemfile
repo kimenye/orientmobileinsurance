@@ -28,6 +28,9 @@ end
 group :development, :test do
   gem 'factory_girl_rails'
 end
+group :production do
+  gem 'pg'
+end
 group :test do
   gem 'capybara'
   gem 'minitest-spec-rails'
