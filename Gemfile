@@ -33,11 +33,11 @@ end
 group :production do
   gem 'pg'
 end
-group :test do
+#group :test do
   gem 'minitest-rails'
   gem 'minitest-rails-capybara'
   gem 'minitest-colorize'
   gem 'minitest-focus'
   gem 'minitest-spec-rails'
   gem 'capybara_minitest_spec'
-end
+#end

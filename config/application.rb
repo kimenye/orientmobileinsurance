@@ -7,11 +7,7 @@ require 'rake/testtask'
 require "action_mailer/railtie"
 require "active_resource/railtie"
 require "sprockets/railtie"
-
-if Rails.env == :test or Rails.env == :development
-  require "minitest/rails/railtie"
-  puts ">>> #{Rails.env}"
-end
+require "minitest/rails/railtie"
 
 
 if defined?(Bundler)
