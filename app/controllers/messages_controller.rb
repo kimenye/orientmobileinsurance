@@ -1,5 +1,6 @@
 require 'digest/md5'
 require 'sms_gateway'
+require 'url_shortener'
 
 class MessagesController < ApplicationController
 
@@ -59,10 +60,15 @@ class MessagesController < ApplicationController
       enquiry.phone_number = params["MobileNumber"]
       enquiry.text = params["Prefix"]
       enquiry.hashed_phone_number = Digest::MD5.hexdigest(params["MobileNumber"])
-      enquiry.url = "mobile/#{enquiry.hashed_phone_number}"
+      enquiry.url = "http://example.com/mobile/#{enquiry.hashed_phone_number}"
       enquiry.save!
 
-      @gateway.send(enquiry.phone_number, "Go to the following url: #{enquiry.url}")
+      auth = UrlShortener::Authorize.new 'tiviguide', 'R_8ee80122d7bb3b807f246941c084ddf0'
+      client = UrlShortener::Client.new auth
+      result = client.shorten(enquiry.url)
+      shortened_url = result.result['nodeKeyVal']['shortUrl']
+
+      @gateway.send(enquiry.phone_number, "Go to the following url: #{shortened_url}")
 
       respond_to do |format|
         format.all { render json: @message, status: :created, location: @message }
