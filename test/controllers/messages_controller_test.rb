@@ -13,7 +13,7 @@ class MessagesControllerTest < ActionController::TestCase
   end
 
   test 'create a message with valid params' do
-    post :create, { "MobileNumber" => "+254705876765", "Prefix" => "OMI" }
+    post :create, { "MobileNumber" => "254705876765", "Prefix" => "OMI" }
     assert_response :success
   end
 end

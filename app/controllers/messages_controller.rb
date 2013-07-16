@@ -1,6 +1,10 @@
 require 'digest/md5'
+require 'sms_gateway'
 
 class MessagesController < ApplicationController
+
+  @gateway = SMSGateway.new
+
   # GET /messages
   # GET /messages.json
   def index
@@ -55,8 +59,10 @@ class MessagesController < ApplicationController
       enquiry.phone_number = params["MobileNumber"]
       enquiry.text = params["Prefix"]
       enquiry.hashed_phone_number = Digest::MD5.hexdigest(params["MobileNumber"])
-      enquiry.url = ""
+      enquiry.url = "mobile/#{enquiry.hashed_phone_number}"
       enquiry.save!
+
+      @gateway.send(enquiry.phone_number, "Go to the following url: #{enquiry.url}")
 
       respond_to do |format|
         format.all { render json: @message, status: :created, location: @message }
