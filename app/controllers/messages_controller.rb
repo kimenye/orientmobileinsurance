@@ -1,3 +1,5 @@
+require 'digest/md5'
+
 class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
@@ -45,6 +47,12 @@ class MessagesController < ApplicationController
     @message.status = "Received"
     @message.text = params["Prefix"]
     @message.message_type = 1
+
+    enquiry = Enquiry.new
+    enquiry.phone_number = params["MobileNumber"]
+    enquiry.text = params["Prefix"]
+    enquiry.hash = Digest::MD5.hexdigest(params["MobileNumber"])
+    enquiry.url = ""
 
     respond_to do |format|
       if @message.save
