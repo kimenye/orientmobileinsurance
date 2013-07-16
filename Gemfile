@@ -42,4 +42,5 @@ end
   gem 'minitest-focus'
   gem 'minitest-spec-rails'
   gem 'capybara_minitest_spec'
+  gem 'turn'
 #end

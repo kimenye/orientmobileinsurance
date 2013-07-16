@@ -18,6 +18,8 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
   fixtures :all
 
+  Turn.config.format = :progress
+
   def self.prepare
     # Add code that needs to be executed before test suite start
   end
