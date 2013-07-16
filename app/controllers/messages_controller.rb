@@ -51,7 +51,7 @@ class MessagesController < ApplicationController
     enquiry = Enquiry.new
     enquiry.phone_number = params["MobileNumber"]
     enquiry.text = params["Prefix"]
-    enquiry.hash = Digest::MD5.hexdigest(params["MobileNumber"])
+    enquiry.hashed_phone_number = Digest::MD5.hexdigest(params["MobileNumber"])
     enquiry.url = ""
 
     respond_to do |format|
