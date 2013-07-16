@@ -20,7 +20,7 @@ class SMSGatewayTest < ActiveSupport::TestCase
 
     service = SMSGateway.new
     response = service.send "254722200200", "Hello World"
-    assert expected_response, response
+    assert expected_response == response
   end
 
   test "the gateway creates the correct xml" do
@@ -76,6 +76,6 @@ class SMSGatewayTest < ActiveSupport::TestCase
 
     service = SMSGateway.new
     xml = service.create_message "254722200200", "Hello World"
-    assert xml, valid_xml
+    assert xml == valid_xml
   end
 end
