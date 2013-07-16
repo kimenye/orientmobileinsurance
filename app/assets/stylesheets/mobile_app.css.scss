@@ -1,0 +1,35 @@
+
+.logo {
+    display: block;
+    margin: auto;
+}
+.money {
+    color: red;
+}
+.instructions .ui-li-desc {
+    overflow: visible;
+}
+.ui-btn-hover-r, .ui-btn-up-r {
+    background: -moz-linear-gradient(center top , #D47272, #B64B4B) repeat scroll 0 0 #B64B4B;
+    border: 1px solid #6E0000;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-shadow: 0 -1px 1px #000000;
+}
+.ui-btn-hover-r a.ui-link-inherit {
+    color: #FFFFFF;
+}
+.ui-btn-down-r {
+    background: -moz-linear-gradient(center top , #9E3939, #C54E4E) repeat scroll 0 0 #C54E4E;
+    border: 1px solid #772222;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-shadow: 0 -1px 1px #000000;
+}
+.ui-btn-down-r a.ui-link-inherit {
+    color: #FFFFFF;
+}
+.ui-btn-up-r, .ui-btn-hover-r, .ui-btn-down-r {
+    font-family: Helvetica,Arial,sans-serif;
+    text-decoration: none;
+}
