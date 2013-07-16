@@ -53,6 +53,7 @@ class MessagesController < ApplicationController
     enquiry.text = params["Prefix"]
     enquiry.hashed_phone_number = Digest::MD5.hexdigest(params["MobileNumber"])
     enquiry.url = ""
+    enquiry.save!
 
     respond_to do |format|
       if @message.save
