@@ -16,6 +16,8 @@ gem 'rolify'
 gem 'thin'
 gem 'activeadmin'
 gem 'active_admin_importable'
+gem 'httparty'
+gem 'deviceatlasapi'
 group :assets do
   gem 'compass-rails'
   gem 'zurb-foundation'

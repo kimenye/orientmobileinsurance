@@ -11,3 +11,7 @@ ADMIN_NAME: OMI Administrator
 ADMIN_EMAIL: user@example.com
 ADMIN_PASSWORD: changeme
 ROLES: [admin, claims, outlet]
+SMS_GATEWAY_SERVICE_ID: <<SERVICE_ID>>
+SMS_GATEWAY_CHANNEL_ID: <<CHANNEL_ID>>
+SMS_GATEWAY_PASSWORD: <<PASSWORD>>
+SMS_GATEWAY_URL: https://dragon.brainstorm.co.uk:1089/Gateway/
