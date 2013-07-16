@@ -42,25 +42,32 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.json
   def create
-    @message = Message.new
-    @message.phone_number= params["MobileNumber"]
-    @message.status = "Received"
-    @message.text = params["Prefix"]
-    @message.message_type = 1
 
-    enquiry = Enquiry.new
-    enquiry.phone_number = params["MobileNumber"]
-    enquiry.text = params["Prefix"]
-    enquiry.hashed_phone_number = Digest::MD5.hexdigest(params["MobileNumber"])
-    enquiry.url = ""
-    enquiry.save!
+    begin
 
-    respond_to do |format|
-      if @message.save
+      @message = Message.new
+      @message.phone_number= params["MobileNumber"]
+      @message.status = "Received"
+      @message.text = params["Prefix"]
+      @message.message_type = 1
+
+      enquiry = Enquiry.new
+      enquiry.phone_number = params["MobileNumber"]
+      enquiry.text = params["Prefix"]
+      enquiry.hashed_phone_number = Digest::MD5.hexdigest(params["MobileNumber"])
+      enquiry.url = ""
+      enquiry.save!
+
+      respond_to do |format|
         format.all { render json: @message, status: :created, location: @message }
-      else
+      end
+
+    rescue
+
+      respond_to do |format|
         format.all { render json: @message.errors, status: :unprocessable_entity }
       end
+
     end
   end
 
