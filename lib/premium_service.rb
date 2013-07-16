@@ -13,4 +13,15 @@ class PremiumService
     end
     return false
   end
+
+  def calculate_insurance_value catalog_price, sales_code, year_of_purchase
+
+    if sales_code.include?("FX")
+      return catalog_price
+    elsif (sales_code.nil? || !sales_code.include?("FX")) && year_of_purchase == Time.now.year
+      return 0.875 * catalog_price
+    else
+      return 0.375 * catalog_price
+    end
+  end
 end
