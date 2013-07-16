@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130715150744) do
+ActiveRecord::Schema.define(:version => 20130716090221) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -73,6 +73,22 @@ ActiveRecord::Schema.define(:version => 20130715150744) do
     t.decimal  "wholesale_price"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+  end
+
+  create_table "enquiries", :force => true do |t|
+    t.string   "phone_number"
+    t.string   "text"
+    t.string   "date_of_enquiry"
+    t.string   "source"
+    t.string   "sales_agent_code"
+    t.string   "agent_id"
+    t.string   "year_of_purchase"
+    t.string   "url"
+    t.string   "hash"
+    t.string   "detected_device_id"
+    t.string   "undetected_device_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
   create_table "messages", :force => true do |t|
