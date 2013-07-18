@@ -4,8 +4,6 @@ require 'url_shortener'
 
 class MessagesController < ApplicationController
 
-  @gateway = SMSGateway.new
-
   # GET /messages
   # GET /messages.json
   def index
@@ -50,32 +48,36 @@ class MessagesController < ApplicationController
 
     begin
 
+      @gateway = SMSGateway.new
+
       @message = Message.new
       @message.phone_number= params["MobileNumber"]
       @message.status = "Received"
       @message.text = params["Prefix"]
       @message.message_type = 1
+      @message.save!
 
       enquiry = Enquiry.new
       enquiry.phone_number = params["MobileNumber"]
       enquiry.text = params["Prefix"]
+      enquiry.date_of_enquiry = Time.now
+      enquiry.source = "SMS"
       enquiry.hashed_phone_number = Digest::MD5.hexdigest(params["MobileNumber"])
-      enquiry.url = "http://example.com/mobile/#{enquiry.hashed_phone_number}"
-      enquiry.save!
 
-      auth = UrlShortener::Authorize.new 'tiviguide', 'R_8ee80122d7bb3b807f246941c084ddf0'
+      url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}"
+      auth = UrlShortener::Authorize.new ENV['BITLY_USERNAME'], ENV['BITLY_PASSWORD']
       client = UrlShortener::Client.new auth
-      result = client.shorten(enquiry.url)
+      result = client.shorten(url)
       shortened_url = result.result['nodeKeyVal']['shortUrl']
 
-      @gateway.send(enquiry.phone_number, "Go to the following url: #{shortened_url}")
+      enquiry.url = shortened_url
+      enquiry.save!
 
+      @gateway.send(enquiry.phone_number, "Go to the following url: #{shortened_url}")
       respond_to do |format|
         format.all { render json: @message, status: :created, location: @message }
       end
-
-    rescue
-
+    rescue => error
       respond_to do |format|
         format.all { render json: @message.errors, status: :unprocessable_entity }
       end

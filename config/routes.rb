@@ -13,7 +13,7 @@ Orientmobileinsurance::Application.routes.draw do
 
   devise_for :users
   ActiveAdmin.routes(self)
-  resources :users, :mobile, :messages
+  resources :users, :mobile, :messages, :enquiry
 
   match 'administration' => 'admin#index', :as => :admin_area
 

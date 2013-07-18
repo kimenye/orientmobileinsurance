@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130716121429) do
+ActiveRecord::Schema.define(:version => 20130718112325) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -71,8 +71,18 @@ ActiveRecord::Schema.define(:version => 20130716121429) do
     t.string   "marketing_name"
     t.decimal  "catalog_price"
     t.decimal  "wholesale_price"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+    t.decimal  "fd_insured_value"
+    t.decimal  "fd_replacement_value"
+    t.decimal  "fd_koil_invoice_value"
+    t.decimal  "yop_insured_value"
+    t.decimal  "yop_replacement_value"
+    t.decimal  "yop_fd_koil_invoice_value"
+    t.decimal  "prev_insured_value"
+    t.decimal  "prev_replacement_value"
+    t.decimal  "prev_fd_koil_invoice_value"
+    t.string   "device_type"
   end
 
   create_table "enquiries", :force => true do |t|

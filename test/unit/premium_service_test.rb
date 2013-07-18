@@ -43,4 +43,94 @@ class PremiumServiceTest < ActiveSupport::TestCase
     insurance_value = service.calculate_insurance_value(800, "JM001" , Time.now.year - 1)
     assert insurance_value == (0.375 * 800), "Catalogue price should be 37.5%"
   end
+
+  test "The correct premium rate is returned based on the sales agent code" do
+    service = PremiumService.new
+
+    rate = service.calculate_premium_rate "FX000"
+    assert rate == 0.095, "Premium rate should be 9.5% for FX codes"
+
+    rate = service.calculate_premium_rate "83000"
+    assert rate == 0.1, "Premium rate should be 10% for non FX codes"
+
+    rate = service.calculate_premium_rate nil
+    assert rate == 0.1, "Premium rate should be 10% for empty"
+  end
+
+  test "The correct annual premium should be charged for a phone bought from an FX dealer" do
+    service = PremiumService.new
+
+    expected_premium = 2030
+    premium = service.calculate_annual_premium "FX099", 20999
+
+    assert expected_premium == premium, "Premium rate should be 2030"
+  end
+
+  test "The correct minimum premium should be charged for a phone bought from an FX dealer" do
+    service = PremiumService.new
+
+    expected_premium = 899
+    min_premium = service.minimum_fee "FX099"
+    assert expected_premium == min_premium, "Minimum premium rate is 899"
+
+    premium = service.calculate_annual_premium "FX099", 1000
+    assert expected_premium == premium, "Premium rate should be 899"
+  end
+
+  test "The correct minimum premium should be charged for a phone NOT bought from an FX dealer" do
+    service = PremiumService.new
+
+    expected_premium = 999
+    min_premium = service.minimum_fee "ee099"
+    assert expected_premium == min_premium, "Minimum premium rate is 999"
+
+    premium = service.calculate_annual_premium "00099", 1000
+    assert expected_premium == premium, "Premium rate should be 999"
+  end
+
+  test "The correct annual premium should be charged for a phone NOT bought from an FX dealer" do
+    service = PremiumService.new
+
+    expected_premium = 2135
+    premium = service.calculate_annual_premium nil, 20999
+
+    assert expected_premium == premium, "Premium rate should be 2135"
+  end
+
+  test "MPESA service charges should be correctly calculated" do
+    service = PremiumService.new
+
+    fee = service.calculate_mpesa_fee(10)
+    assert fee == 0, "Fee should be free from 0-999"
+
+    fee = service.calculate_mpesa_fee(1000)
+    assert fee == 11, "Fee should be 11 for greater than 999"
+
+    fee = service.calculate_mpesa_fee(2499)
+    assert fee == 11, "Fee should be 11 for greater than 999"
+
+    fee = service.calculate_mpesa_fee(2500)
+    assert fee == 33, "Fee should be 33 for greater than 2499"
+
+    fee = service.calculate_mpesa_fee(5000)
+    assert fee == 61, "Fee should be 61 for greater than 5000"
+
+    fee = service.calculate_mpesa_fee(9998)
+    assert fee == 61, "Fee should be 61 for greater than 5000"
+
+    fee = service.calculate_mpesa_fee(10001)
+    assert fee == 77, "Fee should be 77 for greater than 10000"
+
+    fee = service.calculate_mpesa_fee(19999)
+    assert fee == 77, "Fee should be 77 for greater than 10000"
+
+    fee = service.calculate_mpesa_fee(21000)
+    assert fee == 132, "Fee should be 132 for greater than 20000"
+
+    fee = service.calculate_mpesa_fee(36000)
+    assert fee == 154, "Fee should be 154 for greater than 35000"
+
+    fee = service.calculate_mpesa_fee(65000)
+    assert fee == 165, "Fee should be 165 for greater than 50000"
+  end
 end

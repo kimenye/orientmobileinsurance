@@ -15,3 +15,6 @@ SMS_GATEWAY_SERVICE_ID: <<SERVICE_ID>>
 SMS_GATEWAY_CHANNEL_ID: <<CHANNEL_ID>>
 SMS_GATEWAY_PASSWORD: <<PASSWORD>>
 SMS_GATEWAY_URL: https://dragon.brainstorm.co.uk:1089/Gateway/
+BASE_URL: http://localhost:3000/
+BITLY_USERNAME: <<username>>
+BITLY_PASSWORD: <<password>>
