@@ -1,9 +1,5 @@
 class PremiumService
 
-  def initialize
-
-  end
-
   def is_insurable year_of_purchase, sales_code
     current_year = Time.now.year
     if sales_code.nil? && current_year - year_of_purchase <= 1
@@ -45,11 +41,20 @@ class PremiumService
     fee
   end
 
-  def calculate_annual_premium agent_code, insurance_value
-    raw = calculate_premium_rate(agent_code) * insurance_value * 1.0045
+  def calculate_monthly_premium agent_code, insurance_value
+    base_premium = calculate_annual_premium agent_code, insurance_value, false, false
+    raw = 1.15 * base_premium
+    raw += 15
     mpesa_fee = calculate_mpesa_fee raw
     raw += mpesa_fee
-    raw += 15 #sms charges
+    (raw / 3).round
+  end
+
+  def calculate_annual_premium agent_code, insurance_value, add_mpesa = true, add_sms_charges = true
+    raw = calculate_premium_rate(agent_code) * insurance_value * 1.0045
+    mpesa_fee = calculate_mpesa_fee raw
+    raw += mpesa_fee if add_mpesa
+    raw += 15 if add_sms_charges #sms charges
     [raw.round, minimum_fee(agent_code)].max
   end
 
