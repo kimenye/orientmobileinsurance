@@ -43,4 +43,41 @@ class PremiumServiceTest < ActiveSupport::TestCase
     insurance_value = service.calculate_insurance_value(800, "JM001" , Time.now.year - 1)
     assert insurance_value == (0.375 * 800), "Catalogue price should be 37.5%"
   end
+
+  test "MPESA service charges should be correctly calculated" do
+    service = PremiumService.new
+
+    fee = service.calculate_mpesa_fee(10)
+    assert fee == 0, "Fee should be free from 0-999"
+
+    fee = service.calculate_mpesa_fee(1000)
+    assert fee == 11, "Fee should be 11 for greater than 999"
+
+    fee = service.calculate_mpesa_fee(2499)
+    assert fee == 11, "Fee should be 11 for greater than 999"
+
+    fee = service.calculate_mpesa_fee(2500)
+    assert fee == 33, "Fee should be 33 for greater than 2499"
+
+    fee = service.calculate_mpesa_fee(5000)
+    assert fee == 61, "Fee should be 61 for greater than 5000"
+
+    fee = service.calculate_mpesa_fee(9998)
+    assert fee == 61, "Fee should be 61 for greater than 5000"
+
+    fee = service.calculate_mpesa_fee(10001)
+    assert fee == 77, "Fee should be 77 for greater than 10000"
+
+    fee = service.calculate_mpesa_fee(19999)
+    assert fee == 77, "Fee should be 77 for greater than 10000"
+
+    fee = service.calculate_mpesa_fee(21000)
+    assert fee == 132, "Fee should be 132 for greater than 20000"
+
+    fee = service.calculate_mpesa_fee(36000)
+    assert fee == 154, "Fee should be 154 for greater than 35000"
+
+    fee = service.calculate_mpesa_fee(65000)
+    assert fee == 165, "Fee should be 165 for greater than 50000"
+  end
 end

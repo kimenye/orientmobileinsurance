@@ -24,4 +24,24 @@ class PremiumService
       return 0.375 * catalog_price
     end
   end
+
+  def calculate_mpesa_fee transfer_value
+    fee = 0
+    if transfer_value >= 1000 && transfer_value <= 2499
+      fee = 11
+    elsif transfer_value >= 2500 && transfer_value <= 4999
+      fee = 33
+    elsif transfer_value >= 5000 && transfer_value <= 9999
+      fee = 61
+    elsif transfer_value >= 10000 && transfer_value <= 19999
+      fee = 77
+    elsif transfer_value >= 20000 && transfer_value <= 34999
+      fee = 132
+    elsif transfer_value >= 35000 && transfer_value <= 49999
+      fee = 154
+    elsif transfer_value >= 50000 && transfer_value <= 70000
+      fee = 165
+    end
+    fee
+  end
 end
