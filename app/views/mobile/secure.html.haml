@@ -1,5 +1,15 @@
 #home-page{"data-role" => "page", "data-theme" => "b"}
   %section{"data-role" => "content", :role => "main"}
     %h1.logo
-      %img.logo.smaller{:alt => "Kenya Orient", :src => "assets/koil_logo.png"}
-    %p
+      %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.png"}
+    %form{'action' => '', 'method' => 'post'}
+      %fieldset
+        %div{"data-role" => 'fieldcontain'}
+          %label{'for' => 'sales_agent_code'}
+            Enter Sales Agent Code (0 if none)
+          %input{'type' => 'text', 'name' => 'sales_agent_code', 'id' => 'sales_agent_code', "data-mini" => "true"}
+          %label{'for' => 'year_of_purchase'}
+            Enter Year of Purchase of device)
+          %input{'type' => 'text', 'name' => 'year_of_purchase', 'id' => 'year_of_purchase', "data-mini" => "true"}
+        %button{'type' => 'submit', "data-theme" => "b", 'name' => 'submit'}
+          Continue
