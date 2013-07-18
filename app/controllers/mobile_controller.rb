@@ -27,9 +27,9 @@ class MobileController < ApplicationController
     #Commented out the above as it wasnt working. Havent set the DEVICE_ATLAS_LICENCE_KEY
 
 
+    render 'status'
 
-
-    binding.pry
+    #binding.pry
 
   end
 end
