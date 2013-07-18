@@ -16,9 +16,9 @@ class PremiumService
 
   def calculate_insurance_value catalog_price, sales_code, year_of_purchase
 
-    if sales_code.include?("FX")
+    if is_fx_code sales_code
       return catalog_price
-    elsif (sales_code.nil? || !sales_code.include?("FX")) && year_of_purchase == Time.now.year
+    elsif !is_fx_code(sales_code) && year_of_purchase == Time.now.year
       return 0.875 * catalog_price
     else
       return 0.375 * catalog_price
@@ -45,9 +45,27 @@ class PremiumService
     fee
   end
 
+  def calculate_annual_premium agent_code, insurance_value
+    raw = calculate_premium_rate(agent_code) * insurance_value * 1.0045
+    mpesa_fee = calculate_mpesa_fee raw
+    raw += mpesa_fee
+    raw += 15 #sms charges
+    [raw.round, minimum_fee(agent_code)].max
+  end
+
+  def minimum_fee agent_code
+    fee = 999
+    fee = 899 if is_fx_code agent_code
+    fee
+  end
+
+  def is_fx_code code
+    !code.nil? && code.include?("FX")
+  end
+
   def calculate_premium_rate agent_code
     rate = 0.1
-    rate = 0.095 if !agent_code.nil? && agent_code.include?("FX")
+    rate = 0.095 if is_fx_code agent_code
     rate
   end
 end
