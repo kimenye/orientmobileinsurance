@@ -1,11 +1,18 @@
 class EnquiryController < ApplicationController
+  layout "mobile"
 
   def index
     @enquiries = Enquiry.all
   end
 
   def show
-    @enquiry = Enquiry.find(params[:id])
+    id = Integer(params[:id]) rescue nil
+    @enquiry = nil
+    if id.nil?
+      @enquiry = Enquiry.find_by_hashed_phone_number(params[:id])
+    else
+      @enquiry = Enquiry.find(params[:id])
+    end
   end
 
   def update

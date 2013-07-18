@@ -4,6 +4,7 @@ ActiveAdmin.register Enquiry do
     column :date_of_enquiry
     column :url
     column :source
+    column "Hash", :hashed_phone_number
   end
 
   filter :phone_number
