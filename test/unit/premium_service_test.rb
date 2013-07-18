@@ -44,6 +44,19 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert insurance_value == (0.375 * 800), "Catalogue price should be 37.5%"
   end
 
+  test "The correct premium rate is returned based on the sales agent code" do
+    service = PremiumService.new
+
+    rate = service.calculate_premium_rate "FX000"
+    assert rate == 0.095, "Premium rate should be 9.5% for FX codes"
+
+    rate = service.calculate_premium_rate "83000"
+    assert rate == 0.1, "Premium rate should be 10% for non FX codes"
+
+    rate = service.calculate_premium_rate nil
+    assert rate == 0.1, "Premium rate should be 10% for empty"
+  end
+
   test "MPESA service charges should be correctly calculated" do
     service = PremiumService.new
 

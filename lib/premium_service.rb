@@ -44,4 +44,10 @@ class PremiumService
     end
     fee
   end
+
+  def calculate_premium_rate agent_code
+    rate = 0.1
+    rate = 0.095 if !agent_code.nil? && agent_code.include?("FX")
+    rate
+  end
 end
