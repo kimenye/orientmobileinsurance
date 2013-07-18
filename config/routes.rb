@@ -11,6 +11,8 @@ Orientmobileinsurance::Application.routes.draw do
 
   match 'mobile/secure' => 'mobile#secure'
 
+  match 'mobile/status_check' => 'mobile#status_check'
+
   devise_for :users
   ActiveAdmin.routes(self)
   resources :users, :mobile, :messages, :enquiry
