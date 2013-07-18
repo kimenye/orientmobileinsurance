@@ -74,7 +74,15 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert expected_premium == min_premium, "Minimum premium rate is 899"
 
     premium = service.calculate_annual_premium "FX099", 1000
-    assert expected_premium == premium, "Premium rate should be 899"
+    assert_equal expected_premium, premium, "Premium rate should be 899"
+  end
+
+  test "The correct monthly premium should be charged for a phone bought from an FX dealer" do
+    service = PremiumService.new
+    monthly_premium = 777
+
+    premium = service.calculate_monthly_premium "FX099", 20999
+    assert_equal monthly_premium, premium
   end
 
   test "The correct minimum premium should be charged for a phone NOT bought from an FX dealer" do
@@ -95,6 +103,14 @@ class PremiumServiceTest < ActiveSupport::TestCase
     premium = service.calculate_annual_premium nil, 20999
 
     assert expected_premium == premium, "Premium rate should be 2135"
+  end
+
+  test "The correct monthly premium should be charged for a phone NOT bought from an FX dealer" do
+    service = PremiumService.new
+    monthly_premium = 817
+
+    premium = service.calculate_monthly_premium "87099", 20999
+    assert_equal monthly_premium, premium
   end
 
   test "MPESA service charges should be correctly calculated" do
