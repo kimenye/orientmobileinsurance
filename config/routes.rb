@@ -8,6 +8,9 @@ Orientmobileinsurance::Application.routes.draw do
 
 
   root :to => "home#index"
+
+  match 'mobile/secure' => 'mobile#secure'
+
   devise_for :users
   ActiveAdmin.routes(self)
   resources :users, :mobile, :messages
