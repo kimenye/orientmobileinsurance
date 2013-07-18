@@ -1,9 +1,12 @@
-#require 'pry'
+require 'pry'
 require 'premium_service'
+require 'deviceatlasapi'
 
 class MobileController < ApplicationController
 
   layout "mobile"
+
+  include DeviceAtlasApi::ControllerHelpers
 
   def index
 
@@ -17,10 +20,16 @@ class MobileController < ApplicationController
 
     @service = PremiumService.new
 
-    is_insurable = @service.is_insurable(params[:year_of_purchase], params[:sales_agent_code])
+    @is_insurable = @service.is_insurable(params[:year_of_purchase], params[:sales_agent_code])
+
+    #@device_info = get_device_info
+
+    #Commented out the above as it wasnt working. Havent set the DEVICE_ATLAS_LICENCE_KEY
 
 
-    #binding.pry
+
+
+    binding.pry
 
   end
 end
