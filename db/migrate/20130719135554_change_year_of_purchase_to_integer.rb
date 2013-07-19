@@ -1,5 +1,6 @@
 class ChangeYearOfPurchaseToInteger < ActiveRecord::Migration
   def change
-    change_column :enquiries, :year_of_purchase, :integer
+    remove_column :enquiries, :year_of_purchase
+    add_column :enquiries, :year_of_purchase, :integer
   end
 end
