@@ -1,4 +1,3 @@
-#require 'pry'
 require 'premium_service'
 require 'deviceatlasapi'
 
@@ -24,14 +23,8 @@ class MobileController < ApplicationController
 
     @year_of_purchase = params[:year_of_purchase]
 
-    #@device_info = get_device_info
-
-    #Commented out the above as it wasnt working. Havent set the DEVICE_ATLAS_LICENCE_KEY
-
+    @device_info = get_device_data
 
     render 'status'
-
-    #binding.pry
-
   end
 end
