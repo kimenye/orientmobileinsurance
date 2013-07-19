@@ -149,4 +149,12 @@ class PremiumServiceTest < ActiveSupport::TestCase
     fee = service.calculate_mpesa_fee(65000)
     assert fee == 165, "Fee should be 165 for greater than 50000"
   end
+
+  test "can generate a random six digit account number" do
+    service = PremiumService.new
+    number = service.generate_unique_account_number
+
+    assert_equal number.length, 6, "Account number should be six characters long"
+  end
+
 end
