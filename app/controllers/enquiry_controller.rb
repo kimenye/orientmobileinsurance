@@ -1,27 +1,24 @@
-class EnquiryController < ApplicationController
+class EnquiryController < Wicked::WizardController
   layout "mobile"
 
-  def index
-    @enquiries = Enquiry.all
-  end
+  steps :begin, :enter_sales_info, :not_insurable
 
   def show
-    id = Integer(params[:id]) rescue nil
-    @enquiry = nil
-    if id.nil?
-      @enquiry = Enquiry.find_by_hashed_phone_number(params[:id])
-    else
-      @enquiry = Enquiry.find(params[:id])
-    end
+    @enquiry = Enquiry.find(session[:enquiry_id])
+    render_wizard
   end
 
   def update
-    @enquiry = Enquiry.find(params[:id])
-    if @enquiry.update_attributes(params[:enquiry])
-      redirect_to enquiries_path, :notice => "Enquiry updated."
-    else
-      redirect_to enquiries_path, :alert => "Unable to update enquiry."
+    @enquiry = Enquiry.find(session[:enquiry_id])
+    case step
+      when :enter_sales_info
+        agent = Agent.find_by_code(params[:sales_agent_code])
+        if !agent.nil?
+          @enquiry.agent_id = agent.id
+        end
+        @enquiry.update_attributes(params[:enquiry])
     end
+    render_wizard @enquiry
   end
 
   def destroy

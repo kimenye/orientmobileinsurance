@@ -1,0 +1,13 @@
+#sales-info-page{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Sales Details
+  %section{"data-role" => "content", :role => "main"}
+    = form_for(@enquiry, :url => wizard_path, :method => :put) do |f|
+      = f.label :sales_agent_code
+      = f.text_field :sales_agent_code
+      = f.label :year_of_purchase
+      = f.text_field :year_of_purchase
+
+      %p
+        = f.submit "Continue"

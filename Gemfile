@@ -19,6 +19,7 @@ gem 'active_admin_importable'
 gem 'httparty'
 gem 'deviceatlasapi'
 gem 'url_shortener'
+gem 'wicked'
 group :assets do
   gem 'compass-rails'
   gem 'zurb-foundation'
