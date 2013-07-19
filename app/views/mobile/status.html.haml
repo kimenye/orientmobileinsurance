@@ -2,7 +2,13 @@
   %section{"data-role" => "content", :role => "main"}
     %h1.logo
       %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.png"}
+    %p Make and model:
+    %span Year of purchase:
+    %span
+      = @year_of_purchase
     - if (@is_insurable)
-      %p Insurable
+      %p Insurance value:
+      %p 1-year premium:
+      %p 3 monthly installments of:
     - else
-      %p Not insurable
+      %p Unfortunately we are not able to provide you with an Orient Mobile policy for your device at this time. Thank you for considering us.
