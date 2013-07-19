@@ -2,10 +2,22 @@
   %section{"data-role" => "content", :role => "main"}
     %h1.logo
       %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.png"}
-    %p Make and model:
-    %span Year of purchase:
-    %span
-      = @year_of_purchase
+    %p
+      %span Vendor:
+      %span
+        = @device_info['vendor']
+    %p
+      %span Model:
+      %span
+        = @device_info['model']
+    %p
+      %span OS:
+      %span
+        = @device_info['osName']
+    %p
+      %span Year of purchase:
+      %span
+        = @year_of_purchase
     - if (@is_insurable)
       %p Insurance value:
       %p 1-year premium:
