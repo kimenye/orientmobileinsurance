@@ -68,6 +68,11 @@ class PremiumService
     !code.nil? && code.include?("FX")
   end
 
+  def generate_unique_account_number
+    cs = [*'0'..'9', *'a'..'z', *'A'..'Z']
+    6.times.map { cs.sample }.join.upcase
+  end
+
   def calculate_premium_rate agent_code
     rate = 0.1
     rate = 0.095 if is_fx_code agent_code
