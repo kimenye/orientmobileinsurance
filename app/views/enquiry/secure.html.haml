@@ -9,7 +9,12 @@
             Enter Sales Agent Code (0 if none)
           %input{'type' => 'text', 'name' => 'sales_agent_code', 'id' => 'sales_agent_code', "data-mini" => "true"}
           %label{'for' => 'year_of_purchase'}
-            Enter Year of Purchase of device)
-          %input{'type' => 'text', 'name' => 'year_of_purchase', 'id' => 'year_of_purchase', "data-mini" => "true"}
+            Date of Purchase of device
+          %input{'type' => 'text', 'name' => 'year_of_purchase', 'id' => 'year_of_purchase', "data-mini" => "true", "id" => "datepicker"}
         %button{'type' => 'submit', "data-theme" => "b", 'name' => 'submit'}
           Continue
+
+:javascript
+   $(function() {
+     $( "#datepicker" ).datepicker();
+  });
