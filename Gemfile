@@ -20,6 +20,7 @@ gem 'httparty'
 gem 'deviceatlasapi'
 gem 'url_shortener'
 gem 'wicked'
+gem 'jquery_mobile_rails'
 group :assets do
   gem 'compass-rails'
   gem 'zurb-foundation'
