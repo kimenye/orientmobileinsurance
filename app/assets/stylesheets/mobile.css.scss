@@ -14,3 +14,22 @@
 .field_with_errors {
   color: red;
 }
+
+.model {
+  font-weight: normal;
+}
+
+.message {
+  padding: 10px;
+
+  .ui-btn-text {
+    font-weight:normal;
+    white-space: pre-wrap;
+  }
+
+  .ui-li .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li, a.inline {
+    display: inline-block !important;
+    padding: 0em 0px !important;
+    text-decoration: underline !important;
+  }
+}

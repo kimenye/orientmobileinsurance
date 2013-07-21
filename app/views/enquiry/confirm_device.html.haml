@@ -1,11 +1,11 @@
-#not-insurable{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+#confirm-details{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
   %header{"data-role" => "header"}
     %h1
-      Cannot Insure Device
+      Your Device Details
   %section{"data-role" => "content", "role" => "main"}
     %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
       %li{"data-role" => "list-divider"}
-        Please see below...
+        Please confirm details below...
       %li
         %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
         %b
@@ -18,6 +18,3 @@
           Year of Purchase:
         %span.model
           = @enquiry.year_of_purchase
-      %li.message
-        Unfortunately we are not able to provide you with an Orient Mobile policy for your device at this time.
-        Please click #{link_to("click here", "http://korient.co.ke", :class => "inline")} for other great products and services.

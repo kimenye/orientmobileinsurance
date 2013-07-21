@@ -5,7 +5,7 @@ class EnquiryController < Wicked::WizardController
   include DeviceAtlasApi::ControllerHelpers
   layout "mobile"
 
-  steps :begin, :enter_sales_info, :not_insurable
+  steps :begin, :enter_sales_info, :not_insurable, :confirm_device
 
   def show
     @enquiry = Enquiry.find(session[:enquiry_id])
@@ -14,13 +14,22 @@ class EnquiryController < Wicked::WizardController
 
   def update
     @enquiry = Enquiry.find(session[:enquiry_id])
+    premium_service = PremiumService.new
     case step
       when :enter_sales_info
-        agent = Agent.find_by_code(params[:sales_agent_code])
+        agent = Agent.find_by_code(params[:enquiry][:sales_agent_code])
         if !agent.nil?
           @enquiry.agent_id = agent.id
         end
         @enquiry.update_attributes(params[:enquiry])
+
+        code = agent.code if !agent.nil?
+        is_insurable = premium_service.is_insurable(@enquiry.year_of_purchase, code)
+
+        session[:device] = get_device_data
+        if is_insurable
+          jump_to :confirm_device
+        end
     end
     render_wizard @enquiry
   end
