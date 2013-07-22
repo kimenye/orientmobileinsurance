@@ -24,15 +24,19 @@ class EnquiryController < Wicked::WizardController
         @enquiry.update_attributes(params[:enquiry])
 
         code = agent.code if !agent.nil?
-        is_insurable = premium_service.is_insurable(@enquiry.year_of_purchase, code)
+        if !@enquiry.year_of_purchase.nil?
+          is_insurable = premium_service.is_insurable(@enquiry.year_of_purchase, code)
+        else
+          is_insurable = false
+        end
 
         session[:device] = get_device_data
         #Check for the devices among our supported devices
 
         device = Device.device_similar_to get_device_data["model"].first
 
-        if device.nil?
-
+        if device.nil? || is_insurable == false
+          jump_to :not_insurable
         end
 
         if is_insurable
