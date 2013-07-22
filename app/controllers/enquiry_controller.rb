@@ -30,10 +30,10 @@ class EnquiryController < Wicked::WizardController
           is_insurable = false
         end
 
-        session[:device] = get_device_data
+        session[:device] = device_data
         #Check for the devices among our supported devices
 
-        device = Device.device_similar_to get_device_data["model"].first
+        device = Device.device_similar_to(device_data["model"]) .first
 
         if device.nil? || is_insurable == false
           jump_to :not_insurable
