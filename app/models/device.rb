@@ -12,4 +12,16 @@ class Device < ActiveRecord::Base
                   :fd_replacement_value, :fd_koil_invoice_value, :yop_insured_value, :yop_replacement_value,
                   :yop_fd_koil_invoice_value, :prev_insured_value, :prev_replacement_value, :prev_fd_koil_invoice_value
 
+  scope :device_similar_to, (lambda do |str|
+    {:conditions => [ "lower(model) like ? ", "#{str.downcase}" ]}
+  end )
+
+  def get_insurance_value (code, year_of_purchase)
+    #if code.start_with?("FX")
+    #  return fd_insured_value
+    #elsif year_of_purchase == Time.now.year
+    #  return self.
+    #end
+    #
+  end
 end

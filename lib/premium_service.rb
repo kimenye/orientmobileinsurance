@@ -65,7 +65,7 @@ class PremiumService
   end
 
   def is_fx_code code
-    !code.nil? && code.include?("FX")
+    !code.nil? && code.start_with?("FX")
   end
 
   def generate_unique_account_number

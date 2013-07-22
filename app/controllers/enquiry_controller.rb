@@ -27,6 +27,14 @@ class EnquiryController < Wicked::WizardController
         is_insurable = premium_service.is_insurable(@enquiry.year_of_purchase, code)
 
         session[:device] = get_device_data
+        #Check for the devices among our supported devices
+
+        device = Device.device_similar_to get_device_data["model"].first
+
+        if device.nil?
+
+        end
+
         if is_insurable
           jump_to :confirm_device
         end
