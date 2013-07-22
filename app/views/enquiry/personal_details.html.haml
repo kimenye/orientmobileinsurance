@@ -1,0 +1,20 @@
+#sales-info-page{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Customer Details
+  %section{"data-role" => "content", :role => "main"}
+    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+      %li{"data-role" => "list-divider"}
+        Please provide details below...
+    = form_for(@enquiry, :url => wizard_path, :method => :put) do |f|
+      = f.label :customer_name, 'Full Name (as per ID)'
+      = f.text_field :customer_name
+      = f.label :customer_id, 'National ID or Passport Number'
+      = f.text_field :customer_id
+      = f.label :customer_email, 'Email Address'
+      = f.email_field :customer_email
+      = f.label :customer_payment_option, 'Select Payment'
+      = f.select :customer_payment_option, ['Monthly', 'Annual'], {}, { "data-theme" => "c"}
+
+      %p
+        = f.submit "Continue"

@@ -5,7 +5,7 @@ class EnquiryController < Wicked::WizardController
   include DeviceAtlasApi::ControllerHelpers
   layout "mobile"
 
-  steps :begin, :enter_sales_info, :not_insurable, :confirm_device
+  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details
 
   def show
     @enquiry = Enquiry.find(session[:enquiry_id])
@@ -30,6 +30,7 @@ class EnquiryController < Wicked::WizardController
           is_insurable = false
         end
 
+        device_data = get_device_data
         session[:device] = device_data
         #Check for the devices among our supported devices
 
@@ -41,7 +42,9 @@ class EnquiryController < Wicked::WizardController
 
         if is_insurable
           jump_to :confirm_device
+          #jump_to :personal_details
         end
+      when :personal_details
     end
     render_wizard @enquiry
   end
