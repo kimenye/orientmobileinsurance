@@ -12,8 +12,8 @@ class Device < ActiveRecord::Base
                   :fd_replacement_value, :fd_koil_invoice_value, :yop_insured_value, :yop_replacement_value,
                   :yop_fd_koil_invoice_value, :prev_insured_value, :prev_replacement_value, :prev_fd_koil_invoice_value
 
-  scope :device_similar_to, (lambda do |str|
-    {:conditions => [ "lower(model) like ? ", "#{str.downcase}" ]}
+  scope :device_similar_to, (lambda do |vendor, model, marketing_name|
+    {:conditions => [ "lower(vendor) like ? and (lower(model) like ? or lower(marketing_name) like ? )", "#{vendor.downcase}", "#{model.downcase}", "#{marketing_name.downcase}" ]}
   end )
 
   def get_insurance_value (code, year_of_purchase)
@@ -24,5 +24,10 @@ class Device < ActiveRecord::Base
     else
       return prev_insured_value
     end
+  end
+
+  def get_marketing_search_parameter (term)
+    escaped_term = term.gsub! /\s+/, '%'
+    return "%#{escaped_term}%"
   end
 end
