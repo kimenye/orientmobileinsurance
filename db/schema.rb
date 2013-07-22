@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130721115924) do
+ActiveRecord::Schema.define(:version => 20130722133926) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -108,6 +108,17 @@ ActiveRecord::Schema.define(:version => 20130721115924) do
     t.integer  "year_of_purchase"
     t.integer  "agent_id"
   end
+
+  create_table "insured_devices", :force => true do |t|
+    t.integer  "customer_id"
+    t.integer  "device_id"
+    t.string   "imei"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "insured_devices", ["customer_id"], :name => "index_insured_devices_on_customer_id"
+  add_index "insured_devices", ["device_id"], :name => "index_insured_devices_on_device_id"
 
   create_table "messages", :force => true do |t|
     t.string   "phone_number"

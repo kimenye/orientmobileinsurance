@@ -17,11 +17,12 @@ class Device < ActiveRecord::Base
   end )
 
   def get_insurance_value (code, year_of_purchase)
-    #if code.start_with?("FX")
-    #  return fd_insured_value
-    #elsif year_of_purchase == Time.now.year
-    #  return self.
-    #end
-    #
+    if !code.nil? && code.starts_with?("FX")
+      return fd_insured_value
+    elsif year_of_purchase == Time.now.year
+      return yop_insured_value
+    else
+      return prev_insured_value
+    end
   end
 end

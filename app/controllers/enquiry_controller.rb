@@ -5,7 +5,7 @@ class EnquiryController < Wicked::WizardController
   include DeviceAtlasApi::ControllerHelpers
   layout "mobile"
 
-  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details
+  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants
 
   def show
     @enquiry = Enquiry.find(session[:enquiry_id])

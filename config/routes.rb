@@ -1,4 +1,7 @@
 Orientmobileinsurance::Application.routes.draw do
+  resources :insured_devices
+
+
   devise_for :admin_users, ActiveAdmin::Devise.config
 
 

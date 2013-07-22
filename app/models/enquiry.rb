@@ -14,11 +14,11 @@ class Enquiry < ActiveRecord::Base
     errors.add(:year_of_purchase, "A valid Year of Purchase is required") if year_of_purchase.nil? || year_of_purchase < 1930 || year_of_purchase > Time.now.year
   end
 
-  def initialize
-    @customer_name = ''
-    @customer_id = ''
-    @customer_email = ''
-    @customer_payment_option = ''
+  def after_initialize
+    self.customer_name = ''
+    self.customer_id = ''
+    self.customer_email = ''
+    self.customer_payment_option = ''
   end
 
   attr_accessor :customer_name, :customer_id, :customer_email, :customer_payment_option
