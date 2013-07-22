@@ -1,2 +1,2 @@
-class InsuredDevicesController < InheritedResources::Base
+class InsuredDevicesController  < ApplicationController
 end
