@@ -46,11 +46,12 @@
           Email:
         %span.model
           = session[:user_details]["customer_email"]
-      %li
-        %b
-          Sales Agent:
-        %span.model
-          = @enquiry.sales_agent_code
+      - if !session[:quote_details]["sales_agent"].nil?
+        %li
+          %b
+            Sales Agent:
+          %span.model
+            = session[:quote_details]["sales_agent"]
       -#%li
       -#  %b
       -#    Amount Due:
