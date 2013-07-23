@@ -34,16 +34,25 @@ class EnquiryController < Wicked::WizardController
         session[:device] = device_data
         #Check for the devices among our supported devices
 
-        model = get_device_data["model"]
-        vendor = get_device_data["vendor"]
-        marketingName = get_device_data["marketingName"]
-        device = Device.device_similar_to(vendor, model, marketingName).first
+        model = device_data["model"]
+        vendor = device_data["vendor"]
+        marketingName = device_data["marketingName"]
+
+        device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
 
         if device.nil? || is_insurable == false
           jump_to :not_insurable
-        end
+        else
+          session[:device] = device
+          iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
+          details = {
+            "insurance_value" => iv,
+            "annual_premium" => premium_service.calculate_annual_premium(code, iv),
+            "quarterly_premium" => premium_service.calculate_monthly_premium(code, iv)
+          }
 
-        if is_insurable
+          session[:quote_details] = details
+
           jump_to :confirm_device
           #jump_to :personal_details
         end

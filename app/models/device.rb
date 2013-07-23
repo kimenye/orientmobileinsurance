@@ -26,7 +26,7 @@ class Device < ActiveRecord::Base
     end
   end
 
-  def get_marketing_search_parameter (term)
+  def self.get_marketing_search_parameter (term)
     escaped_term = term.gsub! /\s+/, '%'
     return "%#{escaped_term}%"
   end
