@@ -1,0 +1,11 @@
+#sales-info-page{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Customer Not Found
+  %section{"data-role" => "content", :role => "main"}
+    %section{"data-role" => "content", "role" => "main"}
+      %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+        %li{"data-role" => "list-divider"}
+          Could not find your customer record...
+        %li.message<
+          We are unable to trace a policy under your ID or Passport number. Please recheck  the details. Please #{link_to("call 0700123456", "tel:+254700123456", :class => "inline")} for assistance.

@@ -20,7 +20,7 @@ Orientmobileinsurance::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   resources :users, :mobile, :messages, :enquiry
-  resources :enquiries
+  resources :enquiries, :status
 
   match 'administration' => 'admin#index', :as => :admin_area
 
