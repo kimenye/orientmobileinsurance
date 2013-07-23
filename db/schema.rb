@@ -73,6 +73,8 @@ ActiveRecord::Schema.define(:version => 20130723153541) do
     t.string   "contact_number"
     t.string   "contact_email"
     t.string   "incident_description"
+    t.string   "status"
+    t.string   "status_description"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
   end

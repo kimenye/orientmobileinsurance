@@ -8,6 +8,8 @@ class CreateClaims < ActiveRecord::Migration
       t.string :contact_number
       t.string :contact_email
       t.string :incident_description
+      t.string :status
+      t.string :status_description
 
       t.timestamps
     end
