@@ -6,7 +6,7 @@ class EnquiryController < Wicked::WizardController
   include DeviceAtlasApi::ControllerHelpers
   layout "mobile"
 
-  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :send_policy_sms
+  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
 
   def show
     @enquiry = Enquiry.find(session[:enquiry_id])
@@ -68,14 +68,19 @@ class EnquiryController < Wicked::WizardController
 
         @enquiry.update_attributes(params[:enquiry])
 
+        account_name = premium_service.generate_unique_account_number
+
         user_details = {
             "customer_name" => @enquiry.customer_name,
             "customer_id" => @enquiry.customer_id,
             "customer_email" => @enquiry.customer_email,
-            "customer_payment_option" => @enquiry.customer_payment_option
+            "customer_payment_option" => @enquiry.customer_payment_option,
+            "account_name" => account_name
         }
 
         session[:user_details] = user_details
+
+        Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium"], :expiry_date => "", :monthly_premium => session[:quote_details]["quarterly_premium"], :insured_device_id => "", :premium_type => session[:user_details]["customer_payment_option"])
 
         # Check if customer is a serial claimant
         #binding.pry
