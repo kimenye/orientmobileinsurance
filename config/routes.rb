@@ -1,4 +1,7 @@
 Orientmobileinsurance::Application.routes.draw do
+  resources :claims
+
+
   resources :insured_devices
 
 

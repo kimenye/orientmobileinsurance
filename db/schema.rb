@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130723152118) do
+ActiveRecord::Schema.define(:version => 20130723153541) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -64,6 +64,20 @@ ActiveRecord::Schema.define(:version => 20130723152118) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "claims", :force => true do |t|
+    t.string   "claim_no"
+    t.datetime "incident_date"
+    t.integer  "policy_id"
+    t.string   "claim_type"
+    t.string   "contact_number"
+    t.string   "contact_email"
+    t.string   "incident_description"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  add_index "claims", ["policy_id"], :name => "index_claims_on_policy_id"
 
   create_table "customers", :force => true do |t|
     t.string   "name"
