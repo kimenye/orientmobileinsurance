@@ -79,7 +79,7 @@ class EnquiryController < Wicked::WizardController
         }
 
         session[:user_details] = user_details
-
+        #TODO: include the insured value in the quote
         Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium"], :expiry_date => "", :monthly_premium => session[:quote_details]["quarterly_premium"], :insured_device_id => "", :premium_type => session[:user_details]["customer_payment_option"])
 
         # Check if customer is a serial claimant
