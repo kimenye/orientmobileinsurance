@@ -25,22 +25,55 @@
           = session[:quote_details]["insurance_value"]
       %li
         %b
-          1-year premium:
+          Amount Due:
         %span.model
-          = session[:quote_details]["annual_premium"]
+          - if(session[:user_details]["customer_payment_option"] == 'Annual')
+            = session[:quote_details]["annual_premium"]
+          - elsif(session[:user_details]["customer_payment_option"] == 'Monthly')
+            = session[:quote_details]["quarterly_premium"]
       %li
         %b
-          3 monthly installments of:
+          Name:
         %span.model
-          = session[:quote_details]["quarterly_premium"]
-
+          = session[:user_details]["customer_name"]
+      %li
+        %b
+          ID or Passport No.:
+        %span.model
+          = session[:user_details]["customer_id"]
+      %li
+        %b
+          Email:
+        %span.model
+          = session[:user_details]["customer_email"]
       - if !session[:quote_details]["sales_agent"].nil?
         %li
           %b
             Sales Agent:
           %span.model
             = session[:quote_details]["sales_agent"]
+      -#%li
+      -#  %b
+      -#    Amount Due:
+      -#  %span.model
+      -#    - if(@enquiry.customer_payment_option == 'Annualy')
+      -#      = session[:quote_details]["annual_premium"]
+      -#    - elsif(@enquiry.customer_payment_option == 'Monthly')
+      -#%li
+      -#  %b
+      -#    Name:
+      -#  %span.model
+      -#    = @enquiry.customer_name
+      -#%li
+      -#  %b
+      -#    ID or Passport No.:
+      -#  %span.model
+      -#    = @enquiry.customer_id
+      -#%li
+      -#  %b
+      -#    Sales Agent:
+      -#  %span.model
+      -#    = @enquiry.sales_agent_code
     %a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
     -#%a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-theme" => "b", "data-mini" => "true"} Continue
-    = link_to('Continue', wizard_path(:personal_details), "data-role" => "button", "data-inline" => "true", "data-mini" => "true")
-
+    = link_to('Continue', wizard_path(:send_policy_sms), "data-role" => "button", "data-inline" => "true", "data-mini" => "true")
