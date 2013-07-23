@@ -1,0 +1,78 @@
+#confirm-details{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Your Device Details
+  %section{"data-role" => "content", "role" => "main"}
+    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+      %li{"data-role" => "list-divider"}
+        Please confirm details below...
+      %li
+        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Make & Model:
+        %span.model
+          = session[:device].marketing_name
+      %li
+        %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Year of Purchase:
+        %span.model
+          = @enquiry.year_of_purchase
+      %li
+        %b
+          Insurance value:
+        %span.model
+          = session[:quote_details]["insurance_value"]
+      %li
+        %b
+          Amount Due:
+        %span.model
+          - if(session[:user_details]["customer_payment_option"] == 'Annual')
+            = session[:quote_details]["annual_premium"]
+          - elsif(session[:user_details]["customer_payment_option"] == 'Monthly')
+            = session[:quote_details]["quarterly_premium"]
+      %li
+        %b
+          Name:
+        %span.model
+          = session[:user_details]["customer_name"]
+      %li
+        %b
+          ID or Passport No.:
+        %span.model
+          = session[:user_details]["customer_id"]
+      %li
+        %b
+          Email:
+        %span.model
+          = session[:user_details]["customer_email"]
+      %li
+        %b
+          Sales Agent:
+        %span.model
+          = @enquiry.sales_agent_code
+      -#%li
+      -#  %b
+      -#    Amount Due:
+      -#  %span.model
+      -#    - if(@enquiry.customer_payment_option == 'Annualy')
+      -#      = session[:quote_details]["annual_premium"]
+      -#    - elsif(@enquiry.customer_payment_option == 'Monthly')
+      -#%li
+      -#  %b
+      -#    Name:
+      -#  %span.model
+      -#    = @enquiry.customer_name
+      -#%li
+      -#  %b
+      -#    ID or Passport No.:
+      -#  %span.model
+      -#    = @enquiry.customer_id
+      -#%li
+      -#  %b
+      -#    Sales Agent:
+      -#  %span.model
+      -#    = @enquiry.sales_agent_code
+    %a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
+    -#%a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-theme" => "b", "data-mini" => "true"} Continue
+    = link_to('Continue', wizard_path(:send_policy_sms), "data-role" => "button", "data-inline" => "true", "data-mini" => "true")

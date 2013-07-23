@@ -1,11 +1,12 @@
 require 'premium_service'
 require 'deviceatlasapi'
+#require 'pry'
 
 class EnquiryController < Wicked::WizardController
   include DeviceAtlasApi::ControllerHelpers
   layout "mobile"
 
-  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants
+  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :send_policy_sms
 
   def show
     @enquiry = Enquiry.find(session[:enquiry_id])
@@ -56,7 +57,30 @@ class EnquiryController < Wicked::WizardController
           jump_to :confirm_device
           #jump_to :personal_details
         end
+      when :confirm_device
+        #do nothing
       when :personal_details
+        customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
+        if(customer.nil?)
+          customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email])
+        end
+
+        @enquiry.update_attributes(params[:enquiry])
+
+        user_details = {
+            "customer_name" => @enquiry.customer_name,
+            "customer_id" => @enquiry.customer_id,
+            "customer_email" => @enquiry.customer_email,
+            "customer_payment_option" => @enquiry.customer_payment_option
+        }
+
+        session[:user_details] = user_details
+
+        # Check if customer is a serial claimant
+        #binding.pry
+
+        jump_to :confirm_personal_details
+
     end
     render_wizard @enquiry
   end

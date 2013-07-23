@@ -1,7 +1,7 @@
 class Enquiry < ActiveRecord::Base
 
   attr_accessible :phone_number, :text, :date_of_enquiry, :source, :sales_agent_code, :agent_id, :year_of_purchase, :url,
-                  :hashed_phone_number, :detected_device_id, :undetected_device_id
+                  :hashed_phone_number, :detected_device_id, :undetected_device_id, :customer_name, :customer_id, :customer_email, :customer_payment_option
 
   belongs_to :agent
 

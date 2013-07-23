@@ -34,4 +34,6 @@
         %span.model
           = session[:quote_details]["quarterly_premium"]
     %a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
-    %a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-theme" => "b", "data-mini" => "true"} Continue
+    -#%a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-theme" => "b", "data-mini" => "true"} Continue
+    = link_to('Continue', wizard_path(:personal_details), "data-role" => "button", "data-inline" => "true", "data-mini" => "true")
+
