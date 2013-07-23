@@ -5,7 +5,7 @@
   %section{"data-role" => "content", "role" => "main"}
     %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
       %li{"data-role" => "list-divider"}
-        Please confirm details below...
+        A policy with the following details has been created
       %li
         %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
         %b
@@ -52,6 +52,11 @@
             Sales Agent:
           %span.model
             = session[:quote_details]["sales_agent"]
+      %li
+        %b
+          Your Account Number is:
+        %span.model
+          = session[:user_details]["account_name"]
       -#%li
       -#  %b
       -#    Amount Due:
@@ -76,4 +81,4 @@
       -#    = @enquiry.sales_agent_code
     %a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
     -#%a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-theme" => "b", "data-mini" => "true"} Continue
-    = link_to('Continue', wizard_path(:send_policy_sms), "data-role" => "button", "data-inline" => "true", "data-mini" => "true")
+    = link_to('Continue', wizard_path(:complete_enquiry), "data-role" => "button", "data-inline" => "true", "data-mini" => "true")
