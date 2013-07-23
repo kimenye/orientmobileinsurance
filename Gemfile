@@ -21,6 +21,7 @@ gem 'deviceatlasapi'
 gem 'url_shortener'
 gem 'wicked'
 gem 'jquery_mobile_rails'
+gem 'mobile-fu'
 group :assets do
   gem 'compass-rails'
   gem 'zurb-foundation'

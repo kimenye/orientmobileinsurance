@@ -7,7 +7,7 @@
       %li{"data-icon" => "arrow-r"}
         = link_to 'Secure My Phone', wizard_path(:enter_sales_info)
       %li{"data-icon" => "arrow-r"}
-        %a#checkStatus{"data-rel" => "dialog", :href => "#coming-soon"} Check My status
+        = link_to 'Check the status of my policy / claim', status_path
       %li{"data-icon" => "arrow-r"}
         %a#reportLoss{"data-rel" => "dialog", :href => "#coming-soon"} Report Loss / Damage
 #coming-soon{"data-role" => "page", "data-title" => "Coming Soon"}

@@ -1,0 +1,11 @@
+#sales-info-page{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Sales Details
+  %section{"data-role" => "content", :role => "main"}
+    = form_for(@status, :url => wizard_path, :method => :put) do |f|
+      = f.label :customer_id, 'Enter ID or Passport No:'
+      = f.text_field :customer_id
+
+      %p
+        = f.submit "Continue"
