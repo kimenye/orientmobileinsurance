@@ -33,5 +33,12 @@
           3 monthly installments of:
         %span.model
           = session[:quote_details]["quarterly_premium"]
+
+      - if !session[:quote_details]["sales_agent"].nil?
+        %li
+          %b
+            Sales Agent:
+          %span.model
+            = session[:quote_details]["sales_agent"]
     %a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
     %a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-theme" => "b", "data-mini" => "true"} Continue

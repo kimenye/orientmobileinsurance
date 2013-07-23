@@ -48,7 +48,8 @@ class EnquiryController < Wicked::WizardController
           details = {
             "insurance_value" => iv,
             "annual_premium" => premium_service.calculate_annual_premium(code, iv),
-            "quarterly_premium" => premium_service.calculate_monthly_premium(code, iv)
+            "quarterly_premium" => premium_service.calculate_monthly_premium(code, iv),
+            "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
           }
 
           session[:quote_details] = details
