@@ -81,6 +81,7 @@ class EnquiryController < Wicked::WizardController
             "customer_name" => @enquiry.customer_name,
             "customer_id" => @enquiry.customer_id,
             "customer_email" => @enquiry.customer_email,
+            "customer_phone_number" => @enquiry.customer_phone_number,
             "customer_payment_option" => @enquiry.customer_payment_option,
             "account_name" => account_name
         }
