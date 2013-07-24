@@ -1,0 +1,42 @@
+.row
+  .large-8.large-centered.columns
+    %h4.centered.header
+      Welcome to Orient Mobile Claims
+.row
+  .large-8.large-centered.columns
+    .large-5.columns.details
+      Client Name: #{@customer.name}
+    .large-5.columns.details
+      Telephone #: #{@customer.phone_number}
+.row.spacer
+  .large-8.large-centered.columns
+    %h6
+      Please provide an alternative mobile telephone no. and email address at which you can be reached while your claim is being processed.
+.row.spacer
+  .large-8.large-centered.columns
+    = form_for(@customer, :method => :put) do |f|
+      = f.label :alternate_phone_number, "Phone Number"
+      = f.text_field :alternate_phone_number
+      = f.label :email
+      = f.email_field :email
+      = f.submit "Update", {:class=> "button"}
+.row.spacer
+  .large-8.large-centered.columns
+    %h6
+      Please select the device for which you are making a claim
+.row.spacer
+  .large-8.large-centered.columns
+    %table
+      %thead
+        %td Make & Model
+        %td Cover Till
+        %td Insured Value
+      %tbody
+        - @customer.insured_devices.each do |id|
+          %tr
+            %td
+              = id.device.marketing_name
+            %td
+              = id.quotes.first.policies.first.expiry
+            %td
+              = id.quotes.first.insured_value

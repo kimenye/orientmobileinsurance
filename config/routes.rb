@@ -23,9 +23,10 @@ Orientmobileinsurance::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   resources :users, :mobile, :messages, :enquiry
-  resources :enquiries, :status
+  resources :enquiries, :status, :customer
 
   match 'administration' => 'admin#index', :as => :admin_area
+  match 'customer-login' => 'customer#login', :as => :customer_login
 
   match 'new_claim' => 'enquiries#new_claim', :as => :make_new_claim
   match 'new_status' => 'enquiries#enquire_status', :as => :enquire_status

@@ -16,3 +16,30 @@ ul.nav {
     display: inline-block;
   }
 }
+
+h4.header {
+  margin-top: 20px;
+}
+
+.details {
+  padding: 10px;
+  border: 1px solid grey;
+  background-color: lightgrey;
+}
+
+.spacer {
+  margin-top: 10px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.button {
+  background-color: #000066;
+  border-color: #000066;
+}
+.button:hover {
+  background-color: #333399;
+  border-color: #333399;
+}
