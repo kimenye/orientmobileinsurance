@@ -10,4 +10,10 @@ class EnquiriesController < ApplicationController
     session[:enquiry_id] = @enquiry.id
     redirect_to enquiry_index_path
   end
+
+  def new_claim
+    binding.pry
+    session[:action] = "new-claim"
+    redirect_to status_path
+  end
 end

@@ -9,7 +9,8 @@
       %li{"data-icon" => "arrow-r"}
         = link_to 'Check the status of my policy / claim', status_path
       %li{"data-icon" => "arrow-r"}
-        %a#reportLoss{"data-rel" => "dialog", :href => "#coming-soon"} Report Loss / Damage
+        -#%a{:href => "/status/claim"} Report a Claim
+        = link_to 'Report a Claim', make_new_claim_path
 #coming-soon{"data-role" => "page", "data-title" => "Coming Soon"}
   %section{"data-role" => "content", :role => "main"}
     %p Please check back in a while...

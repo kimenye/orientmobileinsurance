@@ -2,10 +2,13 @@ class StatusController < ApplicationController
   include Wicked::Wizard
   layout "mobile"
 
-  steps :customer_id, :customer_not_found, :select_device
+  steps :customer_id, :customer_not_found, :claim_select_device, :select_device
 
   def show
     @status = Status.new
+    if !session[:action].nil?
+      @status.action = session[:action]
+    end
     session[:status] = @status
     render_wizard
   end
@@ -21,7 +24,11 @@ class StatusController < ApplicationController
           jump_to :customer_not_found
         else
           session[:devices] = customer.insured_devices
-          jump_to :select_device
+          if @status.action == "new-claim"
+            jump_to :claim_select_device
+          else
+            jump_to :select_device
+          end
         end
       when :select_device
         if @status.enquiry_type == "Policy Status"

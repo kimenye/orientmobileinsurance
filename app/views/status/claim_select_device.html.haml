@@ -1,0 +1,11 @@
+#confirm-details{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Your Device(s)
+  %section{"data-role" => "content", "role" => "main"}
+    = form_for(@status, :url => wizard_path, :method => :put) do |f|
+      = f.label :insured_device_id, "Select device from list below:"
+      = f.select :insured_device_id, session[:devices].collect { |d| ["#{d.device.marketing_name}", d.id] }, {}, { "data-theme" => "c"}
+      = f.label :contact_tel_no, "Alternative Tel No"
+      = f.text_field :contact_tel_no
+      = f.submit "Continue"

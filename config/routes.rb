@@ -27,6 +27,8 @@ Orientmobileinsurance::Application.routes.draw do
 
   match 'administration' => 'admin#index', :as => :admin_area
 
+  match 'new_claim' => 'enquiries#new_claim', :as => :make_new_claim
+
   match 'notification' => 'messages#create', :as => :notifications
 
 end

@@ -1,4 +1,6 @@
 class ClaimsController < ApplicationController
+  include Wicked::Wizard
+
   # GET /claims
   # GET /claims.json
   def index

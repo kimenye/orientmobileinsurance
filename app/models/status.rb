@@ -4,7 +4,7 @@ class Status
   include ActiveModel::MassAssignmentSecurity
   extend  ActiveModel::Naming
 
-  attr_accessor :customer_id, :insured_device_id, :enquiry_type
+  attr_accessor :customer_id, :insured_device_id, :enquiry_type, :action, :contact_tel_no
   validates_presence_of :customer_id
 
   def persisted?

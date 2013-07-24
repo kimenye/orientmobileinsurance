@@ -25,7 +25,7 @@ class ClaimServiceTest < ActionDispatch::IntegrationTest
   it "A serial claimant is an applicant that has made 3 claims in any 12-month period" do
 
     @device = Device.create! :vendor => "Apple", :model => "IPHONE 5 - 16GB", :marketing_name => "IPHONE 5 - 16GB", :wholesale_price => 100.00, :catalog_price => 150.00
-    @customer = Customer.create! :name => "Test", :id_passport => "123456789", :email => "test@domain.com"
+    @customer = Customer.create! :name => "Test", :id_passport => "123456789", :email => "test@domain.com", :phone_number => "254705866564"
     @insured_device = InsuredDevice.create! :customer_id => @customer.id, :device_id => @device.id
 
     @quote = Quote.create! :account_name => "ABCDEFGHI", :insured_device_id => @insured_device.id
