@@ -8,4 +8,5 @@
       = f.select :insured_device_id, session[:devices].collect { |d| ["#{d.device.marketing_name}", d.id] }, {}, { "data-theme" => "c"}
       = f.label :contact_tel_no, "Alternative Tel No"
       = f.text_field :contact_tel_no
+      = f.hidden_field :customer_id
       = f.submit "Continue"

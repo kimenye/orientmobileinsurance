@@ -12,12 +12,16 @@ class EnquiriesController < ApplicationController
   end
 
   def new_claim
-    session[:action] = "new-claim"
+    status = Status.new
+    status.action = "new-claim"
+    session[:status] = status
     redirect_to status_path
   end
 
   def enquire_status
-    session[:action] = "new-status"
+    status = Status.new
+    status.action = "new-status"
+    session[:status] = status
     redirect_to status_path
   end
 end

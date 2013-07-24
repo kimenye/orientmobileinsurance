@@ -1,13 +1,13 @@
 ActiveAdmin.register Brand do
-  menu false
-  index do
-    column :name
-  end
+  active_admin_importable
+  filter :town_name
 
-  form do |f|
-    f.inputs "Brand Details" do
-      f.input :name
-    end
-    f.actions
+  index do
+    column :town_name
+    column :brand_1
+    column :brand_2
+    column :brand_3
+    column :brand_4
   end
+  actions :index
 end
