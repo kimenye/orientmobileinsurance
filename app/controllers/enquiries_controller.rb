@@ -12,8 +12,12 @@ class EnquiriesController < ApplicationController
   end
 
   def new_claim
-    binding.pry
     session[:action] = "new-claim"
+    redirect_to status_path
+  end
+
+  def enquire_status
+    session[:action] = "new-status"
     redirect_to status_path
   end
 end
