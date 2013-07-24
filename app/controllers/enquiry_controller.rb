@@ -66,6 +66,13 @@ class EnquiryController < Wicked::WizardController
           customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email])
         end
 
+        claim_service = ClaimService.new
+
+        if(claim_service.is_serial_claimant(params[:enquiry][:customer_id]))
+          jump_to :serial_claimants
+        end
+
+
         @enquiry.update_attributes(params[:enquiry])
 
         account_name = premium_service.generate_unique_account_number
