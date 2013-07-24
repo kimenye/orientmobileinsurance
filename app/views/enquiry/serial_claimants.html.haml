@@ -3,4 +3,8 @@
     %h1.logo
       %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.png"}
     %p
-      Dear %Name%, unfortunately we are unable to offer you any additional Orient mobile policies at this time. Thank you for considering us.
+      Dear
+    %span
+      = session[:user_details]["customer_name"]
+    %span
+      , unfortunately we are unable to offer you any additional Orient mobile policies at this time. Thank you for considering us.
