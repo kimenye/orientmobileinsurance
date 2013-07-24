@@ -1,4 +1,4 @@
-#confirm-details{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+#confirm-personal-details{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
   %header{"data-role" => "header"}
     %h1
       Your Device Details
@@ -41,6 +41,11 @@
           ID or Passport No.:
         %span.model
           = session[:user_details]["customer_id"]
+      %li
+        %b
+          Mobile No.:
+        %span.model
+          = session[:user_details]["customer_phone_number"]
       %li
         %b
           Email:

@@ -66,6 +66,7 @@ class EnquiryController < Wicked::WizardController
           customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email])
         end
 
+
         @enquiry.update_attributes(params[:enquiry])
 
         account_name = premium_service.generate_unique_account_number
@@ -74,16 +75,21 @@ class EnquiryController < Wicked::WizardController
             "customer_name" => @enquiry.customer_name,
             "customer_id" => @enquiry.customer_id,
             "customer_email" => @enquiry.customer_email,
+            "customer_phone_number" => @enquiry.customer_phone_number,
             "customer_payment_option" => @enquiry.customer_payment_option,
             "account_name" => account_name
         }
 
         session[:user_details] = user_details
+
+        claim_service = ClaimService.new
+
+        if(claim_service.is_serial_claimant(params[:enquiry][:customer_id]))
+          jump_to :serial_claimants
+        end
+
         #TODO: include the insured value in the quote
         Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium"], :expiry_date => "", :monthly_premium => session[:quote_details]["quarterly_premium"], :insured_device_id => "", :premium_type => session[:user_details]["customer_payment_option"])
-
-        # Check if customer is a serial claimant
-        #binding.pry
 
         jump_to :confirm_personal_details
 
