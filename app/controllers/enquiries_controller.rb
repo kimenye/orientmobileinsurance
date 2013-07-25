@@ -24,4 +24,19 @@ class EnquiriesController < ApplicationController
     session[:status] = status
     redirect_to status_path
   end
+
+  def send_sms
+    #binding.pry
+    @gateway = SMSGateway.new
+    begin
+      @gateway.send(params[:phone_number], params[:message])
+      respond_to do |format|
+        format.all { render json: {success: "Message Sent"}, status: :ok }
+      end
+    rescue => error
+      respond_to do |format|
+        format.all { render json: {error: "SMS could not be sent"}, status: :bad_gateway }
+      end
+    end
+  end
 end

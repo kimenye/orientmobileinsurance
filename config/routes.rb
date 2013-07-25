@@ -31,6 +31,8 @@ Orientmobileinsurance::Application.routes.draw do
   match 'new_claim' => 'enquiries#new_claim', :as => :make_new_claim
   match 'new_status' => 'enquiries#enquire_status', :as => :enquire_status
 
+  match 'enquiries/send_sms' => 'enquiries#send_sms', :as => :send_enquiry_sms
+
   match 'notification' => 'messages#create', :as => :notifications
 
 end

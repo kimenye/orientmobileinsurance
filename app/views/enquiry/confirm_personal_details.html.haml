@@ -87,3 +87,6 @@
     %a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
     -#%a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-theme" => "b", "data-mini" => "true"} Continue
     = link_to('Continue', wizard_path(:complete_enquiry), "data-role" => "button", "data-inline" => "true", "data-mini" => "true")
+
+:javascript
+  // Send to send sms using ajax and continue to last enquiry view
