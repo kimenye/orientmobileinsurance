@@ -30,17 +30,25 @@
           Expiry Date:
         %span.model
           = session[:policy].expiry
-    %p Please visit one of the following dealers with the damaged device, purchase receipt or warranty, and original ID or passport
-    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
-      - if (!session[:brand].brand_1.nil?)
-        %li
-          = session[:brand].brand_1
-      - if (!session[:brand].brand_2.nil?)
-        %li
-          = session[:brand].brand_2
-      - if (!session[:brand].brand_3.nil?)
-        %li
-          = session[:brand].brand_3
-      - if (!session[:brand].brand_4.nil?)
-        %li
-          = session[:brand].brand_4
+    - if(session[:brand])
+      %p Please visit one of the following dealers in
+      %span
+        = @status.nearest_town
+      %span
+        with the damaged device, purchase receipt or warranty, and original ID or passport
+      %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+        - if (!session[:brand].brand_1.nil?)
+          %li
+            = session[:brand].brand_1
+        - if (!session[:brand].brand_2.nil?)
+          %li
+            = session[:brand].brand_2
+        - if (!session[:brand].brand_3.nil?)
+          %li
+            = session[:brand].brand_3
+        - if (!session[:brand].brand_4.nil?)
+          %li
+            = session[:brand].brand_4
+    - else
+      %p There are no Dealer centers in your selected town.
+      %p Call one of our help centers to be directed to the closest dealership

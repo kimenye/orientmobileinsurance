@@ -62,6 +62,8 @@ class StatusController < ApplicationController
         end
         brand = service.find_brands_in_town(@status.nearest_town)
         session[:brand] = brand
+        session[:claim] = claim
+        #binding.pry
         #Send sms
         jump_to :claim_centers
 
