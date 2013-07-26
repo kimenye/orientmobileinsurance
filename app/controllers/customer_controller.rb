@@ -21,7 +21,6 @@ class CustomerController < ApplicationController
   end
 
   def update
-    binding.pry
     @customer = Customer.find(params[:id])
     if @customer.update_attributes(params[:customer])
       redirect_to customer_path, :notice => "Customer updated."
