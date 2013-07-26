@@ -1,0 +1,46 @@
+#claim-centers{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Claim Instructions
+  %section{"data-role" => "content", "role" => "main"}
+    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+      -#%li{"data-role" => "list-divider"}
+        Your Policy details are below...
+      %li
+        %b
+          Client:
+        %span.model
+          -#= session[:policy].quote.insured_device.customer.name
+          = session[:customer].name
+      %li
+        -#%img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Device:
+        %span.model
+          = session[:policy].quote.insured_device.device.marketing_name
+      %li
+        -#%img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Insurance Value:
+        %span.model
+          = session[:policy].quote.insured_value
+      %li
+        -#%img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Expiry Date:
+        %span.model
+          = session[:policy].expiry
+    %p Please visit one of the following dealers with the damaged device, purchase receipt or warranty, and original ID or passport
+    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+      - if (!session[:brand].brand_1.nil?)
+        %li
+          = session[:brand].brand_1
+      - if (!session[:brand].brand_2.nil?)
+        %li
+          = session[:brand].brand_2
+      - if (!session[:brand].brand_3.nil?)
+        %li
+          = session[:brand].brand_3
+      - if (!session[:brand].brand_4.nil?)
+        %li
+          = session[:brand].brand_4

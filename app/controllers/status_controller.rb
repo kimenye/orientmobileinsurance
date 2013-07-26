@@ -54,12 +54,15 @@ class StatusController < ApplicationController
       when :claim_type
         policy = session[:policy]
         service = ClaimService.new
-        claim = Claim.create! :policy_id => policy.id, :claim_type => @status.claim_type, :contact_number => @status.contact_number, :claim_no => service.create_claim_no
-
-
-        if @status.claim_type == "Loss / Theft"
-
-        end
+        #claim = Claim.create! :policy_id => policy.id, :claim_type => @status.claim_type, :contact_number => @status.contact_number, :claim_no => service.create_claim_no
+        #
+        #
+        #if @status.claim_type == "Loss / Theft"
+        #
+        #end
+        brand = service.find_brands_in_town(@status.nearest_town)
+        session[:brand] = brand
+        jump_to :claim_centers
 
 
     end
