@@ -36,6 +36,13 @@ class StatusController < ApplicationController
 
           jump_to :policy_status
         end
+        if @status.enquiry_type == "Claim"
+          quote = Quote.find_by_insured_device_id @status.insured_device_id
+          policy = Policy.find_by_quote_id quote.id
+          session[:policy] = policy
+
+          jump_to :claim_type
+        end
       when :claim_select_device
         quote = Quote.find_by_insured_device_id @status.insured_device_id
         policy = Policy.find_by_quote_id quote.id

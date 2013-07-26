@@ -40,4 +40,10 @@ class ClaimServiceTest < ActionDispatch::IntegrationTest
     assert claimant, "customer with three claims in a calendar period is a serial claimaint"
   end
 
+  it "Finds brands in a town given the town name" do
+    brand_fetch_from_db = Brand.find_by_town_name('Nairobi')
+    brand_from_method_call = @service.find_brands_in_town('NAIROBI')
+    assert_equal brand_fetch_from_db, brand_from_method_call
+  end
+
 end
