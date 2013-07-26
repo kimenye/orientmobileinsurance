@@ -63,7 +63,7 @@ class EnquiryController < Wicked::WizardController
       when :personal_details
         customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
         if(customer.nil?)
-          customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email])
+          customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => params[:enquiry][:phone_number])
         end
 
 
