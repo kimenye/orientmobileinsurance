@@ -30,8 +30,14 @@
           Expiry Date:
         %span.model
           = session[:policy].expiry
+      %li
+        %b
+          Ref No:
+        %span.model
+          = session[:claim].claim_no
     - if(session[:brand])
-      %p Please visit one of the following dealers in
+      %span
+        Please visit one of the following dealers in
       %span
         = @status.nearest_town
       %span

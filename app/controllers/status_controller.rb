@@ -56,6 +56,8 @@ class StatusController < ApplicationController
         service = ClaimService.new
         claim = Claim.create! :policy_id => policy.id, :claim_type => @status.claim_type, :contact_number => @customer.phone_number, :claim_no => service.create_claim_no
 
+        towns = Agent.select("distinct town").collect { |t| t.town.strip }
+        session[:towns] = towns
 
         if @status.claim_type == "Loss / Theft"
 
@@ -63,8 +65,11 @@ class StatusController < ApplicationController
         brand = service.find_brands_in_town(@status.nearest_town)
         session[:brand] = brand
         session[:claim] = claim
-        #binding.pry
+
         #Send sms
+        @gateway = SMSGateway.new
+        smsMessage = "Ref No: #{claim.claim_no}. Please visit #{brand.brand_1} in #{@status.nearest_town} with the damaged device, purchase receipt or warranty, and original ID or passport."
+        @gateway.send(@customer.phone_number, smsMessage)
         jump_to :claim_centers
 
 
