@@ -1,6 +1,16 @@
 #begin-payment{"data-role" => "page", "data-theme" => "b"}
-  %section{"data-role" => "content", :role => "main"}
-    %h1.logo
-      %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.png"}
-    %p
-      Select your payment option
+  %div{"data-role" => "navbar"}
+    %ul
+      %li
+        %a{"class" => "ui-btn-active"}
+          Mobile Money
+      %li
+        %a{"href" => "/enquiry/card_payment"}
+          Cards
+  %p
+    Instructions for mobile payment
+  -#%section{"data-role" => "content", :role => "main"}
+  -#  %h1.logo
+  -#    %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.png"}
+  -#  %p
+  -#    Select your payment option
