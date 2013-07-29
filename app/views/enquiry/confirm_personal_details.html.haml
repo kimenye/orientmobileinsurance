@@ -58,11 +58,12 @@
           %span.model
             = session[:quote_details]["sales_agent"]
       %li
-        Your Account Number is:
-        = session[:user_details]["account_name"]
-        and is valid till
-        = "#{session[:quote].expiry_date.to_s(:full)}."
-        Please click Accept for payment information
+        %span.model
+          Your Account Number is:
+          = session[:user_details]["account_name"]
+          and is valid till
+          = "#{session[:quote].expiry_date.to_s(:full)}."
+          Please click Accept for payment information
       -#%li
       -#  %b
       -#    Amount Due:

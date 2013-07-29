@@ -13,4 +13,12 @@ class Policy < ActiveRecord::Base
       return true && is_not_expired
     end
   end
+
+  def claim
+    claims.first
+  end
+
+  def has_claim?
+    !claim.nil?
+  end
 end

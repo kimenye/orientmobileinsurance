@@ -4,4 +4,8 @@ class InsuredDevice < ActiveRecord::Base
   has_many :quotes
 
   attr_accessible :customer_id, :device_id, :imei
+
+  def quote
+    quotes.first
+  end
 end

@@ -22,35 +22,40 @@
         %b
           Insurance Value:
         %span.model
-          -#= session[:policy].quote.insured_device.device.marketing_name
+          = session[:policy].quote.insured_value
       %li
         %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
         %b
           Expiry Date:
         %span.model
           = session[:policy].expiry
-      %li
-        %b
-          Claim Type:
-        %span.model
-          = session[:claim].claim_type
-      %li
-        %b
-          Incident Date:
-        %span.model
-          = session[:claim].incident_date
-      %li
-        %b
-          Incident Description:
-        %span.model
-          = session[:claim].incident_description
-      %li
-        %b
-          Status:
-        %span.model
-          = session[:claim].status
-      %li
-        %b
-          Status Description:
-        %span.model
-          = session[:claim].status_description
+      - if session[:claim].nil?
+        %li
+          %span.model
+            There is no claim associated with the selected device.
+      - else
+        %li
+          %b
+            Claim Type:
+          %span.model
+            = session[:claim].claim_type
+        %li
+          %b
+            Incident Date:
+          %span.model
+            = session[:claim].incident_date
+        %li
+          %b
+            Incident Description:
+          %span.model
+            = session[:claim].incident_description
+        %li
+          %b
+            Status:
+          %span.model
+            = session[:claim].status
+        %li
+          %b
+            Status Description:
+          %span.model
+            = session[:claim].status_description
