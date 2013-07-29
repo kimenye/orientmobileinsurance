@@ -34,7 +34,6 @@ class EnquiryController < Wicked::WizardController
         device_data = get_device_data
         session[:device] = device_data
         #Check for the devices among our supported devices
-        binding.pry
         model = device_data["model"]
         vendor = device_data["vendor"]
         marketingName = device_data["marketingName"]
