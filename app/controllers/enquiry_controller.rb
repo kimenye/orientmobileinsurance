@@ -88,7 +88,7 @@ class EnquiryController < Wicked::WizardController
         end
 
         #TODO: include the insured value in the quote
-        Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium"], :expiry_date => "", :monthly_premium => session[:quote_details]["quarterly_premium"], :insured_device_id => "", :premium_type => session[:user_details]["customer_payment_option"])
+        q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium"], :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium"], :insured_device_id => "", :premium_type => session[:user_details]["customer_payment_option"])
 
         @gateway = SMSGateway.new
 
@@ -97,8 +97,9 @@ class EnquiryController < Wicked::WizardController
         elsif(session[:user_details]["customer_payment_option"] == 'Monthly')
             due = session[:quote_details]["quarterly_premium"]
         end
+        session[:quote] = q
 
-        smsMessage = "Model: #{session[:device].marketing_name} Year: #{@enquiry.year_of_purchase} Insurance Value: #{session[:quote_details]["insurance_value"]} Payment due: #{due} Please pay via MPesa (Business No. 513201) or Airtel Money (Business Name MOBILE). Your acc no #{session[:user_details]["account_name"]} is valid until #{}"
+        smsMessage = "Model: #{session[:device].marketing_name} Year: #{@enquiry.year_of_purchase} Insurance Value: #{session[:quote_details]["insurance_value"]} Payment due: #{due} Please pay via MPesa (Business No. 513201) or Airtel Money (Business Name MOBILE). Your acc no #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.to_s(:full)}"
         @gateway.send(@enquiry.customer_phone_number, smsMessage)
 
         jump_to :confirm_personal_details
