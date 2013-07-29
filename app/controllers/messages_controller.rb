@@ -73,7 +73,7 @@ class MessagesController < ApplicationController
       enquiry.url = shortened_url
       enquiry.save!
 
-      @gateway.send(enquiry.phone_number, "Go to the following url: #{shortened_url}")
+      @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{shortened_url}")
       respond_to do |format|
         format.all { render json: @message, status: :created, location: @message }
       end
