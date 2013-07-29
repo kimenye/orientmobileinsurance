@@ -40,6 +40,8 @@ class StatusController < ApplicationController
           quote = Quote.find_by_insured_device_id @status.insured_device_id
           policy = Policy.find_by_quote_id quote.id
           session[:policy] = policy
+          towns = Agent.select("distinct town").collect { |t| t.town.strip }
+          session[:towns] = towns
 
           jump_to :claim_type
         end
@@ -70,6 +72,8 @@ class StatusController < ApplicationController
         @gateway = SMSGateway.new
         smsMessage = "Ref No: #{claim.claim_no}. Please visit #{brand.brand_1} in #{@status.nearest_town} with the damaged device, purchase receipt or warranty, and original ID or passport."
         @gateway.send(@customer.phone_number, smsMessage)
+
+        session[:id] = @customer.id
         jump_to :claim_centers
 
 
