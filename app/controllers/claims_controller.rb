@@ -38,6 +38,8 @@ class ClaimsController < ApplicationController
   def edit
     if customer_can_see_claim? params[:id]
       @claim = Claim.find(params[:id])
+    else
+      redirect_to customer_path
     end
   end
 

@@ -13,16 +13,15 @@ class CustomerController < ApplicationController
   end
 
   def show
-    begin
-      @customer = Customer.find(params[:id])
-    rescue
+    if is_customer_logged_in? params[:id]
+      begin
+        @customer = Customer.find(params[:id])
+      rescue
+        redirect_to customer_path
+      end
+    else
       redirect_to customer_path
     end
-    #if is_customer_logged_in? params[:id]
-    #  @customer = Customer.find(params[:id])
-    #else
-    #  redirect_to customer_path
-    #end
   end
 
   def update
