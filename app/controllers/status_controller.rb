@@ -36,14 +36,14 @@ class StatusController < ApplicationController
 
           jump_to :policy_status
         end
-        if @status.enquiry_type == "Claim"
+        if @status.enquiry_type == "Claim Status"
           quote = Quote.find_by_insured_device_id @status.insured_device_id
           policy = Policy.find_by_quote_id quote.id
           session[:policy] = policy
-          towns = Agent.select("distinct town").collect { |t| t.town.strip }
-          session[:towns] = towns
+          claim = Claim.find_by_policy_id(policy.id)
+          session[:claim] = claim
 
-          jump_to :claim_type
+          jump_to :claim_status
         end
       when :claim_select_device
         quote = Quote.find_by_insured_device_id @status.insured_device_id

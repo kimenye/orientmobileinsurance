@@ -1,0 +1,56 @@
+#claim-status{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Claim Status
+  %section{"data-role" => "content", "role" => "main"}
+    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+      %li{"data-role" => "list-divider"}
+        Your Claim details are below...
+      %li
+        %b
+          Client:
+        %span.model
+          = session[:policy].quote.insured_device.customer.name
+      %li
+        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Device:
+        %span.model
+          = session[:policy].quote.insured_device.device.marketing_name
+      %li
+        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Insurance Value:
+        %span.model
+          -#= session[:policy].quote.insured_device.device.marketing_name
+      %li
+        %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Expiry Date:
+        %span.model
+          = session[:policy].expiry
+      %li
+        %b
+          Claim Type:
+        %span.model
+          = session[:claim].claim_type
+      %li
+        %b
+          Incident Date:
+        %span.model
+          = session[:claim].incident_date
+      %li
+        %b
+          Incident Description:
+        %span.model
+          = session[:claim].incident_description
+      %li
+        %b
+          Status:
+        %span.model
+          = session[:claim].status
+      %li
+        %b
+          Status Description:
+        %span.model
+          = session[:claim].status_description
