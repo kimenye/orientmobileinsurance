@@ -1,0 +1,32 @@
+<!--.row-->
+<!--.large-8.large-centered.columns-->
+<!--%h4.centered.header-->
+<!--Welcome to Orient Mobile Claims-->
+<!--.row-->
+<!--.large-8.large-centered.columns-->
+<!--= render 'login_form'-->
+<div class="row">
+  <div class="large-8 large-centered columns">
+    <h4 class="centered.header">
+      Welcome to Orient Mobile Claims
+    </h4>
+  </div>
+</div>
+<div class="row">
+
+  <div class="large-8 large-centered columns">
+    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+        <div><%= f.label :email %><br />
+          <%= f.email_field :email, :autofocus => true %></div>
+
+        <div><%= f.label :password %><br />
+          <%= f.password_field :password %></div>
+
+        <% if devise_mapping.rememberable? -%>
+            <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
+        <% end -%>
+
+        <div><%= f.submit "Sign in" %></div>
+    <% end %>
+   </div>
+</div>
