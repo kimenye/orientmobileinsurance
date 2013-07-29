@@ -66,7 +66,10 @@ class ClaimsController < ApplicationController
 
     respond_to do |format|
       if @claim.update_attributes(params[:claim])
-        format.html { redirect_to @claim, notice: 'Claim was successfully updated.' }
+        @claim.step += 1
+        if @claim.step < 5
+          format.html { render action: "edit", notice: 'Claim was successfully updated.' }
+        end
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
