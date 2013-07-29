@@ -87,7 +87,6 @@ class EnquiryController < Wicked::WizardController
           jump_to :serial_claimants
         end
 
-        #TODO: include the insured value in the quote
         insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id
         q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium"],
                           :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium"],

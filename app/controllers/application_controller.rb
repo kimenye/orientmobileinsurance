@@ -16,4 +16,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def customer_can_see_claim? claim_id
+    logged_in = is_customer_logged_in?
+    claim = Claim.find_by_id claim_id
+    if logged_in && !claim.nil?
+      customer_id = session[:customer].id
+      return claim.policy.quote.insured_device.customer_id == customer_id
+    end
+    return false
+  end
+
 end

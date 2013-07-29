@@ -9,6 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *= require jquery.mobile
  *= require mobile_app
+ *= require jquery.mobile.tabs
 */
 
 .field_with_errors {
@@ -32,4 +33,9 @@
     padding: 0em 0px !important;
     text-decoration: underline !important;
   }
+}
+
+.jambopay {
+  margin: auto;
+  display: block;
 }

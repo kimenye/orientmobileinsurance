@@ -1,7 +1,4 @@
-.row
-  .large-8.large-centered.columns
-    %h4.centered.header
-      Welcome to Orient Mobile Claims
+= render "layouts/claims_header"
 .row
   .large-8.large-centered.columns
     .large-5.columns.details
@@ -35,7 +32,9 @@
         - @customer.insured_devices.each do |id|
           %tr
             %td
-              = id.device.marketing_name
+              -if id.quote.policy.has_claim?
+                %a{:href => edit_claim_path(id.quote.policy.claim)}
+                  = id.device.marketing_name
             %td
               = id.quotes.first.policies.first.expiry.to_s(:simple)
             %td

@@ -1,0 +1,34 @@
+= render "layouts/claims_header"
+.row
+  .large-8.large-centered.columns
+    .large-5.columns.details
+      Client Name: #{@claim.policy.customer.name}
+    .large-5.columns.details
+      Alternate Telephone : #{@claim.contact_number}
+.row.spacer
+  .large-8.large-centered.columns
+    .large-7.columns.details
+      Device:
+      %strong
+        = @claim.policy.insured_device.device.marketing_name
+    .large-4.columns.details
+      IMEI:
+      %strong
+        = @claim.policy.insured_device.imei
+= form_for(@claim, :method => :put) do |f|
+  .row.spacer
+    .large-8.large-centered.columns
+      .row
+        .large-12.columns
+          %fieldset
+            .row
+              .large-6.columns
+                = f.label :claim_type, "Please select the type of claim you are reporting"
+                = f.select :claim_type, ["Damage", "Loss / Theft"]
+              .large-6.columns.datepicker
+                = f.label :incident_date
+                = f.date_select :incident_date
+            .row
+              .large-6.columns
+                = f.label :nearest_town, "Nearest Town"
+                = f.select :nearest_town, Brand.all.collect { |b| [b.town_name,b.town_name] }, {}

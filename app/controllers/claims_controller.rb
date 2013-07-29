@@ -1,5 +1,5 @@
 class ClaimsController < ApplicationController
-  include Wicked::Wizard
+  #include Wicked::Wizard
 
   # GET /claims
   # GET /claims.json
@@ -36,7 +36,9 @@ class ClaimsController < ApplicationController
 
   # GET /claims/1/edit
   def edit
-    @claim = Claim.find(params[:id])
+    if customer_can_see_claim? params[:id]
+      @claim = Claim.find(params[:id])
+    end
   end
 
   # POST /claims

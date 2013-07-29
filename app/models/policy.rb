@@ -15,7 +15,15 @@ class Policy < ActiveRecord::Base
   end
 
   def claim
-    claims.first
+    claims.last
+  end
+
+  def insured_device
+    quote.insured_device
+  end
+
+  def customer
+    quote.insured_device.customer
   end
 
   def has_claim?
