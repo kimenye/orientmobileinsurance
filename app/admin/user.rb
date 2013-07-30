@@ -13,6 +13,9 @@ ActiveAdmin.register User do
       f.input :email
       f.input :password
       f.input :password_confirmation
+      f.input :user_type, :collection => ["CP", "DP"]
+      #f.input :agent, :collection => Agent.all.map(&:outlet)
+      f.input :agent
     end
     f.actions
   end
