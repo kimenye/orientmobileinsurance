@@ -22,7 +22,7 @@
         %b
           Insurance Value:
         %span.model
-          = "#{ENV['CASH_FORMAT']} #{session[:policy].quote.insured_value}"
+          = "#{number_to_currency(session[:policy].quote.insured_value, :unit => "KES ")}"
       %li
         %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
         %b

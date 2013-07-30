@@ -1,4 +1,5 @@
 class StatusController < ApplicationController
+  include ActionView::Helpers::NumberHelper
   include Wicked::Wizard
   layout "mobile"
 
