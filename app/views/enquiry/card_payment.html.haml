@@ -1,23 +1,8 @@
-#begin-payment{"data-role" => "page", "data-theme" => "b"}
-  %div{"data-role" => "navbar"}
-    %ul
-      %li{"class" => "ui-btn-active"}
-        %a{"href" => "/enquiry/complete_enquiry"}
-          Mobile Money
-      %li
-        %a{"class" => "ui-btn-active"}
-          Cards
-  %form{:action => "https://www.jambopay.com/JPExpress.aspx", :method => "post", :target => "_blank"}
-    %input{:name => "jp_item_type", :type => "hidden", :value => "cart"}/
-    %input{:name => "jp_item_name", :type => "hidden", :value => "test shop"}/
-    %input{:name => "order_id", :type => "hidden", :value => "455879"}/
-    %input{:name => "jp_business", :type => "hidden", :value => "business@yourdomain.com"}/
-    %input{:name => "jp_amount_1", :type => "hidden", :value => "51"}/
-    %input{:name => "jp_amount_2", :type => "hidden", :value => "0"}/
-    %input{:name => "jp_amount_5", :type => "hidden", :value => "0"}/
-    %input{:name => "jp_payee", :type => "hidden", :value => "email@yourcustomer.com"}/
-    %input{:name => "jp_shipping", :type => "hidden", :value => "company name"}/
-    %input{:name => "jp_rurl", :type => "hidden", :value => "http://www.yourwebsite.com/testpost/Result.aspx?ii=0"}/
-    %input{:name => "jp_furl", :type => "hidden", :value => "http://www.yourwebsite.com/testpost/Result.aspx?ii=1"}/
-    %input{:name => "jp_curl", :type => "hidden", :value => "http://www.yourwebsite.com/testpost/Result.aspx?ii=2"}/
-    %input{:src => "https://www.jambopay.com/jp_image/paynow.png", :type => "image"}/
+#confirm-details{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Your Payment
+  %section{"data-role" => "content", "role" => "main"}
+    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+      %li{"data-role" => "list-divider"}
+        Your payment details below...
