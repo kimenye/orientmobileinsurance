@@ -123,14 +123,14 @@ ActiveRecord::Schema.define(:version => 20130729212231) do
     t.string   "date_of_enquiry"
     t.string   "source"
     t.string   "sales_agent_code"
-    t.integer  "agent_id",             :limit => 255
-    t.integer  "year_of_purchase",     :limit => 255
     t.string   "url"
     t.string   "hashed_phone_number"
     t.string   "detected_device_id"
     t.string   "undetected_device_id"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.integer  "year_of_purchase"
+    t.integer  "agent_id"
   end
 
   create_table "insured_devices", :force => true do |t|
