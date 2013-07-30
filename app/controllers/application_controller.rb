@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  before_filter :configure_permitted_parameters, if: :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, :alert => exception.message
@@ -24,6 +25,14 @@ class ApplicationController < ActionController::Base
       return claim.policy.quote.insured_device.customer_id == customer_id
     end
     return false
+  end
+
+  def configure_permitted_parameters
+    if resource_class == User
+      User::ParameterSanitizer.new(User, :user, params)
+    else
+      super # Use the default one
+    end
   end
 
 end

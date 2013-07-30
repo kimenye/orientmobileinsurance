@@ -12,3 +12,9 @@ class User < ActiveRecord::Base
 
   belongs_to :user
 end
+
+class User::ParameterSanitizer < Devise::ParameterSanitizer
+  def sign_in
+    default_params.permit(:username, :email, :user_type)
+  end
+end
