@@ -12,6 +12,13 @@ class ClaimsController < ApplicationController
     end
   end
 
+  def search
+    @claim = Claim.find_by_claim_no(params[:claim_no])
+    respond_to do |format|
+      format.html { render action: "edit" }
+    end
+  end
+
   # GET /claims/1
   # GET /claims/1.json
   def show
@@ -36,8 +43,8 @@ class ClaimsController < ApplicationController
 
   # GET /claims/1/edit
   def edit
-    if customer_can_see_claim? params[:id]
-      @claim = Claim.find(params[:id])
+    if  user_signed_in? || customer_can_see_claim?(params[:id])
+      @claim = Claim.find_by_id(params[:id])
     else
       redirect_to customer_path
     end

@@ -30,8 +30,6 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     if resource_class == User
       User::ParameterSanitizer.new(User, :user, params)
-    #else
-    #  super # Use the default one
     end
   end
 
