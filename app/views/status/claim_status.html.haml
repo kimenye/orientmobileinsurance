@@ -22,7 +22,7 @@
         %b
           Insurance Value:
         %span.model
-          = session[:policy].quote.insured_value
+          = "#{ENV['CASH_FORMAT']} #{session[:policy].quote.insured_value}"
       %li
         %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
         %b

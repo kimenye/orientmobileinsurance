@@ -20,3 +20,4 @@ BASE_URL: http://localhost:3000/
 BITLY_USERNAME: <<username>>
 BITLY_PASSWORD: <<password>>
 MIN_CLAIM_DAYS: 21
+CASH_FORMAT: KES

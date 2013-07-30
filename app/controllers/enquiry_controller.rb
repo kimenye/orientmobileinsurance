@@ -46,9 +46,9 @@ class EnquiryController < Wicked::WizardController
           session[:device] = device
           iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
           details = {
-            "insurance_value" => iv,
-            "annual_premium" => premium_service.calculate_annual_premium(code, iv),
-            "quarterly_premium" => premium_service.calculate_monthly_premium(code, iv),
+            "insurance_value" => "#{ENV['CASH_FORMAT']} #{iv}",
+            "annual_premium" => "#{ENV['CASH_FORMAT']} #{premium_service.calculate_annual_premium(code, iv)}",
+            "quarterly_premium" => "#{ENV['CASH_FORMAT']} #{premium_service.calculate_monthly_premium(code, iv)}",
             "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
           }
 
@@ -102,7 +102,7 @@ class EnquiryController < Wicked::WizardController
         end
         session[:quote] = q
 
-        smsMessage = "Model: #{session[:device].marketing_name} Year: #{@enquiry.year_of_purchase} Insurance Value: #{session[:quote_details]["insurance_value"]} Payment due: #{due} Please pay via MPesa (Business No. 513201) or Airtel Money (Business Name MOBILE). Your acc no #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.to_s(:full)}"
+        smsMessage = "Model: #{session[:device].marketing_name} Year: #{@enquiry.year_of_purchase} Insurance Value: #{session[:quote_details]["insurance_value"]} Payment due: #{ENV['CASH_FORMAT']} #{due} Please pay via MPesa (Business No. 513201) or Airtel Money (Business Name MOBILE). Your acc no #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.to_s(:full)}"
         @gateway.send(@enquiry.customer_phone_number, smsMessage)
 
         jump_to :confirm_personal_details
