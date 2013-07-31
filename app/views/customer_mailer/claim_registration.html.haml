@@ -1,9 +1,11 @@
+-#%img{:src => "../assets/admin_banner.jpg", :style => "display:block;margin:auto"}
+-#= image_tag attachments['admin_banner.jpg'].url
 %p
   Welcome to Orient Mobile Claims
 %h3
   CLAIM REGISTRATION
 %p
-  Please print this document and carry it with you to our authorized repair/ supply partner
+  Please print this document and carry it with you to our authorized repair / supply partner
 %p
   You have successfully registered a claim as follows:
 %ul
@@ -21,7 +23,7 @@
     %b
       Tel:
     %span
-      = @claim.contact_number
+      = @claim.policy.quote.insured_device.customer.phone_number
   %li
     %b
       Claim No:
@@ -31,7 +33,7 @@
     %b
       Claim Reporting Date:
     %span
-      = @claim.incident_date
+      = @claim.incident_date.strftime("%d-%m-%Y")
   %li
     %b
       Device:
@@ -47,7 +49,8 @@
       Claim Type:
     %span
       = @claim.claim_type
-%p
+%br
+%span
   Please visit OMB DEALERS in
 %span
   = @claim.nearest_town

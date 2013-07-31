@@ -1,4 +1,6 @@
-%p Dear
+-#%img{:src => "../assets/admin_banner.jpg", :style => "display:block;margin:auto"}
+-#= image_tag attachments['admin_banner.jpg'].url
+%span Dear
 %span
   = @policy.quote.insured_device.customer.name
 %p
@@ -19,23 +21,23 @@
       %b
         Annual Premium:
       %span
-        = @policy.quote.annual_premium
+        = "#{number_to_currency(@policy.quote.annual_premium, :unit => 'KES ')}"
   - elsif(@policy.quote.premium_type == 'Monthly')
     %li
       %b
         Monthly Premium:
       %span
-        = @policy.quote.monthly_premium
+        = "#{number_to_currency(@policy.quote.monthly_premium, :unit => 'KES ')}"
   %li
     %b
       Policy Start date:
     %span
-      = @policy.start_date
+      = @policy.start_date.strftime("%d-%m-%Y")
   %li
     %b
       Policy Expiry dates:
     %span
-      = @policy.expiry
+      = @policy.expiry.strftime("%d-%m-%Y")
 %p
   The terms and conditions of your policy are attached. Please get in touch with mobile@korient.co.ke in case you have any questions.
 %p
