@@ -77,9 +77,18 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal expected_premium, premium, "Premium rate should be 899"
   end
 
+  test "The total installment value should be correct" do
+    service = PremiumService.new
+
+    expected = 2319
+    base_premium = 2004
+    total_value = service.calculate_total_installment base_premium
+    assert_equal expected, total_value
+  end
+
   test "The correct monthly premium should be charged for a phone bought from an FX dealer" do
     service = PremiumService.new
-    monthly_premium = 777
+    monthly_premium = 773
 
     premium = service.calculate_monthly_premium "FX099", 20999
     assert_equal monthly_premium, premium
@@ -107,9 +116,9 @@ class PremiumServiceTest < ActiveSupport::TestCase
 
   test "The correct monthly premium should be charged for a phone NOT bought from an FX dealer" do
     service = PremiumService.new
-    monthly_premium = 817
+    monthly_premium = 712
 
-    premium = service.calculate_monthly_premium "87099", 20999
+    premium = service.calculate_monthly_premium "87099", 18370
     assert_equal monthly_premium, premium
   end
 

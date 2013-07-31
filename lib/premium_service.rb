@@ -41,12 +41,17 @@ class PremiumService
     fee
   end
 
+  def calculate_total_installment base_premium
+    installment = 1.15 * base_premium  # 115% of annual premium
+    installment += 15 # add sms charges
+    installment += calculate_mpesa_fee (installment / 3) # add mpesa charges for installment
+
+    installment.floor
+  end
+
   def calculate_monthly_premium agent_code, insurance_value
     base_premium = calculate_annual_premium agent_code, insurance_value, false, false
-    raw = 1.15 * base_premium
-    raw += 15
-    mpesa_fee = calculate_mpesa_fee raw
-    raw += mpesa_fee
+    raw = calculate_total_installment base_premium
     (raw / 3).round
   end
 
