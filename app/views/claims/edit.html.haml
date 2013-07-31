@@ -50,3 +50,21 @@
                 .row
                   .large-3.large-offset-9.columns
                     = f.submit "Update", :class => "button small"
+            - if (@claim.step.nil? || @claim.step == 1) && @claim.claim_type == 'Damage'
+              .row.spacer
+                .large-8.large-centered.columns
+                  = f.label :incident_description, "Please describe the incident in which the device was damaged"
+                  = f.text_field :incident_description
+                  = f.label :type_of_liquid, "If the device had contact with any liquid, please specify the type of liquid"
+                  = f.text_field :type_of_liquid
+                  = f.label :visible_damage, "Please describe any visible damage to the device"
+                  = f.text_field :visible_damage
+                  = f.submit "Update", {:class=> "button"}
+            - if (@claim.step.nil? || @claim.step == 1) && @claim.claim_type == 'Loss / Theft'
+              .row.spacer
+                .large-8.large-centered.columns
+                  = f.label :incident_description, "Please describe the incident in which the device was lost / stolen"
+                  = f.text_field :incident_description
+                  = f.label :incident_location, "Incident Location"
+                  = f.select :incident_location, ["Vehicle", "Office", "Home", "Social event", "Other(specify)"]
+                  = f.submit "Update", {:class=> "button"}
