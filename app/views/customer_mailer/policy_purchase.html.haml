@@ -13,7 +13,7 @@
     %b
       Insurance Value:
     %span
-      = "#{number_to_currency(@policy.quote.insured_value, :unit => "KES ")}"
+      = "#{number_to_currency(@policy.quote.insured_value, :unit => 'KES ')}"
   - if(@policy.quote.premium_type == 'Annual')
     %li
       %b
