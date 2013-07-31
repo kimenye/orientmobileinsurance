@@ -46,6 +46,8 @@ class MessagesController < ApplicationController
   # POST /messages.json
   def create
 
+    puts ">>>>> #{params}"
+
     begin
 
       @gateway = SMSGateway.new
