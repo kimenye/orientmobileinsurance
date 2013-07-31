@@ -11,46 +11,46 @@
     %b
       Insured:
     %span
-      =
+      = @claim.contact_email
   %li
     %b
       ID/Passport No::
     %span
-      =
+      = @claim.policy.quote.insured_device.customer.id_passport
   %li
     %b
       Tel:
     %span
-      =
+      = @claim.contact_number
   %li
     %b
       Claim No:
     %span
-      =
+      = @claim.claim_no
   %li
     %b
       Claim Reporting Date:
     %span
-      =
+      = @claim.incident_date
   %li
     %b
       Device:
     %span
-      =
+      = @claim.policy.quote.insured_device.device.marketing_name
   %li
     %b
       IMEI No:
     %span
-      =
+      = @claim.policy.quote.insured_device.imei
   %li
     %b
       Claim Type:
     %span
-      =
+      = @claim.claim_type
 %p
   Please visit OMB DEALERS in
 %span
-  =
+  = @claim.nearest_town
 %span
   with the following:
 %ul
