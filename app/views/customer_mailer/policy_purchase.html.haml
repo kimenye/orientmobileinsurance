@@ -1,0 +1,46 @@
+%p Dear
+%span
+  = @policy.quote.insured_device.customer.name
+%p
+  Thank you for purchasing an Orient Mobile policy. Your policy details are as follows:
+%ul
+  %li
+    %b
+      Make & Model:
+    %span
+      = @policy.quote.insured_device.device.marketing_name
+  %li
+    %b
+      Insurance Value:
+    %span
+      = "#{number_to_currency(@policy.quote.insured_value, :unit => "KES ")}"
+  - if(@policy.quote.premium_type == 'Annual')
+    %li
+      %b
+        Annual Premium:
+      %span
+        = @policy.quote.annual_premium
+  - elsif(@policy.quote.premium_type == 'Monthly')
+    %li
+      %b
+        Monthly Premium:
+      %span
+        = @policy.quote.monthly_premium
+  %li
+    %b
+      Policy Start date:
+    %span
+      = @policy.start_date
+  %li
+    %b
+      Policy Expiry dates:
+    %span
+      = @policy.expiry
+%p
+  The terms and conditions of your policy are attached. Please get in touch with mobile@korient.co.ke in case you have any questions.
+%p
+  Kind Regards,
+%p
+  Orient Mobile Services
+%p
+  Kenya Orient Insurance Limited
