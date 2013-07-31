@@ -11,7 +11,7 @@
         Client Name: #{@claim.policy.customer.name}
       .large-4.columns.details
         Other Telephone : #{@claim.contact_number}
-      - if @claim.step >= 1
+      - if !@claim.step.nil? && @claim.step >= 1
         .large-4.columns.details
           Type of Claim : #{@claim.claim_type}
   .row.spacer
