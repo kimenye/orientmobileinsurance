@@ -1,6 +1,64 @@
 %p
-  Thank you
+  Welcome to Orient Mobile Claims
+%h3
+  CLAIM REGISTRATION
+%p
+  Please print this document and carry it with you to our authorized repair/ supply partner
+%p
+  You have successfully registered a claim as follows:
+%ul
+  %li
+    %b
+      Insured:
+    %span
+      = @claim.policy.quote.insured_device.customer.name
+  %li
+    %b
+      ID/Passport No::
+    %span
+      = @claim.policy.quote.insured_device.customer.id_passport
+  %li
+    %b
+      Tel:
+    %span
+      = @claim.contact_number
+  %li
+    %b
+      Claim No:
+    %span
+      = @claim.claim_no
+  %li
+    %b
+      Claim Reporting Date:
+    %span
+      = @claim.incident_date
+  %li
+    %b
+      Device:
+    %span
+      = @claim.policy.quote.insured_device.device.marketing_name
+  %li
+    %b
+      IMEI No:
+    %span
+      = @claim.policy.quote.insured_device.imei
+  %li
+    %b
+      Claim Type:
+    %span
+      = @claim.claim_type
+%p
+  Please visit OMB DEALERS in
 %span
-  = @customer.name
+  = @claim.nearest_town
 %span
-  for registering
+  with the following:
+%ul
+  %li
+    The damaged device
+  %li
+    Original purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)
+  %li
+    Original ID/ Passport
+  %li
+    This claim registration confirmation
