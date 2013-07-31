@@ -34,7 +34,7 @@
       .large-8.large-centered.columns
         .row
           .large-12.columns
-            - if @claim.step.nil?
+            - if @claim.step.nil? || @claim.step == 0
               %fieldset
                 .row
                   .large-6.columns

@@ -4,11 +4,13 @@ class CustomerMailer < ActionMailer::Base
 
   def claim_registration(claim)
     @claim = claim
+    #attachments.inline['admin_banner.jpg'] = File.read('../assets/images/admin_banner.jpg')
     mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim Registartion Details")
   end
 
   def policy_purchase(policy)
     @policy = policy
+    #attachments.inline['admin_banner.jpg'] = File.read('../assets/images/admin_banner.jpg')
     mail(:to => "#{@policy.quote.insured_device.customer.name} <#{@policy.quote.insured_device.customer.email}>", :subject => "OMI Policy Purchase")
   end
 
