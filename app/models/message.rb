@@ -3,7 +3,6 @@ class Message < ActiveRecord::Base
 
   validates :phone_number, presence: true
   validates :status, presence: true
-  validates :text, presence: true
   validates :message_type, presence: true
 
   def kind

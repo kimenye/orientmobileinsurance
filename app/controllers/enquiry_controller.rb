@@ -31,11 +31,11 @@ class EnquiryController < Wicked::WizardController
     sms = SMSGateway.new
     if !quote.nil?
       if quote.policy.nil?
-        customer = quote.customer
-        @policy = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Inactive"
+        customer = quote.insured_device.customer
+        policy = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Inactive"
         payment = Payment.create! :policy_id => policy.id, :amount => params[:JP_AMOUNT], :method => "JP", :reference => params[:JP_TRANID]
 
-        if !quote.insured_device.imei.nil?
+        if quote.insured_device.imei.nil?
           sms.send customer.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this it and SMS the word OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
         end
       end
@@ -76,6 +76,7 @@ class EnquiryController < Wicked::WizardController
           iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
           details = {
             "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0),
+            "insurance_value_uf" => iv,
             "annual_premium" => number_to_currency(premium_service.calculate_annual_premium(code, iv), :unit => "KES ", :precision => 0),
             "annual_premium_uf" => premium_service.calculate_annual_premium(code, iv),
             "quarterly_premium" => number_to_currency(premium_service.calculate_monthly_premium(code, iv), :unit => "KES ", :precision => 0),
@@ -92,7 +93,7 @@ class EnquiryController < Wicked::WizardController
       when :personal_details
         customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
         if(customer.nil?)
-          customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => params[:enquiry][:phone_number])
+          customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => params[:enquiry][:customer_phone_number])
         end
 
 
@@ -118,10 +119,10 @@ class EnquiryController < Wicked::WizardController
         end
 
         insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id
-        q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium"],
-                          :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium"],
+        q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
+                          :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
                           :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
-                          :insured_value => session[:quote_details]["insurance_value"])
+                          :insured_value => session[:quote_details]["insurance_value_uf"])
 
         @gateway = SMSGateway.new
 

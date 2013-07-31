@@ -52,7 +52,7 @@ class MessagesController < ApplicationController
 
       prefix = params["Prefix"]
       text = params["Text"]
-      msg_type = premium_service.get_message_type (prefix, text)
+      msg_type = premium_service.get_message_type prefix, text
       mobile = params["MobileNumber"]
 
       @message = Message.new
@@ -79,7 +79,6 @@ class MessagesController < ApplicationController
 
         enquiry.url = shortened_url
         enquiry.save!
-
         @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{shortened_url}")
       else
         #user is sending an imei number

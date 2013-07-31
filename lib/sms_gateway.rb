@@ -17,6 +17,7 @@ class SMSGateway
       }
       response = HTTParty.post( @base_uri, options)
     else
+      puts ">>> Sent: #{message} to #{to}"
       response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
         <methodResponse>
           <params>

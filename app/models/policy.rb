@@ -22,17 +22,18 @@ class Policy < ActiveRecord::Base
   def amount_paid
     amount_paid = 0
     payments.each do |payment|
-      amount_paid += payment.amount
+      amount_paid += payment.amount.to_f
     end
+    amount_paid
   end
 
   def pending_amount
     quote_amount = quote.amount_due
     if quote.premium_type == "Monthly"
-      quote_amount *= 3
+      quote_amount.to_f *= 3
     end
 
-    quote_amount - amount_paid
+    quote_amount.to_f - amount_paid.to_f
   end
 
   def insured_device
