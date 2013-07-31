@@ -166,4 +166,21 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal number.length, 6, "Account number should be six characters long"
   end
 
+  test "can verify an IMEI" do
+    service = PremiumService.new
+
+    assert (service.is_imei? "123456789012345")
+    assert_equal false, (service.is_imei? "")
+    assert_equal false, (service.is_imei? "123213213")
+    assert_equal false, (service.is_imei? "123213213sdfdsf")
+  end
+
+  test "can tell the type of message based on the text" do
+    service = PremiumService.new
+
+    assert_equal 1, (service.get_message_type "OMI", "123456789012345")
+    assert_equal 2, (service.get_message_type "", "123456789012345")
+  end
+
+
 end

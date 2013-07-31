@@ -7,11 +7,39 @@ class EnquiryController < Wicked::WizardController
   include ActionView::Helpers::NumberHelper
   layout "mobile"
 
-  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry, :card_payment
+  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
 
   def show
     @enquiry = Enquiry.find(session[:enquiry_id])
     render_wizard
+  end
+
+  def payment_notification
+    #=> {"JP_TRANID"=>"599038",
+    #    "JP_MERCHANT_ORDERID"=>"TDXBLF",
+    #    "JP_ITEM_NAME"=>"OMB Insurance",
+    #    "JP_AMOUNT"=>"1727.00",
+    #    "JP_CURRENCY"=>"KES",
+    #    "JP_TIMESTAMP"=>"20130731164630",
+    #    "JP_PASSWORD"=>"90e096f9ac2acaddb26ec89aef8c129f",
+    #    "JP_CHANNEL"=>"VISA",
+    #    "action"=>"payment_notification",
+    #    "controller"=>"enquiry"}
+
+    quote = Quote.find_by_account_name params[:JP_MERCHANT_ORDERID]
+    service = PremiumService.new
+    sms = SMSGateway.new
+    if !quote.nil?
+      if quote.policy.nil?
+        customer = quote.customer
+        @policy = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Inactive"
+        payment = Payment.create! :policy_id => policy.id, :amount => params[:JP_AMOUNT], :method => "JP", :reference => params[:JP_TRANID]
+
+        if !quote.insured_device.imei.nil?
+          sms.send customer.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this it and SMS the word OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
+        end
+      end
+    end
   end
 
   def update
@@ -47,9 +75,11 @@ class EnquiryController < Wicked::WizardController
           session[:device] = device
           iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
           details = {
-            "insurance_value" => number_to_currency(iv, :unit => "KES "),
-            "annual_premium" => number_to_currency(premium_service.calculate_annual_premium(code, iv), :unit => "KES "),
-            "quarterly_premium" => number_to_currency(premium_service.calculate_monthly_premium(code, iv), :unit => "KES "),
+            "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0),
+            "annual_premium" => number_to_currency(premium_service.calculate_annual_premium(code, iv), :unit => "KES ", :precision => 0),
+            "annual_premium_uf" => premium_service.calculate_annual_premium(code, iv),
+            "quarterly_premium" => number_to_currency(premium_service.calculate_monthly_premium(code, iv), :unit => "KES ", :precision => 0),
+            "quarterly_premium_uf" => premium_service.calculate_monthly_premium(code, iv),
             "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
           }
 
@@ -102,7 +132,7 @@ class EnquiryController < Wicked::WizardController
         end
         session[:quote] = q
 
-        smsMessage = "#{session[:device].marketing_name} Year: #{@enquiry.year_of_purchase} Insurance Value: #{session[:quote_details]["insurance_value"]} Payment due: #{number_to_currency(due, :unit => 'KES ')} Please pay via MPesa (Business No. 513201) or Airtel Money (Business Name MOBILE). Your acc no #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}"
+        smsMessage = "#{session[:device].marketing_name} Year: #{@enquiry.year_of_purchase} Insurance Value: #{session[:quote_details]["insurance_value"]} Payment due: #{number_to_currency(due, :unit => 'KES ', :precision => 0, :separator => "")} Please pay via MPesa (Business No. 513201) or Airtel Money (Business Name MOBILE). Your acc no #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}"
         @gateway.send(@enquiry.customer_phone_number, smsMessage)
 
         jump_to :confirm_personal_details

@@ -5,4 +5,14 @@ class Message < ActiveRecord::Base
   validates :status, presence: true
   validates :text, presence: true
   validates :message_type, presence: true
+
+  def kind
+    if message_type == 1
+      return "OMI Enquiry"
+    elsif message_type == 2
+      return "IMEI"
+    else
+      return "Unknown"
+    end
+  end
 end

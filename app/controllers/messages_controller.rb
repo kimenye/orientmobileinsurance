@@ -46,36 +46,46 @@ class MessagesController < ApplicationController
   # POST /messages.json
   def create
 
-    puts ">>>>> #{params}"
-
     begin
-
       @gateway = SMSGateway.new
+      premium_service = PremiumService.new
+
+      prefix = params["Prefix"]
+      text = params["Text"]
+      msg_type = premium_service.get_message_type (prefix, text)
+      mobile = params["MobileNumber"]
 
       @message = Message.new
-      @message.phone_number= params["MobileNumber"]
+      @message.phone_number = mobile
       @message.status = "Received"
-      @message.text = params["Prefix"]
-      @message.message_type = 1
+      @message.text = text
+      @message.message_type = msg_type
       @message.save!
 
-      enquiry = Enquiry.new
-      enquiry.phone_number = params["MobileNumber"]
-      enquiry.text = params["Prefix"]
-      enquiry.date_of_enquiry = Time.now
-      enquiry.source = "SMS"
-      enquiry.hashed_phone_number = Digest::MD5.hexdigest(params["MobileNumber"])
 
-      url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}"
-      auth = UrlShortener::Authorize.new ENV['BITLY_USERNAME'], ENV['BITLY_PASSWORD']
-      client = UrlShortener::Client.new auth
-      result = client.shorten(url)
-      shortened_url = result.result['nodeKeyVal']['shortUrl']
+      if msg_type == 1
+        enquiry = Enquiry.new
+        enquiry.phone_number = mobile
+        enquiry.text = prefix
+        enquiry.date_of_enquiry = Time.now
+        enquiry.source = "SMS"
+        enquiry.hashed_phone_number = Digest::MD5.hexdigest(mobile)
 
-      enquiry.url = shortened_url
-      enquiry.save!
+        url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}"
+        auth = UrlShortener::Authorize.new ENV['BITLY_USERNAME'], ENV['BITLY_PASSWORD']
+        client = UrlShortener::Client.new auth
+        result = client.shorten(url)
+        shortened_url = result.result['nodeKeyVal']['shortUrl']
 
-      @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{shortened_url}")
+        enquiry.url = shortened_url
+        enquiry.save!
+
+        @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{shortened_url}")
+      else
+        #user is sending an imei number
+        premium_service.activate_policy text, mobile
+      end
+
       respond_to do |format|
         format.all { render json: @message, status: :created, location: @message }
       end
@@ -83,7 +93,6 @@ class MessagesController < ApplicationController
       respond_to do |format|
         format.all { render json: @message.errors, status: :unprocessable_entity }
       end
-
     end
   end
 

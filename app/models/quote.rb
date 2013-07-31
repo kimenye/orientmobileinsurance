@@ -6,4 +6,20 @@ class Quote < ActiveRecord::Base
   def policy
     policies.first
   end
+
+  def amount_due
+    if premium_type == "Monthly"
+      return monthly_premium
+    else
+      return annual_premium
+    end
+  end
+
+  def customer
+    if policy.nil?
+      return ""
+    else
+      policy.customer.name
+    end
+  end
 end

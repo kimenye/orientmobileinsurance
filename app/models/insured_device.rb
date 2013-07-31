@@ -8,4 +8,8 @@ class InsuredDevice < ActiveRecord::Base
   def quote
     quotes.first
   end
+
+  def name
+    "#{customer.name} - #{device.marketing_name}"
+  end
 end

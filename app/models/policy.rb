@@ -1,6 +1,7 @@
 class Policy < ActiveRecord::Base
   belongs_to :quote
   has_many :claims
+  has_many :payments
   attr_accessible :expiry, :policy_number, :start_date, :status, :quote_id
 
   def is_open_for_claim
@@ -16,6 +17,22 @@ class Policy < ActiveRecord::Base
 
   def claim
     claims.last
+  end
+
+  def amount_paid
+    amount_paid = 0
+    payments.each do |payment|
+      amount_paid += payment.amount
+    end
+  end
+
+  def pending_amount
+    quote_amount = quote.amount_due
+    if quote.premium_type == "Monthly"
+      quote_amount *= 3
+    end
+
+    quote_amount - amount_paid
   end
 
   def insured_device

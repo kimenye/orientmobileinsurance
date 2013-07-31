@@ -3,7 +3,7 @@ ActiveAdmin.register Message do
     column :phone_number
     column :status
     column :text
-    column :message_type
+    column "Message Type", :kind
   end
 
   filter :phone_number
