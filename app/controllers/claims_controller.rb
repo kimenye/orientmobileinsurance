@@ -24,6 +24,10 @@ class ClaimsController < ApplicationController
   def show
     @claim = Claim.find(params[:id])
 
+    service = ClaimService.new
+    brands = service.find_brands_in_town(@claim.nearest_town)
+    @nearest_dealers = brands.brands
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @claim }
