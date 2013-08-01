@@ -16,6 +16,7 @@ class SMSGateway
       options = {
           :body => xml
       }
+      puts ">>>> sending #{options}"
       response = HTTParty.post( @base_uri, options)
     else
       response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
