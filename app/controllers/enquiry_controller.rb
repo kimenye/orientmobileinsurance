@@ -53,7 +53,7 @@ class EnquiryController < Wicked::WizardController
         render text: "OK"
       end
     else
-      @message = "No payment was received"
+      render text: "OK"
     end
   end
 
