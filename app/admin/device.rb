@@ -33,7 +33,7 @@ ActiveAdmin.register Device do
     column "Replacement Value (FD)", :fd_replacement_value
   end
 
-  actions :index
+  actions :index, :edit, :update
 
   #form do |f|
   #  f.inputs "Device Details" do
