@@ -62,8 +62,7 @@ class StatusController < ApplicationController
       when :claim_type
         policy = session[:policy]
         service = ClaimService.new
-        claim = Claim.create! :policy_id => policy.id, :claim_type => @status.claim_type, :contact_number => @customer.phone_number, :claim_no => service.create_claim_no
-
+        claim = Claim.create! :policy_id => policy.id, :claim_type => @status.claim_type, :contact_number => @customer.phone_number, :claim_no => service.create_claim_no, :nearest_town => @status.nearest_town
         towns = Agent.select("distinct town").collect { |t| t.town.strip if !t.town.nil? }
         session[:towns] = towns
 
