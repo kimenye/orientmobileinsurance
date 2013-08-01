@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130801095043) do
+ActiveRecord::Schema.define(:version => 20130801134429) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -100,6 +100,8 @@ ActiveRecord::Schema.define(:version => 20130801095043) do
     t.string   "dealer_description"
     t.boolean  "dealer_can_fix"
     t.decimal  "dealer_cost_estimate"
+    t.datetime "time_duration"
+    t.boolean  "damaged_device"
   end
 
   add_index "claims", ["agent_id"], :name => "index_claims_on_agent_id"
