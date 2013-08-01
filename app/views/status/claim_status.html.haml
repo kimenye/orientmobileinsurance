@@ -28,7 +28,8 @@
         %b
           Expiry Date:
         %span.model
-          = session[:policy].expiry.strftime("%d-%m-%Y")
+          -if !session[:policy].expiry.nil?
+            = session[:policy].expiry.to_s(:simple)
       - if session[:claim].nil?
         %li
           %span.model
@@ -43,7 +44,8 @@
           %b
             Incident Date:
           %span.model
-            = session[:claim].incident_date.strftime("%d-%m-%Y")
+            - if !session[:claim].incident_date.nil?
+              = session[:claim].incident_date.to_s(:simple)
         %li
           %b
             Incident Description:

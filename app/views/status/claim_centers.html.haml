@@ -29,7 +29,8 @@
         %b
           Expiry Date:
         %span.model
-          = session[:policy].expiry.strftime("%d-%m-%Y")
+          -if !session[:policy].expiry.nil?
+            = session[:policy].expiry.to_s(:simple)
       %li
         %b
           Ref No:
@@ -59,4 +60,4 @@
       %p There are no Dealer centers in your selected town.
       %p Call one of our help centers to be directed to the closest dealership
     %p
-      Please #{link_to("click here", "#{ENV['BASE_URL']}/customer/#{session[:id]}", :class => "inline")}  to continue with claim registration
+      Please #{link_to("click here", "#{ENV['BASE_URL']}customer", :class => "inline", :rel => "external")}  to continue with claim registration

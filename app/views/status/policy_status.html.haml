@@ -35,4 +35,4 @@
           Expiry Date:
         %span.model
           -if !session[:policy].expiry.nil?
-            = session[:policy].expiry.to_s(:short)
+            = session[:policy].expiry.to_s(:simple)

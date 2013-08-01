@@ -29,7 +29,8 @@
         %b
           Expiry Date:
         %span.model
-          = session[:policy].expiry.strftime("%d-%m-%Y")
+          -if !session[:policy].expiry.nil?
+            = session[:policy].expiry.to_s(:simple)
 
     = form_for(@status, :url => wizard_path, :method => :put) do |f|
       %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
