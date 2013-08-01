@@ -28,7 +28,14 @@ class EnquiryController < Wicked::WizardController
 
     puts ">>>> #{params}"
 
-    quote = Quote.find_by_account_name params[:JP_MERCHANT_ORDERID]
+    channel = params[:JP_CHANNEL]
+
+    account_id = params[:JP_MERCHANT_ORDERID]
+    if channel == "MPESA"
+      account_id = params[:JP_ITEM_NAME]
+    end
+
+    quote = Quote.find_by_account_name account_id
     service = PremiumService.new
     sms = SMSGateway.new
     if !quote.nil?
@@ -46,6 +53,10 @@ class EnquiryController < Wicked::WizardController
             service.set_policy_dates policy
             policy.save!
           end
+        end
+
+        if channel == "MPESA"
+          render text: "OK"
         end
       end
     else
