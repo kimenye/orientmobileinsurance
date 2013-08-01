@@ -2,3 +2,18 @@
   .large-8.large-centered.columns
     %h4.centered.header
       Welcome to Orient Mobile Claims
+      - if current_user.user_type == "CP"
+        #{': KOIL Claims Portal'}
+      - else
+        #{': Dealer Portal'}
+.row.spacer
+  .large-8.large-centered.columns
+    - if current_user.user_type == "DP"
+      .row.spacer
+        .large-6.columns.details
+          Outlet: #{current_user.agent.name}
+        .large-6.columns.details
+          Outlet Code #: #{current_user.agent.code}
+.row.spacer
+  .twelve.columns
+    %br

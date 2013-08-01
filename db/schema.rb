@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130801065432) do
+ActiveRecord::Schema.define(:version => 20130801095043) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -91,8 +91,18 @@ ActiveRecord::Schema.define(:version => 20130801065432) do
     t.string   "q_3"
     t.string   "q_4"
     t.string   "q_5"
+    t.integer  "agent_id"
+    t.boolean  "police_abstract"
+    t.boolean  "receipt"
+    t.boolean  "original_id"
+    t.boolean  "copy_id"
+    t.boolean  "blocking_request"
+    t.string   "dealer_description"
+    t.boolean  "dealer_can_fix"
+    t.decimal  "dealer_cost_estimate"
   end
 
+  add_index "claims", ["agent_id"], :name => "index_claims_on_agent_id"
   add_index "claims", ["policy_id"], :name => "index_claims_on_policy_id"
 
   create_table "customers", :force => true do |t|
@@ -219,6 +229,13 @@ ActiveRecord::Schema.define(:version => 20130801065432) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "sms", :force => true do |t|
+    t.string   "to"
+    t.string   "text"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

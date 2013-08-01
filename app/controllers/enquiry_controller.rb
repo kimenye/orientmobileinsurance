@@ -15,19 +15,7 @@ class EnquiryController < Wicked::WizardController
   end
 
   def payment_notification
-    #=> {"JP_TRANID"=>"599038",
-    #    "JP_MERCHANT_ORDERID"=>"TDXBLF",
-    #    "JP_ITEM_NAME"=>"OMB Insurance",
-    #    "JP_AMOUNT"=>"1727.00",
-    #    "JP_CURRENCY"=>"KES",
-    #    "JP_TIMESTAMP"=>"20130731164630",
-    #    "JP_PASSWORD"=>"90e096f9ac2acaddb26ec89aef8c129f",
-    #    "JP_CHANNEL"=>"VISA",
-    #    "action"=>"payment_notification",
-    #    "controller"=>"enquiry"}
-
     puts ">>>> #{params}"
-
     channel = params[:JP_CHANNEL]
 
     account_id = params[:JP_MERCHANT_ORDERID]
@@ -45,6 +33,7 @@ class EnquiryController < Wicked::WizardController
         payment = Payment.create! :policy_id => policy.id, :amount => params[:JP_AMOUNT], :method => "JP", :reference => params[:JP_TRANID]
 
         @message = "Thank you for your payment of #{number_to_currency(params[:JP_AMOUNT], :unit => "KES ", :precision => 0)}"
+        puts ">>>>> IMEI: #{quote.insured_device.imei.nil?}"
 
         if quote.insured_device.imei.nil?
           sms.send customer.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this & SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."

@@ -10,6 +10,6 @@ class InsuredDevice < ActiveRecord::Base
   end
 
   def name
-    "#{customer.name} - #{device.marketing_name}"
+    "#{customer.name} - #{device.marketing_name} - #{imei}"
   end
 end
