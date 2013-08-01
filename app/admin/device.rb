@@ -23,15 +23,15 @@ ActiveAdmin.register Device do
   filter :model
   filter :marketing_name
 
-  index do
-    column :vendor
-    column :model
-    column :marketing_name
-    column "Retail Price", :catalog_price
-    column :wholesale_price
-    column "Insured Value (FD)", :fd_insured_value
-    column "Replacement Value (FD)", :fd_replacement_value
-  end
+  #index do
+  #  column :vendor
+  #  column :model
+  #  column :marketing_name
+  #  column "Retail Price", :catalog_price
+  #  column :wholesale_price
+  #  column "Insured Value (FD)", :fd_insured_value
+  #  column "Replacement Value (FD)", :fd_replacement_value
+  #end
 
   actions :index, :edit, :update
 
