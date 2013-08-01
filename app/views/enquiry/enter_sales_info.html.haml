@@ -4,7 +4,7 @@
       Sales Details
   %section{"data-role" => "content", :role => "main"}
     = form_for(@enquiry, :url => wizard_path, :method => :put) do |f|
-      = f.label :sales_agent_code
+      = f.label :sales_agent_code, "Sales Agent Code (0 if none)"
       = f.text_field :sales_agent_code
       = f.label :year_of_purchase, "Year of Purchase (as per original purchase receipt)"
       = f.text_field :year_of_purchase
