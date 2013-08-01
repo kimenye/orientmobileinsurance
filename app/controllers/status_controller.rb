@@ -3,7 +3,7 @@ class StatusController < ApplicationController
   include Wicked::Wizard
   layout "mobile"
 
-  steps :customer_id, :customer_not_found, :claim_select_device, :select_device, :claim_type
+  steps :customer_id, :customer_not_found, :claim_select_device, :select_device, :cannot_claim, :claim_type
 
   def show
     @status = session[:status]
@@ -47,13 +47,19 @@ class StatusController < ApplicationController
           jump_to :claim_status
         end
       when :claim_select_device
+        binding.pry
         quote = Quote.find_by_insured_device_id @status.insured_device_id
-        policy = Policy.find_by_quote_id quote.id
+        policy = quote.policy
         session[:policy] = policy
-        towns = Agent.select("distinct town").collect { |t| t.town.strip }
-        session[:towns] = towns
 
-        jump_to :claim_type
+        if policy.is_active?
+          towns = Agent.select("distinct town").collect { |t| t.town.strip }
+          session[:towns] = towns
+
+          jump_to :claim_type
+        else
+          jump_to :cannot_claim
+        end
       when :claim_type
         policy = session[:policy]
         service = ClaimService.new

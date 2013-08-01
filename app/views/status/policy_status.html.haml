@@ -29,7 +29,7 @@
           Status:
         %span.model
           = session[:policy].status
-      - if session[:policy].status == "Inactive"
+      - if !session[:policy].is_active?
         %li
           %span.model
             = session[:policy].status_message
