@@ -3,6 +3,11 @@ class Quote < ActiveRecord::Base
   has_many :policies
   attr_accessible :account_name, :annual_premium, :expiry_date, :monthly_premium, :insured_device_id, :premium_type, :insured_value
 
+
+  def name
+    account_name
+  end
+
   def policy
     policies.first
   end
