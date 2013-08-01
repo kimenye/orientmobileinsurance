@@ -6,6 +6,6 @@ class Agent < ActiveRecord::Base
 
 
   def name
-    "#{brand} #{outlet_name}"
+    "#{brand} #{outlet_name}".strip
   end
 end
