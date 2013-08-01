@@ -72,14 +72,17 @@ class MessagesController < ApplicationController
         enquiry.hashed_phone_number = Digest::MD5.hexdigest(mobile)
 
         url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}"
-        auth = UrlShortener::Authorize.new ENV['BITLY_USERNAME'], ENV['BITLY_PASSWORD']
-        client = UrlShortener::Client.new auth
-        result = client.shorten(url)
-        shortened_url = result.result['nodeKeyVal']['shortUrl']
+        enquiry.url = url
+        if Rails.env == "production"
+          auth = UrlShortener::Authorize.new ENV['BITLY_USERNAME'], ENV['BITLY_PASSWORD']
+          client = UrlShortener::Client.new auth
+          result = client.shorten(url)
+          shortened_url = result.result['nodeKeyVal']['shortUrl']
 
-        enquiry.url = shortened_url
+          enquiry.url = shortened_url
+        end
         enquiry.save!
-        @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{shortened_url}")
+        @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{enquiry.url}")
       else
         #user is sending an imei number
         premium_service.activate_policy text, mobile

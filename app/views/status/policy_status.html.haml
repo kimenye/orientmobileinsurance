@@ -24,8 +24,15 @@
         %span.model
           = "#{number_to_currency(session[:policy].quote.insured_value, :unit => 'KES ')}"
       %li
+        -#%img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Status:
+        %span.model
+          = session[:policy].status
+      %li
         %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
         %b
           Expiry Date:
         %span.model
-          = session[:policy].expiry.strftime("%d-%m-%Y")
+          -if !session[:policy].expiry.nil?
+            = session[:policy].expiry.to_s(:short)

@@ -99,7 +99,7 @@ class EnquiryController < Wicked::WizardController
 
         @enquiry.update_attributes(params[:enquiry])
 
-        account_name = premium_service.generate_unique_account_number
+        account_name = "ORI#{premium_service.generate_unique_account_number}"
 
         user_details = {
             "customer_name" => @enquiry.customer_name,
