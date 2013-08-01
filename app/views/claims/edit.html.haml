@@ -5,66 +5,54 @@
       %h4
         No such claim was found
 - else
-  .row
-    .large-8.large-centered.columns
-      .large-4.columns.details
-        Client Name: #{@claim.policy.customer.name}
-      .large-4.columns.details
-        Other Telephone : #{@claim.contact_number}
-      - if !@claim.step.nil? && @claim.step >= 1
-        .large-4.columns.details
-          Type of Claim : #{@claim.claim_type}
-  .row.spacer
-    .large-8.large-centered.columns
-      .large-7.columns.details
-        Device:
-        %strong
-          = @claim.policy.insured_device.device.marketing_name
-      .large-4.columns.details
-        IMEI:
-        %strong
-          = @claim.policy.insured_device.imei
   = form_for(@claim, :method => :put) do |f|
-    - if @claim.step.nil?
-      = f.hidden_field :step, :value => "1"
-    - else
-      = f.hidden_field :step
-
-    .row.spacer
-      .large-8.large-centered.columns
-        .row
-          .large-12.columns
-            - if @claim.step.nil? || @claim.step == 0
-              %fieldset
-                .row
-                  .large-6.columns
-                    = f.label :claim_type, "Please select the type of claim you are reporting"
-                    = f.select :claim_type, ["Damage", "Loss / Theft"]
-                  .large-6.columns.datepicker
-                    = f.label :incident_date
-                    = f.date_select :incident_date
-                .row
-                  .large-6.columns
-                    = f.label :nearest_town, "Nearest Town"
-                    = f.select :nearest_town, Brand.all.collect { |b| [b.town_name,b.town_name] }, {}
-                .row
-                  .large-3.large-offset-9.columns
-                    = f.submit "Update", :class => "button small"
-            - if (@claim.step.nil? || @claim.step == 1) && @claim.claim_type == 'Damage'
-              .row.spacer
-                .large-8.large-centered.columns
+    .large-8.large-centered.columns
+      .row
+        .large-12.columns
+          .row.disabled
+            .large-4.columns
+              %label
+                Client Name
+              %input{:type => "text", :value => @claim.policy.customer.name}
+            .large-4.columns
+              %label
+                Other Telephone
+              %input{:type => "text", :value => @claim.contact_number}
+            .large-4.columns
+              %label
+                Type of Claim
+              %input{:type => "text", :value => @claim.claim_type}
+          .row.disabled
+            .large-6.columns
+              %label
+                Device
+              %input{:type => "text", :value => @claim.policy.insured_device.device.marketing_name}
+            .large-6.columns
+              %label
+                IMEI
+              %input{:type => "text", :value => @claim.policy.insured_device.imei}
+          - if @claim.step.nil?
+            = f.hidden_field :step, :value => "1"
+          - else
+            = f.hidden_field :step
+          .row{:class => "#{'disabled' if (@claim.step.nil? || @claim.step == 0) }"}
+            .large-6.columns.datepicker
+              = f.label :incident_date
+              = f.date_select :incident_date
+          - if @claim.claim_type == 'Damage'
+            %div{:class => "#{'disabled' if (@claim.step.nil? || @claim.step == 0) }"}
+              .row
+                .large-12.columns
                   = f.label :incident_description, "Please describe the incident in which the device was damaged"
                   = f.text_field :incident_description
+              .row
+                .large-12.columns
                   = f.label :type_of_liquid, "If the device had contact with any liquid, please specify the type of liquid"
                   = f.text_field :type_of_liquid
+              .row
+                .large-12.columns
                   = f.label :visible_damage, "Please describe any visible damage to the device"
                   = f.text_field :visible_damage
-                  = f.submit "Update", {:class=> "button"}
-            - if (@claim.step.nil? || @claim.step == 1) && @claim.claim_type == 'Loss / Theft'
-              .row.spacer
-                .large-8.large-centered.columns
-                  = f.label :incident_description, "Please describe the incident in which the device was lost / stolen"
-                  = f.text_field :incident_description
-                  = f.label :incident_location, "Incident Location"
-                  = f.select :incident_location, ["Vehicle", "Office", "Home", "Social event", "Other(specify)"]
+              .row
+                .large-10.columns
                   = f.submit "Update", {:class=> "button"}

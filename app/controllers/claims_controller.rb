@@ -73,9 +73,9 @@ class ClaimsController < ApplicationController
 
     respond_to do |format|
       if @claim.update_attributes(params[:claim])
-        @claim.step += 1
-        if @claim.step < 5
-          format.html { render action: "edit", notice: 'Claim was successfully updated.' }
+        @claim.step = 1
+        if @claim.step == 1
+          format.html { render action: "show", notice: 'Claim was successfully updated.' }
         end
         format.json { head :no_content }
       else

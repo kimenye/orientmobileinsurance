@@ -23,6 +23,10 @@ class Policy < ActiveRecord::Base
     status == "Active"
   end
 
+  def is_owing?
+    pending_amount > 0
+  end
+
   def payment_due?
     is_pending? && pending_amount > 0
   end
