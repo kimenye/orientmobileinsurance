@@ -29,10 +29,15 @@
           Status:
         %span.model
           = session[:policy].status
-      %li
-        %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
-        %b
-          Expiry Date:
-        %span.model
-          -if !session[:policy].expiry.nil?
-            = session[:policy].expiry.to_s(:simple)
+      - if session[:policy].status == "Inactive"
+        %li
+          %span.model
+            = session[:policy].status_message
+      - if !session[:policy].status == "Inactive"
+        %li
+          %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
+          %b
+            Expiry Date:
+          %span.model
+            -if !session[:policy].expiry.nil?
+              = session[:policy].expiry.to_s(:simple)

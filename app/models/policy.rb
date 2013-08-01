@@ -15,8 +15,18 @@ class Policy < ActiveRecord::Base
     end
   end
 
+  def status_message
+    if status == "Inactive"
+      return "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this it and SMS the word OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
+    end
+  end
+
   def claim
     claims.last
+  end
+
+  def premium
+    quote.amount_due
   end
 
   def amount_paid
