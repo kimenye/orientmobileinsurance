@@ -47,7 +47,6 @@ class StatusController < ApplicationController
           jump_to :claim_status
         end
       when :claim_select_device
-        binding.pry
         quote = Quote.find_by_insured_device_id @status.insured_device_id
         policy = quote.policy
         session[:policy] = policy
