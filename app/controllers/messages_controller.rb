@@ -64,6 +64,7 @@ class MessagesController < ApplicationController
       @message.save!
 
 
+      puts ">>> message type #{msg_type}"
       if msg_type == 1
         enquiry = Enquiry.new
         enquiry.phone_number = mobile
@@ -75,6 +76,7 @@ class MessagesController < ApplicationController
         url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}"
         enquiry.url = url
         if Rails.env == "production"
+          puts ">>>>  in production"
           auth = UrlShortener::Authorize.new ENV['BITLY_USERNAME'], ENV['BITLY_PASSWORD']
           client = UrlShortener::Client.new auth
           result = client.shorten(url)
@@ -93,6 +95,7 @@ class MessagesController < ApplicationController
         format.all { render json: @message, status: :created, location: @message }
       end
     rescue => error
+      puts ">>>>> in error #{error}"
       respond_to do |format|
         format.all { render json: @message.errors, status: :unprocessable_entity }
       end
