@@ -34,6 +34,7 @@ class SMSGateway
         </methodResponse>"
     end
     Sms.create! :to => to, :text => message
+    puts ">>>>> #{response.to_s}"
     response
   end
 
