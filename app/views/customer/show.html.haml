@@ -42,6 +42,7 @@
                   %a{:href => edit_claim_path(id.quote.policy.claim)}
                     = id.device.marketing_name
               %td
-                -#= id.quotes.first.policies.first.expiry.to_s(:simple)
+                -if !id.quote.policy.expiry.nil?
+                  = id.quote.policy.expiry.to_s(:simple)
               %td
-                = id.quotes.first.insured_value
+                = number_to_currency(id.quotes.first.insured_value, :unit => "KES ", :precision => 0)

@@ -1,0 +1,11 @@
+#sales-info-page{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Cannot Claim
+  %section{"data-role" => "content", :role => "main"}
+    %section{"data-role" => "content", "role" => "main"}
+      %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+        %li{"data-role" => "list-divider"}
+          You cannot make a claim for this device...
+        %li.message<
+          = session[:policy].status_message

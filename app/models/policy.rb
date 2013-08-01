@@ -15,9 +15,24 @@ class Policy < ActiveRecord::Base
     end
   end
 
+  def is_pending?
+    status == "Pending"
+  end
+
+  def is_active?
+    status == "Active"
+  end
+
+  def payment_due?
+    is_pending? && pending_amount > 0
+  end
+
   def status_message
     if status == "Inactive"
       return "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this it and SMS the word OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
+    elsif status == "Pending"
+      pending = ActionController::Base.helpers.number_to_currency(pending_amount, :unit => "KES ", :precision => 0)
+      return "The Orient Mobile policy for this device has an outstanding balance of #{pending}. Your account no. is #{quote.account_name}. Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name JAMBOPAY).  You can register your claim after payment confirmation."
     end
   end
 
