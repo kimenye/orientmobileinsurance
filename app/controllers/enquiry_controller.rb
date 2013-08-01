@@ -37,10 +37,14 @@ class EnquiryController < Wicked::WizardController
         policy = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Inactive"
         payment = Payment.create! :policy_id => policy.id, :amount => params[:JP_AMOUNT], :method => "JP", :reference => params[:JP_TRANID]
 
+        @message = "Thank you for your payment of #{number_to_currency(params[:JP_AMOUNT], :unit => "KES ", :precision => 0)}"
+
         if quote.insured_device.imei.nil?
           sms.send customer.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this it and SMS the word OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
         end
       end
+    else
+      @message = "No payment was received"
     end
   end
 
