@@ -155,7 +155,7 @@ class EnquiryController < Wicked::WizardController
         end
         session[:quote] = q
 
-        smsMessage = "#{session[:device].marketing_name} Year: #{@enquiry.year_of_purchase} Insurance Value: #{session[:quote_details]["insurance_value"]} Payment due: #{number_to_currency(due, :unit => 'KES ', :precision => 0, :separator => "")} Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name JAMBOPAY). Your acc no #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}"
+        smsMessage = "#{session[:device].marketing_name} Year: #{@enquiry.year_of_purchase} Insurance Value: #{session[:quote_details]["insurance_value"]} Payment due: #{due} Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name JAMBOPAY). Your acc no #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}"
         @gateway.send(@enquiry.customer_phone_number, smsMessage)
 
         jump_to :confirm_personal_details
