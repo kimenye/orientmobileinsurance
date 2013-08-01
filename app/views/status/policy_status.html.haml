@@ -33,7 +33,7 @@
         %li
           %span.model
             = session[:policy].status_message
-      - if !session[:policy].status == "Inactive"
+      - if session[:policy].is_active?
         %li
           %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
           %b
