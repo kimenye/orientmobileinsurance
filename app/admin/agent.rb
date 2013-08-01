@@ -12,6 +12,7 @@ ActiveAdmin.register Agent do
   end
 
   filter :town
+  filter :code
 
   form do |f|
     f.inputs "User Details" do
