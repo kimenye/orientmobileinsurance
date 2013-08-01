@@ -24,29 +24,33 @@ class EnquiryController < Wicked::WizardController
     end
 
     quote = Quote.find_by_account_name account_id
+    puts ">>>> Channel #{channel}, Account #{account_id}"
+    puts ">>>> #{quote}"
     service = PremiumService.new
     sms = SMSGateway.new
     if !quote.nil?
+      customer = quote.insured_device.customer
       if quote.policy.nil?
-        customer = quote.insured_device.customer
         policy = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Inactive"
-        payment = Payment.create! :policy_id => policy.id, :amount => params[:JP_AMOUNT], :method => "JP", :reference => params[:JP_TRANID]
+      end
 
-        @message = "Thank you for your payment of #{number_to_currency(params[:JP_AMOUNT], :unit => "KES ", :precision => 0)}"
-        puts ">>>>> IMEI: #{quote.insured_device.imei.nil?}"
+      policy = quote.policy
+      payment = Payment.create! :policy_id => policy.id, :amount => params[:JP_AMOUNT], :method => "JP", :reference => params[:JP_TRANID]
 
-        if quote.insured_device.imei.nil?
-          sms.send customer.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this & SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
-        else
-          if policy.is_pending? && policy.payment_due?
-            service.set_policy_dates policy
-            policy.save!
-          end
+      @message = "Thank you for your payment of #{number_to_currency(params[:JP_AMOUNT], :unit => "KES ", :precision => 0)}"
+      puts ">>>>> IMEI: #{quote.insured_device.imei.nil?}"
+
+      if quote.insured_device.imei.nil?
+        sms.send customer.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this & SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
+      else
+        if policy.is_pending? && policy.payment_due?
+          service.set_policy_dates policy
+          policy.save!
         end
+      end
 
-        if channel == "MPESA"
-          render text: "OK"
-        end
+      if channel == "MPESA"
+        render text: "OK"
       end
     else
       @message = "No payment was received"
