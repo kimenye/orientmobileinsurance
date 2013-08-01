@@ -52,7 +52,7 @@ class StatusController < ApplicationController
         session[:policy] = policy
 
         if policy.is_active?
-          towns = Agent.select("distinct town").collect { |t| t.town.strip }
+          towns = Agent.select("distinct town").collect { |t| t.town.strip if !t.town.nil? }
           session[:towns] = towns
 
           jump_to :claim_type
@@ -64,7 +64,7 @@ class StatusController < ApplicationController
         service = ClaimService.new
         claim = Claim.create! :policy_id => policy.id, :claim_type => @status.claim_type, :contact_number => @customer.phone_number, :claim_no => service.create_claim_no
 
-        towns = Agent.select("distinct town").collect { |t| t.town.strip }
+        towns = Agent.select("distinct town").collect { |t| t.town.strip if !t.town.nil? }
         session[:towns] = towns
 
         if @status.claim_type == "Loss / Theft"
