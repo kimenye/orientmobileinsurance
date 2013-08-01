@@ -6,6 +6,7 @@ ActiveAdmin.register Quote do
     column :premium_type
     column :insured_value
     column :customer
+    column :insured_device
   end
   actions :index
 end

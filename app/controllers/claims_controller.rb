@@ -15,8 +15,16 @@ class ClaimsController < ApplicationController
   def search
     @claim = Claim.find_by_claim_no(params[:claim_no])
     respond_to do |format|
-      format.html { render action: "edit" }
+      if dealer_is_logged_in?
+        format.html { render action: "dealer_edit" }
+      else
+        format.html { render action: "edit" }
+      end
     end
+  end
+
+  def dealer_edit
+
   end
 
   # GET /claims/1

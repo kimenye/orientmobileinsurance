@@ -14,7 +14,7 @@ class Quote < ActiveRecord::Base
 
   def amount_due
     if premium_type == "Monthly"
-      return monthly_premium
+      return monthly_premium.to_f * 3
     else
       return annual_premium
     end
