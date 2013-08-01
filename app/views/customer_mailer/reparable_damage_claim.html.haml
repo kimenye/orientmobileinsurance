@@ -1,10 +1,8 @@
 -#%img{:src => "../assets/admin_banner.jpg", :style => "display:block;margin:auto"}
 -#= image_tag attachments['admin_banner.jpg'].url
 %p Dear #{@claim.policy.quote.insured_device.customer.name}
-%p We regret to inform you that your Orient Mobile DAMAGE claim has been declined
-%p Reason:
-%p
-  =
+%p Your #{@claim.policy.quote.insured_device.device.marketing_name} is under repair.
+%p Please collect it from OMB DEALER in #{@claim.nearest_town} on #{}. Please carry your ID/Passport
 %p Please contact our call center on 0733123456 if you would like further information on this.
 %p Sincerely
 %p Orient Mobile Services

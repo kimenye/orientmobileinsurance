@@ -19,4 +19,19 @@ class CustomerMailer < ActionMailer::Base
     mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
   end
 
+  def reparable_damage_claim(claim)
+    @claim = claim
+    mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
+  end
+
+  def irreparable_damage_claim(claim)
+    @claim = claim
+    mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
+  end
+
+  def loss_theft_claim(claim)
+    @claim = claim
+    mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
+  end
+
 end
