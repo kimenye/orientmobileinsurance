@@ -1,5 +1,5 @@
--#%img{:src => "../assets/admin_banner.jpg", :style => "display:block;margin:auto"}
--#= image_tag attachments['admin_banner.jpg'].url
+= image_tag attachments['admin_banner.jpg'].url
+%br
 %p Dear #{@claim.policy.quote.insured_device.customer.name}
 %p Your #{@claim.policy.quote.insured_device.device.marketing_name} is under repair.
 %p Please collect it from OMB DEALER in #{@claim.nearest_town} on #{}. Please carry your ID/Passport
