@@ -62,9 +62,9 @@ class Policy < ActiveRecord::Base
 
   def pending_amount
     quote_amount = quote.amount_due
-    if quote.premium_type == "Monthly"
-      quote_amount *= 3
-    end
+    #if quote.premium_type == "Monthly"
+    #  quote_amount *= 3
+    #end
 
     quote_amount.to_f - amount_paid.to_f
   end
