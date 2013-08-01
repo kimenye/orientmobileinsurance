@@ -15,6 +15,10 @@ class Policy < ActiveRecord::Base
     end
   end
 
+  def name
+    policy_number
+  end
+
   def is_pending?
     status == "Pending"
   end
@@ -59,7 +63,7 @@ class Policy < ActiveRecord::Base
   def pending_amount
     quote_amount = quote.amount_due
     if quote.premium_type == "Monthly"
-      quote_amount.to_f *= 3
+      quote_amount *= 3
     end
 
     quote_amount.to_f - amount_paid.to_f
