@@ -9,6 +9,7 @@ namespace :data do
     Customer.delete_all
     Enquiry.delete_all
     Message.delete_all
+    Sms.delete_all
   end
 
   task :seed => :environment do
