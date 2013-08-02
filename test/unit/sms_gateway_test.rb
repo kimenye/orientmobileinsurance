@@ -52,7 +52,7 @@ class SMSGatewayTest < ActiveSupport::TestCase
                 </member>
                 <member>
                   <name>Receipt</name>
-                  <value>N</value>
+                  <value>Y</value>
                 </member>
                 <member>
                   <name>Channel</name>
@@ -76,6 +76,7 @@ class SMSGatewayTest < ActiveSupport::TestCase
 
     service = SMSGateway.new
     xml = service.create_message "254722200200", "Hello World"
+    binding.pry
     assert xml == valid_xml
   end
 end
