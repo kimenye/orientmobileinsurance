@@ -76,7 +76,6 @@ class SMSGatewayTest < ActiveSupport::TestCase
 
     service = SMSGateway.new
     xml = service.create_message "254722200200", "Hello World"
-    binding.pry
     assert xml == valid_xml
   end
 end
