@@ -1,4 +1,5 @@
 ActiveAdmin.register Agent do
+  menu :parent => "Reference Data"
   active_admin_importable
   index do
     column :town

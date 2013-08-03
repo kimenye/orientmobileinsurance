@@ -11,7 +11,7 @@ class CustomerMailer < ActionMailer::Base
   def policy_purchase(policy)
     @policy = policy
     attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
-    attachments['omi.pdf'] = File.read("#{Rails.root}/doc/data/omi.pdf")
+    attachments['omi.pdf'] = File.read("#{Rails.root}/doc/data/Orient Mobile - Policy Terms & Conditions.pdf")
     mail(:to => "#{@policy.quote.insured_device.customer.name} <#{@policy.quote.insured_device.customer.email}>", :subject => "OMI Policy Purchase")
   end
 

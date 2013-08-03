@@ -1,4 +1,5 @@
 ActiveAdmin.register Message do
+  menu :parent => "Log"
   index do
     column :phone_number
     column :status

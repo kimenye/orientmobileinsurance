@@ -1,4 +1,5 @@
 ActiveAdmin.register Brand do
+  menu :parent => "Reference Data"
   active_admin_importable
   filter :town_name
 

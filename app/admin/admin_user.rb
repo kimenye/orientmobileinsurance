@@ -1,5 +1,6 @@
-ActiveAdmin.register AdminUser do     
-  index do                            
+ActiveAdmin.register AdminUser do
+  menu :parent => "Security"
+  index do
     column :email                     
     column :current_sign_in_at        
     column :last_sign_in_at           

@@ -1,4 +1,5 @@
 ActiveAdmin.register Device do
+  menu :parent => "Reference Data"
   active_admin_importable do |model, hash|
     model.create!({
          :vendor => hash[:vendor],

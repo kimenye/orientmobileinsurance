@@ -1,3 +1,3 @@
 ActiveAdmin.register Sms do
-  #actions :index
+  menu :parent => "Log"
 end

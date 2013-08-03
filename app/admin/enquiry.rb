@@ -1,4 +1,5 @@
 ActiveAdmin.register Enquiry do
+  menu :parent => "Log"
   index do
     column :phone_number
     column :date_of_enquiry
