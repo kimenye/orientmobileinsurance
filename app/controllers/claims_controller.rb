@@ -87,7 +87,8 @@ class ClaimsController < ApplicationController
       if @claim.update_attributes(params[:claim])
         @claim.step = 1
         if @claim.step == 1
-          format.html { render action: "show", notice: 'Claim was successfully updated.' }
+          CustomerMailer.claim_registration(@claim).deliver
+          format.html { redirect_to @claim, notice: 'Claim was successfully created.' }
         end
         format.json { head :no_content }
       else

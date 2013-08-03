@@ -5,7 +5,7 @@ class CustomerMailer < ActionMailer::Base
   def claim_registration(claim)
     @claim = claim
     attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
-    mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim Registartion Details")
+    mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim Registration Details")
   end
 
   def policy_purchase(policy)
