@@ -34,7 +34,7 @@ class SMSGateway
           </params>
         </methodResponse>"
     end
-    Sms.create! :to => to, :text => message
+    Sms.create! :to => to, :text => message, :request => xml,  :response => response.to_s
     puts ">>>>> #{response.to_s}"
     response
   end
@@ -67,7 +67,7 @@ class SMSGateway
                 </member>
                 <member>
                   <name>Receipt</name>
-                  <value>N</value>
+                  <value>Y</value>
                 </member>
                 <member>
                   <name>Channel</name>

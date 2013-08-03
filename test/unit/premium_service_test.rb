@@ -178,8 +178,8 @@ class PremiumServiceTest < ActiveSupport::TestCase
   test "can tell the type of message based on the text" do
     service = PremiumService.new
 
-    assert_equal 1, (service.get_message_type "OMI", "123456789012345")
-    assert_equal 2, (service.get_message_type "", "123456789012345")
+    assert_equal 2, (service.get_message_type "OMI", "123456789012345")
+    assert_equal 2, (service.get_message_type "OMI", "123456789012345")
   end
 
 

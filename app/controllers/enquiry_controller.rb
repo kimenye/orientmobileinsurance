@@ -23,7 +23,7 @@ class EnquiryController < Wicked::WizardController
       account_id = params[:JP_ITEM_NAME]
     end
 
-    quote = Quote.find_by_account_name account_id
+    quote = Quote.find_by_account_name account_id.upcase
     puts ">>>> Channel #{channel}, Account #{account_id}"
     puts ">>>> #{quote}"
     service = PremiumService.new
