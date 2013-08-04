@@ -14,11 +14,11 @@ $(function(){
     });
 	
 	
-	$('#dealer_form').validate({
-		rules: {
-			'claim["dealer_description"]' : {
-				required: true
-			}
-		}
-	});
+	// $('#dealer_form').validate({
+	// 	rules: {
+	// 		'claim["dealer_description"]' : {
+	// 			required: true
+	// 		}
+	// 	}
+	// });
 });
