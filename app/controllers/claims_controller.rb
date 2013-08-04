@@ -88,7 +88,6 @@ class ClaimsController < ApplicationController
   # PUT /claims/1.json
   def update
     @claim = Claim.find(params[:id])
-
     respond_to do |format|
       if @claim.update_attributes(params[:claim])
         if @claim.step == 1
@@ -96,6 +95,15 @@ class ClaimsController < ApplicationController
           format.html { redirect_to @claim, notice: 'Claim was successfully updated.' }
         elsif @claim.step == 2
           format.html { render action: "dealer_show", notice: 'Claim was forwarded to KOIL team.' }
+        elsif @claim.step == 3
+          binding.pry
+          service = ClaimService.new
+          if params[:commit] == "Approve"
+            service.approve_claim @claim
+          else
+            service.decline_claim @claim
+          end  
+          format.html { render action: "claims_show", notice: 'Claim has been finalized' }
         end
         format.json { head :no_content }
       else

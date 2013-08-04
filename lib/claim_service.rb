@@ -1,5 +1,12 @@
 class ClaimService
 
+  def approve_claim claim
+    # CustomerMailer.policy_purchase(policy).deliver
+  end
+  
+  def decline_claim claim
+  end
+  
   def is_serial_claimant id_number
     customer = Customer.find_by_id_passport id_number
 
