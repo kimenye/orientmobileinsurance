@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require foundation
+//= require jquery.validate.min
 //= require home
 
 $(function(){ $(document).foundation(); });

@@ -12,4 +12,13 @@ $(function(){
             $('.theft-questions input, .theft-questions textarea').prop('disabled', false);
         }
     });
+	
+	
+	$('#dealer_form').validate({
+		rules: {
+			'claim["dealer_description"]' : {
+				required: true
+			}
+		}
+	});
 });

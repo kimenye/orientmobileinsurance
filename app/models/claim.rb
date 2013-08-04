@@ -13,6 +13,7 @@ class Claim < ActiveRecord::Base
   validates_acceptance_of :receipt, :allow_nil => false, if: :is_in_dealer_stage?, accept: true
   validates_acceptance_of :damaged_device, :allow_nil => false, if: :dealer_damage_claim?, accept: true
   validates_acceptance_of :receipt, :allow_nil => false, if: :is_in_dealer_stage?, accept: true
+  validates_presence_of :dealer_description, if: :dealer_damage_claim?
 
 
   def is_theft?

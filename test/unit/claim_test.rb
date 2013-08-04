@@ -49,5 +49,8 @@ class ClaimTest < ActiveSupport::TestCase
     result = @theft_claim.valid?
     assert_equal true, result, "Should be true because of validation pass"
   end
-
+  
+  test "A damage claim must have a description if to be saved by a dealer" do
+    assert_equal true, @damage_claim.is_damage?
+  end
 end
