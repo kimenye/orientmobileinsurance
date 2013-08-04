@@ -96,13 +96,14 @@ class ClaimsController < ApplicationController
         elsif @claim.step == 2
           format.html { render action: "dealer_show", notice: 'Claim was forwarded to KOIL team.' }
         elsif @claim.step == 3
-          binding.pry
           service = ClaimService.new
           if params[:commit] == "Approve"
-            service.approve_claim @claim
+            @claim.authorized = true
           else
-            service.decline_claim @claim
+            @claim.authorized = false
           end  
+          @claim.save!
+          service.resolve_claim @claim
           format.html { render action: "claims_show", notice: 'Claim has been finalized' }
         end
         format.json { head :no_content }

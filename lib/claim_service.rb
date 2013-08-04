@@ -1,10 +1,27 @@
 class ClaimService
 
-  def approve_claim claim
-    # CustomerMailer.policy_purchase(policy).deliver
-  end
-  
-  def decline_claim claim
+  def resolve_claim claim
+    sms = SMSGateway.new
+    to = claim.policy.customer.contact_number
+    replacement = ActionController::Base.helpers.number_to_currency(claim.replaclacement_limited, :unit => "KES ", :precision => 0)
+    if claim.is_damage? && claim.approved
+      # send an sms to the customer
+      if claim.dealer_can_fix
+        sms.send to, "Your #{claim.policy.insured_device.device.model} is under repair. Please collect it from #{claim.agent.name} on #{claim.time_duration.days.from_now.to_s(:simple)}. Please carry your ID / Passport"
+        CustomerMailer.reparable_damage_claim(claim).deliver
+      else
+        sms.send to, "Your #{claim.policy.insured_device.device.model}  cannot be repaired. Please visit #{claim.agent.name} with ID or Passport for a replacement. Limit #{replacement}"
+        CustomerMailer.irreparable_damage_claim(claim).deliver
+      end
+    else
+      if claim.is_theft? && claim.approved
+        sms.send to, "Your claim has been procesed. Please visit #{claim.agent.name} with ID or Passport for a replacement device. Limit #{replacement}"
+        CustomerMailer.loss_theft_claim(claim).deliver
+      elsif claim.is_damage? && !claim.approved
+        CustomerMailer.claim_decline(claim).deliver
+        sms.send to "We regret to inform you that your Orient Mobile DAMAGE claim has been declined. Please check your email for details."
+      end
+    end  
   end
   
   def is_serial_claimant id_number
