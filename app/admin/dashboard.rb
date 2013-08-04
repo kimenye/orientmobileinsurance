@@ -14,14 +14,14 @@ ActiveAdmin.register_page "Dashboard" do
     #
     columns do
        column do
-         panel "Recent Messages" do
-           ul do
-             Message.last(5).map do |post|
-               #li link_to(messa.title, admin_post_path(post))
-               li post.phone_number
-             end
-           end
-         end
+         #panel "Recent Messages" do
+         #  ul do
+         #    Message.last(5).map do |post|
+         #      li link_to(messa.title, admin_post_path(post))
+               #li post.phone_number
+             #end
+           #end
+         #end
        end
 
        #column do

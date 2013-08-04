@@ -6,13 +6,13 @@ class Brand < ActiveRecord::Base
 
   def brands
     brand = brand_1
-    if !brand_2.empty?
+    if !brand_2.blank?
       brand += ", #{brand_2}"
     end
-    if !brand_3.empty?
+    if !brand_3.blank?
       brand += ", #{brand_2}"
     end
-    if !brand_4.empty?
+    if !brand_4.blank?
       brand += ", #{brand_2}"
     end
     brand
