@@ -21,6 +21,11 @@ class ApplicationController < ActionController::Base
     user = current_user
     !user.nil? && user.user_type == "DP"
   end
+  
+  def claims_is_logged_in?
+    user = current_user
+    !user.nil? && user.user_type == "CP"
+  end
 
   def customer_can_see_claim? claim_id
     logged_in = is_customer_logged_in?

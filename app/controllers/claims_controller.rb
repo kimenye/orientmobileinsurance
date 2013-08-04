@@ -17,6 +17,8 @@ class ClaimsController < ApplicationController
     respond_to do |format|
       if dealer_is_logged_in?
         format.html { render action: "dealer_edit" }
+      elsif claims_is_logged_in?
+        format.html { render action: "claims_edit" }
       else
         format.html { render action: "edit" }
       end
