@@ -30,6 +30,10 @@ class ClaimTest < ActiveSupport::TestCase
     assert_equal true, @claim.is_in_dealer_stage?
   end
 
+  test "A claim can be saved by a user" do
+    assert_equal true, @claim.save
+  end
+
   test "A claim can only be saved by a dealer if all document have been received" do
     assert_equal true, @theft_claim.is_theft?
     assert_equal true, @theft_claim.is_in_dealer_stage?

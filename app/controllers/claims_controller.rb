@@ -27,6 +27,10 @@ class ClaimsController < ApplicationController
 
   end
 
+  def dealer_show
+
+  end
+
   # GET /claims/1
   # GET /claims/1.json
   def show
@@ -85,12 +89,11 @@ class ClaimsController < ApplicationController
 
     respond_to do |format|
       if @claim.update_attributes(params[:claim])
-        #@claim.step = 1
         if @claim.step == 1
           CustomerMailer.claim_registration(@claim).deliver
-          format.html { redirect_to @claim, notice: 'Claim was successfully created.' }
+          format.html { redirect_to @claim, notice: 'Claim was successfully updated.' }
         elsif @claim.step == 2
-
+          format.html { render action: "dealer_show", notice: 'Claim was forwarded to KOIL team.' }
         end
         format.json { head :no_content }
       else

@@ -1,0 +1,60 @@
+= render "layouts/claims_header"
+- if @claim.nil?
+  .row
+    .large-8.large-centered.columns
+      %h4
+        No such claim was found
+- else
+  = form_for(@claim, :method => :put) do |f|
+    .large-8.large-centered.columns.disabled
+      .row
+        .large-12.columns
+          .row
+            .large-4.columns
+              %span
+                Insured:
+              %b
+                = @claim.policy.customer.name
+            .large-4.columns
+              %span
+                ID / Passport No:
+              %b
+                = @claim.policy.customer.id_passport
+            .large-4.columns
+              %span
+                Tel:
+              %b
+                = @claim.policy.customer.phone_number
+          .row.spacer
+            .large-5.columns
+              %span
+                Claim No:
+              %b
+                = @claim.claim_no
+            .large-5.columns
+              %span
+                Claim Reporting Date:
+              %b
+                = @claim.created_at.to_s(:simple)
+            .large-2.columns
+          .row.spacer
+            .large-4.columns
+              %span
+                Device:
+              %b
+                = @claim.policy.quote.insured_device.device.model
+            .large-4.columns
+              %span
+                IMEI:
+              %b
+                = @claim.policy.quote.insured_device.imei
+            .large-4.columns
+              %span
+                Claim Type:
+              %b
+                = @claim.claim_type
+          .row.spacer
+            .large-12.columns
+              %p
+                %b
+                  Your Claim has been forward to the KOIL claims team
