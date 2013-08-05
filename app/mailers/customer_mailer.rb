@@ -4,6 +4,8 @@ class CustomerMailer < ActionMailer::Base
 
   def claim_registration(claim)
     @claim = claim
+    service = ClaimService.new
+    @brand = service.find_brands_in_town(@claim.nearest_town)
     attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
     mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim Registration Details")
   end
@@ -23,18 +25,24 @@ class CustomerMailer < ActionMailer::Base
 
   def reparable_damage_claim(claim)
     @claim = claim
+    service = ClaimService.new
+    @brand = service.find_brands_in_town(@claim.nearest_town)
     attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
     mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
   end
 
   def irreparable_damage_claim(claim)
     @claim = claim
+    service = ClaimService.new
+    @brand = service.find_brands_in_town(@claim.nearest_town)
     attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
     mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
   end
 
   def loss_theft_claim(claim)
     @claim = claim
+    service = ClaimService.new
+    @brand = service.find_brands_in_town(@claim.nearest_town)
     attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
     mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
   end

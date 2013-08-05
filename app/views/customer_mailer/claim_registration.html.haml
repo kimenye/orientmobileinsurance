@@ -65,3 +65,17 @@
     Original ID/ Passport
   %li
     This claim registration confirmation
+- if(@brand.size > 0)
+  %p The following are the dealers available in your town
+    - if (!@brand.brand_1.nil?)
+      %p
+        = @brand.brand_1
+    - if (!@brand.brand_2.nil?)
+      %p
+        = @brand.brand_2
+    - if (!@brand.brand_3.nil?)
+      %p
+        = @brand.brand_3
+    - if (!@brand.brand_4.nil?)
+      %p
+        = @brand.brand_4
