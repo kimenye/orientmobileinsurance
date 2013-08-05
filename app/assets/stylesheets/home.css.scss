@@ -55,3 +55,13 @@ h4.header {
     display: inline-block;
   }
 }
+
+input.error,
+label.error,
+textarea.error {
+  margin-bottom: 5px;
+}
+
+label.error {
+  margin-top: 5px;
+}
