@@ -23,6 +23,25 @@ class SMSGatewayTest < ActiveSupport::TestCase
     assert expected_response == response
   end
 
+  test "The gateway response contains the transaction reference" do
+    gateway_response =
+        "<methodResponse>
+          <params>
+            <param>
+              <value>
+          <struct>
+            <member>
+              <name>Identifier</name>
+              <value><string>1ec78fd8</string></value>
+            </member>
+          </struct></value>
+            </param>
+          </params>
+        </methodResponse>"
+    service = SMSGateway.new
+    assert_equal "1ec78fd8", service.get_message_reference(gateway_response)
+  end
+
   test "the gateway creates the correct xml" do
 
     valid_xml = "<?xml version=\"1.0\"?>

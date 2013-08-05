@@ -42,6 +42,17 @@ class MessagesController < ApplicationController
     @message = Message.find(params[:id])
   end
 
+  def receipts
+    receipt_id = params[:receipts][:receipt][:reference]
+    delivered = params[:receipts][:receipt][:status]
+    sms = Sms.find_by_receipt_id receipt_id
+    if !sms.nil?
+      sms.delivered = delivered == "D"
+      sms.save!
+    end
+    render text: "OK"
+  end
+
   # POST /messages
   # POST /messages.json
   def create
