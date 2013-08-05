@@ -91,7 +91,7 @@ class ClaimsController < ApplicationController
     respond_to do |format|
       if @claim.update_attributes(params[:claim])
         if @claim.step == 1
-          CustomerMailer.claim_registration(@claim).deliver
+          #CustomerMailer.claim_registration(@claim).deliver
           format.html { redirect_to @claim, notice: 'Claim was successfully updated.' }
         elsif @claim.step == 2
           format.html { render action: "dealer_show", notice: 'Claim was forwarded to KOIL team.' }

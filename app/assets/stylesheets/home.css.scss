@@ -54,6 +54,11 @@ h4.header {
   label {
     display: inline-block;
   }
+
+  label.error {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 }
 
 input.error,

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130804183122) do
+ActiveRecord::Schema.define(:version => 20130805111518) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(:version => 20130804183122) do
     t.boolean  "authorized"
     t.decimal  "replacement_limit"
     t.text     "decline_reason"
+    t.integer  "days_to_fix"
   end
 
   add_index "claims", ["agent_id"], :name => "index_claims_on_agent_id"
