@@ -75,7 +75,7 @@ class SMSGateway
                 </member>
                 <member>
                   <name>Receipt</name>
-                  <value>Y</value>
+                  <value>N</value>
                 </member>
                 <member>
                   <name>Channel</name>
