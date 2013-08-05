@@ -9,6 +9,11 @@
 %ul
   %li
     %b
+      Policy Number:
+    %span
+      = @policy.policy_number
+  %li
+    %b
       Make & Model:
     %span
       = @policy.quote.insured_device.device.marketing_name
