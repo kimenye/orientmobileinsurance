@@ -45,12 +45,27 @@ class MessagesController < ApplicationController
   def receipts
     puts ">>>> #{params.has_key?(:receipts)} <<< Params - #{params}"
     if params.has_key? (:receipts)
-      receipt_id = params[:receipts][:receipt][:reference]
-      delivered = params[:receipts][:receipt][:status]
-      sms = Sms.find_by_receipt_id receipt_id
-      if !sms.nil?
-        sms.delivered = delivered == "D"
-        sms.save!
+      if params[:receipts][:receipt].kind_of? Array
+        params[:receipts][:receipt].each do |receipt|
+          receipt_id = receipt[:reference]
+          delivered = receipt[:status]
+          sms = Sms.find_by_receipt_id receipt_id
+          if !sms.nil?
+            sms.delivered = delivered == "D"
+            sms.save!
+          end
+        end
+      else
+        if params[:receipts][:receipt].any?
+          receipt = params[:receipts][:receipt]
+          receipt_id = receipt[:reference]
+          delivered = receipt[:status]
+          sms = Sms.find_by_receipt_id receipt_id
+          if !sms.nil?
+            sms.delivered = delivered == "D"
+            sms.save!
+          end
+        end
       end
     end
     render text: "OK"
