@@ -41,6 +41,8 @@
                 -if id.quote.policy.has_claim?
                   %a{:href => edit_claim_path(id.quote.policy.claim)}
                     = id.device.marketing_name
+                -else
+                  = id.device.marketing_name
               %td
                 -if !id.quote.policy.expiry.nil?
                   = id.quote.policy.expiry.to_s(:simple)
