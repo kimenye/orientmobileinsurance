@@ -1,5 +1,6 @@
 = image_tag attachments['admin_banner.jpg'].url
 %br
+%h6 Claim No: #{@claim.claim_no}
 %p Dear #{@claim.policy.quote.insured_device.customer.name}
 %p Please visit #{@claim.agent.name} in #{@claim.nearest_town} with ID or Passport for a replacement device. Limit KES 6500.
 %p Please contact our call center on 0733123456 if you would like further information on this.
