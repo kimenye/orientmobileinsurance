@@ -35,13 +35,16 @@ class SMSGateway
         </methodResponse>"
     end
     resp = response.to_s
-    Sms.create! :to => to, :text => message, :request => xml,  :response => resp, :receipt_id => get_message_reference(resp)
+    ref = get_message_reference(resp)
+    Sms.create! :to => to, :text => message, :request => xml,  :response => resp, :receipt_id => ref
     response
   end
 
   def get_message_reference string
-    hash = Hash.from_xml(string)
-    hash["methodResponse"]["params"]["param"]["value"]["struct"]["member"]["value"]["string"]
+    if !string.start_with? ("xml")
+      hash = eval(string)
+      return hash["methodResponse"]["params"]["param"]["value"]["struct"]["member"]["value"]["string"]
+    end
   end
 
   def create_message to, message
