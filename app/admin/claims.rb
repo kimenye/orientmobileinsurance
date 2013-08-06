@@ -1,4 +1,5 @@
 ActiveAdmin.register Claim do
+=begin
   index do
     column :claim_no
     column :claim_type
@@ -6,5 +7,6 @@ ActiveAdmin.register Claim do
     column :policy
     column :status
   end
-  actions :index, :show
+  actions :index, :show, :delete
+=end
 end
