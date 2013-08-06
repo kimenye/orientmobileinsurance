@@ -4,4 +4,7 @@
       Welcome to Orient Mobile Claims
 .row
   .large-8.large-centered.columns
+    - if(flash[:notice])
+      %div.alert-box
+        = flash[:notice]
     = render 'login_form'

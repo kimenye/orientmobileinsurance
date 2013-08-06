@@ -9,6 +9,8 @@ class CustomerController < ApplicationController
     if !customer.nil?
       session[:customer] = customer
       redirect_to customer_url(customer)
+    else
+      redirect_to '/customer', :notice => "Customer with that id does not exist."
     end
   end
 
