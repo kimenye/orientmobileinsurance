@@ -21,19 +21,19 @@
     %b
       Insurance Value:
     %span
-      = "#{number_to_currency(@policy.quote.insured_value, :unit => 'KES ')}"
+      = "#{number_to_currency(@policy.quote.insured_value, :unit => 'KES ', :delimiter => "")}"
   - if(@policy.quote.premium_type == 'Annual')
     %li
       %b
         Annual Premium:
       %span
-        = "#{number_to_currency(@policy.quote.annual_premium, :unit => 'KES ')}"
+        = "#{number_to_currency(@policy.quote.annual_premium, :unit => 'KES ', :delimiter => "")}"
   - elsif(@policy.quote.premium_type == 'Monthly')
     %li
       %b
         Monthly Premium:
       %span
-        = "#{number_to_currency(@policy.quote.monthly_premium, :unit => 'KES ')}"
+        = "#{number_to_currency(@policy.quote.monthly_premium, :unit => 'KES ', :delimiter => "")}"
   %li
     %b
       Policy Start date:

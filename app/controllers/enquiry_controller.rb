@@ -37,7 +37,7 @@ class EnquiryController < Wicked::WizardController
       policy = quote.policy
       payment = Payment.create! :policy_id => policy.id, :amount => params[:JP_AMOUNT], :method => "JP", :reference => params[:JP_TRANID]
 
-      @message = "Thank you for your payment of #{number_to_currency(params[:JP_AMOUNT], :unit => "KES ", :precision => 0)}"
+      @message = "Thank you for your payment of #{number_to_currency(params[:JP_AMOUNT], :unit => "KES ", :precision => 0, :delimiter => "")}"
       puts ">>>>> IMEI: #{quote.insured_device.imei.nil?}"
 
       if quote.insured_device.imei.nil?
@@ -90,11 +90,11 @@ class EnquiryController < Wicked::WizardController
           session[:device] = device
           iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
           details = {
-            "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0),
+            "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0, :delimiter => ""),
             "insurance_value_uf" => iv,
-            "annual_premium" => number_to_currency(premium_service.calculate_annual_premium(code, iv), :unit => "KES ", :precision => 0),
+            "annual_premium" => number_to_currency(premium_service.calculate_annual_premium(code, iv), :unit => "KES ", :precision => 0, :delimiter => ""),
             "annual_premium_uf" => premium_service.calculate_annual_premium(code, iv),
-            "quarterly_premium" => number_to_currency(premium_service.calculate_monthly_premium(code, iv), :unit => "KES ", :precision => 0),
+            "quarterly_premium" => number_to_currency(premium_service.calculate_monthly_premium(code, iv), :unit => "KES ", :precision => 0, :delimiter => ""),
             "quarterly_premium_uf" => premium_service.calculate_monthly_premium(code, iv),
             "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
           }

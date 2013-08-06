@@ -3,7 +3,7 @@ class ClaimService
   def resolve_claim claim
     sms = SMSGateway.new
     to = claim.policy.customer.contact_number
-    replacement = ActionController::Base.helpers.number_to_currency(claim.replaclacement_limited, :unit => "KES ", :precision => 0)
+    replacement = ActionController::Base.helpers.number_to_currency(claim.replaclacement_limited, :unit => "KES ", :precision => 0, :delimiter => "")
     if claim.is_damage? && claim.approved
       # send an sms to the customer
       if claim.dealer_can_fix

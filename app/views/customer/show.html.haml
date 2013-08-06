@@ -47,4 +47,4 @@
                 -if !id.quote.policy.expiry.nil?
                   = id.quote.policy.expiry.to_s(:simple)
               %td
-                = number_to_currency(id.quotes.first.insured_value, :unit => "KES ", :precision => 0)
+                = number_to_currency(id.quotes.first.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
