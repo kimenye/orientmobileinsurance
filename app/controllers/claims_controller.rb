@@ -80,7 +80,9 @@ class ClaimsController < ApplicationController
   # POST /claims
   # POST /claims.json
   def create
+    service = ClaimService.new
     @claim = Claim.new(params[:claim])
+    @claim.claim_no = service.create_claim_no
 
     respond_to do |format|
       if @claim.save
