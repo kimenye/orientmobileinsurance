@@ -11,7 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery-ui-1.10.3.custom
+//= require jquery-ui-1.10.3.custom.min
 //= require jquery.mobile.tabs
 //= require jquery.mobile-1.3.1.min
 
