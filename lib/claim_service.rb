@@ -19,7 +19,7 @@ class ClaimService
         CustomerMailer.loss_theft_claim(claim).deliver
       elsif claim.is_damage? && !claim.approved
         CustomerMailer.claim_decline(claim).deliver
-        sms.send to "We regret to inform you that your Orient Mobile DAMAGE claim has been declined. Please check your email for details."
+        sms.send to, "We regret to inform you that your Orient Mobile DAMAGE claim has been declined. Please check your email for details."
       end
     end  
   end
