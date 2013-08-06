@@ -97,6 +97,7 @@ class ClaimsController < ApplicationController
   # PUT /claims/1.json
   def update
     @claim = Claim.find(params[:id])
+
     respond_to do |format|
       if @claim.update_attributes(params[:claim])
         if @claim.step == 1
