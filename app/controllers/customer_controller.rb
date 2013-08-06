@@ -9,6 +9,10 @@ class CustomerController < ApplicationController
     if !customer.nil?
       session[:customer] = customer
       redirect_to customer_url(customer)
+    else
+      respond_to do |format|
+        format.html { render action: index, notice: "No customer with ID #{params[:customer_id]} was found" }
+      end
     end
   end
 
