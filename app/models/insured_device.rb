@@ -9,6 +9,10 @@ class InsuredDevice < ActiveRecord::Base
     quotes.first
   end
 
+  def can_claim?
+    !quote.policy.nil? && quote.policy.is_active?
+  end
+
   def name
     "#{customer.name} - #{device.marketing_name} - #{imei}"
   end
