@@ -19,7 +19,7 @@
       = f.label :customer_email, 'Email Address'
       = f.email_field :customer_email
       = f.label :customer_payment_option, 'Select Payment'
-      = f.select :customer_payment_option, ['Monthly', 'Annual'], {}, { "data-theme" => "c"}
+      = f.select :customer_payment_option, {"1 year premium of #{session[:quote_details]['annual_premium']}" => "Annual", "3 monthly payments of #{session[:quote_details]['quarterly_premium']}" => "Monthly"}, {}, { "data-theme" => "c"}
 
       %p
         = f.submit "Continue"
