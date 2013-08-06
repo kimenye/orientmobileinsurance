@@ -10,7 +10,10 @@ class CustomerController < ApplicationController
       session[:customer] = customer
       redirect_to customer_url(customer)
     else
-      redirect_to '/customer', :notice => "Customer with that id does not exist."
+      #respond_to do |format|
+      #  format.html { render action: index, notice: "No customer with ID #{params[:customer_id]} was found" }
+      #end
+      redirect_to '/customer', :notice => "No customer with ID #{params[:customer_id]} was found"
     end
   end
 
