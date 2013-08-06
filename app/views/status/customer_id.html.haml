@@ -3,6 +3,9 @@
     %h1
       Client Details
   %section{"data-role" => "content", :role => "main"}
+    %h1.logo
+      %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.png"}
+  %section{"data-role" => "content", :role => "main"}
     = form_for(@status, :url => wizard_path, :method => :put) do |f|
       = f.label :customer_id, 'Enter ID or Passport No:'
       = f.text_field :customer_id
