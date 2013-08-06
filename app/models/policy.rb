@@ -15,6 +15,12 @@ class Policy < ActiveRecord::Base
     end
   end
 
+  def new_claim
+    claim = Claim.new
+    claim.policy_id = id
+    claim
+  end
+
   def name
     policy_number
   end

@@ -53,6 +53,15 @@ class ClaimsController < ApplicationController
   def new
     @claim = Claim.new
 
+    policy = Policy.find_by_id(params[:policy_id])
+    if !policy.nil?
+      @claim.policy_id = policy.id
+      @claim.policy = policy
+    end
+
+    @towns = Agent.select("distinct town").collect { |t| t.town.strip if !t.town.nil? }
+    @towns = @towns.reject { |t| t.nil? }
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @claim }
@@ -75,7 +84,7 @@ class ClaimsController < ApplicationController
 
     respond_to do |format|
       if @claim.save
-        format.html { redirect_to @claim, notice: 'Claim was successfully created.' }
+        format.html { redirect_to edit_claim_path(@claim) }
         format.json { render json: @claim, status: :created, location: @claim }
       else
         format.html { render action: "new" }
