@@ -22,7 +22,7 @@ class ClaimsController < ApplicationController
           format.html { render action: "dealer_show" }
         end
       elsif claims_is_logged_in?
-        if @claim.replacement_limit.nil?
+        if !@claim.nil? && @claim.replacement_limit.nil?
           @claim.replacement_limit = @claim.policy.quote.insured_value
         end
         format.html { render action: "claims_edit" }
