@@ -10,10 +10,10 @@ class Brand < ActiveRecord::Base
       brand += ", #{brand_2}"
     end
     if !brand_3.blank?
-      brand += ", #{brand_2}"
+      brand += ", #{brand_3}"
     end
     if !brand_4.blank?
-      brand += ", #{brand_2}"
+      brand += ", #{brand_4}"
     end
     brand
   end
