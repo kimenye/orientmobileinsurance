@@ -59,8 +59,8 @@ class ClaimsController < ApplicationController
       @claim.policy = policy
     end
 
-    @towns = Agent.select("distinct town").collect { |t| t.town.strip if !t.town.nil? }
-    @towns = @towns.reject { |t| t.nil? }
+    claim_service = ClaimService.new
+    @towns = claim_service.find_nearest_towns
 
     respond_to do |format|
       format.html # new.html.erb

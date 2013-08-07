@@ -1,5 +1,9 @@
 class ClaimService
 
+  def find_nearest_towns
+    towns = Brand.order("town_name").collect { |t| t.town_name }
+  end
+
   def resolve_claim claim
     sms = SMSGateway.new
     to = claim.policy.customer.contact_number
