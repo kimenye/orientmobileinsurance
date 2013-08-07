@@ -22,6 +22,9 @@ class ClaimsController < ApplicationController
           format.html { render action: "dealer_show" }
         end
       elsif claims_is_logged_in?
+        if @claim.replacement_limit.nil?
+          @claim.replacement_limit = @claim.policy.quote.insured_value
+        end
         format.html { render action: "claims_edit" }
       else
         format.html { render action: "edit" }
@@ -121,6 +124,7 @@ class ClaimsController < ApplicationController
             @claim.authorized = false
           end  
           @claim.save!
+          binding.pry
           service.resolve_claim @claim
           format.html { render action: "claims_show", notice: 'Claim has been finalized' }
         end

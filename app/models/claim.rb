@@ -5,7 +5,7 @@ class Claim < ActiveRecord::Base
                   :nearest_town, :step, :type_of_liquid, :visible_damage, :incident_location, :q_1, :q_2, :q_3, :q_4, :q_5, :agent_id,
                   :police_abstract, :receipt, :original_id, :copy_id, :blocking_request,
                   :dealer_description, :dealer_can_fix, :dealer_cost_estimate, :time_duration, :damaged_device,
-                  :authorized, :replaclacement_limited, :decline_reason, :days_to_fix
+                  :authorized, :replacement_limit, :decline_reason, :days_to_fix
 
   validates_acceptance_of :police_abstract, :allow_nil => false, if: :dealer_theft_claim?, accept: true
   validates_acceptance_of :copy_id, :allow_nil => false, if: :is_in_dealer_stage?, accept: true
@@ -24,6 +24,8 @@ class Claim < ActiveRecord::Base
   def claim_status
     if is_forward_to_koil?
       return "Claim # #{claim_no} has been forwarded to Kenya Orient for authorization"
+    else authorized
+      return status_description
     end
   end
 
