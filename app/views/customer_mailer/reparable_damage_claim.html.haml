@@ -3,10 +3,10 @@
 %h6 Claim No: #{@claim.claim_no}
 %p Dear #{@claim.policy.quote.insured_device.customer.name}
 %p Your #{@claim.policy.quote.insured_device.device.marketing_name} is under repair.
-%p Please collect it from OMB DEALER in #{@claim.nearest_town} on #{}. Please carry your ID/Passport
+%p Please collect it from an authorized dealer in #{@claim.nearest_town} on #{}. Please carry your ID/Passport
 - if(!@brand.nil?)
   - if(@brand.size > 0)
-    %p The following are the dealers available in your town
+    %p The following are the authorized dealers available in your town
     - if (!@brand.brand_1.nil?)
       %p
         = @brand.brand_1
