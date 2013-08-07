@@ -5,11 +5,10 @@
       Client Name: #{@customer.name}
     .large-5.columns.details
       Telephone #: #{@customer.phone_number}
-- if (!@customer.alternate_phone_number.nil?)
-  .row.spacer
-    .large-8.large-centered.columns
-      .large-5.columns.details
-        Other Telephone : #{@customer.alternate_phone_number}
+.row.spacer
+  .large-8.large-centered.columns
+    .large-5.columns.details
+      Other Telephone : #{@customer.contact_number}
 .row.spacer
   .large-8.large-centered.columns
     %h6
