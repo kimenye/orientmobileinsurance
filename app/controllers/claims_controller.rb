@@ -124,7 +124,6 @@ class ClaimsController < ApplicationController
             @claim.authorized = false
           end  
           @claim.save!
-          binding.pry
           service.resolve_claim @claim
           format.html { render action: "claims_show", notice: 'Claim has been finalized' }
         end
