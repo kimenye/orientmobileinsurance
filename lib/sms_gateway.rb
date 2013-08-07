@@ -87,7 +87,7 @@ class SMSGateway
                 </member>
                 <member>
                   <name>Priority</name>
-                  <value>Bulk</value>
+                  <value>Urgent</value>
                 </member>
                 <member>
                   <name>MaxSegments</name>
