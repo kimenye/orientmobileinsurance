@@ -16,7 +16,11 @@ class ClaimsController < ApplicationController
     @claim = Claim.find_by_claim_no(params[:claim_no])
     respond_to do |format|
       if dealer_is_logged_in?
-        format.html { render action: "dealer_edit" }
+        if @claim.is_in_customer_stage?
+          format.html { render action: "dealer_edit" }
+        else
+          format.html { render action: "dealer_show" }
+        end
       elsif claims_is_logged_in?
         format.html { render action: "claims_edit" }
       else

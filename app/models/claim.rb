@@ -17,6 +17,16 @@ class Claim < ActiveRecord::Base
   validates_presence_of :dealer_description, if: :dealer_damage_claim?
 
 
+  def is_forward_to_koil?
+    return step == 2
+  end
+
+  def claim_status
+    if is_forward_to_koil?
+      return "Claim # #{claim_no} has been forwarded to Kenya Orient for authorization"
+    end
+  end
+
   def is_theft?
     claim_type == "Theft / Loss" || claim_type == "Loss/Theft"
   end

@@ -33,7 +33,7 @@
         %span.model
           -if !session[:policy].expiry.nil?
             = session[:policy].expiry.to_s(:simple)
-      - if session[:claim].nil?
+      - if !session[:policy].has_claim?
         %li
           %span.model
             There is no claim associated with the selected device.
@@ -42,25 +42,20 @@
           %b
             Claim Type:
           %span.model
-            = session[:claim].claim_type
+            = session[:policy].claim.claim_type
         %li
           %b
             Incident Date:
           %span.model
-            - if !session[:claim].incident_date.nil?
-              = session[:claim].incident_date.to_s(:simple)
+            - if !session[:policy].claim.incident_date.nil?
+              = session[:policy].claim.incident_date.to_s(:simple)
         %li
           %b
             Incident Description:
           %span.model
-            = session[:claim].incident_description
+            = session[:policy].claim.incident_description
         %li
           %b
             Status:
           %span.model
-            = session[:claim].status
-        %li
-          %b
-            Status Description:
-          %span.model
-            = session[:claim].status_description
+            = session[:policy].claim.claim_status
