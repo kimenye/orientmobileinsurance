@@ -1,5 +1,7 @@
 <useragentswitcher>
 	<folder description="Nokia">
 		<useragent description="ASHA" useragent="Nokia300/5.0 (06.97) Profile/MIDP-2.1 Configuration/CLDC-1.1 Mozilla/5.0 AppleWebKit/420+ (KHTML, like Gecko) Safari/420+" appcodename="" appname="" appversion="" platform="" vendor="" vendorsub=""/>
+		<useragent description="LUMIA" useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 920)" appcodename="" appname="" appversion="" platform="" vendor="" vendorsub=""/>
+		<useragent description="LG P705" useragent="Mozilla/5.0 (Linux; U; Android 4.0.3; ru-ru; LG-P705 Build/IML74K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30" appcodename="" appname="" appversion="" platform="" vendor="" vendorsub=""/>
 	</folder>
 </useragentswitcher>

@@ -16,6 +16,11 @@ class Device < ActiveRecord::Base
     {:conditions => [ "lower(vendor) like ? and (lower(model) like ? or lower(marketing_name) like ? )", "#{vendor.downcase}", "#{model.downcase}", "#{marketing_name.downcase}" ]}
   end )
 
+  scope :wider_search, (lambda do |model|
+    {:conditions => [ "lower(model) like ?", "%#{model.downcase}%"]}
+
+  end )
+
   def get_insurance_value (code, year_of_purchase)
     if !code.nil? && code.starts_with?("FX")
       return fd_insured_value

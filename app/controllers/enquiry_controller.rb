@@ -97,6 +97,9 @@ class EnquiryController < Wicked::WizardController
         marketingName = device_data["marketingName"]
 
         device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
+        if device.nil?
+          device = Device.wider_search(model).first
+        end
 
         if device.nil? || is_insurable == false
           jump_to :not_insurable
