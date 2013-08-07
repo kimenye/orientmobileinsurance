@@ -43,7 +43,9 @@ class SMSGateway
   def get_message_reference string
     if !string.start_with? ("<?xml")
       hash = eval(string)
-      return hash["methodResponse"]["params"]["param"]["value"]["struct"]["member"]["value"]["string"]
+      if !hash.nil?
+        return hash["methodResponse"]["params"]["param"]["value"]["struct"]["member"]["value"]["string"]
+      end
     end
     return "ERR"
   end
