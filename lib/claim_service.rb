@@ -8,10 +8,10 @@ class ClaimService
     sms = SMSGateway.new
     to = claim.policy.customer.contact_number
     replacement = ActionController::Base.helpers.number_to_currency(claim.replacement_limit, :unit => "KES ", :precision => 0, :delimiter => "")
-    if claim.is_damage? && claim.approved
+    if claim.is_damage? && claim.authorized
       # send an sms to the customer
       if claim.dealer_can_fix
-        text = "Your #{claim.policy.insured_device.device.model} is under repair. Please collect it from #{claim.agent.name} on #{claim.time_duration.days.from_now.to_s(:simple)}. Please carry your ID / Passport"
+        text = "Your #{claim.policy.insured_device.device.model} is under repair. Please collect it from #{claim.agent.name} on #{claim.days_to_fix.days.from_now.to_s(:simple)}. Please carry your ID / Passport"
         sms.send to, text
         claim.status_description = text
         claim.save!

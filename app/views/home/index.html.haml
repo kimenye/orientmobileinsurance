@@ -24,4 +24,6 @@
             %input{:type => "text", :name => "claim_no"}
             %input{:name=>"authenticity_token", :value=> "#{form_authenticity_token}", :type=> "hidden"}
           .large-6.columns
-            %input.button{:type => "submit"}
+            %label{:style => "display:block"}
+              &nbsp;
+            %input.small.button{:type => "submit"}
