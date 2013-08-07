@@ -44,7 +44,8 @@ class SMSGateway
     if !string.start_with? ("<?xml")
       hash = eval(string)
       if !hash.nil?
-        return hash["methodResponse"]["params"]["param"]["value"]["struct"]["member"]["value"]["string"]
+        #return hash["methodResponse"]["params"]["param"]["value"]["struct"]["member"]["value"]["string"]
+        return "debug"
       end
     end
     return "ERR"
