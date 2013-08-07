@@ -114,7 +114,11 @@ class MessagesController < ApplicationController
           enquiry.url = shortened_url
         end
         enquiry.save!
-        @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{enquiry.url}")
+        begin
+          @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{enquiry.url}")
+        rescue
+        #  Do nothing
+        end
       elsif msg_type == 2
         #user is sending an imei number
         premium_service.activate_policy text, mobile

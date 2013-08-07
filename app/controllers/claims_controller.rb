@@ -110,7 +110,11 @@ class ClaimsController < ApplicationController
     respond_to do |format|
       if @claim.update_attributes(params[:claim])
         if @claim.step == 1
-          CustomerMailer.claim_registration(@claim).deliver
+          begin
+            CustomerMailer.claim_registration(@claim).deliver
+          rescue
+          #  Do nothing
+          end
           format.html { redirect_to @claim, notice: 'Claim was successfully updated.' }
           service = ClaimService.new
           service.notify_customer @claim

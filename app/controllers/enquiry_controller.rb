@@ -15,7 +15,11 @@ class EnquiryController < Wicked::WizardController
       when :complete_enquiry
         smsMessage = session[:sms_message]
         @gateway = SMSGateway.new
-        @gateway.send(session[:sms_to], smsMessage)
+        begin
+          @gateway.send(session[:sms_to], smsMessage)
+        rescue
+        #  Do nothing
+        end
     end
     render_wizard
   end
@@ -47,7 +51,11 @@ class EnquiryController < Wicked::WizardController
       puts ">>>>> IMEI: #{quote.insured_device.imei.nil?}"
 
       if quote.insured_device.imei.nil?
-        sms.send customer.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this &amp; SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
+        begin
+          sms.send customer.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this &amp; SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
+        rescue
+        #  Do nothing
+        end
       else
         if policy.is_pending? && policy.payment_due?
           service.set_policy_dates policy
