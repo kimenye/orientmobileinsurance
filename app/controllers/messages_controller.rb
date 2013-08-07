@@ -71,6 +71,11 @@ class MessagesController < ApplicationController
     render text: "OK"
   end
 
+  def create2
+    puts ">>> New submit path #{params}"
+    render text: "OK"
+  end
+
   # POST /messages
   # POST /messages.json
   def create

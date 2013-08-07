@@ -34,6 +34,7 @@ Orientmobileinsurance::Application.routes.draw do
   match 'enquiries/send_sms' => 'enquiries#send_sms', :as => :send_enquiry_sms
 
   match 'notification' => 'messages#create', :as => :notifications
+  match 'notification2' => 'messages#create2', :as => :notifications
   match 'receipts' => 'messages#receipts', :as => :receipts
   match 'claim_search' => 'claims#search', :as => :claim_search
   match 'payment_notification' => 'enquiry#payment_notification', :as => :payment_notification
