@@ -133,7 +133,7 @@ class EnquiryController < Wicked::WizardController
           jump_to :serial_claimants
         end
 
-        insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id
+        insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase
         q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
                           :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
                           :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],

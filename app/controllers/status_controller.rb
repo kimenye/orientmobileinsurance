@@ -80,9 +80,9 @@ class StatusController < ApplicationController
         session[:claim] = claim
 
         #Send sms
-        @gateway = SMSGateway.new
-        smsMessage = "Ref No: #{claim.claim_no}. Please visit #{brand.brand_1} in #{@status.nearest_town} with the damaged device, purchase receipt or warranty, and original ID or passport."
-        @gateway.send(@customer.phone_number, smsMessage)
+        #@gateway = SMSGateway.new
+        #smsMessage = "Ref No: #{claim.claim_no}. Please visit #{brand.brand_1} in #{@status.nearest_town} with the damaged device, purchase receipt or warranty, and original ID or passport."
+        #@gateway.send(@customer.phone_number, smsMessage)
 
         session[:id] = @customer.id
         jump_to :claim_centers

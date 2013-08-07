@@ -105,6 +105,8 @@ class ClaimsController < ApplicationController
         if @claim.step == 1
           CustomerMailer.claim_registration(@claim).deliver
           format.html { redirect_to @claim, notice: 'Claim was successfully updated.' }
+          service = ClaimService.new
+          service.notify_customer @claim
         elsif @claim.step == 2
           format.html { render action: "dealer_show", notice: 'Claim was forwarded to KOIL team.' }
         elsif @claim.step == 3

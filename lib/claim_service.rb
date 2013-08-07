@@ -23,6 +23,23 @@ class ClaimService
       end
     end  
   end
+
+  def notify_customer claim
+    gateway = SMSGateway.new
+    device = claim.policy.insured_device.device.marketing_name
+    yop = claim.policy.insured_device.yop
+    claim_type = "DAMAGE" if claim.is_damage?
+    claim_type = "THEFT" if claim.is_theft?
+    brand = find_brands_in_town claim.nearest_town
+    customer = claim.policy.customer
+
+    requirements = "the Claim Registration Form, damaged device, purchase receipt/ warranty and original &amp; copy of ID/ Passport." if claim.is_damage?
+    requirements = "claim form, police abstract, stamped Blocking Request Form from network, purchase receipt/ warranty &amp; original &amp; copy of ID/Passport." if claim.is_theft?
+
+    insured_value_str = ActionController::Base.helpers.number_to_currency(claim.policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
+    text = "#{device}, Year #{claim.policy.insured_device.yop}, Value #{insured_value_str}. #{claim_type} booked under Ref #{claim.claim_no}. Check email for Claim Registration Form. Please visit #{brand.brand_1} with #{requirements}"
+    gateway.send(customer.phone_number, text)
+  end
   
   def is_serial_claimant id_number
     customer = Customer.find_by_id_passport id_number
