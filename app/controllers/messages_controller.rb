@@ -73,7 +73,7 @@ class MessagesController < ApplicationController
 
   def create2
     puts ">>> New submit path #{params}"
-    if params.has_key? (:msisdn) && params.has_key? (:text)
+    if params.has_key?(:msisdn) && params.has_key?(:text)
 
       text = params[:text]
       number = params[:msisdn]
