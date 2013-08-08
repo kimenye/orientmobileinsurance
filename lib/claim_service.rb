@@ -65,6 +65,8 @@ class ClaimService
       claims = find_claims_for_a_customer customer
       if !claims.empty?
         dates = claims.collect { |c| c.incident_date }
+
+        dates = dates.reject { |d| d.nil? }
         return dates_in_same_calendar_year dates
       end
     end
