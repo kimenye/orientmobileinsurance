@@ -75,15 +75,55 @@ class MessagesController < ApplicationController
     puts ">>> New submit path #{params}"
     if params.has_key?(:msisdn) && params.has_key?(:text)
 
+
       text = params[:text]
       number = params[:msisdn]
-      
-      @message = Message.new
-      @message.phone_number = number
-      @message.status = "Received"
-      @message.text = text
-      @message.message_type = 3
-      @message.save!
+      if text.downcase.starts_with?("omi")  
+        
+        text = text.downcase.gsub /omi/, ''      
+        prefix = "OMI"
+        
+        premium_service = PremiumService.new
+        @gateway = SMSGateway.new
+        msg_type = premium_service.get_message_type prefix, text        
+        
+        @message = Message.new
+        @message.phone_number = number
+        @message.status = "Received"
+        @message.text = text
+        @message.message_type = msg_type
+        @message.save!
+        
+        puts ">>> message type #{msg_type}"
+        if msg_type == 1
+          enquiry = Enquiry.new
+          enquiry.phone_number = number
+          enquiry.text = prefix
+          enquiry.date_of_enquiry = Time.now
+          enquiry.source = "SMS"
+          enquiry.hashed_phone_number = Digest::MD5.hexdigest(number)
+
+          url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}"
+          enquiry.url = url
+          if Rails.env == "production"
+            puts ">>>>  in production"
+            auth = UrlShortener::Authorize.new ENV['BITLY_USERNAME'], ENV['BITLY_PASSWORD']
+            client = UrlShortener::Client.new auth
+            result = client.shorten(url)
+            shortened_url = result.result['nodeKeyVal']['shortUrl']
+
+            enquiry.url = shortened_url
+          end
+          enquiry.save!
+          @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{enquiry.url}")
+        elsif msg_type == 2
+          #user is sending an imei number
+          premium_service.activate_policy text, number
+        else
+          puts ">>> we were not able to understand the text message"
+        end
+        
+      end
     end
     render text: "OK"
   end
