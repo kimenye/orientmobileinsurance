@@ -177,9 +177,7 @@
 
     $('.edit_claim').validate({
       rules : {
-        "claim[authorization_type]" : {
-          required : true
-        },
+        "claim[authorization_type]" : authorization_rules,
         "claim[replacement_limit]" : replace_rules,
         "claim[repair_limit]" : repair_rules,
         "claim[authorized]" : authorization_rules,
