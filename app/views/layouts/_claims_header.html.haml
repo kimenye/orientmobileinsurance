@@ -7,15 +7,16 @@
           #{': KOIL Claims Portal'}
         - else
           #{': Dealer Portal'}
-.row.spacer
+.row
   .large-8.large-centered.columns
     - if !current_user.nil?
       - if current_user.user_type == "DP"
-        .row.spacer
-          .large-6.columns.details
-            Outlet: #{current_user.agent.name}
-          .large-5.columns.details
-            Outlet Code #: #{current_user.agent.code}
-.row.spacer
-  .twelve.columns
-    %br
+        .row.spacer.disabled
+          .large-6.columns
+            %label
+              Outlet Name
+            %input{:type => "text", :value => current_user.agent.name}
+          .large-6.columns
+            %label
+              Outlet Code
+            %input{:type => "text", :value => current_user.agent.code}

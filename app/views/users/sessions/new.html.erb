@@ -1,6 +1,6 @@
 <div class="row">
   <div class="large-8 large-centered columns">
-    <h4 class="centered.header">
+    <h4 class="centered header">
       Welcome to Orient Mobile Claims :
       <% if resource.user_type == "CP" %>
           KOIL Claims Portal
@@ -10,22 +10,23 @@
     </h4>
   </div>
 </div>
-<div class="row">
+<div class="row spacer">
   <div class="large-8 large-centered columns">
-    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-        <% f.hidden_field :user_type  %>
-        <div><%= f.label :email %><br />
-          <%= f.email_field :email, :autofocus => true %></div>
+    <div class="large-6 large-centered columns">
+      <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+          <% f.hidden_field :user_type  %>
+          <div><%= f.label :email %><br />
+            <%= f.email_field :email, :autofocus => true %></div>
 
+          <div><%= f.label :password %><br />
+            <%= f.password_field :password %></div>
 
-        <div><%= f.label :password %><br />
-          <%= f.password_field :password %></div>
+          <% if devise_mapping.rememberable? -%>
+              <div><%= f.check_box :remember_me %> <%= f.label :remember_me, :class => "label inline" %></div>
+          <% end -%>
 
-        <% if devise_mapping.rememberable? -%>
-            <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
-        <% end -%>
-
-        <div><%= f.submit "Sign in" %></div>
-    <% end %>
+          <div><%= f.submit "Sign in", :class => "button small" %></div>
+      <% end %>
+    </div>
    </div>
 </div>

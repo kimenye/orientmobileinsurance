@@ -16,17 +16,17 @@ class ClaimsController < ApplicationController
     @claim = Claim.find_by_claim_no(params[:claim_no])
     respond_to do |format|
       if dealer_is_logged_in?
-        if @claim.is_in_customer_stage?
+        if !@claim.nil? && @claim.is_in_customer_stage?
           format.html { render action: "dealer_edit" }
         else
           format.html { render action: "dealer_show" }
         end
       elsif claims_is_logged_in?
-        if @claim.is_in_dealer_stage?
-          if !@claim.nil? && @claim.replacement_limit.nil?
+        if !@claim.nil? && @claim.is_in_dealer_stage?
+          if @claim.replacement_limit.nil?
             @claim.replacement_limit = @claim.policy.quote.insured_value
           end
-          if !@claim.nil? && @claim.is_damage? && @claim.dealer_can_fix && !@claim.dealer_cost_estimate.nil?
+          if @claim.is_damage? && @claim.dealer_can_fix && !@claim.dealer_cost_estimate.nil?
             @claim.repair_limit = @claim.dealer_cost_estimate
           end
           format.html { render action: "claims_edit" }
