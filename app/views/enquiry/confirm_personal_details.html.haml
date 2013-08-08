@@ -2,9 +2,6 @@
   %header{"data-role" => "header"}
     %h1
       Your Device Details
-  -#%section{"data-role" => "content", :role => "main"}
-    %h1.logo
-      %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.png"}
   %section{"data-role" => "content", "role" => "main"}
     %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
       %li{"data-role" => "list-divider"}
@@ -44,16 +41,6 @@
           ID or Passport No.:
         %span.model
           = session[:user_details]["customer_id"]
-      -#%li
-        %b
-          Mobile No.:
-        %span.model
-          = session[:user_details]["customer_phone_number"]
-      -#%li
-        %b
-          Email:
-        %span.model
-          = session[:user_details]["customer_email"]
       - if !session[:quote_details]["sales_agent"].nil?
         %li
           %b
@@ -67,42 +54,5 @@
           and is valid till
           = "#{session[:quote].expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."
           Please click Accept for payment information
-      -#%li
-      -#  %b
-      -#    Amount Due:
-      -#  %span.model
-      -#    - if(@enquiry.customer_payment_option == 'Annualy')
-      -#      = session[:quote_details]["annual_premium"]
-      -#    - elsif(@enquiry.customer_payment_option == 'Monthly')
-      -#%li
-      -#  %b
-      -#    Name:
-      -#  %span.model
-      -#    = @enquiry.customer_name
-      -#%li
-      -#  %b
-      -#    ID or Passport No.:
-      -#  %span.model
-      -#    = @enquiry.customer_id
-      -#%li
-      -#  %b
-      -#    Sales Agent:
-      -#  %span.model
-      -#    = @enquiry.sales_agent_code
-    %a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
+    %a{"href" => "/enquiry/begin", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
     = link_to('Accept', wizard_path(:complete_enquiry), "data-role" => "button", "data-inline" => "true", "data-mini" => "true")
-
--#:javascript
--#
--#  $("#send-sms").click(function() {
--#      alert("Handler for .click() called.");
--#  });
--#
--#  $(document).ready(function() {
--#
--#     alert("yo");
--#     alert("#{session[:user_details]['customer_phone_number']}");
--#      //alert();
--#      //$.post("enquiries/send_sms", { phone_number: "", message: "" } );
--#
--#  });

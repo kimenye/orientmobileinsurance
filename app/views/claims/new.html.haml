@@ -8,7 +8,7 @@
   = form_for(@claim, :method => :post) do |f|
     .large-8.large-centered.columns
       .row
-        .large-12.columns
+        .large-8.large-centered.columns
           .row.disabled
             .large-4.columns
               %label
@@ -17,8 +17,11 @@
             .large-4.columns
               %label
                 Other Telephone
-              %input{:type => "text", :value => @claim.contact_number}
+              %input{:type => "text", :value => @claim.policy.customer.contact_number}
             .large-4.columns
+              %label
+                Email
+              %input{:type => "text", :value => @claim.policy.customer.email}
           .row.disabled
             .large-6.columns
               %label
@@ -30,7 +33,6 @@
               %input{:type => "text", :value => @claim.policy.insured_device.imei}
           .row
             .large-6.columns
-              -#%label
               = f.label :claim_type
               = f.select :claim_type, ["Loss/Theft", "Damage"]
             .large-6.columns
@@ -39,17 +41,4 @@
           .row.spacer
             .large-12.columns
               = f.hidden_field :policy_id
-              = f.submit "Save", {:class=> "button"}
-:javascript
-  $(function(){
-    $('.new_claim').validate({
-
-      rules : {
-        "claim[claim_type]" : {
-          required : true
-        },
-        "claim[nearest_town]" : {
-          required : true
-        },
-      });
-  })
+              = f.submit "Save", {:class=> "small button"}

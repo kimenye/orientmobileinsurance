@@ -43,7 +43,6 @@
             Sales Agent:
           %span.model
             = session[:quote_details]["sales_agent"]
-    %a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
-    -#%a{"href" => "#", "data-role" => "button", "data-inline" => "true", "data-theme" => "b", "data-mini" => "true"} Continue
+    %a{"href" => "/enquiry/begin", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
     = link_to('Continue', wizard_path(:personal_details), "data-role" => "button", "data-inline" => "true", "data-mini" => "true")
 

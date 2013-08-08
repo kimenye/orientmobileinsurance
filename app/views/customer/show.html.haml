@@ -16,11 +16,11 @@
 .row.spacer
   .large-8.large-centered.columns
     = form_for(@customer, :method => :put) do |f|
-      = f.label :alternate_phone_number, "Phone Number"
+      = f.label :alternate_phone_number, "Alternate Phone Number"
       = f.text_field :alternate_phone_number
       = f.label :email
       = f.email_field :email
-      = f.submit "Update", {:class=> "button"}
+      = f.submit "Update", {:class=> "button small"}
 .row.spacer
   .large-8.large-centered.columns
     %h6
@@ -42,9 +42,11 @@
                 -if id.quote.policy.has_claim?
                   %a{:href => edit_claim_path(id.quote.policy.claim)}
                     = id.device.marketing_name
-                -else
+                -elsif id.quote.policy.is_active?
                   %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
                     = id.device.marketing_name
+                -else
+                  = id.device.marketing_name
               %td
                 -if !id.quote.policy.expiry.nil?
                   = id.quote.policy.expiry.to_s(:simple)

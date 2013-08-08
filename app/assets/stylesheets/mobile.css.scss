@@ -16,6 +16,13 @@
   color: red;
 }
 
+label.error {
+  color: red;
+  padding-top: .5em;
+  vertical-align: top;
+  font-weight:bold
+}
+
 .model {
   font-weight: normal;
 }

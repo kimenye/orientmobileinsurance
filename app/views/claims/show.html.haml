@@ -14,58 +14,58 @@
           Please print this document and carry it with you to your authorized repair/ supply partner
     .large-8.large-centered.columns.disabled
       .row
-        .large-12.columns
+        .large-8.large-centered.columns
           .row
             .large-12.columns
               %p
                 You have successfully registered a claim as follows:
           .row
-            .large-4.columns
+            .large-6.columns
               %span
                 Insured:
               %b
                 = @claim.policy.customer.name
-            .large-4.columns
+            .large-6.columns
               %span
                 ID / Passport No:
               %b
                 = @claim.policy.customer.id_passport
-            .large-4.columns
+          .row.spacer
+            .large-6.columns
               %span
                 Tel:
               %b
                 = @claim.policy.customer.phone_number
-          .row.spacer
-            .large-5.columns
+            .large-6.columns
               %span
                 Claim No:
               %b
                 = @claim.claim_no
-            .large-5.columns
+          .row.spacer
+            .large-6.columns
               %span
                 Claim Reporting Date:
               %b
                 = @claim.created_at.to_s(:simple)
-            .large-2.columns
-          .row.spacer
-            .large-4.columns
-              %span
-                Device:
-              %b
-                = @claim.policy.quote.insured_device.device.model
-            .large-4.columns
-              %span
-                IMEI:
-              %b
-                = @claim.policy.quote.insured_device.imei
-            .large-4.columns
+            .large-6.columns
               %span
                 Claim Type:
               %b
                 = @claim.claim_type
           .row.spacer
+            .large-6.columns
+              %span
+                Device:
+              %b
+                = @claim.policy.quote.insured_device.device.model
+            .large-6.columns
+              %span
+                IMEI:
+              %b
+                = @claim.policy.quote.insured_device.imei
+          .row.spacer
             .large-12.columns
-              %br
+              %hr
               %p
                 Please visit #{@nearest_dealers} in
                 %b
