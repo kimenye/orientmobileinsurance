@@ -25,7 +25,7 @@ class EnquiryController < Wicked::WizardController
     channel = params[:JP_CHANNEL]
 
     account_id = params[:JP_MERCHANT_ORDERID]
-    if channel == "MPESA"
+    if channel == "MPESA" || channel == "AIRTEL"
       account_id = params[:JP_ITEM_NAME]
     end
 
@@ -55,7 +55,7 @@ class EnquiryController < Wicked::WizardController
         end
       end
 
-      if channel == "MPESA"
+      if channel == "MPESA" || channel == "AIRTEL"
         render text: "OK"
       end
     else

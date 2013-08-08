@@ -11,11 +11,15 @@
     .large-8.large-centered.columns
 
       - if current_user.user_type == "DP"
-        .row
-          .large-6.columns.details
-            Outlet: #{current_user.agent.name}
-          .large-6.columns.details
-            Outlet Code #: #{current_user.agent.code}
+        .row.disabled.spacer
+          .large-6.columns
+            %label
+              Outlet Name
+            %input{:type => "text", :value => current_user.agent.name}
+          .large-6.columns
+            %label
+              Outlet Code
+            %input{:type => "text", :value => current_user.agent.code}
       .row.spacer
         %form{:method => "POST", :action => claim_search_path}
           .large-6.columns

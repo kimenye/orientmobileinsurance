@@ -19,6 +19,8 @@ ul.nav {
 
 h4.header {
   margin-top: 20px;
+  font-weight: normal;
+  border-bottom: 1px solid lightgrey;
 }
 
 .details {
@@ -56,7 +58,7 @@ h4.header {
 
 .checks, .claims {
   label {
-    display: inline-block;
+    display: inline;
   }
 
   label.error {
@@ -79,4 +81,16 @@ label.error {
 .ui-widget-header {
   background: #333399;
   border:  1px solid #333399;
+}
+
+.new_user {
+  .label {
+    background-color: white;
+    color: inherit;
+  }
+}
+
+.section_header  {
+  font-weight: normal;
+  border-bottom: 1px solid lightgrey;
 }

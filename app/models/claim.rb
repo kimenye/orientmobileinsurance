@@ -23,6 +23,8 @@ class Claim < ActiveRecord::Base
   def claim_status
     if is_forward_to_koil?
       return "Claim # #{claim_no} has been forwarded to Kenya Orient for authorization"
+    elsif is_in_customer_stage?
+      return "Customer has not presented registration form at Dealer"
     else authorized
       return status_description
     end

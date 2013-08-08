@@ -36,6 +36,12 @@ class ClaimService
         sms.send to, text
         claim.status_description = text
         claim.save!
+      elsif claim.is_theft? && !claim.authorized
+        CustomerMailer.claim_decline(claim).deliver
+        text = "We regret to inform you that your Orient Mobile THEFT claim has been declined. Please check your email for details."
+        sms.send to, text
+        claim.status_description = text
+        claim.save!
       end
     end  
   end

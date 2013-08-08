@@ -2,7 +2,7 @@
 %br
 %h6 Claim No: #{@claim.claim_no}
 %p Dear #{@claim.policy.quote.insured_device.customer.name}
-%p We regret to inform you that your Orient Mobile DAMAGE claim has been declined
+%p We regret to inform you that your Orient Mobile #{if @claim.is_damage? then 'DAMAGE' else 'THEFT' end } claim has been declined
 %p Reason:
 %p
   = @claim.decline_reason

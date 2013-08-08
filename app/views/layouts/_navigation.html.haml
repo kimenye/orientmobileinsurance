@@ -1,13 +1,6 @@
 .row
-  .large-5.columns
-  .large-7.columns
+  .large-8.large-centered.columns
     %ul.nav
-      %li
-        %a{:href => "#{new_user_session_path}?user_type=CP"}
-          Claims Portal
-      %li
-        %a{:href => "#{new_user_session_path}?user_type=DP"}
-          Dealer Portal
       - if user_signed_in?
         %li
           = link_to('Logout', destroy_user_session_path, :method => :delete)
@@ -15,6 +8,12 @@
         %li
           %a{:href => customer_index_path }
             Customer Claims
+        %li
+          %a{:href => "#{new_user_session_path}?user_type=DP"}
+            Dealer Portal
+        %li
+          %a{:href => "#{new_user_session_path}?user_type=CP"}
+            Claims Portal
       %li
         %a{:href => admin_root_path }
           Admin
