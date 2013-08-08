@@ -73,6 +73,18 @@ class MessagesController < ApplicationController
 
   def create2
     puts ">>> New submit path #{params}"
+    if params.has_key? (:msisdn) && params.has_key? (:text)
+
+      text = params[:text]
+      number = params[:msisdn]
+      
+      @message = Message.new
+      @message.phone_number = number
+      @message.status = "Received"
+      @message.text = text
+      @message.message_type = 3
+      @message.save!
+    end
     render text: "OK"
   end
 
