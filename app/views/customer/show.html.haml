@@ -1,20 +1,20 @@
 = render "layouts/claims_header"
 .row
-  .large-8.large-centered.columns
+  .large-10.large-centered.columns
     .large-5.columns.details
       Client Name: #{@customer.name}
     .large-5.columns.details
       Telephone #: #{@customer.phone_number}
 .row.spacer
-  .large-8.large-centered.columns
+  .large-10.large-centered.columns
     .large-5.columns.details
       Other Telephone : #{@customer.contact_number}
 .row.spacer
-  .large-8.large-centered.columns
+  .large-10.large-centered.columns
     %h6
       Please provide an alternative mobile telephone no. and email address at which you can be reached while your claim is being processed.
 .row.spacer
-  .large-8.large-centered.columns
+  .large-10.large-centered.columns
     = form_for(@customer, :method => :put) do |f|
       = f.label :alternate_phone_number, "Alternate Phone Number"
       = f.text_field :alternate_phone_number
@@ -22,11 +22,11 @@
       = f.email_field :email
       = f.submit "Update", {:class=> "button small"}
 .row.spacer
-  .large-8.large-centered.columns
+  .large-10.large-centered.columns
     %h6
       Please select the device for which you are making a claim
 .row.spacer
-  .large-8.large-centered.columns
+  .large-10.large-centered.columns
     %table
       %thead
         %td Make & Model

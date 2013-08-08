@@ -1,51 +1,50 @@
-.large-8.large-centered.columns.disabled
-  .row
-    .large-8.large-centered.columns
-      .row.disabled
-        .large-6.columns
-          %label
-            Insured:
-          %input{:type => "text", :value => @claim.policy.customer.name}
-        .large-6.columns
-          %label
-            ID / Passport No:
-          %input{:type => "text", :value => @claim.policy.customer.id_passport }
-      .row.disabled
-        .large-6.columns
-          %label
-            Tel:
-          %input{:type => "text", :value => @claim.policy.customer.phone_number }
-        .large-6.columns
-          %label
-            Claim No:
-          %input{:type => "text", :value => @claim.claim_no }
-      .row.disabled
-        .large-4.columns
-          %label
-            Claim Reporting Date:
-          %input{:type => "text", :value => @claim.created_at.to_s(:simple)}
-        .large-4.columns
-          %label
-            Incident Date
-          %input{:type => "text", :value => @claim.incident_date.to_s(:simple) }
-        .large-4.columns
-          %label
-            Claim Type:
-          %input{:type => "text", :value => @claim.claim_type }
-      .row.disabled
-        .large-4.columns
-          %label
-            Device:
-          %input{:type => "text", :value => @claim.policy.quote.insured_device.device.model }
-        .large-4.columns
-          %label
-            IMEI:
-          %input{:type => "text", :value => @claim.policy.quote.insured_device.imei }
-        .large-4.columns
-      .row.spacer
-        .large-12.columns
-          %hr
-          %p.centered
-            %b
-              = @claim.claim_status
-          %hr
+.row
+  .large-10.large-centered.columns
+    .row.disabled
+      .large-6.columns
+        %label
+          Insured:
+        %input{:type => "text", :value => @claim.policy.customer.name}
+      .large-6.columns
+        %label
+          ID / Passport No:
+        %input{:type => "text", :value => @claim.policy.customer.id_passport }
+    .row.disabled
+      .large-6.columns
+        %label
+          Tel:
+        %input{:type => "text", :value => @claim.policy.customer.phone_number }
+      .large-6.columns
+        %label
+          Claim No:
+        %input{:type => "text", :value => @claim.claim_no }
+    .row.disabled
+      .large-4.columns
+        %label
+          Claim Reporting Date:
+        %input{:type => "text", :value => @claim.created_at.to_s(:simple)}
+      .large-4.columns
+        %label
+          Incident Date
+        %input{:type => "text", :value => @claim.incident_date.to_s(:simple) }
+      .large-4.columns
+        %label
+          Claim Type:
+        %input{:type => "text", :value => @claim.claim_type }
+    .row.disabled
+      .large-4.columns
+        %label
+          Device:
+        %input{:type => "text", :value => @claim.policy.quote.insured_device.device.model }
+      .large-4.columns
+        %label
+          IMEI:
+        %input{:type => "text", :value => @claim.policy.quote.insured_device.imei }
+      .large-4.columns
+    .row.spacer
+      .large-12.columns
+        %hr
+        %p.centered
+          %b
+            = @claim.claim_status
+        %hr

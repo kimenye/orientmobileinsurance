@@ -1,20 +1,20 @@
 = render "layouts/claims_header"
 - if @claim.nil?
   .row
-    .large-8.large-centered.columns
+    .large-10.large-centered.columns
       %h4
         No such claim was found
 - else
   = form_for(@claim, :method => :put) do |f|
     .row
-      .large-8.large-centered.columns
+      .large-10.large-centered.columns
         %h4.centered
           CLAIM REGISTRATION
         %h5.centered
           Please print this document and carry it with you to your authorized repair/ supply partner
-    .large-8.large-centered.columns.disabled
+    .large-10.large-centered.columns.disabled
       .row
-        .large-8.large-centered.columns
+        .large-10.large-centered.columns
           .row
             .large-12.columns
               %p

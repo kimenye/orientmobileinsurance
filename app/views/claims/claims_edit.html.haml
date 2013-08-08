@@ -1,14 +1,14 @@
 = render "layouts/claims_header"
 - if @claim.nil?
   .row
-    .large-8.large-centered.columns
+    .large-10.large-centered.columns
       %h4
         No such claim was found
 - else
   = form_for(@claim, :method => :put) do |f|
-    .large-8.large-centered.columns
+    .large-10.large-centered.columns
       .row
-        .large-8.large-centered.columns
+        .large-10.large-centered.columns
           = render "layouts/customer_details"
           = render "layouts/incident_details"
 

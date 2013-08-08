@@ -1,15 +1,15 @@
 = render "layouts/claims_header"
 
 = form_for(@claim, :method => :put) do |f|
-  .large-8.large-centered.columns
+  .large-10.large-centered.columns
     .row
-      .large-8.large-centered.columns
+      .large-centered.large-10.columns
         = render "layouts/customer_details"
         = render "layouts/incident_details"
         = f.hidden_field :step, :value => "2"
         = f.hidden_field :agent_id, :value => current_user.agent.id
     .row
-      .large-8.large-centered.columns
+      .large-10.large-centered.columns
         .row.spacer
           .twelve.columns
             %h5.section_header
