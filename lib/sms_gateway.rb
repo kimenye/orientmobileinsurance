@@ -8,18 +8,19 @@ class SMSGateway
   end
 
   def send to, message
-    xml = create_message to, message
-    response = ""
-    puts ">>> Sent: #{message} to #{to}"
+    begin
+      xml = create_message to, message
+      response = ""
+      puts ">>> Sent: #{message} to #{to}"
 
-    if Rails.env == "production"
-      options = {
-          :body => xml
-      }
-      puts ">>>> sending #{options}"
-      response = HTTParty.post( @base_uri, options)
-    else
-      response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+      if Rails.env == "production"
+        options = {
+            :body => xml
+        }
+        puts ">>>> sending #{options}"
+        response = HTTParty.post( @base_uri, options)
+      else
+        response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
         <methodResponse>
           <params>
             <param>
@@ -33,11 +34,14 @@ class SMSGateway
             </param>
           </params>
         </methodResponse>"
-    end
-    resp = response.to_s
+      end
+      resp = response.to_s
       ref = get_message_reference(resp)
       Sms.create! :to => to, :text => message, :request => xml,  :response => resp, :receipt_id => ref
-    response
+      response
+    rescue
+    #  Do nothing
+    end
   end
 
   def get_message_reference string
