@@ -16,3 +16,7 @@
 //= require jquery.mobile-1.3.1.min
 //= require jquery.validate.min
 
+$(document).bind('pageinit', function () {
+    $('.edit_enquiry').validate();
+});
+
