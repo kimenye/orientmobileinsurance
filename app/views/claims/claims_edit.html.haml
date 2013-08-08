@@ -102,16 +102,18 @@
               .large-6.columns
                 = f.radio_button :authorization_type, "Replace"
                 = f.label :authorization_type, "Authorize Replacement"
-              .large-6.columns
-                = f.radio_button :authorization_type, "Repair"
-                = f.label :authorization_type, "Authorize Repairs"
+              - if @claim.dealer_can_fix
+                .large-6.columns
+                  = f.radio_button :authorization_type, "Repair"
+                  = f.label :authorization_type, "Authorize Repairs"
             .row.spacer
               .large-6.columns
                 = f.label :replacement_limit
                 = f.text_field :replacement_limit
-              .large-6.columns
-                = f.label :repair_limit
-                = f.text_field :repair_limit
+              - if @claim.dealer_can_fix
+                .large-6.columns
+                  = f.label :repair_limit
+                  = f.text_field :repair_limit
           .row.spacer
             %hr
             .large-10.columns
