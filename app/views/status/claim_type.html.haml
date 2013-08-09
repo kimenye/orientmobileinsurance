@@ -41,7 +41,7 @@
           Provide your claim details.
         %li
           = f.label :claim_type, "Reporting"
-          = f.select :claim_type, ["Damage", "Loss / Theft"], {}, { "data-theme" => "c"}
+          = f.select :claim_type, ["Damage", "Theft / Loss"], {}, { "data-theme" => "c"}
         %li
           = f.label :nearest_town, "Nearest Town"
           = f.select :nearest_town, session[:towns].collect { |t| [t,t] }, {}, { "data-theme" => "c"}

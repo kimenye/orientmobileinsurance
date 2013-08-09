@@ -60,7 +60,7 @@ class ClaimService
 
     insured_value_str = ActionController::Base.helpers.number_to_currency(claim.policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
     text = "#{device}, Year #{claim.policy.insured_device.yop}, Value #{insured_value_str}. #{claim_type} claim booked under Ref #{claim.claim_no}. Check email for Claim Registration Form. Please visit #{brand.brand_1} with #{requirements}"
-    gateway.send(customer.phone_number, text)
+    gateway.send(customer.contact_number, text)
   end
   
   def is_serial_claimant id_number

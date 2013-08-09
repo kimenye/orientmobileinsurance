@@ -57,8 +57,14 @@ class ClaimsController < ApplicationController
     @nearest_dealers = brands.brands
 
     respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @claim }
+      if dealer_is_logged_in?
+        format.html { render action: "dealer_show" }
+      elsif claims_is_logged_in?
+        format.html { render action: "claims_show" }
+      else  
+        format.html # show.html.erb
+        format.json { render json: @claim }
+      end
     end
   end
 
