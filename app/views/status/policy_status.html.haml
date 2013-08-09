@@ -27,11 +27,10 @@
         %span.model
           = "#{number_to_currency(session[:policy].quote.insured_value, :unit => 'KES ', :delimiter => "")}"
       %li
-        -#%img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
         %b
-          Status:
+          Policy No:
         %span.model
-          = session[:policy].status
+          = session[:policy].policy_number
       - if !session[:policy].is_active?
         %li
           %span.model
