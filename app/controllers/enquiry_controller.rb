@@ -30,29 +30,29 @@ class EnquiryController < Wicked::WizardController
     end
 
     quote = Quote.find_by_account_name account_id.upcase
-    puts ">>>> Channel #{channel}, Account #{account_id}"
-    puts ">>>> #{quote}"
+    # puts ">>>> Channel #{channel}, Account #{account_id}"
+    # puts ">>>> #{quote}"
     service = PremiumService.new
     sms = SMSGateway.new
     if !quote.nil?
       customer = quote.insured_device.customer
       if quote.policy.nil?
-        policy = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Inactive"
+        policy = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Pending"
       end
 
       policy = quote.policy
-      payment = Payment.create! :policy_id => policy.id, :amount => params[:JP_AMOUNT], :method => "JP", :reference => params[:JP_TRANID]
+      payment = Payment.create! :policy_id => policy.id, :amount => params[:JP_AMOUNT], :method => channel, :reference => params[:JP_TRANID]
 
       @message = "Thank you for your payment of #{number_to_currency(params[:JP_AMOUNT], :unit => "KES ", :precision => 0, :delimiter => "")}"
-      puts ">>>>> IMEI: #{quote.insured_device.imei.nil?}"
+      # puts ">>>>> IMEI: #{quote.insured_device.imei.nil?}"
 
       if quote.insured_device.imei.nil?
-        sms.send customer.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this &amp; SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
+        sms.send quote.insured_device.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this &amp; SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
       else
-        if policy.is_pending? && policy.payment_due?
+        # if policy.is_pending? && policy.payment_due?
           service.set_policy_dates policy
           policy.save!
-        end
+        # end
       end
 
       if channel == "MPESA" || channel == "AIRTEL"
@@ -142,7 +142,7 @@ class EnquiryController < Wicked::WizardController
           jump_to :serial_claimants
         end
 
-        insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase
+        insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number
         q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
                           :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
                           :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],

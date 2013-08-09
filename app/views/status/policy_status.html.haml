@@ -31,10 +31,6 @@
           Policy No:
         %span.model
           = session[:policy].policy_number
-      - if !session[:policy].is_active?
-        %li
-          %span.model
-            = session[:policy].status_message
       - if session[:policy].is_active?
         %li
           %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}

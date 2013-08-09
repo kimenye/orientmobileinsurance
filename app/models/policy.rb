@@ -82,6 +82,10 @@ class Policy < ActiveRecord::Base
   def customer
     quote.insured_device.customer
   end
+  
+  def can_claim?
+    is_active? && !is_owing?
+  end
 
   def has_claim?
     !claim.nil?
