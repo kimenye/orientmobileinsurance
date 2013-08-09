@@ -57,11 +57,16 @@ class StatusController < ApplicationController
         end
 
         if !policy.nil? && policy.is_active?
-          towns = Agent.select("distinct town").collect { |t| t.town.strip if !t.town.nil? }
-          towns = towns.reject{ |t| t.nil? }
-          session[:towns] = towns
+          if policy.is_owing?
+            session[:status_message] = "The Orient Mobile policy for this device has an outstanding balance of #{number_to_currency(policy.pending_amount, :unit => "KES ", :precision => 0, :delimiter => "")}. Your account no. is #{policy.quote.account_name}. Please pay via MPesa (Business No. 513201) or Airtel Money (Business Name MOBILE).  You can register your claim after payment confirmation"
+            jump_to :cannot_claim
+          else
+            towns = Agent.select("distinct town").collect { |t| t.town.strip if !t.town.nil? }
+            towns = towns.reject{ |t| t.nil? }
+            session[:towns] = towns
 
-          jump_to :claim_type
+            jump_to :claim_type
+          end
         else
           jump_to :cannot_claim
         end
