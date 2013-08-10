@@ -1,3 +1,3 @@
 ActiveAdmin.register Customer do
-  actions  :index, :show
+  actions  :index, :show, :edit, :update
 end
