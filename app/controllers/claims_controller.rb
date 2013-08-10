@@ -77,7 +77,13 @@ class ClaimsController < ApplicationController
     if !policy.nil?
       @claim.policy_id = policy.id
       @claim.policy = policy
+      
+      premium_service = PremiumService.new()
+      if !policy.can_claim?
+        session[:status_message] = premium_service.get_status_message policy.quote
+      end
     end
+  
 
     claim_service = ClaimService.new
     @towns = claim_service.find_nearest_towns

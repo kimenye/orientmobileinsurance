@@ -39,15 +39,13 @@
           - if !id.quote.policy.nil?
             %tr
               %td
-                -if id.quote.policy.can_claim?
-                  -if id.quote.policy.has_claim?
-                    %a{:href => edit_claim_path(id.quote.policy.claim)}
-                      = id.device.marketing_name
-                  -else
-                    %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
-                      = id.device.marketing_name
-                -elsif id.quote.policy.is_active?
-                  = id.device.marketing_name
+                / -if id.quote.policy.can_claim?
+                -if id.quote.policy.has_claim?
+                  %a{:href => edit_claim_path(id.quote.policy.claim)}
+                    = id.device.marketing_name
+                -else
+                  %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                    = id.device.marketing_name
               %td
                 -if !id.quote.policy.expiry.nil?
                   = id.quote.policy.expiry.to_s(:simple)
