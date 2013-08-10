@@ -54,5 +54,14 @@
           and is valid till
           = "#{session[:quote].expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."
           Please click Accept for payment information
+      
+    %div{"data-role" => "fieldcontain"}
+      %fieldset.accept_tac{"data-role" => "controlgroup"}
+        %input.tac-checkbox.custom{:type => "checkbox", :name => "checkbox-1", :id => "checkbox-1"}
+        %label.tac{:for => "checkbox-1"}
+          I confirm that I have read, understood and accepted the 
+          %a{:href => "http://korient.co.ke/LoveMob", :rel => "external"}
+            Terms & Conditions 
+          of Orient Mobile
     %a{"href" => "/enquiry/begin", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
-    = link_to('Accept', wizard_path(:complete_enquiry), "data-role" => "button", "data-inline" => "true", "data-mini" => "true")
+    = link_to('Accept', wizard_path(:complete_enquiry), "data-role" => "button", "data-inline" => "true", "data-mini" => "true", "disabled" => "true", :class => "ui-disabled accept_link")
