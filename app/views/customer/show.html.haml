@@ -34,6 +34,7 @@
         %td Insured Value
         %td Phone Number
         %td IMEI
+        %td Policy No
       %tbody
         - @customer.insured_devices.each do |id|
           - if !id.quote.policy.nil?
@@ -57,3 +58,6 @@
               %td
                 - if !id.imei.nil?
                   = id.imei
+              %td
+                = if !id.quote.policy.nil?
+                  = id.quote.policy.policy_number
