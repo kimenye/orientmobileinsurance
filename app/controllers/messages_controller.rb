@@ -78,6 +78,10 @@ class MessagesController < ApplicationController
 
       text = params[:text]
       number = params[:msisdn]
+      if !number.starts_with?("+")
+        number = "+#{number}"
+      end
+
       if text.downcase.starts_with?("omi")  
         
         text = text.downcase.gsub /omi/, ''      
