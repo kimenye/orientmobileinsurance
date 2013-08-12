@@ -2,27 +2,6 @@ require 'test_helper'
 
 class SMSGatewayTest < ActiveSupport::TestCase
 
-  test "the gateway returns xml on success" do
-    expected_response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-        <methodResponse>
-          <params>
-            <param>
-              <value>
-          <struct>
-            <member>
-              <name>Identifier</name>
-              <value><string>1ec78fd8</string></value>
-            </member>
-          </struct></value>
-            </param>
-          </params>
-        </methodResponse>"
-
-    service = SMSGateway.new
-    response = service.send "254722200200", "Hello World"
-    assert expected_response == response
-  end
-
   test "If a text has more than 160 characters it should be split" do
     one_sixty_chars = (0..84).to_a.join
     service = SMSGateway.new
@@ -61,6 +40,20 @@ class SMSGatewayTest < ActiveSupport::TestCase
     assert_equal arr.length, result.length    
     assert_equal arr[0], result[0]
     assert_equal arr[1], result[1]
+  end
+  
+  test "Should send two messages if the text is more than 160 characters" do
+    seg_one = "I wish i was a little bit taller baller grom wiht fds fsdlf sdlfjlkdsjf adfhd fjd flkdsjfkdjs fdsfdkfjsk fhds fkdshf asfjdsfsAnd here is where the string start."
+    seg_two = "the second component"
+    
+    arr = [seg_one,seg_two]
+    msg = arr.join
+    
+    service = SMSGateway.new
+    Sms.delete_all
+    
+    service.send "123", msg
+    assert_equal 2, Sms.count
   end
 
   test "the gateway creates the correct xml" do
