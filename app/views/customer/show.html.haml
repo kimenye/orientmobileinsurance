@@ -40,7 +40,6 @@
           - if !id.quote.policy.nil?
             %tr
               %td
-                / -if id.quote.policy.can_claim?
                 -if id.quote.policy.has_claim?
                   %a{:href => edit_claim_path(id.quote.policy.claim)}
                     = id.device.marketing_name
@@ -58,6 +57,6 @@
               %td
                 - if !id.imei.nil?
                   = id.imei
-              %td
+              / %td
                 = if !id.quote.policy.nil?
                   = id.quote.policy.policy_number
