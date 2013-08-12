@@ -31,7 +31,7 @@ class Claim < ActiveRecord::Base
   end
 
   def is_theft?
-    claim_type == "Theft / Loss" || claim_type == "Loss/Theft"
+    claim_type == "Theft / Loss" || claim_type == "Loss / Theft"
   end
 
   def is_damage?

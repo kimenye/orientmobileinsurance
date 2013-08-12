@@ -58,3 +58,5 @@
                 - if !id.imei.nil?
                   = id.imei                
               %td
+                - if !id.quote.policy.policy_number.nil?
+                  = id.quote.policy.policy_number

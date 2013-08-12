@@ -35,7 +35,7 @@
             .row
               .large-6.columns
                 = f.label :claim_type
-                = f.select :claim_type, ["Loss/Theft", "Damage"]
+                = f.select :claim_type, ["Loss / Theft", "Damage"]
               .large-6.columns
                 = f.label :nearest_town
                 = f.select :nearest_town, @towns.collect { |t| [t,t] }, {}
