@@ -43,6 +43,14 @@ class SMSGateway
     #  Do nothing
     end
   end
+  
+  def should_split_message message
+    message.length > 160
+  end
+  
+  def split_message message
+    message.chars.each_slice(160).map(&:join)
+  end
 
   def create_message to, message
      xml = "<?xml version=\"1.0\"?>
