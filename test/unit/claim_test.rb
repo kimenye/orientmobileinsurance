@@ -2,10 +2,17 @@ require 'test_helper'
 class ClaimTest < ActiveSupport::TestCase
 
   before do
+    
+    @policy = Policy.new({
+      :start_date => 3.days.ago
+    })
+    @policy.save!
 
     @claim = Claim.new({
-        :step => 1
+        :step => 1,
+        :policy_id => @policy.id
     })
+    
     @damage_claim = Claim.new({
         :claim_type => "Damage",
         :step => 2
@@ -52,5 +59,29 @@ class ClaimTest < ActiveSupport::TestCase
   
   test "A damage claim must have a description if to be saved by a dealer" do
     assert_equal true, @damage_claim.is_damage?
+  end
+  
+  test "A claim cannot have an incident date that is before the policy started" do
+    @test_claim = Claim.new({
+        :step => 1,
+        :policy_id => @policy.id,
+        :claim_type => "Loss / Theft"
+    })
+    @test_claim.save!
+    @test_claim.incident_date = 5.days.ago
+    assert_equal false, @test_claim.valid?
+    @test_claim.incident_date = 2.days.ago
+    assert_equal true, @test_claim.valid?
+  end
+  
+  test "A damage claim must be at least 14 days after the policy start " do
+    @test_claim = Claim.new({
+        :step => 1,
+        :policy_id => @policy.id,
+        :claim_type => "Damage"
+    })
+    @test_claim.save!
+    @test_claim.incident_date = 10.days.from_now
+    assert_equal false, @test_claim.valid?
   end
 end
