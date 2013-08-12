@@ -43,7 +43,7 @@ class SMSGateway
           </methodResponse>"
         end
         resp = response.to_s
-        Sms.create! :to => to, :text => message, :request => xml,  :response => resp, :receipt_id => nil
+        Sms.create! :to => to, :text => txt, :request => xml,  :response => resp, :receipt_id => nil
       end
     rescue
     #  Do nothing
