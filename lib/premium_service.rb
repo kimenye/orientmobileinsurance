@@ -88,7 +88,7 @@ class PremiumService
   end
 
   def generate_unique_account_number
-    cs = [*'0'..'9', *'a'..'z', *'A'..'Z']
+    cs = [*'0'..'9', *'a'..'z', *'A'..'Z']-['O']-['I']
     6.times.map { cs.sample }.join.upcase
   end
 
