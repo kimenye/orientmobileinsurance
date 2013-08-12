@@ -41,12 +41,15 @@
           ID or Passport No.:
         %span.model
           = session[:user_details]["customer_id"]
-      - if !session[:quote_details]["sales_agent"].nil?
-        %li
-          %b
-            Sales Agent:
-          %span.model
+
+      %li
+        %b
+          Sales Agent:
+        %span.model
+          - if !session[:quote_details]["sales_agent"].nil?
             = session[:quote_details]["sales_agent"]
+          - else
+            Direct
       %li
         %span.model
           Your Account Number is:

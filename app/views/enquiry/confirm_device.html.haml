@@ -36,13 +36,14 @@
           3 monthly installments of:
         %span.model
           = session[:quote_details]["quarterly_premium"]
-
-      - if !session[:quote_details]["sales_agent"].nil?
-        %li
-          %b
-            Sales Agent:
-          %span.model
+      %li
+        %b
+          Sales Agent:
+        %span.model
+          - if !session[:quote_details]["sales_agent"].nil?
             = session[:quote_details]["sales_agent"]
+          - else
+            Direct
     %a{"href" => "/enquiry/begin", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
     = link_to('Continue', wizard_path(:personal_details), "data-role" => "button", "data-inline" => "true", "data-mini" => "true")
 
