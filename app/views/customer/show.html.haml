@@ -56,6 +56,7 @@
                   = id.customer.phone_number
               %td
                 - if !id.imei.nil?
-                  = id.imei
+                  = id.imei                
               %td
-                policy number
+                = if !id.quote.policy.nil?
+                  = id.quote.policy.policy_number
