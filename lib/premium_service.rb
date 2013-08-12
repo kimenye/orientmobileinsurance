@@ -71,10 +71,12 @@ class PremiumService
 
   def calculate_annual_premium agent_code, insurance_value, add_mpesa = true, add_sms_charges = true
     raw = calculate_premium_rate(agent_code) * insurance_value * 1.0045
+    raw = [raw.round, minimum_fee(agent_code)].max
     mpesa_fee = calculate_mpesa_fee raw
     raw += mpesa_fee if add_mpesa
     raw += 15 if add_sms_charges #sms charges
-    [raw.round, minimum_fee(agent_code)].max
+    # [raw.round, minimum_fee(agent_code)].max
+    raw.round
   end
 
   def minimum_fee agent_code
