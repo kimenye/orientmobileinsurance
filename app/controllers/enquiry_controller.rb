@@ -152,7 +152,8 @@ class EnquiryController < Wicked::WizardController
         q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
                           :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
                           :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
-                          :insured_value => session[:quote_details]["insurance_value_uf"])
+                          :insured_value => session[:quote_details]["insurance_value_uf"],
+                          :agent_id => @enquiry.agent_id)
 
         @gateway = SMSGateway.new
 

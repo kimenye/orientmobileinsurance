@@ -86,6 +86,19 @@ class ClaimService
 
     (last_date - first_date)/1.day <= 365
   end
+  
+  def get_replacement_amount_for_claim claim
+    if !claim.policy.quote.agent.nil? &&  claim.policy.quote.agent.code.start_with? ("FX")
+      return claim.policy.insured_device.device.fd_replacement_value
+      # Check if it was the same year or previous      
+    elsif claim.policy.insured_device.yop == Time.now.year
+      # same year
+      return claim.policy.insured_device.device.yop_replacement_value
+    else
+      # previous year
+      return claim.policy.insured_device.device.prev_fd_koil_invoice_value
+    end
+  end
 
   def create_claim_no
     "C/OMB/AAAA/%04d"% (Claim.count + 1).to_s

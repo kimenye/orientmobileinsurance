@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130809071330) do
+ActiveRecord::Schema.define(:version => 20130812184722) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -215,8 +215,10 @@ ActiveRecord::Schema.define(:version => 20130809071330) do
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
     t.decimal  "insured_value"
+    t.integer  "agent_id"
   end
 
+  add_index "quotes", ["agent_id"], :name => "index_quotes_on_agent_id"
   add_index "quotes", ["insured_device_id"], :name => "index_quotes_on_insured_device_id"
 
   create_table "roles", :force => true do |t|
