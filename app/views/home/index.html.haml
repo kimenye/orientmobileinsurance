@@ -15,7 +15,7 @@
           .large-6.columns
             %label
               Outlet Name
-            %input{:type => "text", :value => current_user.agent.name}
+            %input{:type => "text", :value => "#{current_user.agent.name}, #{current_user.agent.town}"}
           .large-6.columns
             %label
               Outlet Code
