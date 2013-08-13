@@ -37,14 +37,68 @@
             %p.title{"data-section-title" => ""}
               %a{:href => "#"} Outstanding Claims
             .content{"data-section-content" => ""}
-              %p Content of section 1.
+              .large-10.large-centered.columns
+                %table
+                  %thead
+                    %td Claim No.
+                    %td Claim Date
+                    %td Client
+                  %tbody
+                    - @outstanding_claims.each do |claim|
+                      %tr
+                        %td
+                          -if !claim.claim_no.nil?
+                            %a{:href => '#'}
+                              = claim.claim_no
+                        %td
+                          -if !claim.incident_date.nil?
+                            = claim.incident_date
+                        %td
+                          -if !claim.policy.quote.insured_device.customer.name.nil?
+                            = claim.policy.quote.insured_device.customer.name
           %section
             %p.title{"data-section-title" => ""}
               %a{:href => "#"} Settled Claims
             .content{"data-section-content" => ""}
-              %p Content of section 2.
+              .large-10.large-centered.columns
+                %table
+                  %thead
+                    %td Claim No.
+                    %td Claim Date
+                    %td Client
+                  %tbody
+                    - @settled_claims.each do |claim|
+                      %tr
+                        %td
+                          -if !claim.claim_no.nil?
+                            %a{:href => '#'}
+                              = claim.claim_no
+                        %td
+                          -if !claim.incident_date.nil?
+                            = claim.incident_date
+                        %td
+                          -if !claim.policy.quote.insured_device.customer.name.nil?
+                            = claim.policy.quote.insured_device.customer.name
           %section
             %p.title{"data-section-title" => ""}
               %a{:href => "#"} All Claims
             .content{"data-section-content" => ""}
-              %p Content of section 2.
+              .large-10.large-centered.columns
+                %table
+                  %thead
+                    %td Claim No.
+                    %td Claim Date
+                    %td Client
+                  %tbody
+                    - @all_claims.each do |claim|
+                      %tr
+                        %td
+                          -if !claim.claim_no.nil?
+                            %a{:href => '#'}
+                              = claim.claim_no
+                        %td
+                          -if !claim.incident_date.nil?
+                            = claim.incident_date
+                        %td
+                          -if !claim.policy.quote.insured_device.customer.name.nil?
+                            = claim.policy.quote.insured_device.customer.name
