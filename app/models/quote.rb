@@ -9,6 +9,7 @@ class Quote < ActiveRecord::Base
     account_name
   end
 
+
   def policy
     policies.first
   end
