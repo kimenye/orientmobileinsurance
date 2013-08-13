@@ -20,14 +20,31 @@
             %label
               Outlet Code
             %input{:type => "text", :value => current_user.agent.code}
-      .row.spacer
-        %form{:method => "POST", :action => claim_search_path}
-          .large-6.columns
-            %label
-              Claim No:
-            %input{:type => "text", :name => "claim_no"}
-            %input{:name=>"authenticity_token", :value=> "#{form_authenticity_token}", :type=> "hidden"}
-          .large-6.columns
-            %label{:style => "display:block"}
-              &nbsp;
-            %input.small.button{:type => "submit"}
+        .row.spacer
+          %form{:method => "POST", :action => claim_search_path}
+            .large-6.columns
+              %label
+                Claim No:
+              %input{:type => "text", :name => "claim_no"}
+              %input{:name=>"authenticity_token", :value=> "#{form_authenticity_token}", :type=> "hidden"}
+            .large-6.columns
+              %label{:style => "display:block"}
+                &nbsp;
+              %input.small.button{:type => "submit"}
+      - if current_user.user_type == "CP"
+        .section-container.tabs{"data-section" => "tabs"}
+          %section
+            %p.title{"data-section-title" => ""}
+              %a{:href => "#"} Outstanding Claims
+            .content{"data-section-content" => ""}
+              %p Content of section 1.
+          %section
+            %p.title{"data-section-title" => ""}
+              %a{:href => "#"} Settled Claims
+            .content{"data-section-content" => ""}
+              %p Content of section 2.
+          %section
+            %p.title{"data-section-title" => ""}
+              %a{:href => "#"} All Claims
+            .content{"data-section-content" => ""}
+              %p Content of section 2.
