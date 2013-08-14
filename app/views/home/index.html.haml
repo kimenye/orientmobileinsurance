@@ -44,18 +44,19 @@
                     %td Claim Date
                     %td Client
                   %tbody
-                    - @outstanding_claims.each do |claim|
-                      %tr
-                        %td
-                          -if !claim.claim_no.nil?
-                            %a{:href => '#'}
-                              = claim.claim_no
-                        %td
-                          -if !claim.incident_date.nil?
-                            = claim.incident_date
-                        %td
-                          -if !claim.policy.quote.insured_device.customer.name.nil?
-                            = claim.policy.quote.insured_device.customer.name
+                    - @claims.each do |claim|
+                      - if claim.status != 'Settled'
+                        %tr
+                          %td
+                            -if !claim.claim_no.nil?
+                              %a{:href => '#'}
+                                = claim.claim_no
+                          %td
+                            -if !claim.incident_date.nil?
+                              = claim.incident_date
+                          %td
+                            -if !claim.policy.quote.insured_device.customer.name.nil?
+                              = claim.policy.quote.insured_device.customer.name
           %section
             %p.title{"data-section-title" => ""}
               %a{:href => "#"} Settled Claims
@@ -67,18 +68,19 @@
                     %td Claim Date
                     %td Client
                   %tbody
-                    - @settled_claims.each do |claim|
-                      %tr
-                        %td
-                          -if !claim.claim_no.nil?
-                            %a{:href => '#'}
-                              = claim.claim_no
-                        %td
-                          -if !claim.incident_date.nil?
-                            = claim.incident_date
-                        %td
-                          -if !claim.policy.quote.insured_device.customer.name.nil?
-                            = claim.policy.quote.insured_device.customer.name
+                    - @claims.each do |claim|
+                      - if claim.status == 'Settled'
+                        %tr
+                          %td
+                            -if !claim.claim_no.nil?
+                              %a{:href => '#'}
+                                = claim.claim_no
+                          %td
+                            -if !claim.incident_date.nil?
+                              = claim.incident_date
+                          %td
+                            -if !claim.policy.quote.insured_device.customer.name.nil?
+                              = claim.policy.quote.insured_device.customer.name
           %section
             %p.title{"data-section-title" => ""}
               %a{:href => "#"} All Claims
@@ -90,7 +92,7 @@
                     %td Claim Date
                     %td Client
                   %tbody
-                    - @all_claims.each do |claim|
+                    - @claims.each do |claim|
                       %tr
                         %td
                           -if !claim.claim_no.nil?
