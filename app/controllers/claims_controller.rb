@@ -142,7 +142,8 @@ class ClaimsController < ApplicationController
             @claim.authorized = true
           else
             @claim.authorized = false
-          end  
+          end
+          @claim.status = 'Settled'
           @claim.save!
           service.resolve_claim @claim
           format.html { render action: "claims_show", notice: 'Claim has been finalized' }
