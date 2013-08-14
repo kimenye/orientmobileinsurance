@@ -49,7 +49,7 @@
                         %tr
                           %td
                             -if !claim.claim_no.nil?
-                              %a{:href => '#'}
+                              %a{:href => '#', :onclick => "goToClaim('#{claim.claim_no}');"}
                                 = claim.claim_no
                           %td
                             -if !claim.incident_date.nil?
@@ -73,7 +73,7 @@
                         %tr
                           %td
                             -if !claim.claim_no.nil?
-                              %a{:href => '#'}
+                              %a{:href => '#', :onclick => "goToClaim('#{claim.claim_no}');"}
                                 = claim.claim_no
                           %td
                             -if !claim.incident_date.nil?
@@ -96,7 +96,7 @@
                       %tr
                         %td
                           -if !claim.claim_no.nil?
-                            %a{:href => '#'}
+                            %a{:href => '#', :onclick => "goToClaim('#{claim.claim_no}');"}
                               = claim.claim_no
                         %td
                           -if !claim.incident_date.nil?
@@ -104,3 +104,15 @@
                         %td
                           -if !claim.policy.quote.insured_device.customer.name.nil?
                             = claim.policy.quote.insured_device.customer.name
+
+:javascript
+
+  function goToClaim(claim_no) {
+
+        $.ajax({
+            type:"POST",
+            url:"claim_search",
+            data: { claim_no: claim_no, authenticity_token: "#{form_authenticity_token}" }
+        });
+
+  }
