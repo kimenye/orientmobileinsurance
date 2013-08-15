@@ -96,7 +96,7 @@ class ClaimService
       return claim.policy.insured_device.device.yop_replacement_value
     else
       # previous year
-      return claim.policy.insured_device.device.prev_fd_koil_invoice_value
+      return claim.policy.insured_device.device.prev_replacement_value
     end
   end
 
