@@ -57,71 +57,6 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert rate == 0.1, "Premium rate should be 10% for empty"
   end
 
-  test "The correct annual premium should be charged for a phone bought from an FX dealer" do
-    service = PremiumService.new
-
-    expected_premium = 2030
-    premium = service.calculate_annual_premium "FX099", 20999
-
-    assert expected_premium == premium, "Premium rate should be 2030"
-  end
-
-  # test "The correct minimum premium should be charged for a phone bought from an FX dealer" do
-#     service = PremiumService.new
-# 
-#     expected_premium = 899
-#     min_premium = service.minimum_fee "FX099"
-#     assert expected_premium == min_premium, "Minimum premium rate is 899"
-# 
-#     premium = service.calculate_annual_premium "FX099", 1000
-#     assert_equal expected_premium, premium, "Premium rate should be 899"
-#   end
-
-  test "The total installment value should be correct" do
-    service = PremiumService.new
-
-    expected = 2319
-    base_premium = 2004
-    total_value = service.calculate_total_installment base_premium
-    assert_equal expected, total_value
-  end
-
-  test "The correct monthly premium should be charged for a phone bought from an FX dealer" do
-    service = PremiumService.new
-    monthly_premium = 773
-
-    premium = service.calculate_monthly_premium "FX099", 20999
-    assert_equal monthly_premium, premium
-  end
-
-  # test "The correct minimum premium should be charged for a phone NOT bought from an FX dealer" do
-  #   service = PremiumService.new
-  # 
-  #   expected_premium = 999
-  #   min_premium = service.minimum_fee "ee099"
-  #   assert expected_premium == min_premium, "Minimum premium rate is 999"
-  # 
-  #   premium = service.calculate_annual_premium "00099", 1000
-  #   assert expected_premium == premium, "Premium rate should be 999"
-  # end
-
-  test "The correct annual premium should be charged for a phone NOT bought from an FX dealer" do
-    service = PremiumService.new
-
-    expected_premium = 2135
-    premium = service.calculate_annual_premium nil, 20999
-
-    assert expected_premium == premium, "Premium rate should be 2135"
-  end
-
-  test "The correct monthly premium should be charged for a phone NOT bought from an FX dealer" do
-    service = PremiumService.new
-    monthly_premium = 712
-
-    premium = service.calculate_monthly_premium "87099", 18370
-    assert_equal monthly_premium, premium
-  end
-
   test "MPESA service charges should be correctly calculated" do
     service = PremiumService.new
 
@@ -197,23 +132,22 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal 914, premium    
     
     premium = service.calculate_annual_premium "FW", 4550 
-    assert_equal 1014, premium    
-
+    assert_equal 1025, premium    
+  
     premium = service.calculate_annual_premium "FW", 1950 
-    assert_equal 1014, premium        
+    assert_equal 1025, premium        
   end
   
   test "Montly Premium calculation rules" do
     service = PremiumService.new
     premium = service.calculate_monthly_premium "FX", 5199 
-    assert_equal 350, premium    
+    assert_equal 349, premium    
     
     premium = service.calculate_monthly_premium "FW", 4550 
-    assert_equal 388, premium    
-
+    assert_equal 387, premium    
+  
     premium = service.calculate_monthly_premium "FW", 1950 
-    assert_equal 388, premium    
-    
+    assert_equal 387, premium       
   end
   
 end
