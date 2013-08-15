@@ -23,6 +23,7 @@ gem 'url_shortener'
 gem 'wicked'
 gem 'jquery_mobile_rails'
 gem 'mobile-fu'
+gem 'business_time'
 group :assets do
   gem 'compass-rails'
   gem 'zurb-foundation'
