@@ -21,12 +21,26 @@
         %span.model
           = session[:policy].quote.insured_device.device.marketing_name
       %li
-        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %img{:src => "/assets/cash.png", :class => "ui-li-icon ui-corner-none"}
         %b
           Insurance Value:
         %span.model
           = "#{number_to_currency(session[:policy].quote.insured_value, :unit => 'KES ', :delimiter => "")}"
       %li
+        %img{:src => "/assets/cash.png", :class => "ui-li-icon ui-corner-none"}
+        %b
+          Premium Amount:
+        %span.model
+          = "#{number_to_currency(session[:policy].premium, :unit => 'KES ', :delimiter => "")}"
+      - if session[:policy].is_owing?
+        %li
+          %img{:src => "/assets/cash.png", :class => "ui-li-icon ui-corner-none"}
+          %b
+            Pending Amount:
+          %span.model
+            = "#{number_to_currency(session[:policy].pending_amount, :unit => 'KES ', :delimiter => "")}"
+      %li
+        %img{:src => "/assets/policy.png", :class => "ui-li-icon ui-corner-none"}
         %b
           Policy No:
         %span.model
