@@ -47,7 +47,7 @@ class EnquiryController < Wicked::WizardController
       # puts ">>>>> IMEI: #{quote.insured_device.imei.nil?}"
 
       if quote.insured_device.imei.nil?
-        sms.send quote.insured_device.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this &amp; SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
+        sms.send quote.insured_device.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this and SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
       else
         # if policy.is_pending? && policy.payment_due?
           service.set_policy_dates policy
@@ -55,7 +55,7 @@ class EnquiryController < Wicked::WizardController
           
           sms_gateway = SMSGateway.new
           insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-          sms_gateway.send quote.insured_device.phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: www.korient.co.ke/OMB/T&amp;C"
+          sms_gateway.send quote.insured_device.phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: www.korient.co.ke/OMB/TC"
           email = CustomerMailer.policy_purchase(policy).deliver
           
         # end

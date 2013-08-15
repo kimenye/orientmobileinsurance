@@ -55,8 +55,8 @@ class ClaimService
     brand = find_brands_in_town claim.nearest_town
     customer = claim.policy.customer
 
-    requirements = "the Claim Registration Form, damaged device, purchase receipt/ warranty and original &amp; copy of ID/ Passport." if claim.is_damage?
-    requirements = "claim form, police abstract, stamped Blocking Request Form from network, purchase receipt/ warranty &amp; original &amp; copy of ID/Passport." if claim.is_theft?
+    requirements = "the Claim Registration Form, damaged device, purchase receipt/ warranty, original and copy of ID/ Passport." if claim.is_damage?
+    requirements = "claim form, police abstract, stamped Blocking Request Form from network, purchase receipt/ warranty, original and copy of ID/Passport." if claim.is_theft?
 
     insured_value_str = ActionController::Base.helpers.number_to_currency(claim.policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
     text = "#{device}, Year #{claim.policy.insured_device.yop}, Value #{insured_value_str}. #{claim_type} claim booked under Ref #{claim.claim_no}. Check email for Claim Registration Form. Please visit #{brand.brand_1} with #{requirements}"
