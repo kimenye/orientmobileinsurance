@@ -27,7 +27,7 @@ class SMSGateway
           }
           response = HTTParty.post( @base_uri, options)
           puts ">>>> before sleep"
-          sleep(2.seconds)
+          sleep(1.seconds)
           puts ">>>> after sleep"
         else
           response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
