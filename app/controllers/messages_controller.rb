@@ -76,7 +76,7 @@ class MessagesController < ApplicationController
     if params.has_key?(:msisdn) && params.has_key?(:text)
 
 
-      text = params[:text]
+      text = params[:text].strip
       number = params[:msisdn]
       if !number.starts_with?("+")
         number = "+#{number}"

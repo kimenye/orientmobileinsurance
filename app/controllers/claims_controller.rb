@@ -13,7 +13,7 @@ class ClaimsController < ApplicationController
   end
 
   def search
-    @claim = Claim.find_by_claim_no(params[:claim_no])
+    @claim = Claim.find_by_claim_no(params[:claim_no].upcase)
     service = ClaimService.new
     respond_to do |format|
       if dealer_is_logged_in?
