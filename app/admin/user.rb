@@ -4,10 +4,12 @@ ActiveAdmin.register User do
     column :name
     column :email
     column :user_type
+    default_actions
   end
 
   filter :name
 
+  
   form do |f|
     f.inputs "User Details" do
       f.input :name
