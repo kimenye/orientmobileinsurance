@@ -48,8 +48,8 @@
                       - if claim.status != 'Settled'
                         %tr
                           %td
-                            -if !claim.claim_no.nil?
-                              %a{:href => '#'}
+                            - if !claim.claim_no.nil?
+                              %a{:href => "/claim_search?claim_no=#{claim.claim_no}"}
                                 = claim.claim_no
                           %td
                             -if !claim.incident_date.nil?
@@ -73,7 +73,7 @@
                         %tr
                           %td
                             -if !claim.claim_no.nil?
-                              %a{:href => '#'}
+                              %a{:href => "/claim_search?claim_no=#{claim.claim_no}"}
                                 = claim.claim_no
                           %td
                             -if !claim.incident_date.nil?
@@ -96,7 +96,7 @@
                       %tr
                         %td
                           -if !claim.claim_no.nil?
-                            %a{:href => '#'}
+                            %a{:href => "/claim_search?claim_no=#{claim.claim_no}"}
                               = claim.claim_no
                         %td
                           -if !claim.incident_date.nil?
