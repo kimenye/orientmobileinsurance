@@ -122,6 +122,7 @@ class MessagesController < ApplicationController
           @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{enquiry.url}")
         elsif msg_type == 2
           #user is sending an imei number
+          puts ">>> user is sending an imei number"
           premium_service.activate_policy text, number
         else
           puts ">>> we were not able to understand the text message"

@@ -127,9 +127,11 @@ class PremiumService
     customer = Customer.find_by_phone_number phone_number
 
     if !customer.nil?
+      puts ">> foufd customer #{customer}"
       #find any insured devices that are not activated
-    inactive_devices = customer.insured_devices.select { |id| id.imei.nil? && (!id.quote.policy.nil?) }
+      inactive_devices = customer.insured_devices.select { |id| id.imei.nil? && (!id.quote.policy.nil?) }
 
+      puts ">>> Inactive devices #{inactive_devices}"
       if !inactive_devices.empty?
         device = inactive_devices.last
         device.imei = imei

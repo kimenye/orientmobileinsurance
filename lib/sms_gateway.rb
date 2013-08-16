@@ -26,9 +26,9 @@ class SMSGateway
               :body => xml
           }
           response = HTTParty.post( @base_uri, options)
-          puts ">>>> before sleep"
-          sleep(1.seconds)
-          puts ">>>> after sleep"
+          # puts ">>>> before sleep"
+          # sleep(1.seconds)
+          # puts ">>>> after sleep"
         else
           response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
           <methodResponse>
