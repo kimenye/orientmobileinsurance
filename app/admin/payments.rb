@@ -5,6 +5,8 @@ ActiveAdmin.register Payment do
     column :created_at
     column :reference
     column :for
+    column :policy
+    column :device
     column :customer
   end
   actions :index

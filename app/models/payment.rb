@@ -5,6 +5,10 @@ class Payment < ActiveRecord::Base
   def for
     policy.policy_number
   end
+  
+  def device
+    policy.quote.insured_device
+  end
 
   def customer
     policy.customer
