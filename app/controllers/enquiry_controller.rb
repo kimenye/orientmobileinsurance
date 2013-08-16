@@ -43,7 +43,7 @@ class EnquiryController < Wicked::WizardController
       policy = quote.policy
       payment = Payment.find_by_reference(params[:JP_TRANID])
       
-      if !payment.nil?
+      if payment.nil?
         payment = Payment.create! :policy_id => policy.id, :amount => params[:JP_AMOUNT], :method => channel, :reference => params[:JP_TRANID]
 
         @message = "Thank you for your payment of #{number_to_currency(params[:JP_AMOUNT], :unit => "KES ", :precision => 0, :delimiter => "")}"
