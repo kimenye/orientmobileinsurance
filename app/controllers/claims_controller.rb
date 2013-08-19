@@ -40,11 +40,24 @@ class ClaimsController < ApplicationController
     end
   end
 
+  def search_by_claim_no
+    @claims = Claim.find_all_by_claim_no(params[:claim_no].upcase)
+
+    respond_to do |format|
+      format.html { render action: "claims_results" }
+    end
+
+  end
+
   def dealer_edit
 
   end
 
   def dealer_show
+
+  end
+
+  def claims_results
 
   end
 

@@ -1,0 +1,33 @@
+= render "layouts/claims_header"
+- if @claims.nil? || @claims.size < 1
+  = render "layouts/claim_not_found"
+- else
+  .row
+    .large-10.large-centered.columns
+      %table
+        %thead
+          %td Claim No.
+          %td Claim Date
+          %td Client
+          %td Settled
+        %tbody
+          - @claims.each do |claim|
+            %tr
+              %td
+                - if !claim.claim_no.nil?
+                  %a{:href => "/claim_search?claim_no=#{claim.claim_no}"}
+                    = claim.claim_no
+              %td
+                - if !claim.incident_date.nil?
+                  = claim.incident_date
+              %td
+                - if !claim.policy.quote.insured_device.customer.name.nil?
+                  = claim.policy.quote.insured_device.customer.name
+              %td
+                - if claim.status == 'Settled'
+                  Yes
+                - else
+                  No
+      %p
+        %a.button.small{:href => root_path}
+          Back
