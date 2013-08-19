@@ -50,7 +50,7 @@ class EnquiryController < Wicked::WizardController
         # puts ">>>>> IMEI: #{quote.insured_device.imei.nil?}"
 
         if quote.insured_device.imei.nil?
-          sms.send quote.insured_device.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this and SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
+          sms.send quote.insured_device.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this and SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy"
         else
           # if policy.is_pending? && policy.payment_due?
             service.set_policy_dates policy
