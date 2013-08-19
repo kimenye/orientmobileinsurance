@@ -12,13 +12,9 @@ $(function(){
             $('.theft-questions input, .theft-questions textarea').prop('disabled', false);
         }
     });
+    
+    if ($('.incident_location select').val() != "Vehicle") {
+        $('.theft-questions input, .theft-questions textarea').prop('disabled', true);
+    }
 	
-	
-	// $('#dealer_form').validate({
-	// 	rules: {
-	// 		'claim["dealer_description"]' : {
-	// 			required: true
-	// 		}
-	// 	}
-	// });
 });

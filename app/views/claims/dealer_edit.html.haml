@@ -73,7 +73,7 @@
                 = f.radio_button :dealer_can_fix, "0"
                 %label
                   No
-            .row.spacer
+            .row.spacer.fixable
               .large-6.columns
                 = f.label :dealer_cost_estimate, "If yes, what is the estimated cost of repairs"
                 = f.text_field :dealer_cost_estimate
@@ -87,6 +87,13 @@
             = f.submit "Update", {:class=> "button small"}
 :javascript
   $(function(){
+  
+    $("input[name='claim[dealer_can_fix]']").change(function() {
+      if ($("input[name='claim[dealer_can_fix]']:checked").val() == '0')
+          $('.fixable input').prop('disabled', true);      
+      else
+          $('.fixable input').prop('disabled', false);
+    });
 
     var fix_rules = {
       required : {

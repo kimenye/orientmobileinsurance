@@ -5,54 +5,60 @@ class SMSGateway
     @channel_id = ENV['SMS_GATEWAY_CHANNEL_ID']
     @password = ENV['SMS_GATEWAY_PASSWORD']
     @base_uri = ENV['SMS_GATEWAY_URL']
+    @max_segment = ENV['SMS_MAX_SEGMENT_LENGTH'].to_i
+    @split = ENV['SPLIT_SMS']
   end
 
   def send to, message
     begin
-      xml = create_message to, message
-      response = ""
-      puts ">>> Sent: #{message} to #{to}"
-
-      if Rails.env == "production"
-        options = {
-            :body => xml
-        }
-        puts ">>>> sending #{options}"
-        response = HTTParty.post( @base_uri, options)
-      else
-        response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-        <methodResponse>
-          <params>
-            <param>
-              <value>
-          <struct>
-            <member>
-              <name>Identifier</name>
-              <value><string>1ec78fd8</string></value>
-            </member>
-          </struct></value>
-            </param>
-          </params>
-        </methodResponse>"
+      segments = [message]
+      if @split
+        segments = split_message(message)
       end
-      resp = response.to_s
-      ref = get_message_reference(resp)
-      Sms.create! :to => to, :text => message, :request => xml,  :response => resp, :receipt_id => ref
-      response
+
+      segments.each do |txt|
+        xml = create_message to, txt
+        response = ""
+        puts ">>> Sent: #{txt} to #{to}"
+
+        if Rails.env == "production"
+          options = {
+              :body => xml
+          }
+          response = HTTParty.post( @base_uri, options)
+          # puts ">>>> before sleep"
+          # sleep(1.seconds)
+          # puts ">>>> after sleep"
+        else
+          response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+          <methodResponse>
+            <params>
+              <param>
+                <value>
+            <struct>
+              <member>
+                <name>Identifier</name>
+                <value><string>1ec78fd8</string></value>
+              </member>
+            </struct></value>
+              </param>
+            </params>
+          </methodResponse>"
+        end
+        resp = response.to_s
+        Sms.create! :to => to, :text => txt, :request => xml,  :response => resp, :receipt_id => nil
+      end
     rescue
     #  Do nothing
     end
   end
-
-  def get_message_reference string
-    if !string.start_with? ("<?xml")
-      hash = eval(string)
-      if !hash.nil?
-        #return hash["methodResponse"]["params"]["param"]["value"]["struct"]["member"]["value"]["string"]
-        return "debug"
-      end
-    end
-    return "ERR"
+  
+  def should_split_message message
+    message.length > @max_segment
+  end
+  
+  def split_message message
+    message.chars.each_slice(@max_segment).map(&:join)
   end
 
   def create_message to, message

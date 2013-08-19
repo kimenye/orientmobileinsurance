@@ -50,19 +50,18 @@ class StatusController < ApplicationController
         quote = Quote.find_by_insured_device_id @status.insured_device_id
         policy = quote.policy
         premium_service = PremiumService.new
+
         if !policy.nil?
           session[:policy] = policy
-        else
-          session[:status_message] = premium_service.get_status_message quote
         end
-
-        if !policy.nil? && policy.is_active?
+        
+        if !policy.nil? && policy.can_claim?
           towns = Agent.select("distinct town").collect { |t| t.town.strip if !t.town.nil? }
           towns = towns.reject{ |t| t.nil? }
           session[:towns] = towns
-
           jump_to :claim_type
-        else
+        elsif policy.nil? || !policy.can_claim?
+          session[:status_message] = premium_service.get_status_message quote
           jump_to :cannot_claim
         end
       when :claim_type

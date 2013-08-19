@@ -34,6 +34,7 @@
         %td Insured Value
         %td Phone Number
         %td IMEI
+        %td Policy No
       %tbody
         - @customer.insured_devices.each do |id|
           - if !id.quote.policy.nil?
@@ -42,11 +43,9 @@
                 -if id.quote.policy.has_claim?
                   %a{:href => edit_claim_path(id.quote.policy.claim)}
                     = id.device.marketing_name
-                -elsif id.quote.policy.is_active?
+                -else
                   %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
                     = id.device.marketing_name
-                -else
-                  = id.device.marketing_name
               %td
                 -if !id.quote.policy.expiry.nil?
                   = id.quote.policy.expiry.to_s(:simple)
@@ -57,4 +56,7 @@
                   = id.customer.phone_number
               %td
                 - if !id.imei.nil?
-                  = id.imei
+                  = id.imei                
+              %td
+                - if !id.quote.policy.policy_number.nil?
+                  = id.quote.policy.policy_number

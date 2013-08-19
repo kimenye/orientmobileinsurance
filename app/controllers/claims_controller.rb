@@ -13,7 +13,8 @@ class ClaimsController < ApplicationController
   end
 
   def search
-    @claim = Claim.find_by_claim_no(params[:claim_no])
+    @claim = Claim.find_by_claim_no(params[:claim_no].upcase)
+    service = ClaimService.new
     respond_to do |format|
       if dealer_is_logged_in?
         if !@claim.nil? && @claim.is_in_customer_stage?
@@ -24,7 +25,7 @@ class ClaimsController < ApplicationController
       elsif claims_is_logged_in?
         if !@claim.nil? && @claim.is_in_dealer_stage?
           if @claim.replacement_limit.nil?
-            @claim.replacement_limit = @claim.policy.quote.insured_value
+            @claim.replacement_limit = service.get_replacement_amount_for_claim @claim
           end
           if @claim.is_damage? && @claim.dealer_can_fix && !@claim.dealer_cost_estimate.nil?
             @claim.repair_limit = @claim.dealer_cost_estimate
@@ -57,8 +58,14 @@ class ClaimsController < ApplicationController
     @nearest_dealers = brands.brands
 
     respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @claim }
+      if dealer_is_logged_in?
+        format.html { render action: "dealer_show" }
+      elsif claims_is_logged_in?
+        format.html { render action: "claims_show" }
+      else  
+        format.html # show.html.erb
+        format.json { render json: @claim }
+      end
     end
   end
 
@@ -71,7 +78,13 @@ class ClaimsController < ApplicationController
     if !policy.nil?
       @claim.policy_id = policy.id
       @claim.policy = policy
+      
+      premium_service = PremiumService.new()
+      if !policy.can_claim?
+        session[:status_message] = premium_service.get_status_message policy.quote
+      end
     end
+  
 
     claim_service = ClaimService.new
     @towns = claim_service.find_nearest_towns
@@ -129,7 +142,8 @@ class ClaimsController < ApplicationController
             @claim.authorized = true
           else
             @claim.authorized = false
-          end  
+          end
+          @claim.status = 'Settled'
           @claim.save!
           service.resolve_claim @claim
           format.html { render action: "claims_show", notice: 'Claim has been finalized' }

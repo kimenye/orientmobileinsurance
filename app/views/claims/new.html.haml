@@ -31,14 +31,22 @@
               %label
                 IMEI
               %input{:type => "text", :value => @claim.policy.insured_device.imei}
-          .row
-            .large-6.columns
-              = f.label :claim_type
-              = f.select :claim_type, ["Loss/Theft", "Damage"]
-            .large-6.columns
-              = f.label :nearest_town
-              = f.select :nearest_town, @towns.collect { |t| [t,t] }, {}
-          .row.spacer
-            .large-12.columns
-              = f.hidden_field :policy_id
-              = f.submit "Save", {:class=> "small button"}
+          -if @claim.policy.can_claim?
+            .row
+              .large-6.columns
+                = f.label :claim_type
+                = f.select :claim_type, ["Loss / Theft", "Damage"]
+              .large-6.columns
+                = f.label :nearest_town
+                = f.select :nearest_town, @towns.collect { |t| [t,t] }, {}
+            .row.spacer
+              .large-12.columns
+                = f.hidden_field :policy_id
+                = f.submit "Save", {:class=> "small button"}
+          -else
+            .row
+              .large-12.columns
+                %hr
+                %p
+                  = session[:status_message]                
+                %hr

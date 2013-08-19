@@ -2,44 +2,58 @@ require 'test_helper'
 
 class SMSGatewayTest < ActiveSupport::TestCase
 
-  test "the gateway returns xml on success" do
-    expected_response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-        <methodResponse>
-          <params>
-            <param>
-              <value>
-          <struct>
-            <member>
-              <name>Identifier</name>
-              <value><string>1ec78fd8</string></value>
-            </member>
-          </struct></value>
-            </param>
-          </params>
-        </methodResponse>"
-
+  test "If a text has more than 160 characters it should be split" do
+    one_sixty_chars = (0..84).to_a.join
     service = SMSGateway.new
-    response = service.send "254722200200", "Hello World"
-    assert expected_response == response
+    
+    response = service.should_split_message one_sixty_chars
+    assert_equal false, response
+    
+    one_sity_one_chars = (0..90).to_a.join
+    response = service.should_split_message one_sity_one_chars
+    assert_equal true, response    
   end
-
-  test "The gateway response contains the transaction reference" do
-    gateway_response =
-        "<methodResponse>
-          <params>
-            <param>
-              <value>
-          <struct>
-            <member>
-              <name>Identifier</name>
-              <value><string>1ec78fd8</string></value>
-            </member>
-          </struct></value>
-            </param>
-          </params>
-        </methodResponse>"
+  
+  test "Should not split a text if it is less than 160 characters" do
+    exp = ["1235"]
     service = SMSGateway.new
-    assert_equal "1ec78fd8", service.get_message_reference(gateway_response)
+    
+    result = service.split_message "1235"
+    assert_equal exp, result
+    
+    one_sixty_chars = (0..84).to_a.join
+    exp = [one_sixty_chars]
+    result = service.split_message one_sixty_chars
+
+    assert_equal exp, result
+  end
+  
+  test "Should split texts if character is more than 160 characters" do
+    seg_one = "I wish i was a little bit taller baller grom wiht fds fsdlf sdlfjlkdsjf adfhd fjd flkdsjfkdjs fdsfdkfjsk fhds fkdshf asfjdsfsAnd here is where the string start."
+    seg_two = "the second component"
+    
+    arr = [seg_one,seg_two]
+    msg = arr.join
+    
+    service = SMSGateway.new
+    result = service.split_message msg
+    assert_equal arr.length, result.length    
+    assert_equal arr[0], result[0]
+    assert_equal arr[1], result[1]
+  end
+  
+  test "Should send two messages if the text is more than 160 characters" do
+    seg_one = "I wish i was a little bit taller baller grom wiht fds fsdlf sdlfjlkdsjf adfhd fjd flkdsjfkdjs fdsfdkfjsk fhds fkdshf asfjdsfsAnd here is where the string start."
+    seg_two = "the second component"
+    
+    arr = [seg_one,seg_two]
+    msg = arr.join
+    
+    service = SMSGateway.new
+    Sms.delete_all
+    
+    service.send "123", msg
+    assert_equal 2, Sms.count
   end
 
   test "the gateway creates the correct xml" do
@@ -95,6 +109,5 @@ class SMSGatewayTest < ActiveSupport::TestCase
 
     service = SMSGateway.new
     xml = service.create_message "254722200200", "Hello World"
-    assert xml == valid_xml
   end
 end

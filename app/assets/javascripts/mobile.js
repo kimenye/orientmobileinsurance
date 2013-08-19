@@ -18,5 +18,15 @@
 
 $(document).bind('pageinit', function () {
     $('.edit_enquiry').validate();
+    
+    $('.tac-checkbox').change(function() {
+      if (this.checked) {
+        //enable the link
+        $('.accept_link').removeClass('ui-disabled').attr('disabled', false);
+      } else {
+        // disable the link
+        $('.accept_link').addClass('ui-disabled').attr('disabled', true);
+      }
+    })
 });
 

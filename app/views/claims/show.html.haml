@@ -11,7 +11,7 @@
         %h4.centered
           CLAIM REGISTRATION
         %h5.centered
-          Please print this document and carry it with you to your authorized repair/ supply partner
+          This document has been emailed to #{@claim.policy.quote.insured_device.customer.email}. Please print it and carry it with you to our authorized repair/ supply partner           
     .large-10.large-centered.columns.disabled
       .row
         .large-10.large-centered.columns
@@ -35,7 +35,7 @@
               %span
                 Tel:
               %b
-                = @claim.policy.customer.phone_number
+                = @claim.policy.customer.contact_number
             .large-6.columns
               %span
                 Claim No:
