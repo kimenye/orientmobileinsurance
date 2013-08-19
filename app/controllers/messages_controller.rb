@@ -106,8 +106,9 @@ class MessagesController < ApplicationController
           enquiry.date_of_enquiry = Time.now
           enquiry.source = "SMS"
           enquiry.hashed_phone_number = Digest::MD5.hexdigest(number)
+          enquiry.hashed_timestamp = Digest::MD5.hexdigest(Time.now)
 
-          url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}"
+          url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}/#{enquiry.hashed_timestamp}"
           enquiry.url = url
           if Rails.env == "production"
             puts ">>>>  in production"
@@ -163,8 +164,9 @@ class MessagesController < ApplicationController
         enquiry.date_of_enquiry = Time.now
         enquiry.source = "SMS"
         enquiry.hashed_phone_number = Digest::MD5.hexdigest(mobile)
+        enquiry.hashed_timestamp = Digest::MD5.hexdigest(Time.now)
 
-        url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}"
+        url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}/#{enquiry.hashed_timestamp}"
         enquiry.url = url
         if Rails.env == "production"
           puts ">>>>  in production"

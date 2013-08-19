@@ -5,7 +5,8 @@ ActiveAdmin.register Enquiry do
     column :date_of_enquiry
     column :url
     column :source
-    column "Hash", :hashed_phone_number
+    column "Hash(phone_number)", :hashed_phone_number
+    column "Hash(timestamp)", :hashed_timestamp
     column :sales_agent_code
     column :year_of_purchase
   end

@@ -19,6 +19,8 @@ Orientmobileinsurance::Application.routes.draw do
 
   match 'enquiry/status_check' => 'enquiry#status_check'
 
+  match 'enquiries/:hashed_phone_number/:hashed_timestamp' => 'enquiries#show'
+
   devise_for :users, :controllers => { :sessions => "users/sessions" }
   ActiveAdmin.routes(self)
 
