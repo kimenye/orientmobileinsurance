@@ -3,6 +3,7 @@ ActiveAdmin.register User do
   index do
     column :name
     column :email
+    column :username
     column :user_type
     default_actions
   end
@@ -14,6 +15,7 @@ ActiveAdmin.register User do
     f.inputs "User Details" do
       f.input :name
       f.input :email
+      f.input :username
       f.input :password
       f.input :password_confirmation
       f.input :user_type, :collection => ["CP", "DP"]
