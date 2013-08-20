@@ -4,13 +4,31 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :authentication_keys => [:login]
+
+  validates :username,
+            :uniqueness => {
+                :case_sensitive => true
+            }
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :role_ids, :as => :admin
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :agent_id, :user_type
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :agent_id, :user_type, :username
+
+  attr_accessor :login
+  attr_accessible :login
 
   belongs_to :agent
+
+  def self.find_first_by_auth_conditions(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login)
+      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+    else
+      where(conditions).first
+    end
+  end
 end
 
 class User::ParameterSanitizer < Devise::ParameterSanitizer
