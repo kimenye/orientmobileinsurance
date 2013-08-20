@@ -51,7 +51,7 @@ def get_policies_expiring_in_duration (duration, from=Time.now)
   start_of_day = today_start + (24 * duration * 3600)
   end_of_day = today_end + (24 * duration * 3600)
 
-  return Policy.where(:expiry => start_of_day..end_of_day)
+  Policy.where(:expiry => start_of_day..end_of_day)
 
 end
 
