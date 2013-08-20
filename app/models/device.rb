@@ -17,7 +17,7 @@ class Device < ActiveRecord::Base
   end )
 
   scope :wider_search, (lambda do |model|
-    {:conditions => [ "lower(model) like ?", "%#{model.nil? ? model.downcase : '%'}%"]}
+    {:conditions => [ "lower(model) like ?", "%#{!model.nil? ? model.downcase : '%'}%"]}
 
   end )
 
