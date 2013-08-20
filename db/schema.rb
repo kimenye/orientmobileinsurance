@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130820112400) do
+ActiveRecord::Schema.define(:version => 20130820140839) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -158,6 +158,10 @@ ActiveRecord::Schema.define(:version => 20130820112400) do
     t.integer  "year_of_purchase"
     t.integer  "agent_id"
     t.string   "hashed_timestamp"
+    t.string   "model"
+    t.string   "vendor"
+    t.string   "marketing_name"
+    t.boolean  "detected"
   end
 
   create_table "insured_devices", :force => true do |t|

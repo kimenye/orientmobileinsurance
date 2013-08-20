@@ -9,6 +9,10 @@ ActiveAdmin.register Enquiry do
     column "Hash(timestamp)", :hashed_timestamp
     column :sales_agent_code
     column :year_of_purchase
+    column "Vendor (DA)", :vendor
+    column "Model (DA)", :model
+    column "Name (DA)", :marketing_name
+    column "Detected", :detected
   end
 
   filter :phone_number
