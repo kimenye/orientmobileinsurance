@@ -1,5 +1,5 @@
 = render "layouts/claims_header"
-- if @claims.nil? || @claims.size < 1
+- if @claims.nil? || @claims.length < 1
   = render "layouts/claim_not_found"
 - else
   .row
