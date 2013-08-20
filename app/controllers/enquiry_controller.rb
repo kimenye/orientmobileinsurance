@@ -114,10 +114,17 @@ class EnquiryController < Wicked::WizardController
         @enquiry.vendor = vendor
         @enquiry.marketing_name = marketingName
 
+        puts ">> Searching for #{model}, #{vendor}, #{marketingName}"
+
         device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
+
+        puts ">> Device is nil ? #{device.nil?}"
+
         if device.nil?
           device = Device.wider_search(model).first
         end
+
+        puts ">> After device is nil ? #{device.nil?}"
 
         @enquiry.detected_device_id= device.id if ! device.nil?
         @enquiry.detected = !device.nil?
