@@ -1,9 +1,9 @@
 class EnquiriesController < ApplicationController
   def show
-    id = Integer(params[:id]) rescue nil
+    id = Integer(params[:hashed_phone_number]) rescue nil
     @enquiry = nil
     if id.nil?
-      @enquiry = Enquiry.find_by_hashed_phone_number(params[:id])
+      @enquiry = Enquiry.find_by_hashed_phone_number_and_hashed_timestamp(params[:hashed_phone_number], params[:hashed_timestamp])
     else
       @enquiry = Enquiry.find(params[:id])
     end

@@ -32,6 +32,8 @@
                 &nbsp;
               %input.small.button{:type => "submit"}
       - if current_user.user_type == "CP"
+        %form{:method => "POST", :action => claim_search_by_no_path}
+          %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
         .section-container.tabs{"data-section" => "tabs"}
           %section
             %p.title{"data-section-title" => ""}
