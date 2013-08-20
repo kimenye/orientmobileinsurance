@@ -9,53 +9,58 @@
     %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
       %li{"data-role" => "list-divider"}
         Your Claim details are below...
-      %li
-        %b
-          Client:
-        %span.model
-          = session[:policy].quote.insured_device.customer.name
-      %li
-        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
-        %b
-          Device:
-        %span.model
-          = session[:policy].quote.insured_device.device.marketing_name
-      %li
-        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
-        %b
-          Insurance Value:
-        %span.model
-          = "#{number_to_currency(session[:policy].quote.insured_value, :unit => 'KES ', :delimiter => "")}"
-      %li
-        %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
-        %b
-          Expiry Date:
-        %span.model
-          -if !session[:policy].expiry.nil?
-            = session[:policy].expiry.to_s(:simple)
-      - if !session[:policy].has_claim?
+      - if !session[:policy].nil?
+        %li
+          %b
+            Client:
+          %span.model
+            = session[:policy].quote.insured_device.customer.name
+        %li
+          %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+          %b
+            Device:
+          %span.model
+            = session[:policy].quote.insured_device.device.marketing_name
+        %li
+          %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+          %b
+            Insurance Value:
+          %span.model
+            = "#{number_to_currency(session[:policy].quote.insured_value, :unit => 'KES ', :delimiter => "")}"
+        %li
+          %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
+          %b
+            Expiry Date:
+          %span.model
+            -if !session[:policy].expiry.nil?
+              = session[:policy].expiry.to_s(:simple)
+        - if !session[:policy].has_claim?
+          %li
+            %span.model
+              There is no claim associated with the selected device.
+        - else
+          %li
+            %b
+              Claim Type:
+            %span.model
+              = session[:policy].claim.claim_type
+          %li
+            %b
+              Incident Date:
+            %span.model
+              - if !session[:policy].claim.incident_date.nil?
+                = session[:policy].claim.incident_date.to_s(:simple)
+          %li
+            %b
+              Incident Description:
+            %span.model
+              = session[:policy].claim.incident_description
+          %li
+            %b
+              Status:
+            %span.model
+              = session[:policy].claim.claim_status
+      - else
         %li
           %span.model
             There is no claim associated with the selected device.
-      - else
-        %li
-          %b
-            Claim Type:
-          %span.model
-            = session[:policy].claim.claim_type
-        %li
-          %b
-            Incident Date:
-          %span.model
-            - if !session[:policy].claim.incident_date.nil?
-              = session[:policy].claim.incident_date.to_s(:simple)
-        %li
-          %b
-            Incident Description:
-          %span.model
-            = session[:policy].claim.incident_description
-        %li
-          %b
-            Status:
-          %span.model
-            = session[:policy].claim.claim_status
