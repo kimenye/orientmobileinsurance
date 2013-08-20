@@ -7,20 +7,29 @@ class EnquiryController < Wicked::WizardController
   include ActionView::Helpers::NumberHelper
   layout "mobile"
 
+  skip_before_filter :verify_authenticity_token
   steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
 
   def show
-    @enquiry = Enquiry.find(session[:enquiry_id])
-    case step
-      when :complete_enquiry
-        smsMessage = session[:sms_message]
-        @gateway = SMSGateway.new
+    begin
+      @enquiry = Enquiry.find(session[:enquiry_id])
+      case step
+        when :complete_enquiry
+          smsMessage = session[:sms_message]
+          @gateway = SMSGateway.new
 
-        smsMessage.each do |message|
-          @gateway.send(session[:sms_to], message)
-        end
+          smsMessage.each do |message|
+            @gateway.send(session[:sms_to], message)
+          end
+      end
+      render_wizard
+    rescue
+      redirect_to start_again_path
     end
-    render_wizard
+  end
+
+  def start_again
+
   end
 
   def payment_notification
