@@ -4,7 +4,7 @@ ActiveAdmin.register Agent do
   active_admin_importable do |model,hash|
     res = model.create! hash
     user = User.create! :name => "#{res.brand} #{res.outlet_name}", :email => "#{res.code}@korient.co.ke", :user_type => "DP", :agent_id => res.id,
-      :password => "kenyaorient", :password_confirmation => "kenyaorient"
+      :password => "kenyaorient", :password_confirmation => "kenyaorient", :code => res.code, :username => res.code
   end
 
   # index do

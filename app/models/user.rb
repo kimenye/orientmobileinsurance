@@ -12,10 +12,7 @@ class User < ActiveRecord::Base
                 :case_sensitive => false
             }
 
-  validates :code,
-            :uniqueness => {
-                :case_sensitive => false
-            }
+  validates_presence_of :username
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :role_ids, :as => :admin
