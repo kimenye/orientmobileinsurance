@@ -157,6 +157,11 @@ class ClaimsController < ApplicationController
             @claim.authorized = false
           end
           @claim.status = 'Settled'
+          if @claim.claim_type == 'Loss / Theft' || @claim.claim_type == 'Theft / Loss'
+            policy = @claim.policy
+            policy.expiry = @claim.incident_date
+            policy.save!
+          end
           @claim.save!
           service.resolve_claim @claim
           format.html { render action: "claims_show", notice: 'Claim has been finalized' }
