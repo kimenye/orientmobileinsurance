@@ -67,4 +67,4 @@
             Terms & Conditions 
           of Orient Mobile
     %a{"href" => "/enquiry/begin", "data-role" => "button", "data-inline" => "true", "data-mini" => "true"} Cancel
-    = link_to('Accept', wizard_path(:complete_enquiry), "data-role" => "button", "data-inline" => "true", "data-mini" => "true", "disabled" => "true", :class => "ui-disabled accept_link")
+    = link_to('Accept', wizard_path(:complete_enquiry), "data-role" => "button", "data-inline" => "true", "data-mini" => "true", "disabled" => "true", "data-ajax" => "false" , :class => "ui-disabled accept_link")

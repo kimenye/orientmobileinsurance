@@ -2,24 +2,25 @@
 <html>
 <head>
   <title>We're sorry, but something went wrong (500)</title>
-  <style type="text/css">
-    body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }
-    div.dialog {
-      width: 25em;
-      padding: 0 4em;
-      margin: 4em auto 0 auto;
-      border: 1px solid #ccc;
-      border-right-color: #999;
-      border-bottom-color: #999;
-    }
-    h1 { font-size: 100%; color: #f00; line-height: 1.5em; }
-  </style>
+  <link href="css/jquery.mobile-1.3.1.min.css" />
+  <link href="css/jquery-ui-1.10.3.custom.min.css" />
 </head>
 
 <body>
-  <!-- This file lives in public/500.html -->
-  <div class="dialog">
-    <h1>We're sorry, but something went wrong.</h1>
-  </div>
+    <div id="start-again" data-role="page" data-theme="b" data-add-back-btn= "false">
+       <header data-role="header">
+           <h1>Error Occurred</h1>
+       </header>
+       <section data-role="content" role="main">
+           <ul data-role="listview" data-inset="true" data-theme="c" data-divider-theme="b">
+                <li data-role="list-divider">
+                    Please see instructions below
+                </li>
+                <li class="message">
+                    Unfortunately an error occurred during the process. Please close this window and start again by sending the word 'OMI' to #{ENV['SHORT_CODE']}-->
+                </li>
+           </ul>
+       </section>
+    </div>
 </body>
 </html>

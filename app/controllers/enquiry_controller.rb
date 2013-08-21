@@ -7,17 +7,29 @@ class EnquiryController < Wicked::WizardController
   include ActionView::Helpers::NumberHelper
   layout "mobile"
 
+  skip_before_filter :verify_authenticity_token
   steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
 
   def show
-    @enquiry = Enquiry.find(session[:enquiry_id])
-    case step
-      when :complete_enquiry
-        smsMessage = session[:sms_message]
-        @gateway = SMSGateway.new
-        @gateway.send(session[:sms_to], smsMessage)
+    begin
+      @enquiry = Enquiry.find(session[:enquiry_id])
+      case step
+        when :complete_enquiry
+          smsMessage = session[:sms_message]
+          @gateway = SMSGateway.new
+
+          smsMessage.each do |message|
+            @gateway.send(session[:sms_to], message)
+          end
+      end
+      render_wizard
+    rescue
+      redirect_to start_again_path
     end
-    render_wizard
+  end
+
+  def start_again
+
   end
 
   def payment_notification
@@ -50,7 +62,7 @@ class EnquiryController < Wicked::WizardController
         # puts ">>>>> IMEI: #{quote.insured_device.imei.nil?}"
 
         if quote.insured_device.imei.nil?
-          sms.send quote.insured_device.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this and SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
+          sms.send quote.insured_device.phone_number, "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this and SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy"
         else
           # if policy.is_pending? && policy.payment_due?
             service.set_policy_dates policy
@@ -98,10 +110,25 @@ class EnquiryController < Wicked::WizardController
         vendor = device_data["vendor"]
         marketingName = device_data["marketingName"]
 
+        @enquiry.model = model
+        @enquiry.vendor = vendor
+        @enquiry.marketing_name = marketingName
+
+        puts ">> Searching for #{model}, #{vendor}, #{marketingName}"
+
         device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
+
+        puts ">> Device is nil ? #{device.nil?}"
+
         if device.nil?
           device = Device.wider_search(model).first
         end
+
+        puts ">> After device is nil ? #{device.nil?}"
+
+        @enquiry.detected_device_id= device.id if ! device.nil?
+        @enquiry.detected = !device.nil?
+        @enquiry.save!
 
         if device.nil? || is_insurable == false
           jump_to :not_insurable
@@ -168,7 +195,8 @@ class EnquiryController < Wicked::WizardController
         end
         session[:quote] = q
 
-        smsMessage = "#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}. Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."
+        #smsMessage = "#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}. Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."
+        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."]
         session[:sms_message] = smsMessage
         session[:sms_to] = @enquiry.customer_phone_number
 

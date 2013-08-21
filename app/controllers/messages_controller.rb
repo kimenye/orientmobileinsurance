@@ -106,7 +106,7 @@ class MessagesController < ApplicationController
           enquiry.date_of_enquiry = Time.now
           enquiry.source = "SMS"
           enquiry.hashed_phone_number = Digest::MD5.hexdigest(number)
-          enquiry.hashed_timestamp = Digest::MD5.hexdigest(Time.now)
+          enquiry.hashed_timestamp = Digest::MD5.hexdigest(Time.now.to_s)
 
           url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}/#{enquiry.hashed_timestamp}"
           enquiry.url = url
@@ -164,7 +164,7 @@ class MessagesController < ApplicationController
         enquiry.date_of_enquiry = Time.now
         enquiry.source = "SMS"
         enquiry.hashed_phone_number = Digest::MD5.hexdigest(mobile)
-        enquiry.hashed_timestamp = Digest::MD5.hexdigest(Time.now)
+        enquiry.hashed_timestamp = Digest::MD5.hexdigest(Time.now.to_s)
 
         url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}/#{enquiry.hashed_timestamp}"
         enquiry.url = url

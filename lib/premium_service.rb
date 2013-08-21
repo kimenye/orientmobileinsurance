@@ -124,34 +124,26 @@ class PremiumService
   end
 
   def activate_policy imei, phone_number
-    customer = Customer.find_by_phone_number phone_number
 
-    if !customer.nil?
-      puts ">> foufd customer #{customer}"
-      #find any insured devices that are not activated
-      inactive_devices = customer.insured_devices.select { |id| id.imei.nil? && (!id.quote.policy.nil?) }
+    inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.policy.nil?) }
+    if !inactive_devices.empty?
+      device = inactive_devices.last
+      device.imei = imei.strip
+      device.save!
 
-      puts ">>> Inactive devices #{inactive_devices}"
-      if !inactive_devices.empty?
-        device = inactive_devices.last
-        device.imei = imei
-        device.save!
+      policy = device.quote.policy
+      set_policy_dates policy
+      policy.save!
 
-        #set_policy_dates device.quo
-        policy = device.quote.policy
-        set_policy_dates policy
-        policy.save!
-
-        #You have successfully covered your device, value KES 19500. Orient Mobile policy OMB/AAAA/0001 valid till 11/07/14. Policy details: www.korient.co.ke/OMB/T&C
-        if policy.status == "Active"
-          sms_gateway = SMSGateway.new
-          insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-          sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: www.korient.co.ke/OMB/TC"
-          email = CustomerMailer.policy_purchase(policy).deliver
-        end
+      #You have successfully covered your device, value KES 19500. Orient Mobile policy OMB/AAAA/0001 valid till 11/07/14. Policy details: www.korient.co.ke/OMB/T&C
+      if policy.status == "Active"
+        sms_gateway = SMSGateway.new
+        insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
+        sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: www.korient.co.ke/OMB/TC"
+        email = CustomerMailer.policy_purchase(policy).deliver
       end
     else
-      puts ">>>>> No customer was found with phone number #{phone_number}"
+      puts ">>> No devices found for the phone number #{phone_number}"
     end
   end
 

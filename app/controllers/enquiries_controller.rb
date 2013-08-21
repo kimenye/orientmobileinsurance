@@ -7,8 +7,14 @@ class EnquiriesController < ApplicationController
     else
       @enquiry = Enquiry.find(params[:id])
     end
-    session[:enquiry_id] = @enquiry.id
-    redirect_to enquiry_index_path
+
+    if @enquiry.nil?
+      session[:enquiry_id] = nil
+      redirect_to start_again_path
+    else
+      session[:enquiry_id] = @enquiry.id
+      redirect_to enquiry_index_path
+    end
   end
 
   def new_claim

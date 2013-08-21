@@ -18,7 +18,7 @@ class ClaimService
         claim.save!
         CustomerMailer.reparable_damage_claim(claim).deliver
       else
-        text =  "Your #{claim.policy.insured_device.device.model}  cannot be repaired. Please visit #{claim.agent.name} with ID or Passport for a replacement. Limit #{replacement}"
+        text =  "Your #{claim.policy.insured_device.device.model} cannot be repaired. Please visit #{claim.agent.name} with ID or Passport for a replacement. Limit #{replacement}"
         sms.send to, text
         claim.status_description = text
         claim.save!
