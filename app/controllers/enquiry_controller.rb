@@ -47,6 +47,7 @@ class EnquiryController < Wicked::WizardController
     service = PremiumService.new
     sms = SMSGateway.new
     if !quote.nil?
+      puts ">> Quote is not nil #{quote}"
       customer = quote.insured_device.customer
       if quote.policy.nil?
         policy = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Pending"
@@ -78,9 +79,11 @@ class EnquiryController < Wicked::WizardController
       
       
       if channel == "MPESA" || channel == "AIRTEL"
+        puts ">>> Render OK #{channel}"
         render text: "OK"
       end
     else
+      puts ">> Don't know this account number #{account_id}"
       render text: "OK"
     end
   end
