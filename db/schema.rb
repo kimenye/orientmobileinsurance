@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130821111746) do
+ActiveRecord::Schema.define(:version => 20130821131332) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -275,11 +275,9 @@ ActiveRecord::Schema.define(:version => 20130821111746) do
     t.string   "user_type"
     t.integer  "agent_id"
     t.string   "username"
-    t.string   "code"
   end
 
   add_index "users", ["agent_id"], :name => "index_users_on_agent_id"
-  add_index "users", ["code"], :name => "index_users_on_code"
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true
