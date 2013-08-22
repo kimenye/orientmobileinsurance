@@ -47,6 +47,7 @@ class EnquiryController < Wicked::WizardController
     service = PremiumService.new
     sms = SMSGateway.new
     if !quote.nil?
+      puts ">> Quote is not nil #{quote}"
       customer = quote.insured_device.customer
       if quote.policy.nil?
         policy = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Pending"
@@ -78,9 +79,11 @@ class EnquiryController < Wicked::WizardController
       
       
       if channel == "MPESA" || channel == "AIRTEL"
+        puts ">>> Render OK #{channel}"
         render text: "OK"
       end
     else
+      puts ">> Don't know this account number #{account_id}"
       render text: "OK"
     end
   end
@@ -110,18 +113,25 @@ class EnquiryController < Wicked::WizardController
         vendor = device_data["vendor"]
         marketingName = device_data["marketingName"]
 
+        invalid_da = (vendor.nil? || vendor.empty?) && (model.nil? || model.empty?)
+        puts ">> Invalid match from device atlas : #{invalid_da}"
+
         @enquiry.model = model
         @enquiry.vendor = vendor
         @enquiry.marketing_name = marketingName
 
         puts ">> Searching for #{model}, #{vendor}, #{marketingName}"
 
-        device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
+        device = nil
 
-        puts ">> Device is nil ? #{device.nil?}"
+        if !invalid_da
+          device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
 
-        if device.nil?
-          device = Device.wider_search(model).first
+          puts ">> Device is nil ? #{device.nil?}"
+
+          if device.nil?
+            device = Device.wider_search(model).first
+          end
         end
 
         puts ">> After device is nil ? #{device.nil?}"
