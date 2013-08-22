@@ -25,6 +25,7 @@ gem 'wicked'
 gem 'jquery_mobile_rails'
 gem 'mobile-fu'
 gem 'business_time'
+gem 'newrelic_rpm'
 group :assets do
   gem 'compass-rails'
   gem 'zurb-foundation'
