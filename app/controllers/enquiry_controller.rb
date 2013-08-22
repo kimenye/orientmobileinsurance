@@ -113,18 +113,25 @@ class EnquiryController < Wicked::WizardController
         vendor = device_data["vendor"]
         marketingName = device_data["marketingName"]
 
+        invalid_da = (vendor.nil? || vendor.empty) && (model.nil? || model.empty?)
+        puts ">> Invalid match from device atlas : #{invalid_da}"
+
         @enquiry.model = model
         @enquiry.vendor = vendor
         @enquiry.marketing_name = marketingName
 
         puts ">> Searching for #{model}, #{vendor}, #{marketingName}"
 
-        device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
+        device = nil
 
-        puts ">> Device is nil ? #{device.nil?}"
+        if !invalid_da
+          device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
 
-        if device.nil?
-          device = Device.wider_search(model).first
+          puts ">> Device is nil ? #{device.nil?}"
+
+          if device.nil?
+            device = Device.wider_search(model).first
+          end
         end
 
         puts ">> After device is nil ? #{device.nil?}"
