@@ -86,7 +86,7 @@ GEM
     crack (0.1.6)
     daemons (1.1.9)
     debug_inspector (0.0.2)
-    deviceatlasapi (0.0.6)
+    deviceatlasapi (0.0.7)
       httparty
       railties (~> 3.1)
     devise (3.0.0)
