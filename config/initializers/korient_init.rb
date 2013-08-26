@@ -45,7 +45,7 @@ if Rails.env.production?
 end
 
 
-def get_policies_expiring_in_duration (duration, from=Time.now)
+def get_policies_expiring_in_duration (duration, time=Time.now)
   today_start = _get_start_of_day(time)
   today_end = _get_end_of_day(time)
   start_of_day = today_start + (24 * duration * 3600)

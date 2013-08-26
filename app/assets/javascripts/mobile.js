@@ -15,6 +15,7 @@
 //= require jquery.mobile.tabs
 //= require jquery.mobile-1.3.1.min
 //= require jquery.validate.min
+//= require deviceatlas-1.1.min
 
 $(document).bind('pageinit', function () {
     $('.edit_enquiry').validate();
