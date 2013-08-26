@@ -34,7 +34,7 @@ class Device < ActiveRecord::Base
   def self.get_marketing_search_parameter (term)
     if !term.nil?
       escaped_term = term.gsub! /\s+/, '%'
-      return "%#{escaped_term}%"
+      return "%#{escaped_term}%" if !escaped_term.nil?
     end
     return ""
   end
