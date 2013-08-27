@@ -2,6 +2,9 @@
 %br
 %h6 Claim No: #{@claim.claim_no}
 %p Dear #{@claim.policy.quote.insured_device.customer.name}
-%p Please visit #{@claim.agent.name} in #{@claim.nearest_town} with ID or Passport for a replacement device. Limit KES #{number_to_currency(@claim.replacement_limit, :unit => 'KES ', :delimiter => "")}
+- if !@claim.agent.nil?
+  %p Please visit #{@claim.agent.name} in #{@claim.nearest_town} with ID or Passport for a replacement device. Limit KES #{number_to_currency(@claim.replacement_limit, :unit => 'KES ', :delimiter => "")}
+- else
+  Please visit an authorized dealer in #{@claim.nearest_town} with ID or Passport for a replacement device. Limit KES #{number_to_currency(@claim.replacement_limit, :unit => 'KES ', :delimiter => "")}
 %p Sincerely
 %p Orient Mobile Services
