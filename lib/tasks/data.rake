@@ -34,4 +34,14 @@ namespace :data do
       :nearest_town => "Nairobi", :step => 2, :claim_no => "C/OMB/AAAA/0001"
   end
 
+  task :map_users => :environment do
+    users = User.all
+    users.each do |user|
+      if !user.agent.code.nil?
+        user.username = user.agent.code
+        user.save!
+      end
+    end
+  end
+
 end
