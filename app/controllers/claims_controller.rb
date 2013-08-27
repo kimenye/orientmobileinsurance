@@ -143,7 +143,12 @@ class ClaimsController < ApplicationController
     respond_to do |format|
       if @claim.update_attributes(params[:claim])
         if @claim.step == 1
-          CustomerMailer.claim_registration(@claim).deliver
+          if @claim.claim_type == 'Loss / Theft' || @claim.claim_type == 'Theft / Loss'
+            CustomerMailer.loss_theft_claim(@claim).deliver
+          else
+            CustomerMailer.claim_registration(@claim).deliver
+          end
+
           format.html { redirect_to @claim, notice: 'Claim was successfully updated.' }
           service = ClaimService.new
           service.notify_customer @claim
