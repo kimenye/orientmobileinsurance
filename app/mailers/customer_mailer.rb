@@ -1,6 +1,6 @@
 class CustomerMailer < ActionMailer::Base
 
-  default :from => "robot@omi.co.ke"
+  default :from => "ombclaims@korient.co.ke"
 
   def claim_registration(claim)
     begin
@@ -19,7 +19,7 @@ class CustomerMailer < ActionMailer::Base
       @policy = policy
       attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
       attachments['omi.pdf'] = File.read("#{Rails.root}/doc/data/Orient Mobile - Policy Terms & Conditions.pdf")
-      mail(:to => "#{@policy.quote.insured_device.customer.name} <#{@policy.quote.insured_device.customer.email}>", :subject => "OMI Policy Purchase. Policy No. #{@policy.policy_number}")
+      mail(:from => "mobile@korient.co.ke", :to => "#{@policy.quote.insured_device.customer.name} <#{@policy.quote.insured_device.customer.email}>", :subject => "OMI Policy Purchase. Policy No. #{@policy.policy_number}")
     rescue
     #  Do nothing
     end
