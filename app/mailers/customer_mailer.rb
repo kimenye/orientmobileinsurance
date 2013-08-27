@@ -60,23 +60,15 @@ class CustomerMailer < ActionMailer::Base
   end
 
   def loss_theft_claim(claim)
-
-    @claim = claim
-    service = ClaimService.new
-    @brand = service.find_brands_in_town(@claim.nearest_town)
-    attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
-    mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
-
-
-    #begin
-    #  @claim = claim
-    #  service = ClaimService.new
-    #  @brand = service.find_brands_in_town(@claim.nearest_town)
-    #  attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
-    #  mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
-    #rescue
-    #  #  Do nothing
-    #end
+    begin
+      @claim = claim
+      service = ClaimService.new
+      @brand = service.find_brands_in_town(@claim.nearest_town)
+      attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
+      mail(:to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
+    rescue
+      #  Do nothing
+    end
   end
 
 end
