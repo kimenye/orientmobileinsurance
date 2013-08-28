@@ -4,9 +4,9 @@
       Welcome to Orient Mobile Claims
       - if !current_user.nil?
         - if current_user.user_type == "CP"
-          #{': KOIL Claims Portal'}
-        - else
           #{': Fones Direct Outlet Portal'}
+        - else
+          #{': Dealer Portal'}
 .row
   .large-10.large-centered.columns
     - if !current_user.nil?

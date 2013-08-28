@@ -21,7 +21,7 @@ ActiveAdmin.register User do
       f.input :username
       f.input :password
       f.input :password_confirmation
-      f.input :user_type, :collection => ["CP", "DP"]
+      f.input :user_type, :collection => ["CP", "DP", "SC"]
       #f.input :agent, :collection => Agent.all.map(&:outlet)
       f.input :agent
     end
