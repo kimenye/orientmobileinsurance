@@ -12,8 +12,8 @@ class MessagesControllerTest < ActionController::TestCase
     assert_response 422
   end
 
-  test 'create a message with valid params' do
-    post :create, { "MobileNumber" => "254705876765", "Prefix" => "OMI" }
+  test 'create a valid enquiry message' do
+    post :create, { "MobileNumber" => "254705876765", "Text" => "Mobile" }
     assert_response :success
   end
 end

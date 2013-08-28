@@ -107,8 +107,8 @@ class PremiumService
     (!text.nil?) && text.strip.length == 15 && is_number?(text)
   end
 
-  def get_message_type prefix, message
-    if prefix.downcase == "omi" && (message.nil? || message.empty?)
+  def get_message_type message
+    if !message.nil? && message.downcase == ENV['KEYWORD'].downcase
       return 1
     elsif is_imei?(message)
       return 2

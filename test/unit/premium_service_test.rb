@@ -113,8 +113,12 @@ class PremiumServiceTest < ActiveSupport::TestCase
   test "can tell the type of message based on the text" do
     service = PremiumService.new
 
-    assert_equal 2, (service.get_message_type "OMI", "123456789012345")
-    assert_equal 2, (service.get_message_type "OMI", "123456789012345")
+    assert_equal 2, (service.get_message_type "123456789012345")
+    assert_equal 2, (service.get_message_type "123456789012345")
+    assert_equal 1, (service.get_message_type "Mobile")
+    assert_equal 3, (service.get_message_type "OMI")
+    assert_equal 3, (service.get_message_type "OMI 123456789012345")
+    assert_equal 3, (service.get_message_type "Mobile 123456789012345")
   end
 
   test "A status message is displayed for a policy that cannot be claimed" do
