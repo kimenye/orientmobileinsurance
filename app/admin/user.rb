@@ -9,6 +9,9 @@ ActiveAdmin.register User do
   end
 
   filter :name
+  filter :user_type
+  filter :email
+
 
   
   form do |f|
