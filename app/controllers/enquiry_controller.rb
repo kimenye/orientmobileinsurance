@@ -71,7 +71,7 @@ class EnquiryController < Wicked::WizardController
           
             sms_gateway = SMSGateway.new
             insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-            sms_gateway.send quote.insured_device.phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: www.korient.co.ke/OMB/TC"
+            sms_gateway.send quote.insured_device.phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: www.korient.co.ke/LoveMob"
             email = CustomerMailer.policy_purchase(policy).deliver          
           # end
         end
