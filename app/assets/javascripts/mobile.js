@@ -19,15 +19,16 @@
 
 $(document).bind('pageinit', function () {
     $('.edit_enquiry').validate();
-    
+
+    $('.buttons [type="submit"]').button('disable');
     $('.tac-checkbox').change(function() {
       if (this.checked) {
-        //enable the link
-        $('.accept_link').removeClass('ui-disabled').attr('disabled', false);
+          $('.buttons [type="submit"]').button('enable');
       } else {
-        // disable the link
-        $('.accept_link').addClass('ui-disabled').attr('disabled', true);
+          $('.buttons [type="submit"]').button('disable');
       }
-    })
+    });
+
+    $('#enquiry_customer_phone_number').attr('disabled', 'disabled');
 });
 

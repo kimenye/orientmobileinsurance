@@ -156,62 +156,55 @@ class EnquiryController < Wicked::WizardController
           }
 
           session[:quote_details] = details
-          jump_to :confirm_device
-          #jump_to :personal_details
-        end
-      when :confirm_device
-        #do nothing
-      when :personal_details
-        customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
-        if(customer.nil?)
-          customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => params[:enquiry][:customer_phone_number])
-        end
 
+          customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
+          if(customer.nil?)
+            customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => params[:enquiry][:customer_phone_number])
+          end
 
+          account_name = "OMI#{premium_service.generate_unique_account_number}"
+
+          user_details = {
+              "customer_name" => @enquiry.customer_name,
+              "customer_id" => @enquiry.customer_id,
+              "customer_email" => @enquiry.customer_email,
+              "customer_phone_number" => @enquiry.customer_phone_number,
+              "account_name" => account_name
+          }
+
+          session[:user_details] = user_details
+
+          claim_service = ClaimService.new
+
+          if(claim_service.is_serial_claimant(params[:enquiry][:customer_id]))
+            jump_to :serial_claimants
+          end
+
+          insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number
+          q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
+                            :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
+                            :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
+                            :insured_value => session[:quote_details]["insurance_value_uf"],
+                            :agent_id => @enquiry.agent_id)
+
+          @gateway = SMSGateway.new
+
+          session[:quote] = q
+
+          jump_to :confirm_personal_details
+        end
+      when :confirm_personal_details
         @enquiry.update_attributes(params[:enquiry])
 
-        account_name = "OMI#{premium_service.generate_unique_account_number}"
-
-        user_details = {
-            "customer_name" => @enquiry.customer_name,
-            "customer_id" => @enquiry.customer_id,
-            "customer_email" => @enquiry.customer_email,
-            "customer_phone_number" => @enquiry.customer_phone_number,
-            "customer_payment_option" => @enquiry.customer_payment_option,
-            "account_name" => account_name
-        }
-
-        session[:user_details] = user_details
-
-        claim_service = ClaimService.new
-
-        if(claim_service.is_serial_claimant(params[:enquiry][:customer_id]))
-          jump_to :serial_claimants
+        if @enquiry.customer_payment_option == "Annual"
+          due = session[:quote_details]["annual_premium"]
+        elsif(@enquiry.customer_payment_option == 'Monthly')
+          due = session[:quote_details]["quarterly_premium"]
         end
 
-        insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number
-        q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
-                          :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
-                          :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
-                          :insured_value => session[:quote_details]["insurance_value_uf"],
-                          :agent_id => @enquiry.agent_id)
-
-        @gateway = SMSGateway.new
-
-        if(session[:user_details]["customer_payment_option"] == 'Annual')
-            due = session[:quote_details]["annual_premium"]
-        elsif(session[:user_details]["customer_payment_option"] == 'Monthly')
-            due = session[:quote_details]["quarterly_premium"]
-        end
-        session[:quote] = q
-
-        #smsMessage = "#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}. Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."
-        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid until #{q.expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."]
+        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."]
         session[:sms_message] = smsMessage
         session[:sms_to] = @enquiry.customer_phone_number
-
-        jump_to :confirm_personal_details
-
     end
     render_wizard @enquiry
   end
