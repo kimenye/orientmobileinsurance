@@ -1,0 +1,14 @@
+#select-specific-device-page{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Select Your Device
+  %section{"data-role" => "content", :role => "main"}
+    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+      %li{"data-role" => "list-divider"}
+        Select Your device from the list below
+    = form_for(@enquiry, :url => wizard_path, :method => :put) do |f|
+      -#= f.label :specific_device_id, 'Select Device'
+      = select_tag 'specific_device_id', options_from_collection_for_select(session[:devices], 'id', 'marketing_name')
+
+      %p
+        = f.submit "Continue"

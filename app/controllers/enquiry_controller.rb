@@ -8,7 +8,7 @@ class EnquiryController < Wicked::WizardController
   layout "mobile"
 
   skip_before_filter :verify_authenticity_token
-  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
+  steps :begin, :enter_sales_info, :select_specific_device, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
 
   def show
     begin
@@ -123,41 +123,70 @@ class EnquiryController < Wicked::WizardController
         puts ">> Searching for #{model}, #{vendor}, #{marketingName}"
 
         device = nil
+        devices = nil
 
         if !invalid_da
-          device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
+          devices = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName))
 
-          puts ">> Device is nil ? #{device.nil?}"
-
-          if device.nil?
-            device = Device.wider_search(model).first
+          if devices.nil? || devices.length == 0
+            devices = Device.wider_search(model)
           end
         end
 
-        puts ">> After device is nil ? #{device.nil?}"
+        if !devices.nil? && devices.length > 0
+          if devices.length == 1
+            device = devices[0]
 
-        @enquiry.detected_device_id= device.id if ! device.nil?
-        @enquiry.detected = !device.nil?
-        @enquiry.save!
+            @enquiry.detected_device_id= device.id if ! device.nil?
+            @enquiry.detected = !device.nil?
+            @enquiry.save!
 
-        if device.nil? || is_insurable == false
+            session[:device] = device
+            iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
+            details = {
+                "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0, :delimiter => ""),
+                "insurance_value_uf" => iv,
+                "annual_premium" => number_to_currency(premium_service.calculate_annual_premium(code, iv), :unit => "KES ", :precision => 0, :delimiter => ""),
+                "annual_premium_uf" => premium_service.calculate_annual_premium(code, iv),
+                "quarterly_premium" => number_to_currency(premium_service.calculate_monthly_premium(code, iv), :unit => "KES ", :precision => 0, :delimiter => ""),
+                "quarterly_premium_uf" => premium_service.calculate_monthly_premium(code, iv),
+                "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
+            }
+
+            session[:quote_details] = details
+            jump_to :confirm_device
+          else
+            session[:devices] = devices
+            jump_to :select_specific_device
+          end
+        elsif devices.nil? || is_insurable == false || devices.length == 0
           jump_to :not_insurable
-        else
+        end
+
+        #puts ">> After device is nil ? #{device.nil?}"
+      when :select_specific_device
+        device = Device.find(params[:specific_device_id])
+        if !device.nil?
+          @enquiry.detected_device_id= device.id if ! device.nil?
+          @enquiry.detected = !device.nil?
+          @enquiry.save!
+
           session[:device] = device
           iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
           details = {
-            "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0, :delimiter => ""),
-            "insurance_value_uf" => iv,
-            "annual_premium" => number_to_currency(premium_service.calculate_annual_premium(code, iv), :unit => "KES ", :precision => 0, :delimiter => ""),
-            "annual_premium_uf" => premium_service.calculate_annual_premium(code, iv),
-            "quarterly_premium" => number_to_currency(premium_service.calculate_monthly_premium(code, iv), :unit => "KES ", :precision => 0, :delimiter => ""),
-            "quarterly_premium_uf" => premium_service.calculate_monthly_premium(code, iv),
-            "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
+              "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0, :delimiter => ""),
+              "insurance_value_uf" => iv,
+              "annual_premium" => number_to_currency(premium_service.calculate_annual_premium(code, iv), :unit => "KES ", :precision => 0, :delimiter => ""),
+              "annual_premium_uf" => premium_service.calculate_annual_premium(code, iv),
+              "quarterly_premium" => number_to_currency(premium_service.calculate_monthly_premium(code, iv), :unit => "KES ", :precision => 0, :delimiter => ""),
+              "quarterly_premium_uf" => premium_service.calculate_monthly_premium(code, iv),
+              "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
           }
 
           session[:quote_details] = details
           jump_to :confirm_device
-          #jump_to :personal_details
+        else
+          jump_to :not_insurable
         end
       when :confirm_device
         #do nothing
