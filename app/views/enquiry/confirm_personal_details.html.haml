@@ -49,7 +49,7 @@
           and is valid till
           = "#{session[:quote].expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."
           Please click Accept for payment information
-  = form_for(@enquiry, :url => wizard_path, :method => :put) do |f|
+  = form_for(@enquiry, :url => wizard_path, :method => :put, :html => { "data-ajax" => "false"} ) do |f|
     = f.label :customer_payment_option, 'Select preferred Payment'
     = f.select :customer_payment_option, {"1-year premium of #{session[:quote_details]['annual_premium']}" => "Annual", "3 monthly payments of #{session[:quote_details]['quarterly_premium']}" => "Monthly"}, {}, { "data-theme" => "c"}
     %div{"data-role" => "fieldcontain"}
