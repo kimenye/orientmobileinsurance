@@ -44,4 +44,18 @@ namespace :data do
     end
   end
 
+  task :map_service_centers => :environment do
+    users = User.all
+    users.each do |user|
+      if user.user_type != "SC" && user.user_type == "DP"
+        sc_user = User.find_by_username("SC_#{user.username}")
+        if sc_user.nil?
+          service_agent = User.create! :name => user.name, :email => "sc_#{user.email}", :user_type => "SC", :agent_id => user.agent_id,
+                                       :password => "kenyaorient", :password_confirmation => "kenyaorient", :username => "SC_#{user.username}"
+        end
+      end
+
+    end
+  end
+
 end

@@ -5,6 +5,8 @@ ActiveAdmin.register Agent do
     res = model.create! hash
     user = User.create! :name => "#{res.brand} #{res.outlet_name}", :email => "#{res.code}@korient.co.ke", :user_type => "DP", :agent_id => res.id,
       :password => "kenyaorient", :password_confirmation => "kenyaorient", :username => res.code
+    service_agent = User.create! :name => "#{res.brand} #{res.outlet_name}", :email => "sc_#{res.code}@korient.co.ke", :user_type => "SC", :agent_id => res.id,
+      :password => "kenyaorient", :password_confirmation => "kenyaorient", :username => "SC_#{res.code}"
   end
 
   # index do
