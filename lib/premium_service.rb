@@ -87,7 +87,7 @@ class PremiumService
   end
 
   def is_fx_code code
-    !code.nil? && code.start_with?("FX")
+    !code.nil? && (code.start_with?("FXP") || code.start_with?("TSK") || code.start_with?("PLK") || code.start_with?("NVS") )
   end
 
   def generate_unique_account_number

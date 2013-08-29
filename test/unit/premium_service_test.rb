@@ -6,7 +6,22 @@ class PremiumServiceTest < ActiveSupport::TestCase
     service = PremiumService.new
     insurable = service.is_insurable(Time.now.year, nil)
     assert true == insurable
-    end
+  end
+
+  test "Should return true for Fone Direct outlets" do
+    service = PremiumService.new
+    result = service.is_fx_code "FXP002"
+    assert_equal result, true, "Should return true for FX codes"
+
+    result = service.is_fx_code "TSK001"
+    assert_equal result, true, "Should return true for TSK codes"
+
+    result = service.is_fx_code "NVS008"
+    assert_equal result, true, "Should return true for NVS codes"
+
+    result = service.is_fx_code "PLK004"
+    assert_equal result, true, "Should return true for PLK codes"
+  end
 
   test "Should insure phones purchased in the previous year if no sales code is provided" do
     service = PremiumService.new
@@ -28,7 +43,7 @@ class PremiumServiceTest < ActiveSupport::TestCase
 
   test "Insurance value should be 100% of catalogue price if sales code starts with FX" do
     service = PremiumService.new
-    insurance_value = service.calculate_insurance_value(800, "FX001" , Time.now.year)
+    insurance_value = service.calculate_insurance_value(800, "FXP001" , Time.now.year)
     assert insurance_value == 800, "Catalogue price should equal insurance value"
   end
 
@@ -47,7 +62,7 @@ class PremiumServiceTest < ActiveSupport::TestCase
   test "The correct premium rate is returned based on the sales agent code" do
     service = PremiumService.new
 
-    rate = service.calculate_premium_rate "FX000"
+    rate = service.calculate_premium_rate "FXP000"
     assert rate == 0.095, "Premium rate should be 9.5% for FX codes"
 
     rate = service.calculate_premium_rate "83000"
@@ -132,7 +147,7 @@ class PremiumServiceTest < ActiveSupport::TestCase
   
   test "Annual Premium calculation rules" do
     service = PremiumService.new
-    premium = service.calculate_annual_premium "FX", 5199 
+    premium = service.calculate_annual_premium "FXP001", 5199
     assert_equal 914, premium    
     
     premium = service.calculate_annual_premium "FW", 4550 
@@ -144,7 +159,7 @@ class PremiumServiceTest < ActiveSupport::TestCase
   
   test "Montly Premium calculation rules" do
     service = PremiumService.new
-    premium = service.calculate_monthly_premium "FX", 5199 
+    premium = service.calculate_monthly_premium "FXP001", 5199
     assert_equal 349, premium    
     
     premium = service.calculate_monthly_premium "FW", 4550 
