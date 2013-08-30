@@ -29,17 +29,23 @@ class Claim < ActiveRecord::Base
   validates_acceptance_of :blocking_request, :allow_nil => false, if: :dealer_theft_claim?, accept: true
   validates_acceptance_of :receipt, :allow_nil => false, if: :is_in_dealer_stage?, accept: true
   validates_acceptance_of :damaged_device, :allow_nil => false, if: :dealer_damage_claim?, accept: true
-  validates_presence_of :dealer_description, if: :dealer_damage_claim?
+  validates_presence_of :dealer_description, if: :service_centre_damage_claim?
   validates_presence_of :incident_date, if: :is_saved?
   validates_with IncidentDateValidator, if: :is_in_customer_stage?
 
   def is_forward_to_koil?
-    return step == 2
+    return (step == 2 && is_theft?) || (step == 3 && is_damage?)
+  end
+
+  def is_forward_to_sc?
+    return (step == 2 && is_damage?)
   end
 
   def claim_status
     if is_forward_to_koil?
       return "Claim # #{claim_no} has been forwarded to Kenya Orient for authorization"
+    elsif is_forward_to_sc?
+      return  "Claim # #{claim_no} has been forwarded to Service Centre"
     elsif is_in_customer_stage?
       return "Customer has not presented registration form at Dealer"
     else authorized
@@ -67,6 +73,10 @@ class Claim < ActiveRecord::Base
     return step == 2
   end
 
+  def is_in_service_centre_stage?
+    return step == 3
+  end
+
   private
 
   def dealer_theft_claim?
@@ -75,5 +85,9 @@ class Claim < ActiveRecord::Base
 
   def dealer_damage_claim?
     is_in_dealer_stage? && is_damage?
+  end
+
+  def service_centre_damage_claim?
+    is_in_service_centre_stage? && is_damage?
   end
 end

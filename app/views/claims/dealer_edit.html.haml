@@ -14,7 +14,10 @@
           .twelve.columns
             %h5.section_header
               Please confirm receipt of:
-        = f.hidden_field :step, :value => "2"
+        -if service_centre_is_logged_in?
+          = f.hidden_field :step, :value => "3"
+        -else
+          = f.hidden_field :step, :value => "2"
         = f.hidden_field :claim_type
         .checks
           - if(@claim.is_theft?)
