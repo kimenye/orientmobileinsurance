@@ -117,9 +117,9 @@
               .large-10.large-centered.columns
                 %table
                   %thead
-                    %td Awaiting Assessment
-                    %td Assessment Completed
-                    %td All Damage Claims
+                    %td Claim No.
+                    %td Claim Date
+                    %td Customer
                   %tbody
                     - @claims.each do |claim|
                       - if claim.is_damage?
@@ -142,9 +142,9 @@
               .large-10.large-centered.columns
                 %table
                   %thead
-                    %td Awaiting Assessment
-                    %td Assessment Completed
-                    %td All Damage Claims
+                    %td Claim No.
+                    %td Claim Date
+                    %td Customer
                   %tbody
                     - @claims.each do |claim|
                       -if claim.is_damage?
@@ -166,9 +166,9 @@
               .large-10.large-centered.columns
                 %table
                   %thead
-                    %td Awaiting Assessment
-                    %td Assessment Completed
-                    %td All Damage Claims
+                    %td Claim No.
+                    %td Claim Date
+                    %td Customer
                   %tbody
                     - @claims.each do |claim|
                       - if claim.is_damage?
