@@ -14,10 +14,7 @@
 
           %h5.section_header
             Dealer Details
-          - if claims_is_logged_in? && @claim.is_damage?
-            = f.hidden_field :step, :value => "2"
-          -else
-            = f.hidden_field :step, :value => "3"
+          = f.hidden_field :step, :value => "4"
           = f.hidden_field :claim_type
           %p
             Dealer confirmed receipt of:
@@ -63,7 +60,7 @@
                   = f.check_box :blocking_request
                   = f.label :blocking_request, "Completed and stamped Blocking Request Form from mobile network operator"
             - else
-              .row.spacer
+              .row.spacer.disabled
                 .large-12.columns
                   = f.label :dealer_description, "Please describe the damage to the device"
                   = f.text_field :dealer_description, :required => "required"
@@ -81,62 +78,57 @@
                       %b
                         No
                 .large-8.columns
-              .row.spacer
+              .row.spacer.disabled
                 .large-6.columns
                   = f.label :dealer_cost_estimate, "If yes, what is the estimated cost of repairs"
                   = f.text_field :dealer_cost_estimate
                 .large-6.columns
                   = f.label :days_to_fix, "No of days to complete repairs"
                   = f.text_field :days_to_fix
-          - if claims_is_logged_in? && @claim.is_damage?
+          .row
+            .large-12.columns
+              %h5.section_header
+                Authorize / Decline
+          - if @claim.is_theft?
             .row.spacer
-              .large-2.columns
-                = f.submit "Forward", {:class=> "button small"}
-          - if (claims_is_logged_in? && @claim.is_theft?) || (service_centre_is_logged_in? && @claim.is_damage?)
-            .row
-              .large-12.columns
-                %h5.section_header
-                  Authorize / Decline
-            - if @claim.is_theft?
-              .row.spacer
-                .large-6.columns
-                  = f.check_box :authorized
-                  = f.label :authorized, "Authorise Replacement"
-                .large-6.columns
-                  = f.label :replacement_limit
-                  = f.text_field :replacement_limit
-            - else
-              .row.spacer
-                .large-6.columns
-                  = f.radio_button :authorization_type, "Replace"
-                  = f.label :authorization_type, "Authorize Replacement"
-                - if @claim.dealer_can_fix
-                  .large-6.columns
-                    = f.radio_button :authorization_type, "Repair"
-                    = f.label :authorization_type, "Authorize Repairs"
-              .row.spacer
-                .large-6.columns
-                  = f.label :replacement_limit
-                  = f.text_field :replacement_limit
-                - if @claim.dealer_can_fix
-                  .large-6.columns
-                    = f.label :repair_limit
-                    = f.text_field :repair_limit
+              .large-6.columns
+                = f.check_box :authorized
+                = f.label :authorized, "Authorise Replacement"
+              .large-6.columns
+                = f.label :replacement_limit
+                = f.text_field :replacement_limit
+          - else
             .row.spacer
-              %hr
-              .large-10.columns
-                = f.label :decline_reason, "Reason for decline"
-                = f.text_field :decline_reason
-              .large-2.columns
-                %label{:style => "display:block;" }
-                  &nbsp;
-                = f.submit "Decline", {:class => "button small alert", :name => "commit"}
+              .large-6.columns
+                = f.radio_button :authorization_type, "Replace"
+                = f.label :authorization_type, "Authorize Replacement"
+              - if @claim.dealer_can_fix
+                .large-6.columns
+                  = f.radio_button :authorization_type, "Repair"
+                  = f.label :authorization_type, "Authorize Repairs"
             .row.spacer
-              .large-2.columns
-                = f.submit "Approve", {:class=> "button small", :name => "commit"}
-              .large-2.columns
-                -#= f.submit "Decline", {:class => "button alert", :name => "commit"}
-              .large-9.columns
+              .large-6.columns
+                = f.label :replacement_limit
+                = f.text_field :replacement_limit
+              - if @claim.dealer_can_fix
+                .large-6.columns
+                  = f.label :repair_limit
+                  = f.text_field :repair_limit
+          .row.spacer
+            %hr
+            .large-10.columns
+              = f.label :decline_reason, "Reason for decline"
+              = f.text_field :decline_reason
+            .large-2.columns
+              %label{:style => "display:block;" }
+                &nbsp;
+              = f.submit "Decline", {:class => "button small alert", :name => "commit"}
+          .row.spacer
+            .large-2.columns
+              = f.submit "Approve", {:class=> "button small", :name => "commit"}
+            .large-2.columns
+              -#= f.submit "Decline", {:class => "button alert", :name => "commit"}
+            .large-9.columns
 :javascript
   $(function(){
     $('.checks input').prop('disabled', true);

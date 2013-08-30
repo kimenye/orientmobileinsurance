@@ -26,7 +26,7 @@ class ClaimsController < ApplicationController
       elsif service_centre_is_logged_in?
         format.html { render action: "dealer_edit" }
       elsif claims_is_logged_in?
-        if !@claim.nil? && @claim.is_in_dealer_stage?
+        if !@claim.nil? && @claim.is_in_claims_stage?
           if @claim.replacement_limit.nil?
             @claim.replacement_limit = service.get_replacement_amount_for_claim @claim
           end

@@ -73,6 +73,10 @@ class Claim < ActiveRecord::Base
     return step == 2
   end
 
+  def is_in_claims_stage?
+    return (step == 2 && is_theft?) || (is_damage? && step == 3)
+  end
+
   def is_in_service_centre_stage?
     return step == 3
   end
