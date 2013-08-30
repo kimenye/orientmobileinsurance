@@ -57,7 +57,7 @@
               .large-12.columns
                 = f.check_box :blocking_request, :required => "required"
                 = f.label :blocking_request, "Completed and stamped Blocking Request Form from mobile network operator"
-          - else
+          - elsif(@claim.claim_type == "Damage" && service_centre_is_logged_in?)
             .row.spacer
               .large-12.columns
                 = f.label :dealer_description, "Please describe the damage to the device"

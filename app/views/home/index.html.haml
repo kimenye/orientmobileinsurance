@@ -3,16 +3,16 @@
     .large-10.large-centered.columns
       %h4.centered.header
         Welcome to Orient Mobile Claims :
-        - if current_user.user_type == "CP"
+        - if claims_is_logged_in?
           Claims Portal
-        - elsif current_user.user_type == "DP"
-          Dealer Portal
+        - elsif dealer_is_logged_in?
+          Fones Direct Outlet Portal
         - else
           Fones Direct Service Centre
   .row
     .large-10.large-centered.columns
 
-      - if current_user.user_type == "DP"
+      - if dealer_is_logged_in?
         .row.disabled.spacer
           .large-6.columns
             %label
@@ -33,7 +33,7 @@
               %label{:style => "display:block"}
                 &nbsp;
               %input.small.button{:type => "submit"}
-      - if current_user.user_type == "CP"
+      - if claims_is_logged_in?
         %form{:method => "POST", :action => claim_search_by_no_path}
           %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
         .section-container.tabs{"data-section" => "tabs"}
@@ -106,7 +106,7 @@
                         %td
                           -if !claim.policy.quote.insured_device.customer.name.nil?
                             = claim.policy.quote.insured_device.customer.name
-      - if current_user.user_type == "SC"
+      - if service_centre_is_logged_in?
         %form{:method => "POST", :action => claim_search_by_no_path}
           %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
         .section-container.tabs{"data-section" => "tabs"}

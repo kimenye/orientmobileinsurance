@@ -1,4 +1,5 @@
 class ClaimsController < ApplicationController
+  include ApplicationHelper
   #include Wicked::Wizard
 
   # GET /claims

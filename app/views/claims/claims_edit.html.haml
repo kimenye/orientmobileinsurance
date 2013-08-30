@@ -14,7 +14,7 @@
 
           %h5.section_header
             Dealer Details
-          - if current_user.user_type == "CP" && @claim.is_damage?
+          - if claims_is_logged_in? && @claim.is_damage?
             = f.hidden_field :step, :value => "2"
           -else
             = f.hidden_field :step, :value => "3"
@@ -88,11 +88,11 @@
                 .large-6.columns
                   = f.label :days_to_fix, "No of days to complete repairs"
                   = f.text_field :days_to_fix
-          - if current_user.user_type == "CP" && @claim.is_damage?
+          - if claims_is_logged_in? && @claim.is_damage?
             .row.spacer
               .large-2.columns
                 = f.submit "Forward", {:class=> "button small"}
-          - if (current_user.user_type == "CP" && @claim.is_theft?) || (current_user.user_type == "SC" && @claim.is_damage?)
+          - if (claims_is_logged_in? && @claim.is_theft?) || (service_centre_is_logged_in? && @claim.is_damage?)
             .row
               .large-12.columns
                 %h5.section_header
