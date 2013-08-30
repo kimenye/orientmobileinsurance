@@ -3,8 +3,8 @@
     <h4 class="centered header">
       Welcome to Orient Mobile Claims :
       <% if resource.user_type == "CP" %>
-          Fones Direct Outlet Portal
-      <% else %>
+          Claims Port
+      <% elsif resource.user_type == "DP" %>
           Dealer Portal
       <% end %>
     </h4>

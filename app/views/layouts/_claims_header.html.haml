@@ -5,8 +5,10 @@
       - if !current_user.nil?
         - if current_user.user_type == "CP"
           #{': Fones Direct Outlet Portal'}
-        - else
+        - elsif current_user.user_type == "DP"
           #{': Dealer Portal'}
+        - else
+          #{': Fones Direct Service Centre'}
 .row
   .large-10.large-centered.columns
     - if !current_user.nil?

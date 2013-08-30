@@ -14,18 +14,21 @@
 
           %h5.section_header
             Dealer Details
-          = f.hidden_field :step, :value => "3"
+          - if current_user.user_type == "CP" && @claim.is_damage?
+            = f.hidden_field :step, :value => "2"
+          -else
+            = f.hidden_field :step, :value => "3"
           = f.hidden_field :claim_type
           %p
             Dealer confirmed receipt of:
           .checks
             - if(@claim.is_theft?)
-              .row.spacer
+              .row.spacer.disabled
                 .large-12.columns
                   = f.check_box :police_abstract
                   = f.label :police_abstract
             - else
-              .row.spacer
+              .row.spacer.disabled
                 .large-12.columns
                   = f.check_box :damaged_device
                   = f.label :damaged_device
@@ -38,24 +41,24 @@
                       = @claim.policy.insured_device.imei
                     )
 
-            .row.spacer
+            .row.spacer.disabled
               .large-12.columns
                 = f.check_box :receipt
                 = f.label :receipt, "Original purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)"
-            .row.spacer
+            .row.spacer.disabled
               .large-12.columns
                 = f.check_box :original_id
                 = f.label :original_id, "Original of ID/ Passport No. "
                 %b
                   =@claim.policy.customer.id_passport
-            .row.spacer
+            .row.spacer.disabled
               .large-12.columns
                 = f.check_box :copy_id
                 = f.label :copy_id, "Copy of ID/ Passport No."
                 %b
                   =@claim.policy.customer.id_passport
             - if(@claim.claim_type != "Damage")
-              .row.spacer
+              .row.spacer.disabled
                 .large-12.columns
                   = f.check_box :blocking_request
                   = f.label :blocking_request, "Completed and stamped Blocking Request Form from mobile network operator"
@@ -85,50 +88,55 @@
                 .large-6.columns
                   = f.label :days_to_fix, "No of days to complete repairs"
                   = f.text_field :days_to_fix
-          .row
-            .large-12.columns
-              %h5.section_header
-                Authorize / Decline
-          - if @claim.is_theft?
+          - if current_user.user_type == "CP" && @claim.is_damage?
             .row.spacer
-              .large-6.columns
-                = f.check_box :authorized
-                = f.label :authorized, "Authorise Replacement"
-              .large-6.columns
-                = f.label :replacement_limit
-                = f.text_field :replacement_limit
-          - else
-            .row.spacer
-              .large-6.columns
-                = f.radio_button :authorization_type, "Replace"
-                = f.label :authorization_type, "Authorize Replacement"
-              - if @claim.dealer_can_fix
+              .large-2.columns
+                = f.submit "Forward", {:class=> "button small"}
+          - if (current_user.user_type == "CP" && @claim.is_theft?) || (current_user.user_type == "SC" && @claim.is_damage?)
+            .row
+              .large-12.columns
+                %h5.section_header
+                  Authorize / Decline
+            - if @claim.is_theft?
+              .row.spacer
                 .large-6.columns
-                  = f.radio_button :authorization_type, "Repair"
-                  = f.label :authorization_type, "Authorize Repairs"
-            .row.spacer
-              .large-6.columns
-                = f.label :replacement_limit
-                = f.text_field :replacement_limit
-              - if @claim.dealer_can_fix
+                  = f.check_box :authorized
+                  = f.label :authorized, "Authorise Replacement"
                 .large-6.columns
-                  = f.label :repair_limit
-                  = f.text_field :repair_limit
-          .row.spacer
-            %hr
-            .large-10.columns
-              = f.label :decline_reason, "Reason for decline"
-              = f.text_field :decline_reason
-            .large-2.columns
-              %label{:style => "display:block;" }
-                &nbsp;
-              = f.submit "Decline", {:class => "button small alert", :name => "commit"}
-          .row.spacer
-            .large-2.columns
-              = f.submit "Approve", {:class=> "button small", :name => "commit"}
-            .large-2.columns
-              -#= f.submit "Decline", {:class => "button alert", :name => "commit"}
-            .large-9.columns
+                  = f.label :replacement_limit
+                  = f.text_field :replacement_limit
+            - else
+              .row.spacer
+                .large-6.columns
+                  = f.radio_button :authorization_type, "Replace"
+                  = f.label :authorization_type, "Authorize Replacement"
+                - if @claim.dealer_can_fix
+                  .large-6.columns
+                    = f.radio_button :authorization_type, "Repair"
+                    = f.label :authorization_type, "Authorize Repairs"
+              .row.spacer
+                .large-6.columns
+                  = f.label :replacement_limit
+                  = f.text_field :replacement_limit
+                - if @claim.dealer_can_fix
+                  .large-6.columns
+                    = f.label :repair_limit
+                    = f.text_field :repair_limit
+            .row.spacer
+              %hr
+              .large-10.columns
+                = f.label :decline_reason, "Reason for decline"
+                = f.text_field :decline_reason
+              .large-2.columns
+                %label{:style => "display:block;" }
+                  &nbsp;
+                = f.submit "Decline", {:class => "button small alert", :name => "commit"}
+            .row.spacer
+              .large-2.columns
+                = f.submit "Approve", {:class=> "button small", :name => "commit"}
+              .large-2.columns
+                -#= f.submit "Decline", {:class => "button alert", :name => "commit"}
+              .large-9.columns
 :javascript
   $(function(){
     $('.checks input').prop('disabled', true);

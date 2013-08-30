@@ -5,8 +5,10 @@
         Welcome to Orient Mobile Claims :
         - if current_user.user_type == "CP"
           Fones Direct Outlet Portal
-        - else
+        - elsif current_user.user_type == "DP"
           Dealer Portal
+        - else
+          Fones Direct Service Centre
   .row
     .large-10.large-centered.columns
 
@@ -75,8 +77,7 @@
                         %tr
                           %td
                             -if !claim.claim_no.nil?
-                              %a{:href => "/claim_search?claim_no=#{claim.claim_no}"}
-                                = claim.claim_no
+                              = claim.claim_no
                           %td
                             -if !claim.incident_date.nil?
                               = claim.incident_date
@@ -98,11 +99,86 @@
                       %tr
                         %td
                           -if !claim.claim_no.nil?
-                            %a{:href => "/claim_search?claim_no=#{claim.claim_no}"}
-                              = claim.claim_no
+                            = claim.claim_no
                         %td
                           -if !claim.incident_date.nil?
                             = claim.incident_date
                         %td
                           -if !claim.policy.quote.insured_device.customer.name.nil?
                             = claim.policy.quote.insured_device.customer.name
+      - if current_user.user_type == "SC"
+        %form{:method => "POST", :action => claim_search_by_no_path}
+          %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
+        .section-container.tabs{"data-section" => "tabs"}
+          %section
+            %p.title{"data-section-title" => ""}
+              %a{:href => "#"} Awaiting Assessment
+            .content{"data-section-content" => ""}
+              .large-10.large-centered.columns
+                %table
+                  %thead
+                    %td Awaiting Assessment
+                    %td Assessment Completed
+                    %td All Damage Claims
+                  %tbody
+                    - @claims.each do |claim|
+                      - if claim.is_damage?
+                        - if claim.status != 'Settled'
+                          %tr
+                            %td
+                              - if !claim.claim_no.nil?
+                                %a{:href => "/claim_search?claim_no=#{claim.claim_no}"}
+                                  = claim.claim_no
+                            %td
+                              -if !claim.incident_date.nil?
+                                = claim.incident_date
+                            %td
+                              -if !claim.policy.quote.insured_device.customer.name.nil?
+                                = claim.policy.quote.insured_device.customer.name
+          %section
+            %p.title{"data-section-title" => ""}
+              %a{:href => "#"} Assessment Completed
+            .content{"data-section-content" => ""}
+              .large-10.large-centered.columns
+                %table
+                  %thead
+                    %td Awaiting Assessment
+                    %td Assessment Completed
+                    %td All Damage Claims
+                  %tbody
+                    - @claims.each do |claim|
+                      -if claim.is_damage?
+                        - if claim.status == 'Settled'
+                          %tr
+                            %td
+                              -if !claim.claim_no.nil?
+                                = claim.claim_no
+                            %td
+                              -if !claim.incident_date.nil?
+                                = claim.incident_date
+                            %td
+                              -if !claim.policy.quote.insured_device.customer.name.nil?
+                                = claim.policy.quote.insured_device.customer.name
+          %section
+            %p.title{"data-section-title" => ""}
+              %a{:href => "#"} All Damage Claims
+            .content{"data-section-content" => ""}
+              .large-10.large-centered.columns
+                %table
+                  %thead
+                    %td Awaiting Assessment
+                    %td Assessment Completed
+                    %td All Damage Claims
+                  %tbody
+                    - @claims.each do |claim|
+                      - if claim.is_damage?
+                        %tr
+                          %td
+                            -if !claim.claim_no.nil?
+                              = claim.claim_no
+                          %td
+                            -if !claim.incident_date.nil?
+                              = claim.incident_date
+                          %td
+                            -if !claim.policy.quote.insured_device.customer.name.nil?
+                              = claim.policy.quote.insured_device.customer.name
