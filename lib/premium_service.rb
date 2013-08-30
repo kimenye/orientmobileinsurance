@@ -87,7 +87,7 @@ class PremiumService
   end
 
   def is_fx_code code
-    !code.nil? && code.start_with?("FX")
+    !code.nil? && (code.start_with?("FXP") || code.start_with?("TSK") || code.start_with?("PLK") || code.start_with?("NVS") )
   end
 
   def generate_unique_account_number
@@ -139,7 +139,7 @@ class PremiumService
       if policy.status == "Active"
         sms_gateway = SMSGateway.new
         insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-        sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: www.korient.co.ke/OMB/TC"
+        sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: www.korient.co.ke/LoveMob"
         email = CustomerMailer.policy_purchase(policy).deliver
       end
     else
