@@ -49,7 +49,7 @@
                     %td Client
                   %tbody
                     - @claims.each do |claim|
-                      - if claim.status != 'Settled'
+                      - if claim.status != 'Settled' && claim.is_in_claims_stage?
                         %tr
                           %td
                             - if !claim.claim_no.nil?
@@ -73,7 +73,7 @@
                     %td Client
                   %tbody
                     - @claims.each do |claim|
-                      - if claim.status == 'Settled'
+                      - if claim.status == 'Settled' && claim.is_in_claims_stage?
                         %tr
                           %td
                             -if !claim.claim_no.nil?
@@ -96,16 +96,17 @@
                     %td Client
                   %tbody
                     - @claims.each do |claim|
-                      %tr
-                        %td
-                          -if !claim.claim_no.nil?
-                            = claim.claim_no
-                        %td
-                          -if !claim.incident_date.nil?
-                            = claim.incident_date
-                        %td
-                          -if !claim.policy.quote.insured_device.customer.name.nil?
-                            = claim.policy.quote.insured_device.customer.name
+                      - if claim.is_in_claims_stage?
+                        %tr
+                          %td
+                            -if !claim.claim_no.nil?
+                              = claim.claim_no
+                          %td
+                            -if !claim.incident_date.nil?
+                              = claim.incident_date
+                          %td
+                            -if !claim.policy.quote.insured_device.customer.name.nil?
+                              = claim.policy.quote.insured_device.customer.name
       - if service_centre_is_logged_in?
         %form{:method => "POST", :action => claim_search_by_no_path}
           %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
