@@ -44,6 +44,9 @@
                   - if id.quote.policy.claim.is_in_customer_stage?
                     %a{:href => edit_claim_path(id.quote.policy.claim)}
                       = id.device.marketing_name
+                  - elsif (!id.quote.policy.claim.is_in_customer_stage?) && (id.quote.policy.expiry - Time.now > 0)
+                    %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                      = id.device.marketing_name
                   -else
                     %a{:href => claim_path(id.quote.policy.claim)}
                       = id.device.marketing_name
