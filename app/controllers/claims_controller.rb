@@ -165,10 +165,17 @@ class ClaimsController < ApplicationController
             @claim.authorized = false
           end
           @claim.status = 'Settled'
-          if @claim.claim_type == 'Loss / Theft' || @claim.claim_type == 'Theft / Loss'
+          if @claim.is_theft?
             policy = @claim.policy
             policy.expiry = @claim.incident_date
             policy.save!
+          end
+          if @claim.is_damage? && @claim.authorized
+            if @claim.dealer_can_fix
+              policy = @claim.policy
+              policy.expiry = @claim.incident_date
+              policy.save!
+            end
           end
           @claim.save!
           service.resolve_claim @claim
