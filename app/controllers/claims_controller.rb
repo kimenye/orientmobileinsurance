@@ -171,7 +171,7 @@ class ClaimsController < ApplicationController
             policy.save!
           end
           if @claim.is_damage? && @claim.authorized
-            if @claim.dealer_can_fix
+            if !@claim.dealer_can_fix
               policy = @claim.policy
               policy.expiry = @claim.incident_date
               policy.save!
