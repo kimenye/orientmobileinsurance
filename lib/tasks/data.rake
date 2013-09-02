@@ -14,7 +14,7 @@ namespace :data do
 
   task :seed => :environment do
     enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
-    customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "trevor@kimenye.com"
+    customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
     insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012345", :yop => 2013
     quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.first.id
     policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
@@ -41,6 +41,20 @@ namespace :data do
         user.username = user.agent.code
         user.save!
       end
+    end
+  end
+
+  task :map_service_centers => :environment do
+    users = User.all
+    users.each do |user|
+      if user.user_type != "SC" && user.user_type == "DP"
+        sc_user = User.find_by_username("SC_#{user.username}")
+        if sc_user.nil?
+          service_agent = User.create! :name => user.name, :email => "sc_#{user.email}", :user_type => "SC", :agent_id => user.agent_id,
+                                       :password => "kenyaorient", :password_confirmation => "kenyaorient", :username => "SC_#{user.username}"
+        end
+      end
+
     end
   end
 

@@ -51,7 +51,6 @@ class SMSGatewayTest < ActiveSupport::TestCase
     
     service = SMSGateway.new
     Sms.delete_all
-    
     service.send "123", msg
     assert_equal 2, Sms.count
   end

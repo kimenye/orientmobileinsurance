@@ -60,8 +60,9 @@ class ClaimService
     requirements = "claim form, police abstract, stamped Blocking Request Form from network, purchase receipt/ warranty, original and copy of ID/Passport." if claim.is_theft?
 
     insured_value_str = ActionController::Base.helpers.number_to_currency(claim.policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-    text = "#{device}, Year #{claim.policy.insured_device.yop}, Value #{insured_value_str}. #{claim_type} claim booked under Ref #{claim.claim_no}. Check email for Claim Registration Form. Please visit #{brand.brand_1} with #{requirements}"
+    text = "#{device}, Year #{claim.policy.insured_device.yop}, Value #{insured_value_str}. #{claim_type} claim booked under Ref #{claim.claim_no}. Check email for Claim Registration Form."
     gateway.send(customer.contact_number, text)
+    gateway.send(customer.contact_number, "Please visit #{brand.brand_1} with #{requirements}")
   end
   
   def is_serial_claimant id_number
@@ -89,7 +90,8 @@ class ClaimService
   end
   
   def get_replacement_amount_for_claim claim
-    if !claim.policy.quote.agent.nil? &&  claim.policy.quote.agent.code.start_with?("FX")
+    service = PremiumService.new
+    if !claim.policy.quote.agent.nil? &&  service.is_fx_code(claim.policy.quote.agent.code)
       return claim.policy.insured_device.device.fd_replacement_value
       # Check if it was the same year or previous      
     elsif claim.policy.insured_device.yop == Time.now.year
