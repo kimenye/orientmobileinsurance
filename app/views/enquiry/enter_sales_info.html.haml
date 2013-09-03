@@ -4,11 +4,11 @@
       Sales Details
   %section{"data-role" => "content", :role => "main"}
     = form_for(@enquiry, :url => wizard_path, :method => :put) do |f|
-      = f.label :sales_agent_code, "Sales Agent Code (0 if none)"
+      = f.label :sales_agent_code, "Enter Sales Agent Code (0 if none)"
       = f.text_field :sales_agent_code
-      = f.label :year_of_purchase, "Year of Purchase (as per original purchase receipt)"
+      = f.label :year_of_purchase, "Enter Year of Purchase of device (as per original purchase receipt)"
       = f.text_field :year_of_purchase
-      = f.label :customer_name, 'Full Name (as per ID)'
+      = f.label :customer_name, 'Full Name (as per ID / Passport)'
       = f.text_field :customer_name, :class => "required"
       = f.label :customer_id, 'National ID or Passport Number'
       = f.text_field :customer_id, :class => "required"
