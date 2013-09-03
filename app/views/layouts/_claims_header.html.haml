@@ -3,14 +3,16 @@
     %h4.centered.header
       Welcome to Orient Mobile Claims
       - if !current_user.nil?
-        - if current_user.user_type == "CP"
+        - if claims_is_logged_in?
+          #{': Claims Portal'}
+        - elsif dealer_is_logged_in?
           #{': Fones Direct Outlet Portal'}
         - else
-          #{': Dealer Portal'}
+          #{': Fones Direct Service Centre'}
 .row
   .large-10.large-centered.columns
     - if !current_user.nil?
-      - if current_user.user_type == "DP"
+      - if dealer_is_logged_in?
         .row.spacer.disabled
           .large-6.columns
             %label

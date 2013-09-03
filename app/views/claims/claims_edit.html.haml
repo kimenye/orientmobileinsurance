@@ -14,18 +14,18 @@
 
           %h5.section_header
             Dealer Details
-          = f.hidden_field :step, :value => "3"
+          = f.hidden_field :step, :value => "4"
           = f.hidden_field :claim_type
           %p
             Dealer confirmed receipt of:
           .checks
             - if(@claim.is_theft?)
-              .row.spacer
+              .row.spacer.disabled
                 .large-12.columns
                   = f.check_box :police_abstract
                   = f.label :police_abstract
             - else
-              .row.spacer
+              .row.spacer.disabled
                 .large-12.columns
                   = f.check_box :damaged_device
                   = f.label :damaged_device
@@ -38,29 +38,29 @@
                       = @claim.policy.insured_device.imei
                     )
 
-            .row.spacer
+            .row.spacer.disabled
               .large-12.columns
                 = f.check_box :receipt
                 = f.label :receipt, "Original purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)"
-            .row.spacer
+            .row.spacer.disabled
               .large-12.columns
                 = f.check_box :original_id
                 = f.label :original_id, "Original of ID/ Passport No. "
                 %b
                   =@claim.policy.customer.id_passport
-            .row.spacer
+            .row.spacer.disabled
               .large-12.columns
                 = f.check_box :copy_id
                 = f.label :copy_id, "Copy of ID/ Passport No."
                 %b
                   =@claim.policy.customer.id_passport
             - if(@claim.claim_type != "Damage")
-              .row.spacer
+              .row.spacer.disabled
                 .large-12.columns
                   = f.check_box :blocking_request
                   = f.label :blocking_request, "Completed and stamped Blocking Request Form from mobile network operator"
             - else
-              .row.spacer
+              .row.spacer.disabled
                 .large-12.columns
                   = f.label :dealer_description, "Please describe the damage to the device"
                   = f.text_field :dealer_description, :required => "required"
@@ -78,7 +78,7 @@
                       %b
                         No
                 .large-8.columns
-              .row.spacer
+              .row.spacer.disabled
                 .large-6.columns
                   = f.label :dealer_cost_estimate, "If yes, what is the estimated cost of repairs"
                   = f.text_field :dealer_cost_estimate

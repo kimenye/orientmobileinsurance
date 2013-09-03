@@ -90,7 +90,8 @@ class ClaimService
   end
   
   def get_replacement_amount_for_claim claim
-    if !claim.policy.quote.agent.nil? &&  claim.policy.quote.agent.code.start_with?("FX")
+    service = PremiumService.new
+    if !claim.policy.quote.agent.nil? &&  service.is_fx_code(claim.policy.quote.agent.code)
       return claim.policy.insured_device.device.fd_replacement_value
       # Check if it was the same year or previous      
     elsif claim.policy.insured_device.yop == Time.now.year
