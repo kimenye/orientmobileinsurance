@@ -3,20 +3,23 @@
 %h6 Claim No: #{@claim.claim_no}
 %p Dear #{@claim.policy.quote.insured_device.customer.name}
 %p Your #{@claim.policy.quote.insured_device.device.marketing_name} is under repair.
-%p Please collect it from an authorized dealer in #{@claim.nearest_town} on #{}. Please carry your ID/Passport
-- if(!@brand.nil?)
-  %p The following are the authorized dealers available in your town
-  - if (!@brand.brand_1.nil?)
-    %p
-      = @brand.brand_1
-  - if (!@brand.brand_2.nil?)
-    %p
-      = @brand.brand_2
-  - if (!@brand.brand_3.nil?)
-    %p
-      = @brand.brand_3
-  - if (!@brand.brand_4.nil?)
-    %p
-      = @brand.brand_4
+- if !@claim.agent.nil?
+  %p Please collect it from #{@claim.agent.name} in #{@claim.nearest_town} on #{@claim.days_to_fix.business_days.from_now.to_s(:simple)}. Please carry your ID/Passport
+- else
+  %p Please collect it from an authorized dealer in #{@claim.nearest_town} on #{@claim.days_to_fix.business_days.from_now.to_s(:simple)}. Please carry your ID/Passport
+  - if(!@brand.nil?)
+    %p The following are the authorized dealers available in your town
+    - if (!@brand.brand_1.nil?)
+      %p
+        = @brand.brand_1
+    - if (!@brand.brand_2.nil?)
+      %p
+        = @brand.brand_2
+    - if (!@brand.brand_3.nil?)
+      %p
+        = @brand.brand_3
+    - if (!@brand.brand_4.nil?)
+      %p
+        = @brand.brand_4
 %p Sincerely
 %p Orient Mobile Services
