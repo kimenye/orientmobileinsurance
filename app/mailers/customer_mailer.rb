@@ -7,7 +7,7 @@ class CustomerMailer < ActionMailer::Base
       @claim = claim
       service = ClaimService.new
       @brand = service.find_brands_in_town(@claim.nearest_town)
-      attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
+      attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim Registration Details. Claim No. #{@claim.claim_no}")
     rescue
       #  Do nothing
@@ -17,7 +17,7 @@ class CustomerMailer < ActionMailer::Base
   def policy_purchase(policy)
     begin
       @policy = policy
-      attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
+      attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       attachments['omi.pdf'] = File.read("#{Rails.root}/doc/data/Orient Mobile - Policy Terms & Conditions.pdf")
       mail(:from => "mobile@korient.co.ke", :to => "#{@policy.quote.insured_device.customer.name} <#{@policy.quote.insured_device.customer.email}>", :subject => "OMI Policy Purchase. Policy No. #{@policy.policy_number}")
     rescue
@@ -28,7 +28,7 @@ class CustomerMailer < ActionMailer::Base
   def claim_decline(claim)
     begin
       @claim = claim
-      attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
+      attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
     rescue
       #  Do nothing
@@ -40,7 +40,7 @@ class CustomerMailer < ActionMailer::Base
       @claim = claim
       service = ClaimService.new
       @brand = service.find_brands_in_town(@claim.nearest_town)
-      attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
+      attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
     rescue
       #  Do nothing
@@ -52,7 +52,7 @@ class CustomerMailer < ActionMailer::Base
       @claim = claim
       service = ClaimService.new
       @brand = service.find_brands_in_town(@claim.nearest_town)
-      attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
+      attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
     rescue
       #  Do nothing
@@ -64,7 +64,7 @@ class CustomerMailer < ActionMailer::Base
       @claim = claim
       service = ClaimService.new
       @brand = service.find_brands_in_town(@claim.nearest_town)
-      attachments.inline['admin_banner.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner.jpg")
+      attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
     rescue
       #  Do nothing
