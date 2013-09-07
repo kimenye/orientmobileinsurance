@@ -8,6 +8,8 @@
       = f.text_field :sales_agent_code
       = f.label :year_of_purchase, "Enter Year of Purchase of device (as per original purchase receipt)"
       = f.text_field :year_of_purchase
+      - if @enquiry.errors[:year_of_purchase]
+        = f.label :year_of_purchase, "Invalid Year of purchase entered"
       = f.label :customer_name, 'Full Name (as per ID / Passport)'
       = f.text_field :customer_name, :class => "required"
       = f.label :customer_id, 'National ID or Passport Number'
