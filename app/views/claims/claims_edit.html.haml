@@ -115,6 +115,10 @@
                   = f.label :repair_limit
                   = f.text_field :repair_limit
           .row.spacer
+            .large-2.columns
+              = f.submit "Approve", {:class=> "button small", :name => "commit"}
+            .large-10.columns
+          .row.spacer
             %hr
             .large-10.columns
               = f.label :decline_reason, "Reason for decline"
@@ -123,12 +127,6 @@
               %label{:style => "display:block;" }
                 &nbsp;
               = f.submit "Decline", {:class => "button small alert", :name => "commit"}
-          .row.spacer
-            .large-2.columns
-              = f.submit "Approve", {:class=> "button small", :name => "commit"}
-            .large-2.columns
-              -#= f.submit "Decline", {:class => "button alert", :name => "commit"}
-            .large-9.columns
 :javascript
   $(function(){
     $('.checks input').prop('disabled', true);
