@@ -84,7 +84,7 @@ class MessagesController < ApplicationController
       @gateway = SMSGateway.new
       premium_service = PremiumService.new
 
-      puts ">>> Params #{params}"
+      #puts ">>> Params #{params}"
       text = params["Text"]
       msg_type = premium_service.get_message_type text
       mobile = params["MobileNumber"]
