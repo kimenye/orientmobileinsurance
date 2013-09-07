@@ -12,13 +12,13 @@ class ClaimService
     if claim.is_damage? && claim.authorized
       # send an sms to the customer
       if claim.dealer_can_fix
-        text = "Your #{claim.policy.insured_device.device.model} is under repair. Please collect it from #{claim.agent.name} on #{claim.days_to_fix.business_days.from_now.to_s(:simple)}. Please carry your ID / Passport"
+        text = "Your #{claim.policy.insured_device.device.model} is under repair. Collect it from #{claim.agent.name} on #{claim.days_to_fix.business_days.from_now.to_s(:simple)}. Please carry your ID / Passport"
         sms.send to, text
         claim.status_description = text
         claim.save!
         CustomerMailer.reparable_damage_claim(claim).deliver
       else
-        text =  "Your #{claim.policy.insured_device.device.model} cannot be repaired. Please visit #{claim.agent.name} with ID or Passport for a replacement. Limit #{replacement}"
+        text =  "Your #{claim.policy.insured_device.device.model} cannot be repaired. Visit #{claim.agent.name} with ID or Passport for a replacement. Limit #{replacement}"
         sms.send to, text
         claim.status_description = text
         claim.save!
