@@ -12,7 +12,8 @@
  *= require jquery.mobile.tabs
 */
 
-.field_with_errors {
+.field_with_errors,
+.formError {
   color: red;
 }
 

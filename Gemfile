@@ -26,6 +26,8 @@ gem 'jquery_mobile_rails'
 gem 'mobile-fu'
 gem 'business_time'
 gem 'newrelic_rpm'
+gem 'dynamic_form'
+
 
 gem 'zurb-foundation'
 gem 'compass-rails'
