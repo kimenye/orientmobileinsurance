@@ -8,6 +8,10 @@ class HomeController < ApplicationController
   end
 
   def device
+    render :layout => "mobile"
+  end
+
+  def result
     device_data = get_device_data
     #Check for the devices among our supported devices
     model = device_data["model"]
@@ -16,6 +20,10 @@ class HomeController < ApplicationController
 
     invalid_da = (vendor.nil? || vendor.empty?) && (model.nil? || model.empty?)
 
+    iphone_5 = request.cookies["device.isPhone5"]
+    if iphone_5 == "true"
+       model = "IPHONE 5"
+    end
 
     @device = Enquiry.new
     @device.model = model
@@ -36,7 +44,5 @@ class HomeController < ApplicationController
     @device.detected = !device.nil?
 
     @catalogue_device = device
-
-    render :layout => "mobile"
   end
 end
