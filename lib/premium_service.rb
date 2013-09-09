@@ -152,7 +152,7 @@ class PremiumService
     pending = policy.pending_amount
     if policy.quote.premium_type == "Annual"
 
-      if pending == 0
+      if pending <= 0
         policy.start_date = Time.now
         policy.expiry = 365.days.from_now
         policy.status = "Active"
@@ -160,12 +160,18 @@ class PremiumService
         # policy.status = "Pending"
       end
     else
-      if pending == 0
-        policy.start_date = Time.now
-        policy.expiry = 365.days.from_now
+      if pending <= 0
+        if policy.start_date.nil?
+          policy.start_date = Time.now
+          policy.expiry = 365.days.from_now
+        else
+          policy.expiry = policy.start_date + 365.days
+        end
         policy.status = "Active"
       else
-        policy.start_date = Time.now
+        if policy.start_date.nil?
+          policy.start_date = Time.now
+        end
         policy.expiry = 30.days.from_now
         policy.status = "Active"
       end
