@@ -21,6 +21,7 @@ class HomeController < ApplicationController
     invalid_da = (vendor.nil? || vendor.empty?) && (model.nil? || model.empty?)
 
     iphone_5 = request.cookies["device.isPhone5"]
+    puts "Reporting #{model}, #{vendor}, #{marketingName} - #{iphone_5}"
     if iphone_5 == "true"
        model = "IPHONE 5"
     end
