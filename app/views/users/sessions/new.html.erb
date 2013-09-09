@@ -3,9 +3,11 @@
     <h4 class="centered header">
       Welcome to Orient Mobile Claims :
       <% if resource.user_type == "CP" %>
-          KOIL Claims Portal
-      <% else %>
+          Claims Portal
+      <% elsif resource.user_type == "DP" %>
           Dealer Portal
+      <% elsif resource.user_type == "SC" %>
+          Service Centre
       <% end %>
     </h4>
   </div>

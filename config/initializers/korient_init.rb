@@ -20,8 +20,8 @@ if Rails.env.production?
           installment = policy.pending_amount
         end
 
-        sms_gateway.send policy.quote.insured_device.phone_number, "Dear #{policy.quote.insured_device.customer.name}, your Orient Mobile premium is due today. Total balance #{number_to_currency(policy.pending_amount, :unit => "KES ", :precision => 0, :delimiter => "")}. Payment due #{number_to_currency(installment, :unit => "KES ", :precision => 0, :delimiter => "")}. Your account no. is #{policy.quote.account_name}. Please pay via MPesa (Business No. 530100) or Airtel Money (Business Name JAMBOPAY). Policy lapses at 11:59PM if payment is not made by then"
-
+        sms_gateway.send policy.quote.insured_device.phone_number, "Dear #{policy.quote.insured_device.customer.name}, your Orient Mobile premium is due today. Total balance #{number_to_currency(policy.pending_amount, :unit => "KES ", :precision => 0, :delimiter => "")}. Payment due #{number_to_currency(installment, :unit => "KES ", :precision => 0, :delimiter => "")}. Your account no. is #{policy.quote.account_name}."
+        sms_gateway.send policy.quote.insured_device.phone_number, "Please pay via MPesa (Business No. 530100) or Airtel Money (Business Name JAMBOPAY). Policy lapses at 11:59PM if payment is not made by then."
       end
 
     }
@@ -35,7 +35,8 @@ if Rails.env.production?
           installment = policy.pending_amount
         end
 
-        sms_gateway.send policy.quote.insured_device.phone_number, "Dear #{policy.quote.insured_device.customer.name}, your Orient Mobile premium is due on #{policy.expiry.to_s(:simple)}. Total balance #{number_to_currency(policy.pending_amount, :unit => "KES ", :precision => 0, :delimiter => "")}. Payment due #{number_to_currency(installment, :unit => "KES ", :precision => 0, :delimiter => "")}. Please pay via MPesa (Business No. 530100) or Airtel Money (Business Name JAMBOPAY). Your account no. is #{policy.quote.account_name}"
+        sms_gateway.send policy.quote.insured_device.phone_number, "Dear #{policy.quote.insured_device.customer.name}, your Orient Mobile premium is due on #{policy.expiry.to_s(:simple)}. Total balance #{number_to_currency(policy.pending_amount, :unit => "KES ", :precision => 0, :delimiter => "")}. Payment due #{number_to_currency(installment, :unit => "KES ", :precision => 0, :delimiter => "")}."
+        sms_gateway.send policy.quote.insured_device.phone_number, "Please pay via MPesa (Business No. 530100) or Airtel Money (Business Name JAMBOPAY). Your account no. is #{policy.quote.account_name}"
 
       end
 

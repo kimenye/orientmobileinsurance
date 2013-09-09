@@ -13,50 +13,61 @@
   .large-10.large-centered.columns
     %h6
       Please provide an alternative mobile telephone no. and email address at which you can be reached while your claim is being processed.
-.row.spacer
-  .large-10.large-centered.columns
-    = form_for(@customer, :method => :put) do |f|
+= form_for(@customer, :method => :put) do |f|
+  .row.spacer
+    .large-10.large-centered.columns
       = f.label :alternate_phone_number, "Alternate Phone Number"
       = f.text_field :alternate_phone_number
       = f.label :email
       = f.email_field :email
+
+  .row.spacer
+    .large-10.large-centered.columns
+      %h6
+        Please select the device for which you are making a claim
+  .row.spacer
+    .large-10.large-centered.columns
+      %table
+        %thead
+          %td Make & Model
+          %td Cover Till
+          %td Insured Value
+          %td Phone Number
+          %td IMEI
+          %td Policy No
+        %tbody
+          - @customer.insured_devices.each do |id|
+            - if !id.quote.policy.nil?
+              %tr
+                %td
+                  -if id.quote.policy.has_claim?
+                    - if id.quote.policy.claim.is_in_customer_stage?
+                      %a{:href => edit_claim_path(id.quote.policy.claim)}
+                        = id.device.marketing_name
+                    - elsif (!id.quote.policy.claim.is_in_customer_stage?) && (id.quote.policy.expiry - Time.now > 0)
+                      %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                        = id.device.marketing_name
+                    -else
+                      %a{:href => claim_path(id.quote.policy.claim)}
+                        = id.device.marketing_name
+                  -else
+                    %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                      = id.device.marketing_name
+                %td
+                  -if !id.quote.policy.expiry.nil?
+                    = id.quote.policy.expiry.to_s(:simple)
+                %td
+                  = number_to_currency(id.quotes.first.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
+                %td
+                  - if !id.customer.phone_number.nil?
+                    = id.customer.phone_number
+                %td
+                  - if !id.imei.nil?
+                    = id.imei
+                %td
+                  - if !id.quote.policy.policy_number.nil?
+                    = id.quote.policy.policy_number
+
+  .row.spacer
+    .large-10.large-centered.columns
       = f.submit "Update", {:class=> "button small"}
-.row.spacer
-  .large-10.large-centered.columns
-    %h6
-      Please select the device for which you are making a claim
-.row.spacer
-  .large-10.large-centered.columns
-    %table
-      %thead
-        %td Make & Model
-        %td Cover Till
-        %td Insured Value
-        %td Phone Number
-        %td IMEI
-        %td Policy No
-      %tbody
-        - @customer.insured_devices.each do |id|
-          - if !id.quote.policy.nil?
-            %tr
-              %td
-                -if id.quote.policy.has_claim?
-                  %a{:href => edit_claim_path(id.quote.policy.claim)}
-                    = id.device.marketing_name
-                -else
-                  %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
-                    = id.device.marketing_name
-              %td
-                -if !id.quote.policy.expiry.nil?
-                  = id.quote.policy.expiry.to_s(:simple)
-              %td
-                = number_to_currency(id.quotes.first.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-              %td
-                - if !id.customer.phone_number.nil?
-                  = id.customer.phone_number
-              %td
-                - if !id.imei.nil?
-                  = id.imei                
-              %td
-                - if !id.quote.policy.policy_number.nil?
-                  = id.quote.policy.policy_number

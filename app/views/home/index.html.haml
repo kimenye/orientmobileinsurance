@@ -3,14 +3,16 @@
     .large-10.large-centered.columns
       %h4.centered.header
         Welcome to Orient Mobile Claims :
-        - if current_user.user_type == "CP"
-          KOIL Claims Portal
+        - if claims_is_logged_in?
+          Claims Portal
+        - elsif dealer_is_logged_in?
+          Fones Direct Outlet Portal
         - else
-          Dealer Portal
+          Fones Direct Service Centre
   .row
     .large-10.large-centered.columns
 
-      - if current_user.user_type == "DP"
+      - if dealer_is_logged_in?
         .row.disabled.spacer
           .large-6.columns
             %label
@@ -31,7 +33,7 @@
               %label{:style => "display:block"}
                 &nbsp;
               %input.small.button{:type => "submit"}
-      - if current_user.user_type == "CP"
+      - if claims_is_logged_in?
         %form{:method => "POST", :action => claim_search_by_no_path}
           %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
         .section-container.tabs{"data-section" => "tabs"}
@@ -47,7 +49,7 @@
                     %td Client
                   %tbody
                     - @claims.each do |claim|
-                      - if claim.status != 'Settled'
+                      - if claim.status != 'Settled' && claim.is_in_claims_stage?
                         %tr
                           %td
                             - if !claim.claim_no.nil?
@@ -71,12 +73,11 @@
                     %td Client
                   %tbody
                     - @claims.each do |claim|
-                      - if claim.status == 'Settled'
+                      - if claim.status == 'Settled' && claim.is_in_claims_stage?
                         %tr
                           %td
                             -if !claim.claim_no.nil?
-                              %a{:href => "/claim_search?claim_no=#{claim.claim_no}"}
-                                = claim.claim_no
+                              = claim.claim_no
                           %td
                             -if !claim.incident_date.nil?
                               = claim.incident_date
@@ -95,14 +96,90 @@
                     %td Client
                   %tbody
                     - @claims.each do |claim|
-                      %tr
-                        %td
-                          -if !claim.claim_no.nil?
-                            %a{:href => "/claim_search?claim_no=#{claim.claim_no}"}
+                      - if claim.is_in_claims_stage?
+                        %tr
+                          %td
+                            -if !claim.claim_no.nil?
                               = claim.claim_no
-                        %td
-                          -if !claim.incident_date.nil?
-                            = claim.incident_date
-                        %td
-                          -if !claim.policy.quote.insured_device.customer.name.nil?
-                            = claim.policy.quote.insured_device.customer.name
+                          %td
+                            -if !claim.incident_date.nil?
+                              = claim.incident_date
+                          %td
+                            -if !claim.policy.quote.insured_device.customer.name.nil?
+                              = claim.policy.quote.insured_device.customer.name
+      - if service_centre_is_logged_in?
+        %form{:method => "POST", :action => claim_search_by_no_path}
+          %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
+        .section-container.tabs{"data-section" => "tabs"}
+          %section
+            %p.title{"data-section-title" => ""}
+              %a{:href => "#"} Awaiting Assessment
+            .content{"data-section-content" => ""}
+              .large-10.large-centered.columns
+                %table
+                  %thead
+                    %td Claim No.
+                    %td Claim Date
+                    %td Customer
+                  %tbody
+                    - @claims.each do |claim|
+                      - if claim.is_damage?
+                        - if claim.status != 'Settled'
+                          %tr
+                            %td
+                              - if !claim.claim_no.nil?
+                                %a{:href => "/claim_search?claim_no=#{claim.claim_no}"}
+                                  = claim.claim_no
+                            %td
+                              -if !claim.incident_date.nil?
+                                = claim.incident_date
+                            %td
+                              -if !claim.policy.quote.insured_device.customer.name.nil?
+                                = claim.policy.quote.insured_device.customer.name
+          %section
+            %p.title{"data-section-title" => ""}
+              %a{:href => "#"} Assessment Completed
+            .content{"data-section-content" => ""}
+              .large-10.large-centered.columns
+                %table
+                  %thead
+                    %td Claim No.
+                    %td Claim Date
+                    %td Customer
+                  %tbody
+                    - @claims.each do |claim|
+                      -if claim.is_damage?
+                        - if claim.status == 'Settled'
+                          %tr
+                            %td
+                              -if !claim.claim_no.nil?
+                                = claim.claim_no
+                            %td
+                              -if !claim.incident_date.nil?
+                                = claim.incident_date
+                            %td
+                              -if !claim.policy.quote.insured_device.customer.name.nil?
+                                = claim.policy.quote.insured_device.customer.name
+          %section
+            %p.title{"data-section-title" => ""}
+              %a{:href => "#"} All Damage Claims
+            .content{"data-section-content" => ""}
+              .large-10.large-centered.columns
+                %table
+                  %thead
+                    %td Claim No.
+                    %td Claim Date
+                    %td Customer
+                  %tbody
+                    - @claims.each do |claim|
+                      - if claim.is_damage?
+                        %tr
+                          %td
+                            -if !claim.claim_no.nil?
+                              = claim.claim_no
+                          %td
+                            -if !claim.incident_date.nil?
+                              = claim.incident_date
+                          %td
+                            -if !claim.policy.quote.insured_device.customer.name.nil?
+                              = claim.policy.quote.insured_device.customer.name

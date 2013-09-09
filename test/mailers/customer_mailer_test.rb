@@ -12,7 +12,7 @@ class CustomerMailerTest < ActionMailer::TestCase
   end
 
   tests CustomerMailer
-  test "send claim registartion email" do
+  test "send claim registration email" do
 
     @customer = Customer.create! :name => "Joyce", :id_passport => "123456789", :email => "jokhessa@yahoo.com", :phone_number => "254705866564"
     @device = Device.create! :vendor => "Apple", :model => "IPHONE 5 - 16GB", :marketing_name => "IPHONE 5 - 16GB", :wholesale_price => 100.00, :catalog_price => 150.00
@@ -27,7 +27,7 @@ class CustomerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     # Test the body of the sent email contains what we expect it to
-    assert_equal ['robot@omi.co.ke'], email.from
+    assert_equal ['ombclaims@korient.co.ke'], email.from
     assert_equal ['jokhessa@yahoo.com'], email.to
     assert_equal 'OMI Claim Registartion Details', email.subject
   end
@@ -47,7 +47,7 @@ class CustomerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     # Test the body of the sent email contains what we expect it to
-    assert_equal ['robot@omi.co.ke'], email.from
+    assert_equal ['ombclaims@korient.co.ke'], email.from
     assert_equal ['jokhessa@yahoo.com'], email.to
     assert_equal 'OMI Policy Purchase', email.subject
   end

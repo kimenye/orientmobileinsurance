@@ -3,8 +3,12 @@ ActiveAdmin.register Agent do
 
   active_admin_importable do |model,hash|
     res = model.create! hash
-    user = User.create! :name => "#{res.brand} #{res.outlet_name}", :email => "#{res.code}@korient.co.ke", :user_type => "DP", :agent_id => res.id,
-      :password => "kenyaorient", :password_confirmation => "kenyaorient", :username => res.code
+    service = PremiumService.new()
+
+    if service.is_fx_code res.code
+      user = User.create! :name => "#{res.brand} #{res.outlet_name}", :email => "#{res.code}@korient.co.ke", :user_type => "DP", :agent_id => res.id,
+        :password => "kenyaorient", :password_confirmation => "kenyaorient", :username => res.code
+    end
   end
 
   # index do

@@ -12,13 +12,13 @@ class ClaimService
     if claim.is_damage? && claim.authorized
       # send an sms to the customer
       if claim.dealer_can_fix
-        text = "Your #{claim.policy.insured_device.device.model} is under repair. Please collect it from #{claim.agent.name} on #{claim.days_to_fix.business_days.from_now.to_s(:simple)}. Please carry your ID / Passport"
+        text = "Your #{claim.policy.insured_device.device.model} is under repair. Collect it from #{claim.agent.name} on #{claim.days_to_fix.business_days.from_now.to_s(:simple)}. Please carry your ID / Passport"
         sms.send to, text
         claim.status_description = text
         claim.save!
         CustomerMailer.reparable_damage_claim(claim).deliver
       else
-        text =  "Your #{claim.policy.insured_device.device.model} cannot be repaired. Please visit #{claim.agent.name} with ID or Passport for a replacement. Limit #{replacement}"
+        text =  "Your #{claim.policy.insured_device.device.model} cannot be repaired. Visit #{claim.agent.name} with ID or Passport for a replacement. Limit #{replacement}"
         sms.send to, text
         claim.status_description = text
         claim.save!
@@ -60,8 +60,9 @@ class ClaimService
     requirements = "claim form, police abstract, stamped Blocking Request Form from network, purchase receipt/ warranty, original and copy of ID/Passport." if claim.is_theft?
 
     insured_value_str = ActionController::Base.helpers.number_to_currency(claim.policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-    text = "#{device}, Year #{claim.policy.insured_device.yop}, Value #{insured_value_str}. #{claim_type} claim booked under Ref #{claim.claim_no}. Check email for Claim Registration Form. Please visit #{brand.brand_1} with #{requirements}"
+    text = "#{device}, Year #{claim.policy.insured_device.yop}, Value #{insured_value_str}. #{claim_type} claim booked under Ref #{claim.claim_no}. Check email for Claim Registration Form."
     gateway.send(customer.contact_number, text)
+    gateway.send(customer.contact_number, "Please visit #{brand.brand_1} with #{requirements}")
   end
   
   def is_serial_claimant id_number
@@ -89,7 +90,8 @@ class ClaimService
   end
   
   def get_replacement_amount_for_claim claim
-    if !claim.policy.quote.agent.nil? &&  claim.policy.quote.agent.code.start_with?("FX")
+    service = PremiumService.new
+    if !claim.policy.quote.agent.nil? &&  service.is_fx_code(claim.policy.quote.agent.code)
       return claim.policy.insured_device.device.fd_replacement_value
       # Check if it was the same year or previous      
     elsif claim.policy.insured_device.yop == Time.now.year
