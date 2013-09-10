@@ -1,6 +1,14 @@
 require 'deviceatlasapi'
+require "spreadsheet_on_rails"
 class HomeController < ApplicationController
   include DeviceAtlasApi::ControllerHelpers
+
+  def download_data
+    @policies = Policy.all
+    respond_to do |format|
+      format.xls
+    end
+  end
 
   def index
     @users = User.all
