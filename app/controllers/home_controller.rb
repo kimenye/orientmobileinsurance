@@ -1,5 +1,4 @@
 require 'deviceatlasapi'
-require "spreadsheet_on_rails"
 class HomeController < ApplicationController
   include DeviceAtlasApi::ControllerHelpers
 
