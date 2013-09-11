@@ -1,4 +1,9 @@
 ActiveAdmin.register Agent do
+
+  controller do
+    actions :all, :except => [:edit, :destroy]
+  end
+
   menu :parent => "Reference Data"
 
   active_admin_importable do |model,hash|

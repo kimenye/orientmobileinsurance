@@ -1,4 +1,9 @@
 ActiveAdmin.register Enquiry do
+
+  controller do
+    actions :all, :except => [:edit, :destroy]
+  end
+
   menu :parent => "Log"
   index do
     column :phone_number
