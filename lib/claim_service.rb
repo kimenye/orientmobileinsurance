@@ -12,7 +12,7 @@ class ClaimService
     if claim.is_damage? && claim.authorized
       # send an sms to the customer
       if claim.dealer_can_fix
-        text = "Your #{claim.policy.insured_device.device.model} is under repair. Collect it from #{claim.agent.name} on #{claim.days_to_fix.business_days.from_now.to_s(:simple)}. Please carry your ID / Passport"
+        text = "Your #{claim.policy.insured_device.device.model} is under repair. Collect it from #{claim.agent.name} on #{claim.days_to_fix.business_days.from_now.to_s(:simple)}. Carry your ID / Passport"
         sms.send to, text
         claim.status_description = text
         claim.save!
@@ -26,20 +26,20 @@ class ClaimService
       end
     else
       if claim.is_theft? && claim.authorized
-        text = "Your claim has been processed. Please visit #{claim.agent.name} with ID or Passport for a replacement device. Limit #{replacement}"
+        text = "Your claim has been processed. Visit #{claim.agent.name} with ID or Passport for a replacement device. Limit #{replacement}"
         sms.send to, text
         claim.status_description = text
         claim.save!
         CustomerMailer.loss_theft_claim(claim).deliver
       elsif claim.is_damage? && !claim.authorized
         CustomerMailer.claim_decline(claim).deliver
-        text = "We regret to inform you that your Orient Mobile DAMAGE claim has been declined. Please check your email for details."
+        text = "We regret to inform you that your Orient Mobile DAMAGE claim has been declined. Check your email for details."
         sms.send to, text
         claim.status_description = text
         claim.save!
       elsif claim.is_theft? && !claim.authorized
         CustomerMailer.claim_decline(claim).deliver
-        text = "We regret to inform you that your Orient Mobile THEFT claim has been declined. Please check your email for details."
+        text = "We regret to inform you that your Orient Mobile THEFT claim has been declined. Check your email for details."
         sms.send to, text
         claim.status_description = text
         claim.save!
@@ -62,7 +62,7 @@ class ClaimService
     insured_value_str = ActionController::Base.helpers.number_to_currency(claim.policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
     text = "#{device}, Year #{claim.policy.insured_device.yop}, Value #{insured_value_str}. #{claim_type} claim booked under Ref #{claim.claim_no}. Check email for Claim Registration Form."
     gateway.send(customer.contact_number, text)
-    gateway.send(customer.contact_number, "Please visit #{brand.brand_1} with #{requirements}")
+    gateway.send(customer.contact_number, "Visit #{brand.brand_1} with #{requirements}")
   end
   
   def is_serial_claimant id_number
