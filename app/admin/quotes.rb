@@ -1,4 +1,9 @@
 ActiveAdmin.register Quote do
+
+  controller do
+    actions :all, :except => [:edit, :destroy]
+  end
+
   index do
     column :account_name
     column :amount_due
