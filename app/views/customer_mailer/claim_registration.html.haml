@@ -57,7 +57,33 @@
   = @claim.nearest_town
 %span
   with the following:
-%ul
+- if @claim.is_damage?
+  %ul
+    %li
+      The damaged device
+    %li
+      Original or certified copy of purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)
+    %li
+      Original ID or Passport
+    %li
+      Copy of ID or Passport
+    %li
+      This claim registration confirmation
+- else
+  %ul
+    %li
+      Police Abstract
+    %li
+      Completed and stamped Blocking Request Form from mobile network operator
+    %li
+      Original purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)
+    %li
+      Original ID or Passport
+    %li
+      Copy of ID or Passport
+    %li
+      This claim registration confirmation
+-#%ul
   %li
     The damaged device
   %li
