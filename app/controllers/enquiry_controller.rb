@@ -224,7 +224,8 @@ class EnquiryController < Wicked::WizardController
           q.save!
         end
 
-        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."]
+        #smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."]
+        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]
         session[:sms_message] = smsMessage
         session[:sms_to] = @enquiry.phone_number
     end
