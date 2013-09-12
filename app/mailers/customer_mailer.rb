@@ -8,7 +8,7 @@ class CustomerMailer < ActionMailer::Base
       service = ClaimService.new
       @brand = service.find_brands_in_town(@claim.nearest_town)
       attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
-      mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim Registration Details. Claim No. #{@claim.claim_no}")
+      mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMB Claim Registration Details. Claim No. #{@claim.claim_no}")
     rescue
       #  Do nothing
     end
@@ -19,7 +19,7 @@ class CustomerMailer < ActionMailer::Base
       @policy = policy
       attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       attachments['omi.pdf'] = File.read("#{Rails.root}/doc/data/Orient Mobile - Policy Terms & Conditions.pdf")
-      mail(:from => "mobile@korient.co.ke", :to => "#{@policy.quote.insured_device.customer.name} <#{@policy.quote.insured_device.customer.email}>", :subject => "OMI Policy Purchase. Policy No. #{@policy.policy_number}")
+      mail(:from => "mobile@korient.co.ke", :to => "#{@policy.quote.insured_device.customer.name} <#{@policy.quote.insured_device.customer.email}>", :subject => "OMB Policy Purchase. Policy No. #{@policy.policy_number}")
     rescue
     #  Do nothing
     end
@@ -29,7 +29,7 @@ class CustomerMailer < ActionMailer::Base
     begin
       @claim = claim
       attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
-      mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
+      mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMB Claim No. #{@claim.claim_no}")
     rescue
       #  Do nothing
     end
@@ -41,7 +41,7 @@ class CustomerMailer < ActionMailer::Base
       service = ClaimService.new
       @brand = service.find_brands_in_town(@claim.nearest_town)
       attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
-      mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
+      mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMB Claim No. #{@claim.claim_no}")
     rescue
       #  Do nothing
     end
@@ -53,7 +53,7 @@ class CustomerMailer < ActionMailer::Base
       service = ClaimService.new
       @brand = service.find_brands_in_town(@claim.nearest_town)
       attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
-      mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
+      mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMB Claim No. #{@claim.claim_no}")
     rescue
       #  Do nothing
     end
@@ -65,7 +65,7 @@ class CustomerMailer < ActionMailer::Base
       service = ClaimService.new
       @brand = service.find_brands_in_town(@claim.nearest_town)
       attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
-      mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMI Claim No. #{@claim.claim_no}")
+      mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMB Claim No. #{@claim.claim_no}")
     rescue
       #  Do nothing
     end
