@@ -105,3 +105,13 @@
               %p
                 %b
                   Please carry all the above items when visiting the outlet. The outlet is authorized to accept your claim only when all the above items are submitted together.
+          .row.spacer
+            .large-12.columns
+              - if @claim.is_theft?
+                %p
+                  If your device is to be replaced, please note the Replacement Limit will be arrived at by deducting an Excess of 10% of Insurance Value (minimum KES 1,000) from the Insurance Value.
+              - else
+                %p
+                  If your device is to be replaced, please note the Replacement Limit will be arrived at by deducting an Excess of 10% of Insurance Value (minimum KES 1,000) from the Insurance Value. In case your device is to be repaired, no Excess will apply.
+
+
