@@ -35,7 +35,7 @@
           -if !session[:policy].expiry.nil?
             = session[:policy].expiry.to_s(:simple)
 
-    = form_for(@status, :url => wizard_path, :method => :put) do |f|
+    = form_for(@status, :url => wizard_path, :method => :put, :html => ({"data-ajax" => "false"} if is_asha?)) do |f|
       %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
         %li{"data-role" => "list-divider"}
           Provide your claim details.

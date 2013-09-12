@@ -135,11 +135,10 @@ class PremiumService
       set_policy_dates policy
       policy.save!
 
-      #You have successfully covered your device, value KES 19500. Orient Mobile policy OMB/AAAA/0001 valid till 11/07/14. Policy details: www.korient.co.ke/OMB/T&C
       if policy.status == "Active"
         sms_gateway = SMSGateway.new
         insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-        sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: www.korient.co.ke/LoveMob"
+        sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
         email = CustomerMailer.policy_purchase(policy).deliver
       end
     else
