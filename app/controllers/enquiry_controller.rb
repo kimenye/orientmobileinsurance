@@ -66,7 +66,7 @@ class EnquiryController < Wicked::WizardController
           if policy.minimum_paid
             sms.send quote.insured_device.phone_number, "Dial *#06# to retrieve your device IMEI no.  Record the first 15 digits of the IMEI and SMS them to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation"
           else
-            sms.send quote.insured_device.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.minimum_due, :unit => "KES", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency(policy.minimum_due, :unit => "KES", :precision => 0, :delimiter => "")} to proceed."
+            sms.send quote.insured_device.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency(policy.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")} to proceed."
           end
         else
           # if policy.is_pending? && policy.payment_due?
