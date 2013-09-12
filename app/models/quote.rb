@@ -21,6 +21,18 @@ class Quote < ActiveRecord::Base
       return annual_premium
     end
   end
+  
+  def minimum_due
+    if is_installment?
+      return monthly_premium.to_f
+    else
+      return annual_premium
+    end
+  end
+  
+  def is_installment?
+    premium_type == "Monthly"
+  end
 
   def customer
     if policy.nil?
