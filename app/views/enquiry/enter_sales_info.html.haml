@@ -3,7 +3,7 @@
     %h1
       Sales Details
   %section{"data-role" => "content", :role => "main"}
-    = form_for(@enquiry, :url => wizard_path, :method => :put) do |f|
+    = form_for(@enquiry, :url => wizard_path, :method => :put, :html => ({"data-ajax" => "false"} if is_asha?) ) do |f|
       = f.label :sales_agent_code, "Enter Sales Agent Code (0 if none)"
       = f.text_field :sales_agent_code
       = f.label :year_of_purchase, "Enter Year of Purchase of device (as per original purchase receipt)"

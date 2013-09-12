@@ -23,7 +23,8 @@ class EnquiryController < Wicked::WizardController
           end
       end
       render_wizard
-    rescue
+    rescue => error
+      puts "Error occured #{error}"
       redirect_to start_again_path
     end
   end
