@@ -1,4 +1,9 @@
 ActiveAdmin.register Payment do
+
+  controller do
+    actions :all, :except => [:edit, :destroy]
+  end
+
   index do
     column :amount
     column :method

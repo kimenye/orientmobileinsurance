@@ -1,4 +1,9 @@
 ActiveAdmin.register Policy do
+
+  controller do
+    actions :all, :except => [:edit, :destroy]
+  end
+
   member_action :reset, :method => :put do
 
     policy = Policy.find(params[:id])

@@ -1,4 +1,9 @@
 ActiveAdmin.register Claim do
+
+  controller do
+    actions :all, :except => [:edit, :destroy]
+  end
+
 =begin
   index do
     column :claim_no

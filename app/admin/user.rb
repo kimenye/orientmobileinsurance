@@ -1,4 +1,9 @@
 ActiveAdmin.register User do
+
+  controller do
+    actions :all, :except => [:edit, :destroy]
+  end
+
   menu :parent => "Security"
   index do
     column :name

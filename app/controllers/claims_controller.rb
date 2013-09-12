@@ -147,7 +147,7 @@ class ClaimsController < ApplicationController
       if @claim.update_attributes(params[:claim])
         if @claim.step == 1
           if @claim.claim_type == 'Loss / Theft' || @claim.claim_type == 'Theft / Loss'
-            CustomerMailer.loss_theft_claim(@claim).deliver
+            CustomerMailer.claim_registration(@claim).deliver
           else
             CustomerMailer.claim_registration(@claim).deliver
           end

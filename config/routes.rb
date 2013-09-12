@@ -15,6 +15,10 @@ Orientmobileinsurance::Application.routes.draw do
 
   root :to => "home#index"
 
+  match 'download_data' => 'reports#download_data', :as => :download_data
+
+  match 'reports' => 'reports#index', :as => :reports
+
   match 'enquiry/secure' => 'enquiry#secure'
 
   match 'enquiry/status_check' => 'enquiry#status_check'
