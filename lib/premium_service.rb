@@ -136,24 +136,30 @@ class PremiumService
 
   def activate_policy imei, phone_number
 
-    inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.policy.nil?) }
-    if !inactive_devices.empty?
-      device = inactive_devices.last
-      device.imei = imei.strip
-      device.save!
+    if is_valid_imei? imei
 
-      policy = device.quote.policy
-      set_policy_dates policy
-      policy.save!
+      inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.policy.nil?) }
+      if !inactive_devices.empty?
+        device = inactive_devices.last
+        device.imei = imei.strip
+        device.save!
 
-      if policy.status == "Active"
-        sms_gateway = SMSGateway.new
-        insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-        sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
-        email = CustomerMailer.policy_purchase(policy).deliver
+        policy = device.quote.policy
+        set_policy_dates policy
+        policy.save!
+
+        if policy.status == "Active"
+          sms_gateway = SMSGateway.new
+          insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
+          sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
+          email = CustomerMailer.policy_purchase(policy).deliver
+        end
+      else
+        puts ">>> No devices found for the phone number #{phone_number}"
       end
     else
-      puts ">>> No devices found for the phone number #{phone_number}"
+      sms_gateway = SMSGateway.new
+      sms_gateway.send phone_number, "That IMEI number has already been activated for another policy. Please confirm and send again or call 0202962000."
     end
   end
 
