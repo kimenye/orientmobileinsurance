@@ -96,7 +96,9 @@ class PremiumService
   end
 
   def generate_unique_policy_number
-    "OMB/AAAA/%04d"% (Policy.count + 1).to_s
+    seed = ENV['SEED_POLICY_NO'].to_i + (Policy.count)
+
+    "OMB/AAAA/%04d"% seed.to_s
   end
 
   def is_number? text

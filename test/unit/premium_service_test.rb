@@ -183,5 +183,25 @@ class PremiumServiceTest < ActiveSupport::TestCase
     result = service.is_valid_imei? "123456789012345"
     assert_equal result, false
   end
+
+  test "Should generate the right policy number in the case where some data may have been deleted" do
+    Policy.delete_all
+
+    service = PremiumService.new
+    expected = "OMB/AAAA/0006"
+    result = service.generate_unique_policy_number
+    assert_equal expected, result
+
+
+    policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    expected = "OMB/AAAA/0007"
+    result = service.generate_unique_policy_number
+    assert_equal expected, result
+
+    policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    expected = "OMB/AAAA/0008"
+    result = service.generate_unique_policy_number
+    assert_equal expected, result
+  end
   
 end
