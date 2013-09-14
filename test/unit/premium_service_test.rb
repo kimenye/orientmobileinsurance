@@ -168,5 +168,20 @@ class PremiumServiceTest < ActiveSupport::TestCase
     premium = service.calculate_monthly_premium "FW", 1950 
     assert_equal 387, premium       
   end
+
+  test "Should not be able to use the same IMEI device if it has an active policy" do
+    InsuredDevice.delete_all
+    insured_device = InsuredDevice.create! :imei => "123456789012345", :yop => 2013
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+
+    service = PremiumService.new
+    result = service.is_valid_imei? "animeinumberthatdoesntexist"
+
+    assert_equal result, true
+
+    result = service.is_valid_imei? "123456789012345"
+    assert_equal result, false
+  end
   
 end
