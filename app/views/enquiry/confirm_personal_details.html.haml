@@ -51,7 +51,7 @@
           Please click Accept for payment information
       %li
         %span.model
-          %a.inline.continue{:href => ENV['OMB_URL'], :rel => "external", :target => "_blank"}
+          %a.inline.continue{:href => "http://#{ENV['OMB_URL']}", :rel => "external", :target => "_blank"}
             Terms & Conditions of Orient Mobile
   = form_for(@enquiry, :url => wizard_path, :method => :put, :html => { "data-ajax" => "false"} ) do |f|
     = f.label :customer_payment_option, 'Select preferred Payment'
@@ -61,7 +61,7 @@
         %input.tac-checkbox.custom{:type => "checkbox", :name => "checkbox-1", :id => "checkbox-1"}
         %label.tac{:for => "checkbox-1"}
           By clicking on the checkbox, I confirm that I have read, understood and accepted the 
-          %a{:href => ENV['OMB_URL'], :rel => "external", :target=> "_blank"}
+          %a{:href => "http://#{ENV['OMB_URL']}", :rel => "external", :target=> "_blank"}
             Terms & Conditions 
           of Orient Mobile
     .buttons
