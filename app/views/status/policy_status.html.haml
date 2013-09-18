@@ -40,6 +40,19 @@
               Pending Amount:
             %span.model
               = "#{number_to_currency(session[:policy].pending_amount, :unit => 'KES ', :delimiter => "")}"
+          %li
+            %img{:src => "/assets/policy.png", :class => "ui-li-icon ui-corner-none"}
+            %b
+              Account No:
+            %span.model
+              = session[:quote].account_name
+        - else
+          %li
+            %img{:src => "/assets/policy.png", :class => "ui-li-icon ui-corner-none"}
+            %b
+              Account No:
+            %span.model
+              N/A
         %li
           %img{:src => "/assets/policy.png", :class => "ui-li-icon ui-corner-none"}
           %b
@@ -72,6 +85,12 @@
             Insurance Value:
           %span.model
             = "#{number_to_currency(session[:quote].insured_value, :unit => 'KES ', :delimiter => "")}"
+        %li
+          %img{:src => "/assets/policy.png", :class => "ui-li-icon ui-corner-none"}
+          %b
+            Account No:
+          %span.model
+            = session[:quote].account_name
         %li
           %img{:src => "/assets/cash.png", :class => "ui-li-icon ui-corner-none"}
           %b
