@@ -30,13 +30,13 @@ ActiveAdmin.register Device do
   filter :marketing_name
 
   index do
-    column :id
-   column :vendor
-   column :model
-   column :marketing_name
-   column "Retail Price", :catalog_price
-   column :wholesale_price
-   default_actions
+    column :stock_code
+    column :vendor
+    column :model
+    column :marketing_name
+    column "Retail Price", :catalog_price
+    column :wholesale_price
+    default_actions
   end
 
   actions :index, :edit, :update, :show

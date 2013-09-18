@@ -10,7 +10,7 @@ class Device < ActiveRecord::Base
 
   attr_accessible :vendor, :model, :marketing_name, :catalog_price, :wholesale_price, :fd_insured_value, :device_type,
                   :fd_replacement_value, :fd_koil_invoice_value, :yop_insured_value, :yop_replacement_value,
-                  :yop_fd_koil_invoice_value, :prev_insured_value, :prev_replacement_value, :prev_fd_koil_invoice_value
+                  :yop_fd_koil_invoice_value, :prev_insured_value, :prev_replacement_value, :prev_fd_koil_invoice_value, :stock_code
 
   scope :device_similar_to, (lambda do |vendor, model, marketing_name|
     {:conditions => [ "lower(vendor) like ? and (lower(model) like ? or lower(marketing_name) like ? )", "#{!vendor.nil? ? vendor.downcase : '%'}", "#{!model.nil? ? model.downcase : '%'}", "#{!marketing_name.nil? ? marketing_name.downcase : '%'}" ]}
