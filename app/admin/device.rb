@@ -1,4 +1,9 @@
 ActiveAdmin.register Device do
+
+  controller do
+    actions :all, :except => [:edit, :destroy]
+  end
+
   menu :parent => "Reference Data"
   active_admin_importable do |model, hash|
     model.create!({

@@ -1,4 +1,5 @@
 class ClaimsController < ApplicationController
+  include ApplicationHelper
   #include Wicked::Wizard
 
   # GET /claims
@@ -22,8 +23,10 @@ class ClaimsController < ApplicationController
         else
           format.html { render action: "dealer_show" }
         end
+      elsif service_centre_is_logged_in?
+        format.html { render action: "dealer_edit" }
       elsif claims_is_logged_in?
-        if !@claim.nil? && @claim.is_in_dealer_stage?
+        if !@claim.nil? && @claim.is_in_claims_stage?
           if @claim.replacement_limit.nil?
             @claim.replacement_limit = service.get_replacement_amount_for_claim @claim
           end
@@ -144,7 +147,7 @@ class ClaimsController < ApplicationController
       if @claim.update_attributes(params[:claim])
         if @claim.step == 1
           if @claim.claim_type == 'Loss / Theft' || @claim.claim_type == 'Theft / Loss'
-            CustomerMailer.loss_theft_claim(@claim).deliver
+            CustomerMailer.claim_registration(@claim).deliver
           else
             CustomerMailer.claim_registration(@claim).deliver
           end
@@ -152,9 +155,9 @@ class ClaimsController < ApplicationController
           format.html { redirect_to @claim, notice: 'Claim was successfully updated.' }
           service = ClaimService.new
           service.notify_customer @claim
-        elsif @claim.step == 2
+        elsif @claim.step == 2 || @claim.step == 3
           format.html { render action: "dealer_show", notice: 'Claim was forwarded to KOIL team.' }
-        elsif @claim.step == 3
+        elsif @claim.step == 4
           service = ClaimService.new
           if params[:commit] == "Approve"
             @claim.authorized = true
@@ -162,10 +165,17 @@ class ClaimsController < ApplicationController
             @claim.authorized = false
           end
           @claim.status = 'Settled'
-          if @claim.claim_type == 'Loss / Theft' || @claim.claim_type == 'Theft / Loss'
+          if @claim.is_theft?
             policy = @claim.policy
             policy.expiry = @claim.incident_date
             policy.save!
+          end
+          if @claim.is_damage? && @claim.authorized
+            if !@claim.dealer_can_fix
+              policy = @claim.policy
+              policy.expiry = @claim.incident_date
+              policy.save!
+            end
           end
           @claim.save!
           service.resolve_claim @claim

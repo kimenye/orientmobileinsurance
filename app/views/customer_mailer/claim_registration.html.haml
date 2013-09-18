@@ -1,10 +1,10 @@
-= image_tag attachments['admin_banner.jpg'].url
+= image_tag attachments['admin_banner_new.jpg'].url
 %br
 %h6 Claim No: #{@claim.claim_no}
 %p
   Welcome to Orient Mobile Claims
 %h3
-  CLAIM REGISTRATION
+  CLAIM REGISTRATION FORM
 %p
   Please print this document and carry it with you to our authorized repair / supply partner
 %p
@@ -61,7 +61,7 @@
   %li
     The damaged device
   %li
-    Original purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)
+    Original or certified copy of purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)
   %li
     Original ID/ Passport
   %li
@@ -80,3 +80,12 @@
   - if (!@brand.brand_4.nil?)
     %p
       = @brand.brand_4
+%p
+  %b
+    Please carry all the above items when visiting the outlet. The outlet is authorized to accept your claim only when all the above items are submitted together
+- if @claim.is_theft?
+  %p
+    If your device is to be replaced, please note the Replacement Limit will be arrived at by deducting an Excess of 10% of Insurance Value (minimum KES 1,000) from the Insurance Value.
+- else
+  %p
+    If your device is to be replaced, please note the Replacement Limit will be arrived at by deducting an Excess of 10% of Insurance Value (minimum KES 1,000) from the Insurance Value. In case your device is to be repaired, no Excess will apply.

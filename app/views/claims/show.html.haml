@@ -9,7 +9,7 @@
     .row
       .large-10.large-centered.columns
         %h4.centered
-          CLAIM REGISTRATION
+          CLAIM REGISTRATION FORM
         %h5.centered
           This document has been emailed to #{@claim.policy.quote.insured_device.customer.email}. Please print it and carry it with you to our authorized repair/ supply partner           
     .large-10.large-centered.columns.disabled
@@ -79,7 +79,7 @@
                   %li
                     The damaged device
                   %li
-                    Original purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)
+                    Original or certified copy of purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)
                   %li
                     Original ID or Passport
                   %li
@@ -100,3 +100,18 @@
                     Copy of ID or Passport
                   %li
                     This claim registration confirmation
+          .row.spacer
+            .large-12.columns
+              %p
+                %b
+                  Please carry all the above items when visiting the outlet. The outlet is authorized to accept your claim only when all the above items are submitted together.
+          .row.spacer
+            .large-12.columns
+              - if @claim.is_theft?
+                %p
+                  If your device is to be replaced, please note the Replacement Limit will be arrived at by deducting an Excess of 10% of Insurance Value (minimum KES 1,000) from the Insurance Value.
+              - else
+                %p
+                  If your device is to be replaced, please note the Replacement Limit will be arrived at by deducting an Excess of 10% of Insurance Value (minimum KES 1,000) from the Insurance Value. In case your device is to be repaired, no Excess will apply.
+
+

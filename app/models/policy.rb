@@ -40,6 +40,14 @@ class Policy < ActiveRecord::Base
   def payment_due?
     is_pending? && pending_amount > 0
   end
+  
+  def minimum_paid
+    amount_paid >= quote.minimum_due
+  end
+  
+  def minimum_due
+    quote.minimum_due - amount_paid
+  end
 
   def status_message
     if status == "Inactive"

@@ -8,6 +8,7 @@ require "action_mailer/railtie"
 require "active_resource/railtie"
 require "sprockets/railtie"
 require "minitest/rails/railtie"
+require 'csv'
 
 
 if defined?(Bundler)

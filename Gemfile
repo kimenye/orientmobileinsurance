@@ -26,10 +26,12 @@ gem 'jquery_mobile_rails'
 gem 'mobile-fu'
 gem 'business_time'
 gem 'newrelic_rpm'
-group :assets do
-  gem 'compass-rails'
-  gem 'zurb-foundation'
-end
+gem 'dynamic_form'
+
+
+gem 'zurb-foundation'
+gem 'compass-rails'
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
@@ -45,6 +47,7 @@ group :development, :test do
 end
 group :production do
   gem 'pg'
+  gem 'therubyracer', :platforms => :ruby
 end
 #group :test do
   gem 'minitest-rails'

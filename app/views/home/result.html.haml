@@ -1,0 +1,61 @@
+#confirm-details{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Your Device Details
+  %section{"data-role" => "content", "role" => "main"}
+    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+      %li{"data-role" => "list-divider"}
+        Device Atlas Details...
+      %li
+        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Vendor:
+        %span.model
+          = @device.vendor
+      %li
+        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Model:
+        %span.model
+          = @device.model
+      %li
+        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Marketing Name:
+        %span.model
+          = @device.marketing_name
+      %li
+        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          Detected:
+        %span.model
+          = @device.detected
+    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+      %li{"data-role" => "list-divider"}
+        Catalogue Match...
+      -if !@catalogue_device.nil?
+        %li
+          %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+          %b
+            Vendor:
+          %span.model
+            = @catalogue_device.vendor
+        %li
+          %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+          %b
+            Model:
+          %span.model
+            = @catalogue_device.model
+        %li
+          %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+          %b
+            Marketing Name:
+          %span.model
+            = @catalogue_device.marketing_name
+      - else
+        %li
+          %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+          %b
+            Match:
+          %span.model
+            No match was found

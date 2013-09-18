@@ -87,7 +87,7 @@ class PremiumService
   end
 
   def is_fx_code code
-    !code.nil? && code.start_with?("FX")
+    !code.nil? && (code.start_with?("FXP") || code.start_with?("TSK") || code.start_with?("PLK") || code.start_with?("NVS") )
   end
 
   def generate_unique_account_number
@@ -107,8 +107,8 @@ class PremiumService
     (!text.nil?) && text.strip.length == 15 && is_number?(text)
   end
 
-  def get_message_type prefix, message
-    if prefix.downcase == "omi" && (message.nil? || message.empty?)
+  def get_message_type message
+    if !message.nil? && message.downcase == ENV['KEYWORD'].downcase
       return 1
     elsif is_imei?(message)
       return 2
@@ -135,11 +135,10 @@ class PremiumService
       set_policy_dates policy
       policy.save!
 
-      #You have successfully covered your device, value KES 19500. Orient Mobile policy OMB/AAAA/0001 valid till 11/07/14. Policy details: www.korient.co.ke/OMB/T&C
       if policy.status == "Active"
         sms_gateway = SMSGateway.new
         insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-        sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: www.korient.co.ke/OMB/TC"
+        sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
         email = CustomerMailer.policy_purchase(policy).deliver
       end
     else
@@ -152,7 +151,7 @@ class PremiumService
     pending = policy.pending_amount
     if policy.quote.premium_type == "Annual"
 
-      if pending == 0
+      if pending <= 0
         policy.start_date = Time.now
         policy.expiry = 365.days.from_now
         policy.status = "Active"
@@ -160,12 +159,18 @@ class PremiumService
         # policy.status = "Pending"
       end
     else
-      if pending == 0
-        policy.start_date = Time.now
-        policy.expiry = 365.days.from_now
+      if pending <= 0
+        if policy.start_date.nil?
+          policy.start_date = Time.now
+          policy.expiry = 365.days.from_now
+        else
+          policy.expiry = policy.start_date + 365.days
+        end
         policy.status = "Active"
       else
-        policy.start_date = Time.now
+        if policy.start_date.nil?
+          policy.start_date = Time.now
+        end
         policy.expiry = 30.days.from_now
         policy.status = "Active"
       end

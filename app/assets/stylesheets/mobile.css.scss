@@ -12,7 +12,8 @@
  *= require jquery.mobile.tabs
 */
 
-.field_with_errors {
+.field_with_errors,
+.formError {
   color: red;
 }
 
@@ -57,4 +58,66 @@ label.error {
 
 .payment {
   text-align: center;
+}
+
+.edit_enquiry {
+  .buttons {
+    .ui-btn {
+      display: inline-block;
+    }
+  }
+}
+
+.ui-body-b {
+  background: white;
+  background-image: none;
+}
+
+.ui-bar-b,
+.ui-bar-a {
+  background: #003366;
+  background-image: none;
+}
+
+.ui-btn-up-b,
+.ui-btn-hover-b {
+  background-image: none;
+  background: #003366;
+  border: 1px solid #003366;
+}
+
+.ui-btn-hover-a,
+.ui-btn-up-a {
+  border: 1px solid #ffffff;
+  background: #ffffff;
+  background-image: none;
+}
+
+.ui-btn-hover-a,
+.ui-btn-up-a {
+  color: #000000;
+}
+
+.ui-bar-a {
+  text-shadow: 0 1px 0 transparent;
+}
+
+.ui-btn-text {
+  text-shadow: none;
+}
+
+.ui-btn-up-a:visited, .ui-btn-up-a a.ui-link-inherit {
+  color: black;
+  text-shadow: none;
+}
+
+.phone_number {
+  border: 1px solid #999999;
+  background-color: #999999;
+  padding: .4em;
+  border-radius: 5px;
+}
+
+a.continue {
+  color:  #003366 !important;
 }

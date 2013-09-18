@@ -2,11 +2,8 @@
   %header{"data-role" => "header"}
     %h1
       Your Device(s)
-  -#%section{"data-role" => "content", :role => "main"}
-    %h1.logo
-      %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.png"}
   %section{"data-role" => "content", "role" => "main"}
-    = form_for(@status, :url => wizard_path, :method => :put) do |f|
+    = form_for(@status, :url => wizard_path, :method => :put, :html => ({"data-ajax" => "false"} if is_asha?)) do |f|
       = f.label :insured_device_id, "Select device from list below:"
       - if !session[:devices].nil?
         = f.select :insured_device_id, session[:devices].collect { |d| ["#{d.device.marketing_name}", d.id] }, {}, { "data-theme" => "c"}

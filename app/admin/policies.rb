@@ -1,18 +1,10 @@
 ActiveAdmin.register Policy do
-  member_action :reset, :method => :put do
 
-    policy = Policy.find(params[:id])
-    id = policy.insured_device
-    id.imei = nil
-    id.save!
-
-    policy.status = "Inactive"
-    policy.start_date = nil
-    policy.expiry = nil
-    policy.save!
-
-    redirect_to :action => :index
+  controller do
+    actions :all, :except => [:edit, :destroy]
   end
+
+  #member_action :reset, :method => :put do
 
   index do
     column :policy_number
@@ -23,10 +15,12 @@ ActiveAdmin.register Policy do
     column "Premium", :premium
     column "Amount Paid", :amount_paid
     column :pending_amount
+    column :minimum_paid
+    column :minimum_due
 
 
     actions do |post|
-      link_to "Reset", reset_admin_policy_path(post), :class => "member_link", :method => :put
+      #link_to "Reset", reset_admin_policy_path(post), :class => "member_link", :method => :put
     end
   end
   actions :index, :show

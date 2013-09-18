@@ -1,12 +1,12 @@
 #home-page{"data-role" => "page", "data-theme" => "b"}
   %section{"data-role" => "content", :role => "main"}
     %h1.logo
-      %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.png"}
+      %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.jpg"}
     %ul{"data-divider-theme" => "b", "data-inset" => "true", "data-role" => "listview", "data-theme" => "c"}
       %li{"data-role" => "list-divider"} I want to...
       %li{"data-icon" => "arrow-r"}
-        = link_to 'Secure My Phone / Tablet', wizard_path(:enter_sales_info)
+        = link_to 'Secure My Phone / Tablet', wizard_path(:enter_sales_info), ({ "rel" => "external" } if is_asha? )
       %li{"data-icon" => "arrow-r"}
-        = link_to 'Check the status of my policy / claim', enquire_status_path
+        = link_to 'Check the status of my policy / claim', enquire_status_path, ({ "rel" => "external" } if is_asha? )
       %li{"data-icon" => "arrow-r"}
-        = link_to 'Report a Claim', make_new_claim_path
+        = link_to 'Report a Claim', make_new_claim_path, ({ "rel" => "external" } if is_asha? )
