@@ -29,4 +29,24 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal 5.0, v
   end
 
+  test "Should only return devices that are active" do
+    Device.delete_all
+
+    inactive = Device.create! :model => "iPhone", :vendor => "Apple", :marketing_name => "iPhone", :catalog_price => 5, :wholesale_price => 4, :active => false, :fd_insured_value => 10.0, :yop_insured_value => 7.0, :prev_insured_value => 5.0
+    result = Device.device_similar_to("Apple", "iPhone", Device.get_marketing_search_parameter("iPhone")).first
+
+    assert_equal result, nil
+    result = Device.wider_search("iPhone").first
+    assert_equal result, nil
+
+
+    inactive.active = true
+    inactive.save!
+    result = Device.device_similar_to("Apple", "iPhone", Device.get_marketing_search_parameter("iPhone")).first
+    assert_equal result.id, inactive.id
+
+    result = Device.wider_search("iPhone").first
+    assert_equal result.id, inactive.id
+  end
+
 end
