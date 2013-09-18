@@ -187,19 +187,21 @@ class PremiumServiceTest < ActiveSupport::TestCase
   test "Should generate the right policy number in the case where some data may have been deleted" do
     Policy.delete_all
 
+    seed = ENV['SEED_POLICY_NO'].to_i
+
     service = PremiumService.new
-    expected = "OMB/AAAA/0006"
+    expected = "OMB/AAAA/000#{seed}"
     result = service.generate_unique_policy_number
     assert_equal expected, result
 
 
     policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
-    expected = "OMB/AAAA/0007"
+    expected = "OMB/AAAA/000#{seed+1}"
     result = service.generate_unique_policy_number
     assert_equal expected, result
 
     policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
-    expected = "OMB/AAAA/0008"
+    expected = "OMB/AAAA/000#{seed+2}"
     result = service.generate_unique_policy_number
     assert_equal expected, result
   end
