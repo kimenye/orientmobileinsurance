@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130821131332) do
+ActiveRecord::Schema.define(:version => 20130918134003) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(:version => 20130821131332) do
     t.decimal  "prev_replacement_value"
     t.decimal  "prev_fd_koil_invoice_value"
     t.string   "device_type"
+    t.string   "stock_code"
   end
 
   create_table "enquiries", :force => true do |t|
