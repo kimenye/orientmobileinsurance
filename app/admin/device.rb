@@ -1,7 +1,7 @@
 ActiveAdmin.register Device do
 
   controller do
-    actions :all, :except => [:edit, :destroy]
+    actions :all, :except => [:destroy]
   end
 
   menu :parent => "Reference Data"
@@ -39,5 +39,5 @@ ActiveAdmin.register Device do
    default_actions
   end
 
-  # actions :index, :edit, :update, :show
+  actions :index, :edit, :update, :show
 end

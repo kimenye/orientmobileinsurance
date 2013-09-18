@@ -168,5 +168,40 @@ class PremiumServiceTest < ActiveSupport::TestCase
     premium = service.calculate_monthly_premium "FW", 1950 
     assert_equal 387, premium       
   end
+
+  test "Should not be able to use the same IMEI device if it has an active policy" do
+    InsuredDevice.delete_all
+    insured_device = InsuredDevice.create! :imei => "123456789012345", :yop => 2013
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+
+    service = PremiumService.new
+    result = service.is_valid_imei? "animeinumberthatdoesntexist"
+
+    assert_equal result, true
+
+    result = service.is_valid_imei? "123456789012345"
+    assert_equal result, false
+  end
+
+  test "Should generate the right policy number in the case where some data may have been deleted" do
+    Policy.delete_all
+
+    service = PremiumService.new
+    expected = "OMB/AAAA/0006"
+    result = service.generate_unique_policy_number
+    assert_equal expected, result
+
+
+    policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    expected = "OMB/AAAA/0007"
+    result = service.generate_unique_policy_number
+    assert_equal expected, result
+
+    policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    expected = "OMB/AAAA/0008"
+    result = service.generate_unique_policy_number
+    assert_equal expected, result
+  end
   
 end

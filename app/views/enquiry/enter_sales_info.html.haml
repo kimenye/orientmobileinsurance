@@ -16,7 +16,7 @@
       = f.label :customer_email, 'Email Address'
       = f.email_field :customer_email, :class => "required email"
       = f.label :customer_phone_number, 'Mobile Number'
-      %p.phone_number
+      %label.phone_number{:style => "width:96%;display:block"}
         = @enquiry.phone_number
       %p
         = f.submit "Continue"

@@ -29,6 +29,7 @@ class Policy < ActiveRecord::Base
     status == "Pending"
   end
 
+  #TODO: Check expiry dates - needs tests
   def is_active?
     status == "Active"
   end

@@ -29,7 +29,7 @@ class CustomerMailerTest < ActionMailer::TestCase
     # Test the body of the sent email contains what we expect it to
     assert_equal ['ombclaims@korient.co.ke'], email.from
     assert_equal ['jokhessa@yahoo.com'], email.to
-    assert_equal 'OMI Claim Registartion Details', email.subject
+    assert_equal 'OMB Claim Registration Details. Claim No. ', email.subject
   end
 
   test "send policy email" do
@@ -49,6 +49,6 @@ class CustomerMailerTest < ActionMailer::TestCase
     # Test the body of the sent email contains what we expect it to
     assert_equal ['ombclaims@korient.co.ke'], email.from
     assert_equal ['jokhessa@yahoo.com'], email.to
-    assert_equal 'OMI Policy Purchase', email.subject
+    assert_equal 'OMB Policy Purchase', email.subject
   end
 end
