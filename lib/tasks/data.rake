@@ -58,4 +58,8 @@ namespace :data do
     end
   end
 
+  task :delete_devices => :environment do
+    Device.delete_all
+  end
+
 end
