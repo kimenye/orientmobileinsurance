@@ -4,9 +4,9 @@ class Device < ActiveRecord::Base
   validates :model, presence: true
   validates :marketing_name, presence: true
   validates :catalog_price, presence: true
-  validates :wholesale_price, presence: true
-  validates :catalog_price, numericality: { :greater_than_or_equal_to => :wholesale_price }
-  validates :wholesale_price, numericality: { :less_than_or_equal_to => :catalog_price }
+  #validates :wholesale_price, presence: true
+  #validates :catalog_price, numericality: { :greater_than_or_equal_to => :wholesale_price }
+  #validates :wholesale_price, numericality: { :less_than_or_equal_to => :catalog_price }
 
   attr_accessible :vendor, :model, :marketing_name, :catalog_price, :wholesale_price, :fd_insured_value, :device_type,
                   :fd_replacement_value, :fd_koil_invoice_value, :yop_insured_value, :yop_replacement_value,
@@ -23,7 +23,7 @@ class Device < ActiveRecord::Base
 
   def get_insurance_value (code, year_of_purchase)
     service = PremiumService.new
-    if service.is_fx_code(code)
+    if service.is_fx_code(code)  && Time.now.year == year_of_purchase
       return fd_insured_value
     elsif year_of_purchase == Time.now.year
       return yop_insured_value
