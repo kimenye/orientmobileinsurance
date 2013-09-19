@@ -1,13 +1,12 @@
 class PremiumService
 
-  def is_insurable year_of_purchase, sales_code
+  def is_insurable year_of_purchase
     current_year = Time.now.year
-    if sales_code.nil? && current_year - year_of_purchase <= 1
+    if current_year - year_of_purchase <= 1
       return true
-    elsif !sales_code.nil?
-      return true
+    else
+      return false
     end
-    return false
   end
 
   def calculate_insurance_value catalog_price, sales_code, year_of_purchase
