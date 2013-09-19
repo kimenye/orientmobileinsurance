@@ -22,7 +22,12 @@ ActiveAdmin.register Device do
          :prev_insured_value => hash[:prev_insured_value].gsub!(',','').to_f,
          :prev_replacement_value => hash[:prev_replacement_value].gsub!(',','').to_f,
          :prev_fd_koil_invoice_value => hash[:prev_fd_koil_invoice_value].gsub!(',','').to_f
-     })
+    })
+
+    #find by stock_code
+    #existing = Device.find_by_stock_code hash[:stock_code]
+    #existing = Device.find_by_vendor_and_model_and_marketing_name hash[:vendor], hash[:model], hash[:marketing_name]
+
   end
 
   filter :vendor
@@ -36,6 +41,7 @@ ActiveAdmin.register Device do
     column :marketing_name
     column "Retail Price", :catalog_price
     column :wholesale_price
+    column :active
     default_actions
   end
 
