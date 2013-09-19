@@ -14,5 +14,17 @@ ActiveAdmin.register Payment do
     column :device
     column :customer
   end
+
+  csv do
+    column :amount
+    column :method
+    column :created_at
+    column :reference
+    column ("For") { |payment| payment.policy.policy_number }
+    column ("Policy") { |payment| payment.policy.policy_number }
+    column ("Device") { |payment| payment.policy.quote.insured_device.device.marketing_name }
+    column ("Customer") { |payment| payment.policy.quote.insured_device.customer.name }
+  end
+
   actions :index
 end
