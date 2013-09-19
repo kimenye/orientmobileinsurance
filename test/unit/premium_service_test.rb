@@ -148,25 +148,25 @@ class PremiumServiceTest < ActiveSupport::TestCase
   test "Annual Premium calculation rules" do
     service = PremiumService.new
     premium = service.calculate_annual_premium "FXP001", 5199
-    assert_equal 914, premium    
+    assert_equal 910, premium
     
     premium = service.calculate_annual_premium "FW", 4550 
-    assert_equal 1025, premium    
+    assert_equal 1030, premium
   
     premium = service.calculate_annual_premium "FW", 1950 
-    assert_equal 1025, premium        
+    assert_equal 1030, premium
   end
   
   test "Montly Premium calculation rules" do
     service = PremiumService.new
     premium = service.calculate_monthly_premium "FXP001", 5199
-    assert_equal 349, premium    
+    assert_equal 350, premium
     
     premium = service.calculate_monthly_premium "FW", 4550 
-    assert_equal 387, premium    
+    assert_equal 390, premium
   
     premium = service.calculate_monthly_premium "FW", 1950 
-    assert_equal 387, premium       
+    assert_equal 390, premium
   end
 
   test "Should not be able to use the same IMEI device if it has an active policy" do
@@ -188,20 +188,32 @@ class PremiumServiceTest < ActiveSupport::TestCase
     Policy.delete_all
 
     service = PremiumService.new
-    expected = "OMB/AAAA/0006"
+    expected = "OMB/AAAA/0000"
     result = service.generate_unique_policy_number
     assert_equal expected, result
 
 
     policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
-    expected = "OMB/AAAA/0007"
+    expected = "OMB/AAAA/0001"
     result = service.generate_unique_policy_number
     assert_equal expected, result
 
     policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
-    expected = "OMB/AAAA/0008"
+    expected = "OMB/AAAA/0002"
     result = service.generate_unique_policy_number
     assert_equal expected, result
+  end
+
+  test "Rounds off number to the nearest 5 shillings" do
+    number01 = 5005
+    number02 = 1234
+    number03 = 1200
+
+    service = PremiumService.new
+
+    assert_equal 5010, service.round_off_figure(number01)
+    assert_equal 1230, service.round_off_figure(number02)
+    assert_equal 1200, service.round_off_figure(number03)
   end
   
 end

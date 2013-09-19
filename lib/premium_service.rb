@@ -66,7 +66,7 @@ class PremiumService
   def calculate_monthly_premium agent_code, insurance_value
     base_premium = calculate_annual_premium agent_code, insurance_value, false, false
     raw = calculate_total_installment base_premium
-    (raw / 3).ceil
+    round_off_figure((raw / 3).ceil)
   end
 
   def calculate_annual_premium agent_code, insurance_value, add_mpesa = true, add_sms_charges = true
@@ -77,7 +77,11 @@ class PremiumService
     raw += mpesa_fee if add_mpesa
 
     # [raw.round, minimum_fee(agent_code)].max
-    raw.round
+    round_off_figure(raw.round)
+  end
+
+  def round_off_figure(number)
+    number.round(-1)
   end
 
   def minimum_fee agent_code
