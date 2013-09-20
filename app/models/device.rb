@@ -39,4 +39,8 @@ class Device < ActiveRecord::Base
     end
     return ""
   end
+
+  def to_s
+    "#{vendor} #{model}"
+  end
 end

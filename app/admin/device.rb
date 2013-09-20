@@ -6,29 +6,73 @@ ActiveAdmin.register Device do
 
   menu :parent => "Reference Data"
   active_admin_importable do |model, hash|
-    model.create!({
-         :vendor => hash[:vendor],
-         :marketing_name => hash[:marketing_name],
-         :model => hash[:model],
-         :stock_code => hash[:stock_code],
-         :device_type => hash[:device_type],
-         :catalog_price => hash[:catalog_price].gsub!(',','').to_f,
-         :wholesale_price => hash[:wholesale_price].gsub!(',','').to_f,
-         :fd_insured_value => hash[:fd_insured_value].gsub!(',','').to_f,
-         :fd_replacement_value => hash[:fd_replacement_value].gsub!(',','').to_f,
-         :fd_koil_invoice_value => hash[:fd_koil_invoice_value].gsub!(',','').to_f,
-         :yop_insured_value => hash[:yop_insured_value].gsub!(',','').to_f,
-         :yop_replacement_value => hash[:yop_replacement_value].gsub!(',','').to_f,
-         :yop_fd_koil_invoice_value => hash[:yop_fd_koil_invoice_value].gsub!(',','').to_f,
-         :prev_insured_value => hash[:prev_insured_value].gsub!(',','').to_f,
-         :prev_replacement_value => hash[:prev_replacement_value].gsub!(',','').to_f,
-         :prev_fd_koil_invoice_value => (hash[:prev_fd_koil_invoice_value].gsub!(',','').to_f if !hash[:prev_fd_koil_invoice_value].nil?)
-    })
 
-    #find by stock_code
-    #existing = Device.find_by_stock_code hash[:stock_code]
-    #existing = Device.find_by_vendor_and_model_and_marketing_name hash[:vendor], hash[:model], hash[:marketing_name]
 
+    stock_code = (hash[:stock_code] if !hash[:stock_code].nil?)
+    if !stock_code.nil?
+      device = Device.find_by_stock_code stock_code
+
+      if device.nil?
+        device = Device.find_by_vendor_and_model(hash[:vendor], hash[:model])
+        if device.nil?
+          model.create!({
+              :vendor => hash[:vendor],
+              :marketing_name => hash[:marketing_name],
+              :model => hash[:model],
+              :stock_code => (hash[:stock_code] if !hash[:stock_code].nil?),
+              :device_type => hash[:device_type],
+              :catalog_price => hash[:catalog_price].gsub!(',','').to_f,
+              :wholesale_price => hash[:wholesale_price].gsub!(',','').to_f,
+              :fd_insured_value => hash[:fd_insured_value].gsub!(',','').to_f,
+              :fd_replacement_value => hash[:fd_replacement_value].gsub!(',','').to_f,
+              :fd_koil_invoice_value => hash[:fd_koil_invoice_value].gsub!(',','').to_f,
+              :yop_insured_value => hash[:yop_insured_value].gsub!(',','').to_f,
+              :yop_replacement_value => hash[:yop_replacement_value].gsub!(',','').to_f,
+              :yop_fd_koil_invoice_value => hash[:yop_fd_koil_invoice_value].gsub!(',','').to_f,
+              :prev_insured_value => hash[:prev_insured_value].gsub!(',','').to_f,
+              :prev_replacement_value => hash[:prev_replacement_value].gsub!(',','').to_f,
+              :prev_fd_koil_invoice_value => (hash[:prev_fd_koil_invoice_value].gsub!(',','').to_f if !hash[:prev_fd_koil_invoice_value].nil?),
+              :version => ENV['CATALOG_VERSION']
+          })
+        else
+          device.stock_code = stock_code
+          device.device_type= hash[:device_type]
+          device.catalog_price= hash[:catalog_price].gsub!(',','').to_f
+          device.wholesale_price = hash[:wholesale_price].gsub!(',','').to_f
+          device.fd_insured_value = hash[:fd_insured_value].gsub!(',','').to_f
+          device.fd_replacement_value = hash[:fd_replacement_value].gsub!(',','').to_f
+          device.fd_koil_invoice_value = hash[:fd_koil_invoice_value].gsub!(',','').to_f
+          device.yop_insured_value = hash[:yop_insured_value].gsub!(',','').to_f
+          device.yop_replacement_value = hash[:yop_replacement_value].gsub!(',','').to_f
+          device.yop_fd_koil_invoice_value = hash[:yop_fd_koil_invoice_value].gsub!(',','').to_f
+          device.prev_insured_value = hash[:prev_insured_value].gsub!(',','').to_f
+          device.prev_replacement_value = hash[:prev_replacement_value].gsub!(',','').to_f
+          device.prev_fd_koil_invoice_value = hash[:prev_fd_koil_invoice_value].gsub!(',','').to_f
+
+          device.version = ENV['CATALOG_VERSION']
+          device.save!
+        end
+      end
+    else
+      model.create!({
+           :vendor => hash[:vendor],
+           :marketing_name => hash[:marketing_name],
+           :model => hash[:model],
+           :stock_code => (hash[:stock_code] if !hash[:stock_code].nil?),
+           :device_type => hash[:device_type],
+           :catalog_price => hash[:catalog_price].gsub!(',','').to_f,
+           :wholesale_price => hash[:wholesale_price].gsub!(',','').to_f,
+           :fd_insured_value => hash[:fd_insured_value].gsub!(',','').to_f,
+           :fd_replacement_value => hash[:fd_replacement_value].gsub!(',','').to_f,
+           :fd_koil_invoice_value => hash[:fd_koil_invoice_value].gsub!(',','').to_f,
+           :yop_insured_value => hash[:yop_insured_value].gsub!(',','').to_f,
+           :yop_replacement_value => hash[:yop_replacement_value].gsub!(',','').to_f,
+           :yop_fd_koil_invoice_value => hash[:yop_fd_koil_invoice_value].gsub!(',','').to_f,
+           :prev_insured_value => hash[:prev_insured_value].gsub!(',','').to_f,
+           :prev_replacement_value => hash[:prev_replacement_value].gsub!(',','').to_f,
+           :prev_fd_koil_invoice_value => (hash[:prev_fd_koil_invoice_value].gsub!(',','').to_f if !hash[:prev_fd_koil_invoice_value].nil?)
+      })
+    end
   end
 
   filter :vendor
