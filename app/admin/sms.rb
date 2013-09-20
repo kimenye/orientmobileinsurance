@@ -1,8 +1,8 @@
-ActiveAdmin.register Sms do
+ActiveAdmin.register Sms, :as => "Outgoing Message" do
 
   controller do
     actions :all, :except => [:edit, :destroy]
   end
 
-  menu :label => "Incoming SMS", :parent => "Log"
+  menu :label => "Outgoing Messages", :parent => "Message"
 end
