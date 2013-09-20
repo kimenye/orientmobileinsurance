@@ -41,4 +41,8 @@ class Quote < ActiveRecord::Base
       policy.customer.name
     end
   end
+
+  def is_expired
+    expired = expiry_date - Time.now < 0
+  end
 end
