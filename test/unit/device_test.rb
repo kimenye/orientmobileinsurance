@@ -19,6 +19,11 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal 10.0, v
   end
 
+  test "For a code starting with FX the if the year of purchase is not the current year then the insurance value is that of the previous year" do
+    v = @device.get_insurance_value "FXP001", Time.now.year - 1
+    assert_equal 5.0, v
+  end
+
   test "For a code starting not starting with FX the yop_insured_value is used for the insurance value if the year of purchase is the same as the current year" do
     v = @device.get_insurance_value nil, Time.now.year
     assert_equal 7.0, v

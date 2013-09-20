@@ -148,25 +148,33 @@ class PremiumServiceTest < ActiveSupport::TestCase
   test "Annual Premium calculation rules" do
     service = PremiumService.new
     premium = service.calculate_annual_premium "FXP001", 5199
-    assert_equal 914, premium    
-    
-    premium = service.calculate_annual_premium "FW", 4550 
-    assert_equal 1025, premium    
-  
+    assert_equal 910, premium
+
+    premium = service.calculate_annual_premium "FXP001", 52499
+    assert_equal 5085, premium
+
+
+    premium = service.calculate_annual_premium "FW", 4550
+    assert_equal 1025, premium
+
+    binding.pry
+    premium = service.calculate_annual_premium "FW", 45940
+    assert_equal 4665, premium
+
     premium = service.calculate_annual_premium "FW", 1950 
-    assert_equal 1025, premium        
+    assert_equal 1025, premium
   end
   
   test "Montly Premium calculation rules" do
     service = PremiumService.new
     premium = service.calculate_monthly_premium "FXP001", 5199
-    assert_equal 349, premium    
+    assert_equal 345, premium
     
     premium = service.calculate_monthly_premium "FW", 4550 
-    assert_equal 387, premium    
+    assert_equal 385, premium
   
     premium = service.calculate_monthly_premium "FW", 1950 
-    assert_equal 387, premium       
+    assert_equal 385, premium
   end
 
   test "Should not be able to use the same IMEI device if it has an active policy" do
@@ -204,6 +212,22 @@ class PremiumServiceTest < ActiveSupport::TestCase
     expected = "OMB/AAAA/000#{seed+2}"
     result = service.generate_unique_policy_number
     assert_equal expected, result
+  end
+
+  test "Rounds off number to the nearest 5 shillings" do
+    number01 = 5086
+    number02 = 1234
+    number03 = 5087
+    number04 = 5084
+
+
+    service = PremiumService.new
+
+
+    assert_equal 5085, service.round_off_figure(number01)
+    assert_equal 1235, service.round_off_figure(number02)
+    assert_equal 5085, service.round_off_figure(number03)
+    assert_equal 5090, service.round_off_figure(number04)
   end
   
 end
