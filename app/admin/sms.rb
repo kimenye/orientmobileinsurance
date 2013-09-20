@@ -4,5 +4,5 @@ ActiveAdmin.register Sms do
     actions :all, :except => [:edit, :destroy]
   end
 
-  menu :parent => "Log"
+  menu :label => "Incoming SMS", :parent => "Log"
 end
