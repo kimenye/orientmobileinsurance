@@ -10,6 +10,7 @@ ActiveAdmin.register Device do
          :vendor => hash[:vendor],
          :marketing_name => hash[:marketing_name],
          :model => hash[:model],
+         :stock_code => hash[:stock_code],
          :device_type => hash[:device_type],
          :catalog_price => hash[:catalog_price].gsub!(',','').to_f,
          :wholesale_price => hash[:wholesale_price].gsub!(',','').to_f,
@@ -21,7 +22,7 @@ ActiveAdmin.register Device do
          :yop_fd_koil_invoice_value => hash[:yop_fd_koil_invoice_value].gsub!(',','').to_f,
          :prev_insured_value => hash[:prev_insured_value].gsub!(',','').to_f,
          :prev_replacement_value => hash[:prev_replacement_value].gsub!(',','').to_f,
-         :prev_fd_koil_invoice_value => hash[:prev_fd_koil_invoice_value].gsub!(',','').to_f
+         :prev_fd_koil_invoice_value => (hash[:prev_fd_koil_invoice_value].gsub!(',','').to_f if !hash[:prev_fd_koil_invoice_value].nil?)
     })
 
     #find by stock_code
