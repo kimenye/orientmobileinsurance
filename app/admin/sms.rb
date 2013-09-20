@@ -5,4 +5,10 @@ ActiveAdmin.register Sms, :as => "Outgoing Message" do
   end
 
   menu :label => "Outgoing Messages", :parent => "Message"
+
+  index do
+    column :to
+    column :text
+    column "Sent at", :created_at
+  end
 end
