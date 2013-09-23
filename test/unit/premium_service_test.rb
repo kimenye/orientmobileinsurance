@@ -151,7 +151,6 @@ class PremiumServiceTest < ActiveSupport::TestCase
     premium = service.calculate_annual_premium "FW", 4550
     assert_equal 1025, premium
 
-    binding.pry
     premium = service.calculate_annual_premium "FW", 45940
     assert_equal 4665, premium
 
