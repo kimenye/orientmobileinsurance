@@ -36,3 +36,14 @@ body.active_admin.logged_out h2 {
 .footer p {
   display: none;
 }
+
+body.admin_simulator {
+  legend {
+    margin: 0px 0px 20px;
+  }
+
+  .field {
+    margin: 10px 10px;
+  }
+}
+

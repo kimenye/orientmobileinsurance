@@ -1,0 +1,12 @@
+%h3
+  Test Payments
+%fieldset.payment_form
+  %form{:action => admin_simulator_payment_path, :method => "POST"}
+    .field
+      = label(:payment, :account_id)
+      = collection_select(:payment, :account_name, Quote.all, :account_name, :account_name)
+    .field
+      = label(:payment, :amount)
+      = text_field(:payment, :amount)
+    .field
+      = submit_tag("Submit")

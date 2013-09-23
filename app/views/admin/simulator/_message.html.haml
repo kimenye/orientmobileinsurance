@@ -1,0 +1,12 @@
+%h3
+  Test SMS Messages
+%fieldset
+  %form{:action => admin_simulator_sms_path, :method => "POST"}
+    .field
+      = label(:sms, :phone_number)
+      = text_field(:sms, :phone_number)
+    .field
+      = label(:sms, :text)
+      = text_field(:sms, :text)
+    .field
+      = submit_tag("Submit")
