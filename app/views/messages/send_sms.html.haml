@@ -1,0 +1,10 @@
+.row
+  .large-8.columns.large-centered
+    %form{:method => "POST", :action => messages_path}
+      %label{:for => "Text"}
+        Text
+      %input{:type => "text", :name => "Text", :id => "Text"}
+      %label{:for => "MobileNumber"}
+        Mobile Number
+      %input{:type => "text", :name => "MobileNumber", :id => "MobileNumber"}
+      %input.button.small{:type => "submit"}

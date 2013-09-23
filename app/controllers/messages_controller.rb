@@ -165,4 +165,8 @@ class MessagesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def send_sms
+
+  end
 end

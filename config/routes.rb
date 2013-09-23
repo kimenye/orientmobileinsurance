@@ -19,6 +19,8 @@ Orientmobileinsurance::Application.routes.draw do
 
   match 'reports' => 'reports#index', :as => :reports
 
+  match 'send_sms' => 'messages#send_sms', :as => :send_sms
+
   match 'enquiry/secure' => 'enquiry#secure'
 
   match 'enquiry/status_check' => 'enquiry#status_check'
