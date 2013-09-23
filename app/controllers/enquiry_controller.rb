@@ -108,7 +108,7 @@ class EnquiryController < Wicked::WizardController
         if @enquiry.valid?
           code = agent.code if !agent.nil?
           if !@enquiry.year_of_purchase.nil?
-            is_insurable = premium_service.is_insurable(@enquiry.year_of_purchase, code)
+            is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
           else
             is_insurable = false
           end
