@@ -53,17 +53,20 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert insurance_value == (0.375 * 800), "Catalogue price should be 37.5%"
   end
 
-  test "The correct premium rate is returned based on the sales agent code" do
+  test "The correct premium rate is returned based on the sales agent code and year of purchase" do
     service = PremiumService.new
 
-    rate = service.calculate_premium_rate "FXP000"
-    assert rate == 0.095, "Premium rate should be 9.5% for FX codes"
+    rate = service.calculate_premium_rate "FXP000", Time.now.year
+    assert rate == 0.095, "Premium rate should be 9.5% for FX codes if year of purchase is current year"
 
-    rate = service.calculate_premium_rate "83000"
+    rate = service.calculate_premium_rate "83000", Time.now.year
     assert rate == 0.1, "Premium rate should be 10% for non FX codes"
 
-    rate = service.calculate_premium_rate nil
+    rate = service.calculate_premium_rate nil, Time.now.year
     assert rate == 0.1, "Premium rate should be 10% for empty"
+
+    rate = service.calculate_premium_rate "FXP000", (Time.now.year - 1)
+    assert rate == 0.1, "Premium rate should be 10% for FX codes if year of purchase is previous year"
   end
 
   test "MPESA service charges should be correctly calculated" do
@@ -138,36 +141,82 @@ class PremiumServiceTest < ActiveSupport::TestCase
     msg = service.get_status_message quote
     assert_equal expected, msg
   end
-  
+
+  test "The minimum premium fee should be based on the year of purchase and agent code" do
+    service = PremiumService.new
+
+    result = service.minimum_fee "FXP001", Time.now.year
+    assert_equal 899, result
+
+    result = service.minimum_fee "XXXXXX", Time.now.year
+    assert_equal 999, result
+
+    result = service.minimum_fee "FXP001", (Time.now.year-1)
+    assert_equal 999, result
+
+    result = service.minimum_fee "XXXXXX", (Time.now.year-1)
+    assert_equal 999, result
+
+  end
+
   test "Annual Premium calculation rules" do
     service = PremiumService.new
-    premium = service.calculate_annual_premium "FXP001", 5199
-    assert_equal 910, premium
 
-    premium = service.calculate_annual_premium "FXP001", 52499
-    assert_equal 5085, premium
+    #Nokia ASHA 205
+    premium = service.calculate_annual_premium "FXP001", 6150, Time.now.year
+    assert_equal 915, premium
 
-
-    premium = service.calculate_annual_premium "FW", 4550
+    premium = service.calculate_annual_premium "XXX000", 5380, Time.now.year
     assert_equal 1025, premium
 
-    premium = service.calculate_annual_premium "FW", 45940
-    assert_equal 4665, premium
-
-    premium = service.calculate_annual_premium "FW", 1950 
+    premium = service.calculate_annual_premium "FXP001", 2310, (Time.now.year - 1)
     assert_equal 1025, premium
+
+    premium = service.calculate_annual_premium "XXXXXX", 2310, (Time.now.year - 1)
+    assert_equal 1025, premium
+
+    #Samsung Note II
+    premium = service.calculate_annual_premium "FXP001", 58999, Time.now.year
+    assert_equal 5705, premium
+    #
+    premium = service.calculate_annual_premium "000000", 51620, Time.now.year
+    assert_equal 5260, premium
+
+    premium = service.calculate_annual_premium "000000", 22120, (Time.now.year - 1)
+    assert_equal 2250, premium
+
+    premium = service.calculate_annual_premium "FXP001", 22120, (Time.now.year - 1)
+    assert_equal 2250, premium
   end
-  
-  test "Montly Premium calculation rules" do
+
+  test "Monthly Premium calculation rules" do
     service = PremiumService.new
-    premium = service.calculate_monthly_premium "FXP001", 5199
-    assert_equal 345, premium
-    
-    premium = service.calculate_monthly_premium "FW", 4550 
-    assert_equal 385, premium
-  
-    premium = service.calculate_monthly_premium "FW", 1950 
-    assert_equal 385, premium
+
+    #Nokia ASHA
+    premium = service.calculate_monthly_premium "FXP001", 5199, Time.now.year
+    assert_equal 350, premium
+
+    premium = service.calculate_monthly_premium "XX0000", 5380, Time.now.year
+    assert_equal 390, premium
+
+    premium = service.calculate_monthly_premium "FXP001", 2310, (Time.now.year - 1)
+    assert_equal 390, premium
+
+    premium = service.calculate_monthly_premium "XX0000", 2310, (Time.now.year - 1)
+    assert_equal 390, premium
+
+    #Samsung Note 2
+    premium = service.calculate_monthly_premium "FXP001", 58999, Time.now.year
+    assert_equal 2175, premium
+
+    premium = service.calculate_monthly_premium "XX0000", 51620, Time.now.year
+    assert_equal 2005, premium
+
+    premium = service.calculate_monthly_premium "FXP001", 22120, (Time.now.year - 1)
+    assert_equal 855, premium
+
+    premium = service.calculate_monthly_premium "XX0000", 22120, (Time.now.year - 1)
+    assert_equal 855, premium
   end
 
   test "Should not be able to use the same IMEI device if it has an active policy" do
@@ -213,14 +262,12 @@ class PremiumServiceTest < ActiveSupport::TestCase
     number03 = 5087
     number04 = 5084
 
-
     service = PremiumService.new
 
-
-    assert_equal 5085, service.round_off_figure(number01)
-    assert_equal 1235, service.round_off_figure(number02)
-    assert_equal 5085, service.round_off_figure(number03)
-    assert_equal 5090, service.round_off_figure(number04)
+    assert_equal 5085, service.round_off(number01)
+    assert_equal 1235, service.round_off(number02)
+    assert_equal 5085, service.round_off(number03)
+    assert_equal 5085, service.round_off(number04)
   end
-  
+
 end
