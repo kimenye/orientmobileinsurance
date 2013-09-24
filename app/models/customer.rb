@@ -15,4 +15,8 @@ class Customer < ActiveRecord::Base
       return alternate_phone_number
     end
   end
+
+  def num_enquiries
+    insured_devices.length
+  end
 end
