@@ -1,27 +1,27 @@
-ActiveAdmin.register Policy do
+ActiveAdmin.register Policy, :as => "Customer" do
 
   controller do
     actions :all, :except => [:edit, :destroy]
   end
 
-  #member_action :reset, :method => :put do
-
   index do
-    column :policy_number
     column :customer
+    column :policy_number
     column :start_date
     column :expiry
-    column :status
-    column "Premium", :premium
+    column :payment_option
+    column "Total Due", :premium
     column "Amount Paid", :amount_paid
-    column :pending_amount
-    column :minimum_paid
-    column :minimum_due
-
-
-    actions do |post|
-      #link_to "Reset", reset_admin_policy_path(post), :class => "member_link", :method => :put
-    end
+    column "Total Balance", :pending_amount
+    column "Next Payment Due", :minimum_due
+    column "IMEI", :imei
+    column :sales_agent_code
+    column :sales_agent_name
   end
+
+  filter :policy_number
+  filter :start_date
+  filter :expiry
+
   actions :index, :show
 end
