@@ -11,6 +11,13 @@ ActiveAdmin.register Customer, :as => "Lead"  do
     column :num_enquiries
   end
 
+  show do |lead|
+    panel "Lead Details" do
+      attributes_table_for lead, :name, :id_passport, :email, :created_at
+    end
+
+  end
+
   filter :name
   filter :id_passport
   filter :email
