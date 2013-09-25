@@ -41,7 +41,7 @@ ActiveAdmin.register Policy do
     column("EXP DATE") {|p| (p.expiry.to_s(:export) if !p.expiry.nil?) }
     column("POL NO") {|p| "KOI/OMB/000001/2013" }
     column("RISK DESCRIPTION") { |p| p.quote.insured_device.device.marketing_name }
-    column("INV DATE") { |p| p.start_date.to_s(:export) }
+    column("INV DATE") { |p| (p.start_date.to_s(:export) if !p.start_date.nil?) }
     column("INV NO") { |p| "00000" }
     column("PREMIUM") { |p| "" }
     column("LEVIES") { |p| "" }
