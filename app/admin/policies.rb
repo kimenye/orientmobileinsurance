@@ -34,11 +34,11 @@ ActiveAdmin.register Policy do
     column("POSTAL_ADDRS") { |p| "P.O.Box 00000" }
     column("POSTAL_TOWN") { |p| "NAIROBI" }
     column("POSTAL_CODE") { |p| "00000" }
-    column("TELEPHONE NO") { |p| "#{p.quote.insured_device.customer.contact_number.to_s}" }
-    column("MOBILE NO") { |p| "#{p.quote.insured_device.customer.contact_number.to_s}" }
+    column("TELEPHONE NO") { |p| "#{p.quote.insured_device.customer.contact_number}" }
+    column("MOBILE NO") { |p| "#{p.quote.insured_device.customer.contact_number}" }
     column("COUNTRY") { |p| "KENYA" }
-    column("EFF DATE") {|p| p.start_date.to_s(:export) }
-    column("EXP DATE") {|p| p.expiry.to_s(:export) }
+    column("EFF DATE") {|p| (p.start_date.to_s(:export) if !p.start_date.nil?) }
+    column("EXP DATE") {|p| (p.expiry.to_s(:export) if !p.expiry.nil?) }
     column("POL NO") {|p| "KOI/OMB/000001/2013" }
     column("RISK DESCRIPTION") { |p| p.quote.insured_device.device.marketing_name }
     column("INV DATE") { |p| p.start_date.to_s(:export) }
