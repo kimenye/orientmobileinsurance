@@ -149,7 +149,7 @@ ActiveAdmin.setup do |config|
   #
   # Set the CSV builder options (default is {})
   # config.csv_options = {}
-  #config.csv_options = { :force_quotes => true }
+
 
   # == Menu System
   #
