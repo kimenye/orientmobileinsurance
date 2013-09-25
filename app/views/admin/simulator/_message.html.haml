@@ -1,0 +1,14 @@
+%h3
+  Test SMS Messages
+%fieldset
+  %form{:action => admin_simulator_sms_path, :method => "POST"}
+    .field
+      %label{:for => "Text"}
+        Text
+      %input{:type => "text", :name => "Text", :id => "Text", :placeholder => "Mobile"}
+    .field
+      %label{:for => "MobileNumber"}
+        Mobile Number
+      %input{:type => "text", :name => "MobileNumber", :id => "MobileNumber", :placeholder => "+254722000000"}
+    .field
+      = submit_tag("Submit")

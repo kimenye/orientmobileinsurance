@@ -62,4 +62,12 @@ namespace :data do
     Device.delete_all
   end
 
+  task :deprecate_devices => :environment do
+    old_devices = Device.find_all_by_version (ENV['CATALOG_VERSION'].to_i - 1)
+    old_devices.each do |device|
+      device.active = false
+      device.save!
+    end
+  end
+
 end

@@ -57,20 +57,22 @@ class PremiumService
   def calculate_total_installment base_premium
     installment = 1.15 * base_premium  # 115% of annual premium
     installment += 15 # add sms charges
-    installment += calculate_mpesa_fee (installment / 3) # add mpesa charges for installment
+    mpesa_fee_per_installment = calculate_mpesa_fee (installment / 3)
+    mpesa_fee_per_installment *= 3
+    installment += mpesa_fee_per_installment # add mpesa charges for installment
 
     installment.floor
   end
 
-  def calculate_monthly_premium agent_code, insurance_value
-    base_premium = calculate_annual_premium agent_code, insurance_value, false, false
+  def calculate_monthly_premium agent_code, insurance_value, yop
+    base_premium = calculate_annual_premium agent_code, insurance_value, yop, false, false
     raw = calculate_total_installment base_premium
     round_off((raw / 3).ceil)
   end
 
-  def calculate_annual_premium agent_code, insurance_value, add_mpesa = true, add_sms_charges = true
-    raw = calculate_premium_rate(agent_code) * insurance_value * 1.0045
-    raw = [raw.round, minimum_fee(agent_code)].max
+  def calculate_annual_premium agent_code, insurance_value, yop, add_mpesa = true, add_sms_charges = true
+    raw = calculate_premium_rate(agent_code, yop) * insurance_value * 1.0045
+    raw = [raw.round, minimum_fee(agent_code, yop)].max
     raw += 15 if add_sms_charges #sms charges
     mpesa_fee = calculate_mpesa_fee raw
     raw += mpesa_fee if add_mpesa
@@ -90,17 +92,10 @@ class PremiumService
     end
   end
 
-  def round_off_figure(number, nearest=5, direction="down")
-    if direction == "down"
-      return number % nearest == 0 ? number : number - (number % nearest)
-    else
-      return number % nearest == 0 ? number : number + nearest - (number % nearest)
-    end
-  end
 
-  def minimum_fee agent_code
+  def minimum_fee agent_code, yop
     fee = 999
-    fee = 899 if is_fx_code agent_code
+    fee = 899 if (is_fx_code(agent_code) && yop == Time.now.year)
     fee
   end
 
@@ -137,9 +132,9 @@ class PremiumService
     end
   end
 
-  def calculate_premium_rate agent_code
+  def calculate_premium_rate agent_code, yop
     rate = 0.1
-    rate = 0.095 if is_fx_code agent_code
+    rate = 0.095 if (is_fx_code(agent_code) && yop == Time.now.year)
     rate
   end
 
@@ -213,5 +208,15 @@ class PremiumService
       end
     end
     # end
+  end
+
+  private
+
+  def round_off_figure(number, nearest=5, direction="down")
+    if direction == "down"
+      return number % nearest == 0 ? number : number - (number % nearest)
+    else
+      return number % nearest == 0 ? number : number + nearest - (number % nearest)
+    end
   end
 end
