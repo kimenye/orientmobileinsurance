@@ -52,6 +52,26 @@ ActiveAdmin.register Device do
           device.version = ENV['CATALOG_VERSION']
           device.save!
         end
+      else
+        #update the catalog
+        device.model = hash[:model]
+        device.marketing_name = hash[:marketing_name]
+        device.vendor = hash[:vendor]
+        device.device_type= hash[:device_type]
+        device.catalog_price= hash[:catalog_price].gsub!(',','').to_f
+        device.wholesale_price = hash[:wholesale_price].gsub!(',','').to_f
+        device.fd_insured_value = hash[:fd_insured_value].gsub!(',','').to_f
+        device.fd_replacement_value = hash[:fd_replacement_value].gsub!(',','').to_f
+        device.fd_koil_invoice_value = hash[:fd_koil_invoice_value].gsub!(',','').to_f
+        device.yop_insured_value = hash[:yop_insured_value].gsub!(',','').to_f
+        device.yop_replacement_value = hash[:yop_replacement_value].gsub!(',','').to_f
+        device.yop_fd_koil_invoice_value = hash[:yop_fd_koil_invoice_value].gsub!(',','').to_f
+        device.prev_insured_value = hash[:prev_insured_value].gsub!(',','').to_f
+        device.prev_replacement_value = hash[:prev_replacement_value].gsub!(',','').to_f
+        device.prev_fd_koil_invoice_value = hash[:prev_fd_koil_invoice_value].gsub!(',','').to_f
+
+        device.version = ENV['CATALOG_VERSION']
+        device.save!
       end
     else
       model.create!({

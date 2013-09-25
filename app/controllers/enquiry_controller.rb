@@ -138,13 +138,7 @@ class EnquiryController < Wicked::WizardController
           device = nil
 
           if !invalid_da
-            device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
-
-            puts ">> Device is nil ? #{device.nil?}"
-
-            if device.nil?
-              device = Device.wider_search(model).first
-            end
+            device = Device.model_search(vendor, model).first
           end
 
           puts ">> After device is nil ? #{device.nil?}"
