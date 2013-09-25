@@ -36,7 +36,7 @@ ActiveAdmin.register_page "Dashboard" do
     end
   end # content
 
-  action_item do
-    link_to "Download Records", reports_path
-  end
+  #action_item do
+  #  link_to "Download Records", reports_path
+  #end
 end
