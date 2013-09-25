@@ -3,10 +3,12 @@
 %fieldset
   %form{:action => admin_simulator_sms_path, :method => "POST"}
     .field
-      = label(:sms, :phone_number)
-      = text_field(:sms, :phone_number)
+      %label{:for => "Text"}
+        Text
+      %input{:type => "text", :name => "Text", :id => "Text", :placeholder => "Mobile"}
     .field
-      = label(:sms, :text)
-      = text_field(:sms, :text)
+      %label{:for => "MobileNumber"}
+        Mobile Number
+      %input{:type => "text", :name => "MobileNumber", :id => "MobileNumber", :placeholder => "+254722000000"}
     .field
       = submit_tag("Submit")
