@@ -33,18 +33,31 @@ class EnquiryController < Wicked::WizardController
   end
 
   def payment_notification
+
     puts ">>>> #{params}"
-    channel = params[:JP_CHANNEL]
-
-    account_id = params[:JP_MERCHANT_ORDERID]
-    if channel == "MPESA" || channel == "AIRTEL"
-      account_id = params[:JP_ITEM_NAME]
-    end
-
-    amount = params[:JP_AMOUNT]
-    transaction_ref = params[:JP_TRANID]
 
     service = PaymentService.new
+
+    if !params["payment"].nil?
+
+      channel = params["payment"]["channel"]
+      account_id = params["payment"]["account_name"]
+      amount = params["payment"]["amount"]
+      transaction_ref = params["payment"]["transaction_ref"]
+
+    else
+
+      channel = params[:JP_CHANNEL]
+
+      account_id = params[:JP_MERCHANT_ORDERID]
+      if channel == "MPESA" || channel == "AIRTEL"
+        account_id = params[:JP_ITEM_NAME]
+      end
+
+      amount = params[:JP_AMOUNT]
+      transaction_ref = params[:JP_TRANID]
+
+    end
 
     result = service.handle_payment(account_id, amount, transaction_ref, channel)
 
@@ -56,8 +69,9 @@ class EnquiryController < Wicked::WizardController
       end
     else
       puts ">> Don't know this account number #{account_id}"
-      render text: "OK"
+      render text: "NOT OK"
     end
+
   end
 
   def update

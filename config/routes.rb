@@ -21,6 +21,8 @@ Orientmobileinsurance::Application.routes.draw do
 
   match 'send_sms' => 'messages#send_sms', :as => :send_sms
 
+  match 'admin_simulator_payment' => 'enquiry#payment_notification', :as => :admin_simulator_payment
+
   match 'enquiry/secure' => 'enquiry#secure'
 
   match 'enquiry/status_check' => 'enquiry#status_check'

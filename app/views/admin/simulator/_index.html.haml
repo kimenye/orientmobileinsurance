@@ -9,4 +9,10 @@
       = label(:payment, :amount)
       = text_field(:payment, :amount)
     .field
+      = label(:payment, :transaction_ref)
+      = text_field(:payment, :transaction_ref)
+    .field
+      = label(:payment, :channel)
+      = select :payment, :channel, ["MPESA", "AIRTEL"], {}
+    .field
       = submit_tag("Submit")

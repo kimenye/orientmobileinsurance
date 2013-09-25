@@ -4,7 +4,6 @@ class PaymentService
 
   def handle_payment(account_name, amount, transaction_ref, channel)
 
-
     quote = Quote.find_by_account_name account_name.upcase
     service = PremiumService.new
     sms = SMSGateway.new
@@ -38,12 +37,12 @@ class PaymentService
           sms_gateway.send quote.insured_device.phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
           email = CustomerMailer.policy_purchase(policy).deliver
         end
-        true
+        return true
       else
-        false
+        return false
       end
     else
-      false
+      return false
     end
   end
 end
