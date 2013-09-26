@@ -21,6 +21,18 @@ class Customer < ActiveRecord::Base
   end
 
   def is_a_lead?
+    !has_policy?
+  end
 
+  def has_policy?
+    has_policy = false
+    if insured_devices.any?
+      insured_devices.each do |id|
+        if id.has_policy?
+          has_policy = true
+        end
+      end
+    end
+    has_policy
   end
 end

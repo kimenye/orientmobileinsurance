@@ -13,6 +13,10 @@ class InsuredDevice < ActiveRecord::Base
     !quote.policy.nil? && quote.policy.is_active?
   end
 
+  def has_policy?
+    !quote.policy.nil?
+  end
+
   def name
     "#{customer.name} - #{device.marketing_name} - #{imei}"
   end
