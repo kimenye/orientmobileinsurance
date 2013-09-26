@@ -27,6 +27,7 @@ gem 'mobile-fu'
 gem 'business_time'
 gem 'newrelic_rpm'
 gem 'dynamic_form'
+gem 'activeadmin-axlsx'
 
 
 gem 'zurb-foundation'
