@@ -20,7 +20,11 @@ class PaymentService
 
       if payment.nil?
         payment = Payment.create! :policy_id => policy.id, :amount => amount, :method => channel, :reference => transaction_ref
+
         @message = "Thank you for your payment of #{number_to_currency(amount, :unit => "KES ", :precision => 0, :delimiter => "")}"
+
+        customer.lead = false
+        customer.save!
 
         if quote.insured_device.imei.nil?
           if policy.minimum_paid
