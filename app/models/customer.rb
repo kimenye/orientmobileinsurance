@@ -19,4 +19,8 @@ class Customer < ActiveRecord::Base
   def num_enquiries
     insured_devices.length
   end
+
+  def is_a_lead?
+
+  end
 end

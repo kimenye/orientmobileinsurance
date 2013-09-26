@@ -4,7 +4,7 @@ ActiveAdmin.register Enquiry do
     actions :all, :except => [:edit, :destroy]
   end
 
-  menu :parent => "Log"
+  menu :parent => "Message"
   index do
     column :phone_number
     column :created_at

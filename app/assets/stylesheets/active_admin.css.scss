@@ -44,6 +44,14 @@ body.admin_simulator {
 
   .field {
     margin: 10px 10px;
+    
+    label {
+      display: block;
+    }
+
+    input[type="text"] {
+      width: 50%;
+    }
   }
 }
 
