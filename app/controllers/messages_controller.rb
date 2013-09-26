@@ -140,7 +140,7 @@ class MessagesController < ApplicationController
     rescue => error
       puts ">>>>> in error #{error}"
       respond_to do |format|
-        format.all { render json: @message.errors, status: :unprocessable_entity }
+        format.all { render json: (@message.errors if !@message.nil?), status: :unprocessable_entity }
       end
     end
   end
