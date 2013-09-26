@@ -6,7 +6,23 @@ ActiveAdmin.register_page "Simulator" do
     puts ">>>> #{params}"
     #All payments are from MPESA
     #create a random transaction ref
-    redirect_to admin_simulator_path, :notice => "Payment was successfully made"
+
+    service = PaymentService.new
+
+    channel = params["payment"]["channel"]
+    account_id = params["payment"]["account_name"]
+    amount = params["payment"]["amount"]
+    transaction_ref = params["payment"]["transaction_ref"]
+
+
+    result = service.handle_payment(account_id, amount, transaction_ref, channel)
+
+    if result
+      redirect_to admin_simulator_path, :notice => "Payment was successfully made"
+    else
+      redirect_to admin_simulator_path, :notice => "Payment failed"
+    end
+
   end
 
   page_action :sms, :method => :post do
