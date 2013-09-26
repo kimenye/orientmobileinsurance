@@ -7,11 +7,9 @@ ActiveAdmin.register Enquiry do
   menu :parent => "Log"
   index do
     column :phone_number
-    column :date_of_enquiry
+    column :created_at
     column :url
     column :source
-    column "Hash(phone_number)", :hashed_phone_number
-    column "Hash(timestamp)", :hashed_timestamp
     column :sales_agent_code
     column :year_of_purchase
     column "Vendor (DA)", :vendor
@@ -25,6 +23,7 @@ ActiveAdmin.register Enquiry do
   filter :vendor
   filter :model
   filter :marketing_name
+  filter :created_at
 
   actions :index
 end
