@@ -38,38 +38,28 @@ class EnquiryController < Wicked::WizardController
 
     service = PaymentService.new
 
-    if !params["payment"].nil?
+    channel = params[:JP_CHANNEL]
 
-      channel = params["payment"]["channel"]
-      account_id = params["payment"]["account_name"]
-      amount = params["payment"]["amount"]
-      transaction_ref = params["payment"]["transaction_ref"]
-
-    else
-
-      channel = params[:JP_CHANNEL]
-
-      account_id = params[:JP_MERCHANT_ORDERID]
-      if channel == "MPESA" || channel == "AIRTEL"
-        account_id = params[:JP_ITEM_NAME]
-      end
-
-      amount = params[:JP_AMOUNT]
-      transaction_ref = params[:JP_TRANID]
-
+    account_id = params[:JP_MERCHANT_ORDERID]
+    if channel == "MPESA" || channel == "AIRTEL"
+      account_id = params[:JP_ITEM_NAME]
     end
 
+    amount = params[:JP_AMOUNT]
+    transaction_ref = params[:JP_TRANID]
+
+
     result = service.handle_payment(account_id, amount, transaction_ref, channel)
+    @message = "Thank you for your payment of #{number_to_currency(amount, :unit => "KES ", :precision => 0, :delimiter => "")}"
 
     if result
-      @message = "Thank you for your payment of #{number_to_currency(amount, :unit => "KES ", :precision => 0, :delimiter => "")}"
       if channel == "MPESA" || channel == "AIRTEL"
         puts ">>> Render OK #{channel}"
         render text: "OK"
       end
     else
       puts ">> Don't know this account number #{account_id}"
-      render text: "NOT OK"
+      render text: "OK"
     end
 
   end
@@ -119,13 +109,7 @@ class EnquiryController < Wicked::WizardController
           device = nil
 
           if !invalid_da
-            device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
-
-            puts ">> Device is nil ? #{device.nil?}"
-
-            if device.nil?
-              device = Device.wider_search(model).first
-            end
+            device = Device.model_search(vendor, model).first
           end
 
           puts ">> After device is nil ? #{device.nil?}"

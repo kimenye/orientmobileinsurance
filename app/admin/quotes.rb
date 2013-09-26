@@ -1,5 +1,6 @@
 ActiveAdmin.register Quote do
 
+
   controller do
     actions :all, :except => [:edit, :destroy]
   end

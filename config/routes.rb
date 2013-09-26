@@ -19,9 +19,9 @@ Orientmobileinsurance::Application.routes.draw do
 
   match 'reports' => 'reports#index', :as => :reports
 
-  match 'admin_simulator_payment' => 'enquiry#payment_notification', :as => :admin_simulator_payment
-
-  match 'admin_simulator_sms' => 'messages#create', :as => :admin_simulator_sms
+  #match 'admin_simulator_payment' => 'enquiry#payment_notification', :as => :admin_simulator_payment
+  #
+  #match 'admin_simulator_sms' => 'messages#create', :as => :admin_simulator_sms
 
   match 'enquiry/secure' => 'enquiry#secure'
 
