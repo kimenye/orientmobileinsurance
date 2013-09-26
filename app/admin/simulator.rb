@@ -26,7 +26,21 @@ ActiveAdmin.register_page "Simulator" do
   end
 
   page_action :sms, :method => :post do
-    redirect_to admin_simulator_path, :notice => "SMS was successfully sent"
+
+    text = params["sms"]["text"]
+    mobile = params["sms"]["phone_number"]
+    service = SmsService.new
+
+    begin
+      service.handle_sms_sending(text, mobile)
+      redirect_to admin_simulator_path, :notice => "SMS was successfully sent"
+    rescue
+      redirect_to admin_simulator_path, :notice => "SMS sending failed"
+    end
+
+
+
+
   end
 
   content do
