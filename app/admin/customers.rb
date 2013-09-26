@@ -25,12 +25,10 @@ ActiveAdmin.register Customer, :as => "Lead"  do
 
   controller do
 
-    #def scoped_collection
-      #Customer.joins("inner join insured_devices on insured_devices.customer_id = customers.id").joins("inner join quotes on quotes.insured_device_id = insured_devices.id").joins("inner join policies on policies.quote_id = quotes.id").where("quote.policy_id = ?", nil)
-      #Customer.joins("inner join insured_devices on insured_devices.customer_id = customers.id").joins("inner join quotes on quotes.insured_device_id = insured_devices.id").joins("left outer join policies on policies.quote_id = quotes.id").where("policies.quote_id = ?",nil)
-    #end
+    def scoped_collection
+      Customer.where(:lead => true)
+    end
 
-    #Customer.joins("inner join insured_devices on insured_devices.customer_id = customers.id").joins("inner join quotes on quotes.insured_device_id = insured_devices.id").joins("inner join policies on policies.quote_id = quotes.id")
     actions :all, :except => [:edit, :destroy]
   end
 

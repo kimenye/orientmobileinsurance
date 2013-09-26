@@ -70,4 +70,14 @@ namespace :data do
     end
   end
 
+  task :expire_leads => :environment do
+    leads = Customer.where(:lead => true)
+    leads.each do |l|
+      if !l.is_a_lead?
+        l.lead = false
+        l.save!
+      end
+    end
+  end
+
 end
