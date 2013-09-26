@@ -16,6 +16,21 @@ ActiveAdmin.register Customer, :as => "Lead"  do
       attributes_table_for lead, :name, :id_passport, :email, :created_at
     end
 
+    panel "Devices" do
+      table_for(lead.insured_devices) do
+        column "Model" do |id|
+          link_to id.model, admin_insured_device_path(id)
+        end
+        column "Year of Purchase", :yop
+        column "Phone Number", :phone_number
+        column :created_at
+        column :insured_value
+        column "Premium", :premium
+      end
+    end
+
+    active_admin_comments
+
   end
 
   filter :name

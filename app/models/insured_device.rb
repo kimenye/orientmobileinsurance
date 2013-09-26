@@ -17,6 +17,18 @@ class InsuredDevice < ActiveRecord::Base
     !quote.policy.nil?
   end
 
+  def model
+    device.marketing_name
+  end
+
+  def insured_value
+    quote.insured_value
+  end
+
+  def premium
+    quote.amount_due
+  end
+
   def name
     "#{customer.name} - #{device.marketing_name} - #{imei}"
   end
