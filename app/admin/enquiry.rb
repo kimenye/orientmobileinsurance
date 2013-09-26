@@ -21,5 +21,10 @@ ActiveAdmin.register Enquiry do
   end
 
   filter :phone_number
+  filter :year_of_purchase
+  filter :vendor
+  filter :model
+  filter :marketing_name
+
   actions :index
 end

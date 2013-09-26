@@ -108,7 +108,7 @@ class EnquiryController < Wicked::WizardController
         if @enquiry.valid?
           code = agent.code if !agent.nil?
           if !@enquiry.year_of_purchase.nil?
-            is_insurable = premium_service.is_insurable(@enquiry.year_of_purchase, code)
+            is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
           else
             is_insurable = false
           end
@@ -138,13 +138,7 @@ class EnquiryController < Wicked::WizardController
           device = nil
 
           if !invalid_da
-            device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
-
-            puts ">> Device is nil ? #{device.nil?}"
-
-            if device.nil?
-              device = Device.wider_search(model).first
-            end
+            device = Device.model_search(vendor, model).first
           end
 
           puts ">> After device is nil ? #{device.nil?}"
@@ -158,13 +152,15 @@ class EnquiryController < Wicked::WizardController
           else
             session[:device] = device
             iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
+            annual_premium = premium_service.calculate_annual_premium(code, iv, @enquiry.year_of_purchase)
+            installment_premium = premium_service.calculate_monthly_premium(code, iv, @enquiry.year_of_purchase)
             details = {
               "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0, :delimiter => ""),
               "insurance_value_uf" => iv,
-              "annual_premium" => number_to_currency(premium_service.calculate_annual_premium(code, iv), :unit => "KES ", :precision => 0, :delimiter => ""),
-              "annual_premium_uf" => premium_service.calculate_annual_premium(code, iv),
-              "quarterly_premium" => number_to_currency(premium_service.calculate_monthly_premium(code, iv), :unit => "KES ", :precision => 0, :delimiter => ""),
-              "quarterly_premium_uf" => premium_service.calculate_monthly_premium(code, iv),
+              "annual_premium" => number_to_currency(annual_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
+              "annual_premium_uf" => annual_premium,
+              "quarterly_premium" => number_to_currency(installment_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
+              "quarterly_premium_uf" => installment_premium,
               "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
             }
 
@@ -224,7 +220,6 @@ class EnquiryController < Wicked::WizardController
           q.save!
         end
 
-        #smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.in_time_zone(ENV['TZ']).to_s(:full)}."]
         smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]
         session[:sms_message] = smsMessage
         session[:sms_to] = @enquiry.phone_number
