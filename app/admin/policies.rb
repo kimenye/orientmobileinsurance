@@ -49,8 +49,26 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column("RISK DESCRIPTION") { |p| p.quote.insured_device.device.marketing_name }
     column("INV DATE") { |p| (p.start_date.to_s(:export) if !p.start_date.nil?) }
     column("INV NO") { |p| "00000" }
-    column("PREMIUM") { |p| "" }
-    column("LEVIES") { |p| "" }
+    column("PREMIUM") { |p|
+      service = PremiumService.new
+      premium = 0
+      if p.quote.is_installment?
+        premium = service.calculate_raw_monthly_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+      else
+        premium = service.calculate_raw_annual_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+      end
+      premium
+    }
+    column("LEVIES") { |p|
+      service = PremiumService.new
+      premium = nil
+      if p.quote.is_installment?
+        premium = service.calculate_raw_monthly_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+      else
+        premium = service.calculate_raw_annual_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+      end
+      service.calculate_levy premium
+    }
     column("Reg No") { |p| p.policy_number }
     column("Make/Model") { |p| p.quote.insured_device.device.marketing_name }
     column("Model/Type") { |p| p.quote.insured_device.device.marketing_name }

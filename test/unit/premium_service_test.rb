@@ -246,6 +246,13 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal 848, premium
   end
 
+  test "Levy calculation" do
+    service = PremiumService.new
+
+    levy = service.calculate_levy 899
+    assert_equal levy, 4
+  end
+
   test "Monthly Premium calculation rules" do
     service = PremiumService.new
 
