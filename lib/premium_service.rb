@@ -74,6 +74,11 @@ class PremiumService
     calculate_annual_premium agent_code, insurance_value, yop, false, false, false, false
   end
 
+  def calculate_raw_monthly_premium agent_code, insurance_value, yop
+    annual = calculate_raw_annual_premium agent_code, insurance_value, yop
+    (annual * 1.15 / 3).round
+  end
+
   def calculate_annual_premium agent_code, insurance_value, yop, add_mpesa = true, add_sms_charges = true, round_off = true, add_levy = true
     raw = calculate_premium_rate(agent_code, yop) * insurance_value
     raw = raw * 1.0045 if add_levy
