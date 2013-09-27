@@ -189,6 +189,39 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal 2250, premium
   end
 
+
+  test "Raw premium calculation rules" do
+    service = PremiumService.new
+
+    raw = service.calculate_raw_annual_premium "FXP001", 6150, Time.now.year
+    assert_equal 899, raw
+
+    premium = service.calculate_raw_annual_premium "XXX000", 5380, Time.now.year
+    assert_equal 999, premium
+
+    premium = service.calculate_raw_annual_premium "FXP001", 2310, (Time.now.year - 1)
+    assert_equal 999, premium
+
+    premium = service.calculate_raw_annual_premium "XXXXXX", 2310, (Time.now.year - 1)
+    assert_equal 999, premium
+
+    premium = service.calculate_raw_annual_premium "FXP001", 58999, Time.now.year
+    assert_equal 5605, premium
+
+    premium = service.calculate_raw_annual_premium "000000", 51620, Time.now.year
+    assert_equal 5162, premium
+
+    premium = service.calculate_raw_annual_premium "000000", 22120, (Time.now.year - 1)
+    assert_equal 2212, premium
+
+    premium = service.calculate_raw_annual_premium "FXP001", 22120, (Time.now.year - 1)
+    assert_equal 2212, premium
+  end
+
+  test "Raw monthly premium calculation rules" do
+
+  end
+
   test "Monthly Premium calculation rules" do
     service = PremiumService.new
 
