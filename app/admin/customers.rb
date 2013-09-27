@@ -9,6 +9,8 @@ ActiveAdmin.register Customer, :as => "Lead"  do
     end
     column :email
     column :num_enquiries
+    column "Phone #1", :phone_number
+    column "Phone #2", :alternate_number
   end
 
   show do |lead|
@@ -31,6 +33,15 @@ ActiveAdmin.register Customer, :as => "Lead"  do
 
     active_admin_comments
 
+  end
+
+  csv do
+    column :name
+    column :id_passport
+    column :email
+    column :num_enquiries
+    column :phone_number
+    column :alternate_number
   end
 
   filter :name

@@ -5,7 +5,9 @@ ActiveAdmin.register Policy, :as => "Customer" do
   end
 
   index do
-    column :customer
+    column "Customer" do |policy|
+      policy.customer.name
+    end
     column :policy_number
     column :start_date
     column :expiry
