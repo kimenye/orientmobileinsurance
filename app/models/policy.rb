@@ -84,8 +84,47 @@ class Policy < ActiveRecord::Base
     quote_amount.to_f - amount_paid.to_f
   end
 
+  def payment_option
+    if quote.is_installment?
+      return "Installment"
+    else
+      return "Annual"
+    end
+  end
+
+  def next_payment_date
+    if quote.is_installment?
+    else
+      return nil
+    end
+  end
+
+  def sales_agent_code
+    if quote.agent.nil?
+      return "Direct"
+    else
+      return quote.agent.code
+    end
+  end
+
+  def sales_agent_name
+    if quote.agent.nil?
+      return "Direct"
+    else
+      return "#{quote.agent.brand} #{quote.agent.outlet_name}"
+    end
+  end
+
   def insured_device
     quote.insured_device
+  end
+
+  def imei
+    if !insured_device.nil?
+      return insured_device.imei
+    else
+      return nil
+    end
   end
 
   def customer

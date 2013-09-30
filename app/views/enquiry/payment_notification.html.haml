@@ -6,8 +6,9 @@
     %h1.logo
       %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.png"}
   %section{"data-role" => "content", "role" => "main"}
-    %h4.payment
-      = @message
-    -#%ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
-      %li{"data-role" => "list-divider"}
-        Your payment details below...
+    - if !@message.nil?
+      %h4.payment
+        = @message
+      -#%ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+        %li{"data-role" => "list-divider"}
+          Your payment details below...

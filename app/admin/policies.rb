@@ -5,19 +5,25 @@ ActiveAdmin.register Policy do
   end
 
   index do
+    column "Customer" do |policy|
+      policy.customer.name
+    end
     column :policy_number
-    column :customer
     column :start_date
     column :expiry
-    column :status
-    column "Premium", :premium
+    column :payment_option
+    column "Total Due", :premium
     column "Amount Paid", :amount_paid
-    column :pending_amount
-    column :minimum_paid
-    column :minimum_due
+    column "Total Balance", :pending_amount
+    column "Next Payment Due", :minimum_due
+    column "IMEI", :imei
+    column :sales_agent_code
+    column :sales_agent_name
   end
-  actions :index, :show
 
+  filter :policy_number
+  filter :start_date
+  filter :expiry
 
   xlsx(:header_style => {:bg_color => 'C0BFBF', :fg_color => '000000' }) do
 
@@ -43,8 +49,26 @@ ActiveAdmin.register Policy do
     column("RISK DESCRIPTION") { |p| p.quote.insured_device.device.marketing_name }
     column("INV DATE") { |p| (p.start_date.to_s(:export) if !p.start_date.nil?) }
     column("INV NO") { |p| "00000" }
-    column("PREMIUM") { |p| "" }
-    column("LEVIES") { |p| "" }
+    column("PREMIUM") { |p|
+      service = PremiumService.new
+      premium = 0
+      if p.quote.is_installment?
+        premium = service.calculate_raw_monthly_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+      else
+        premium = service.calculate_raw_annual_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+      end
+      premium
+    }
+    column("LEVIES") { |p|
+      service = PremiumService.new
+      premium = nil
+      if p.quote.is_installment?
+        premium = service.calculate_raw_monthly_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+      else
+        premium = service.calculate_raw_annual_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+      end
+      service.calculate_levy premium
+    }
     column("Reg No") { |p| p.policy_number }
     column("Make/Model") { |p| p.quote.insured_device.device.marketing_name }
     column("Model/Type") { |p| p.quote.insured_device.device.marketing_name }

@@ -1,6 +1,5 @@
 require 'premium_service'
 require 'deviceatlasapi'
-#require 'pry'
 
 class EnquiryController < Wicked::WizardController
   include DeviceAtlasApi::ControllerHelpers
