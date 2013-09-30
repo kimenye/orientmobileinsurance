@@ -65,20 +65,38 @@ class PremiumService
   end
 
   def calculate_monthly_premium agent_code, insurance_value, yop
-    base_premium = calculate_annual_premium agent_code, insurance_value, yop, false, false
+    base_premium = calculate_annual_premium agent_code, insurance_value, yop, false, false, true
     raw = calculate_total_installment base_premium
     round_off((raw / 3).ceil)
   end
 
-  def calculate_annual_premium agent_code, insurance_value, yop, add_mpesa = true, add_sms_charges = true
-    raw = calculate_premium_rate(agent_code, yop) * insurance_value * 1.0045
+  def calculate_raw_annual_premium agent_code, insurance_value, yop
+    calculate_annual_premium agent_code, insurance_value, yop, false, false, false, false
+  end
+
+  def calculate_raw_monthly_premium agent_code, insurance_value, yop
+    annual = calculate_raw_annual_premium agent_code, insurance_value, yop
+    (annual * 1.15 / 3).round
+  end
+
+  def calculate_levy premium
+    (premium * 0.0045).round
+  end
+
+  def calculate_annual_premium agent_code, insurance_value, yop, add_mpesa = true, add_sms_charges = true, round_off = true, add_levy = true
+    raw = calculate_premium_rate(agent_code, yop) * insurance_value
+    raw = raw * 1.0045 if add_levy
     raw = [raw.round, minimum_fee(agent_code, yop)].max
     raw += 15 if add_sms_charges #sms charges
     mpesa_fee = calculate_mpesa_fee raw
     raw += mpesa_fee if add_mpesa
 
     # [raw.round, minimum_fee(agent_code)].max
-    round_off(raw.round)
+    if round_off
+      return round_off(raw.round)
+    else
+      return raw
+    end
   end
 
   def round_off (number, nearest = 5)

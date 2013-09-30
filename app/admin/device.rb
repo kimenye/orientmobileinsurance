@@ -106,10 +106,27 @@ ActiveAdmin.register Device do
     column :vendor
     column :model
     column :marketing_name
-    column "Retail Price", :catalog_price
-    column :wholesale_price
+    #column "Retail Price", :catalog_price
+    #column :wholesale_price
     column :active
     default_actions
+  end
+
+  form do |f|
+    f.inputs "Details" do
+      f.input :stock_code
+      f.input :vendor
+      f.input :model
+      f.input :marketing_name
+      f.input :active
+    end
+    f.actions
+  end
+
+  show do |device|
+    panel "Device Details" do
+      attributes_table_for device, :vendor, :model, :marketing_name, :stock_code, :active
+    end
   end
 
   actions :index, :edit, :update, :show
