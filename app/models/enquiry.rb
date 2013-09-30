@@ -6,7 +6,7 @@ class Enquiry < ActiveRecord::Base
 
   belongs_to :agent
 
-  validates :phone_number, presence: true
+  #validates :phone_number, presence: true
   validates :source, presence: true
 
   validate :validate_sales_info, on: :update

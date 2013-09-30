@@ -11,7 +11,13 @@ class EnquiryController < Wicked::WizardController
 
   def show
     begin
-      @enquiry = Enquiry.find(session[:enquiry_id])
+      if session[:enquiry_id].nil?
+        @enquiry = Enquiry.create!(:source => "DIRECT")
+        #@enquiry = Enquiry.new({:source => "DIRECT"})
+        session[:enquiry_id] = @enquiry.id
+      else
+        @enquiry = Enquiry.find_by_id(session[:enquiry_id])
+      end
       case step
         when :complete_enquiry
           smsMessage = session[:sms_message]
@@ -117,7 +123,6 @@ class EnquiryController < Wicked::WizardController
           @enquiry.detected_device_id= device.id if ! device.nil?
           @enquiry.detected = !device.nil?
           @enquiry.save!
-
           if device.nil? || is_insurable == false
             jump_to :not_insurable
           else
