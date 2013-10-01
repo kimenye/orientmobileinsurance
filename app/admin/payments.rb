@@ -16,14 +16,18 @@ ActiveAdmin.register Payment do
   end
 
   csv do
-    column :amount
-    column :method
-    column :created_at
-    column :reference
-    column ("For") { |payment| payment.policy.policy_number }
-    column ("Policy") { |payment| payment.policy.policy_number }
-    column ("Device") { |payment| payment.policy.quote.insured_device.device.marketing_name }
     column ("Customer") { |payment| payment.policy.quote.insured_device.customer.name }
+    column ("Device") { |payment| payment.policy.quote.insured_device.device.marketing_name }
+    column ("Insured Value") { |payment| payment.policy.quote.insured_value }
+    column ("Amount Paid") { |payment| payment.policy.amount_paid }
+    column ("Premium Type") { |payment| payment.policy.payment_option }
+    column ("Payment Due") { |payment| payment.policy.pending_amount }
+    column ("Created At")  { |payment| payment.created_at.strftime("%d-%m-%Y") }
+    column ("Account No.") { |payment| payment.policy.policy_number }
+    column :reference
+    column ("Payment Mode") { |payment| payment.method }
+    column ("IMEI No") { |payment| payment.policy.quote.insured_device.imei }
+
   end
 
   actions :index
