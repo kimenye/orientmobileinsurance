@@ -149,13 +149,23 @@ class EnquiryController < Wicked::WizardController
 
             account_name = "OMB#{premium_service.generate_unique_account_number}"
 
-            user_details = {
-                "customer_name" => @enquiry.customer_name,
-                "customer_id" => @enquiry.customer_id,
-                "customer_email" => @enquiry.customer_email,
-                "customer_phone_number" => @enquiry.phone_number,
-                "account_name" => account_name
-            }
+            if @enquiry.phone_number.nil?
+              user_details = {
+                  "customer_name" => @enquiry.customer_name,
+                  "customer_id" => @enquiry.customer_id,
+                  "customer_email" => @enquiry.customer_email,
+                  "customer_phone_number" => @enquiry.customer_phone_number,
+                  "account_name" => account_name
+              }
+            else
+              user_details = {
+                  "customer_name" => @enquiry.customer_name,
+                  "customer_id" => @enquiry.customer_id,
+                  "customer_email" => @enquiry.customer_email,
+                  "customer_phone_number" => @enquiry.phone_number,
+                  "account_name" => account_name
+              }
+            end
 
             session[:user_details] = user_details
 
