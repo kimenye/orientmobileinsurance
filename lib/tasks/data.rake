@@ -80,4 +80,12 @@ namespace :data do
     end
   end
 
+  task :setup_admin => :environment do
+    sa = AdminUser.find_by_email("omi@korient.co.ke")
+    if !sa.nil?
+      sa.is_admin = true
+      sa.save!
+    end
+  end
+
 end
