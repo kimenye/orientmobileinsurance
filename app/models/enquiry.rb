@@ -7,6 +7,10 @@ class Enquiry < ActiveRecord::Base
   belongs_to :agent
 
   #validates :phone_number, presence: true
+  #phony_normalize :customer_phone_number, :default_country_code => 'KE'
+  validates_plausible_phone :customer_phone_number, :country_code => '254'
+  validates :customer_phone_number, length: {is: 12}, allow_blank: true
+  #validates :customer_phone_number, :phony_plausible => true
   validates :source, presence: true
 
   validate :validate_sales_info, on: :update

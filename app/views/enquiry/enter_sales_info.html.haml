@@ -21,6 +21,6 @@
           = @enquiry.phone_number
       - else
         = f.label :customer_phone_number, 'Mobile Number'
-        = f.text_field :customer_phone_number, :class => "required"
+        = f.text_field :customer_phone_number, :class => "required", :placeholder => "Format: 254722123456"
       %p
         = f.submit "Continue"
