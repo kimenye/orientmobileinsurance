@@ -24,6 +24,8 @@ ActiveAdmin.register Policy, :as => "Customer" do
   filter :policy_number
   filter :start_date
   filter :expiry
+  filter :quote_account_name, :as => :string, :label => "Account Name"
+  filter :quote_insured_device_customer_name, :as => :string, :label => "Customer Name"
 
   xlsx(:header_style => {:bg_color => 'C0BFBF', :fg_color => '000000' }) do
 
