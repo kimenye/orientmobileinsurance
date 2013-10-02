@@ -37,11 +37,11 @@ ActiveAdmin.register Customer, :as => "Lead"  do
 
   csv do
     column :name
-    column :id_passport
-    column :email
-    column :num_enquiries
-    column :phone_number
-    column :alternate_number
+    column ("Tel No 1") { |customer| customer.phone_number }
+    column ("Tel No 2") { |customer| customer.alternate_number }
+    column ("NUmber of Enquiries") { |customer| customer.num_enquiries }
+    #column :id_passport
+    #column :email
   end
 
   filter :name
