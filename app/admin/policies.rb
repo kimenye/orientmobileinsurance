@@ -86,8 +86,8 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column("Section 6") { |p| 0 }
     column("Section 7") { |p| 0 }
     column("Section 8") { |p| 0 }
-    column("Section 9") { |p| "" }
-    column("Section 10") { |p| "" }
+    column("Section 9") { |p| p.sales_agent_code }
+    column("Section 10") { |p| p.sales_agent_name }
   end
 
   csv do
