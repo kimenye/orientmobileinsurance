@@ -26,6 +26,7 @@ ActiveAdmin.register Policy, :as => "Customer" do
   filter :expiry
   filter :quote_account_name, :as => :string, :label => "Account Name"
   filter :quote_insured_device_customer_name, :as => :string, :label => "Customer Name"
+  filter :quote_insured_device_phone_number, :as => :string, :label => "Phone Number"
 
   xlsx(:header_style => {:bg_color => 'C0BFBF', :fg_color => '000000' }) do
 
@@ -86,12 +87,24 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column("Section 6") { |p| 0 }
     column("Section 7") { |p| 0 }
     column("Section 8") { |p| 0 }
-    column("Section 9") { |p| "" }
-    column("Section 10") { |p| "" }
+    column("Section 9") { |p| p.sales_agent_code }
+    column("Section 10") { |p| p.sales_agent_name }
   end
 
-  #csv do
-  #  column("TTY") { |p| "N" }
+  csv do
+    column("Customer") { |p| p.customer.name }
+    column :policy_number
+    column :start_date
+    column :expiry
+    column :payment_option
+    column("Total Due") { |p| p.premium }
+    column("Amount Paid") { |p| p.amount_paid }
+    column("Total Balance") { |p| p.pending_amount }
+    column("Next Payment Due") { |p| p.minimum_due }
+    column("IMEI") { |p| p.imei }
+    column :sales_agent_code
+    column :sales_agent_name
+    column ("Phone Number") { |p| p.quote.insured_device.phone_number }
   #  column("CODE") { |p| p.policy_number }
   #  column("CLIENT NAME") {|p| p.quote.insured_device.customer.name }
   #  column("NATIONAL ID") { |p| p.quote.insured_device.customer.id_passport }
@@ -127,5 +140,5 @@ ActiveAdmin.register Policy, :as => "Customer" do
   #  column("Section 8") { |p| 0 }
   #  column("Section 9") { |p| "" }
   #  column("Section 10") { |p| "" }
-  #end
+  end
 end
