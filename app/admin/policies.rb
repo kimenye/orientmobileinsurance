@@ -69,7 +69,7 @@ ActiveAdmin.register Policy do
       end
       service.calculate_levy premium
     }
-    column("Reg No") { |p| p.policy_number }
+    column("Reg No") { |p| "#{p.policy_number}/#{p.quote.insured_device.imei}" }
     column("Make/Model") { |p| p.quote.insured_device.device.marketing_name }
     column("Model/Type") { |p| p.quote.insured_device.device.marketing_name }
     column("YOM") { |p| p.quote.insured_device.yop }
