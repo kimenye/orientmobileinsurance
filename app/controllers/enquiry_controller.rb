@@ -33,7 +33,11 @@ class EnquiryController < Wicked::WizardController
   end
 
   def payment_notification
+
     puts ">>>> #{params}"
+
+    service = PaymentService.new
+
     channel = params[:JP_CHANNEL]
 
     account_id = params[:JP_MERCHANT_ORDERID]
@@ -41,47 +45,14 @@ class EnquiryController < Wicked::WizardController
       account_id = params[:JP_ITEM_NAME]
     end
 
-    quote = Quote.find_by_account_name account_id.upcase
-    # puts ">>>> Channel #{channel}, Account #{account_id}"
-    # puts ">>>> #{quote}"
-    service = PremiumService.new
-    sms = SMSGateway.new
-    if !quote.nil?
-      puts ">> Quote is not nil #{quote}"
-      customer = quote.insured_device.customer
-      if quote.policy.nil?
-        policy = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Pending"
-      end
+    amount = params[:JP_AMOUNT]
+    transaction_ref = params[:JP_TRANID]
 
-      policy = quote.policy
-      payment = Payment.find_by_reference(params[:JP_TRANID])
-      
-      if payment.nil?
-        payment = Payment.create! :policy_id => policy.id, :amount => params[:JP_AMOUNT], :method => channel, :reference => params[:JP_TRANID]
 
-        @message = "Thank you for your payment of #{number_to_currency(params[:JP_AMOUNT], :unit => "KES ", :precision => 0, :delimiter => "")}"
-        # puts ">>>>> IMEI: #{quote.insured_device.imei.nil?}"
+    result = service.handle_payment(account_id, amount, transaction_ref, channel)
+    @message = "Thank you for your payment of #{number_to_currency(amount, :unit => "KES ", :precision => 0, :delimiter => "")}"
 
-        if quote.insured_device.imei.nil?
-          if policy.minimum_paid
-            sms.send quote.insured_device.phone_number, "Dial *#06# to retrieve your device IMEI no.  Record the first 15 digits of the IMEI and SMS them to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation"
-          else
-            sms.send quote.insured_device.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency(policy.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")} to proceed."
-          end
-        else
-          # if policy.is_pending? && policy.payment_due?
-            service.set_policy_dates policy
-            policy.save!
-          
-            sms_gateway = SMSGateway.new
-            insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-            sms_gateway.send quote.insured_device.phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
-            email = CustomerMailer.policy_purchase(policy).deliver          
-          # end
-        end
-      end
-      
-      
+    if result
       if channel == "MPESA" || channel == "AIRTEL"
         puts ">>> Render OK #{channel}"
         render text: "OK"
@@ -90,6 +61,7 @@ class EnquiryController < Wicked::WizardController
       puts ">> Don't know this account number #{account_id}"
       render text: "OK"
     end
+
   end
 
   def update
