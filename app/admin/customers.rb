@@ -39,8 +39,13 @@ ActiveAdmin.register Customer, :as => "Lead"  do
     column :name
     column ("Tel No 1") { |customer| customer.phone_number }
     column ("Tel No 2") { |customer| customer.alternate_number }
-    column ("NUmber of Enquiries") { |customer| customer.num_enquiries }
-    #column :id_passport
+    column ("Number of Enquiries") { |customer| customer.num_enquiries }
+    column ("Date Attempted") { |customer| customer.created_at }
+    column ("passport/id") { |customer| customer.id_passport }
+    column ("Phone") { |customer| customer.primary_device.device.marketing_name if !customer.primary_device.nil? }
+    column ("Insured Value") { |customer| customer.primary_device.quote.insured_value if !customer.primary_device.nil? }
+    column ("Annual Premium") { |customer| customer.primary_device.quote.annual_premium if !customer.primary_device.nil? }
+    column ("Installment Premium") { |customer| customer.primary_device.quote.monthly_premium if !customer.primary_device.nil? }
     #column :email
   end
 

@@ -60,6 +60,10 @@ class Customer < ActiveRecord::Base
     number
   end
 
+  def primary_device
+    insured_devices.first
+  end
+
   def has_policy?
     has_policy = false
     if insured_devices.any?
