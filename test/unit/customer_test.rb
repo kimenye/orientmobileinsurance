@@ -15,5 +15,10 @@ class CustomerTest < ActiveSupport::TestCase
     assert_equal @simple.first_name, "Mike"
     assert_equal @simple.last_name, nil
     assert_equal @simple.middle_name, nil
+
+    @simple.name = "Mike Nganga"
+    assert_equal @simple.first_name, "Mike"
+    assert_equal @simple.last_name, "Nganga"
+    assert_equal @simple.middle_name, nil
   end
 end

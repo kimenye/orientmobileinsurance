@@ -31,7 +31,7 @@ class Customer < ActiveRecord::Base
 
   def middle_name
     names = name.split(" ")
-    if names.length < 2
+    if names.length <= 2
       return nil
     else
       return names.slice(1..names.length-2).join(" ")
