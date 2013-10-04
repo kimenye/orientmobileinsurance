@@ -36,7 +36,9 @@ ActiveAdmin.register Customer, :as => "Lead"  do
   end
 
   csv do
-    column :name
+    column :first_name
+    column :middle_name
+    column :last_name
     column ("Tel No 1") { |customer| customer.phone_number }
     column ("Tel No 2") { |customer| customer.alternate_number }
     column ("Number of Enquiries") { |customer| customer.num_enquiries }
