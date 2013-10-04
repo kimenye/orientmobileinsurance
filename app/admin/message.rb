@@ -1,4 +1,4 @@
-ActiveAdmin.register Message do
+ActiveAdmin.register Message, :as => "Incoming Message" do
 
   controller do
     actions :all, :except => [:edit, :destroy]

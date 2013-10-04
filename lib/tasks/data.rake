@@ -70,4 +70,22 @@ namespace :data do
     end
   end
 
+  task :expire_leads => :environment do
+    leads = Customer.where(:lead => true)
+    leads.each do |l|
+      if !l.is_a_lead?
+        l.lead = false
+        l.save!
+      end
+    end
+  end
+
+  task :setup_admin => :environment do
+    sa = AdminUser.find_by_email("omi@korient.co.ke")
+    if !sa.nil?
+      sa.is_admin = true
+      sa.save!
+    end
+  end
+
 end

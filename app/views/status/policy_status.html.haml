@@ -86,6 +86,12 @@
           %span.model
             = "#{number_to_currency(session[:quote].insured_value, :unit => 'KES ', :delimiter => "")}"
         %li
+          %img{:src => "/assets/policy.png", :class => "ui-li-icon ui-corner-none"}
+          %b
+            Account No:
+          %span.model
+            = session[:quote].account_name
+        %li
           %img{:src => "/assets/cash.png", :class => "ui-li-icon ui-corner-none"}
           %b
             Pending Amount:

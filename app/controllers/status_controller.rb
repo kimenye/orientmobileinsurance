@@ -21,7 +21,9 @@ class StatusController < ApplicationController
         if @customer.nil?
           jump_to :customer_not_found
         else
-          session[:devices] = @customer.insured_devices
+          devs = InsuredDevice.joins('inner join quotes on quotes.insured_device_id = insured_devices.id').where('customer_id = ? and quotes.expiry_date > ?', @customer.id, Time.now)
+
+          session[:devices] = devs
           if @status.action == "new-claim"
             @status.contact_tel_no = @customer.phone_number
             jump_to :claim_select_device
