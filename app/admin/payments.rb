@@ -33,6 +33,7 @@ ActiveAdmin.register Payment do
   filter :reference
   filter :amount
   filter :policy_quote_insured_device_phone_number, :as => :string, :label => "Phone Number"
+  filter :policy_quote_account_name, :as => :string, :label => "Account"
 
   actions :index
 end
