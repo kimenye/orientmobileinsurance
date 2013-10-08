@@ -58,6 +58,9 @@ ActiveAdmin.setup do |config|
   config.authentication_method = :authenticate_admin_user!
 
 
+  config.authorization_adapter = "OnlyAdminsAuthorization"
+
+
   # == Current User
   #
   # Active Admin will associate actions with the current
