@@ -1,0 +1,4 @@
+1. rake db:migrate [leads and admin users]
+2. rake data:expire_leads
+3. rake data:setup_admin [Admin users]
+4. rake data:update_devices

@@ -32,6 +32,7 @@ gem 'activeadmin-axlsx'
 
 gem 'zurb-foundation'
 gem 'compass-rails'
+gem 'smarter_csv'
 
 group :development do
   gem 'better_errors'

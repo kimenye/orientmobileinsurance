@@ -9,7 +9,7 @@ ActiveAdmin.register Payment do
     column :method
     column :created_at
     column :reference
-    column :for
+    column :account
     column :policy
     column :device
     column :customer
@@ -39,6 +39,11 @@ ActiveAdmin.register Payment do
     column ("IMEI No") { |payment| payment.policy.quote.insured_device.imei }
 
   end
+
+  filter :reference
+  filter :amount
+  filter :policy_quote_insured_device_phone_number, :as => :string, :label => "Phone Number"
+  filter :policy_quote_account_name, :as => :string, :label => "Account"
 
   actions :index
 end

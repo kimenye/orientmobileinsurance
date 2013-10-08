@@ -88,4 +88,27 @@ namespace :data do
     end
   end
 
+
+  task :update_devices => :environment do
+
+    update_file = "#{Rails.root}/doc/data/patches/#{ENV['UPDATE_FILE']}"
+    puts "Update file: #{update_file}"
+    devices = SmarterCSV.process(update_file)
+
+
+    devices.each do |device|
+      d = Device.find_by_stock_code(device[:stock_code])
+      if !d.nil?
+        d.prev_insured_value = device[:prev_insured_value]
+        d.prev_replacement_value = device[:prev_replacement_value]
+        d.prev_fd_koil_invoice_value = device[:prev_fd_koil_invoice_value]
+        d.save!
+
+        puts "Updated #{d.stock_code} : #{d.prev_insured_value}"
+      end
+    end
+
+  end
+
+
 end

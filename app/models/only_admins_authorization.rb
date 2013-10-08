@@ -4,11 +4,11 @@ class OnlyAdminsAuthorization < ActiveAdmin::AuthorizationAdapter
     if user.is_admin
       return true
     else
-      case subject.name
-        when User.to_s, AdminUser.to_s, "Simulator"
-          return user.is_admin
+      if subject.to_s == User.to_s || subject.to_s == AdminUser.to_s || action == :edit || subject.name == "Simulator"
+        return user.is_admin
+      else
+        return true
       end
-      return true
     end
   end
 end

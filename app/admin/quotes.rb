@@ -1,7 +1,5 @@
 ActiveAdmin.register Quote do
 
-  menu false
-
   controller do
     actions :all, :except => [:edit, :destroy]
   end
