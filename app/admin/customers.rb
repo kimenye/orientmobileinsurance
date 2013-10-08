@@ -62,6 +62,10 @@ ActiveAdmin.register Customer, :as => "Lead"  do
       Customer.where(:lead => true)
     end
 
+    def resource
+      Customer.where(id: params[:id]).first!
+    end
+
     actions :all, :except => [:edit, :destroy]
   end
 
