@@ -1,5 +1,6 @@
 ActiveAdmin.register InsuredDevice do
 
+  menu :label => "Insurable Devices"
   index :title => "Insurable Devices"
   show :title => "Insurable Devices"
 
