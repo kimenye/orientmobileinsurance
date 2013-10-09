@@ -11,6 +11,14 @@
       = f.text_field :year_of_purchase
       = f.label :customer_name, 'Full Name (as per ID / Passport)'
       = f.text_field :customer_name, :class => "required"
+      %div{"data-role" => "fieldcontain"}
+        %fieldset{"data-role" => "controlgroup"}
+          %legend
+            Identification Type
+          = f.radio_button :id_entered, true, :required => "required"
+          = f.label :id_entered_true, "ID"
+          = f.radio_button :id_entered, false
+          = f.label :id_entered_false, "Passport"
       = f.label :customer_id, 'National ID or Passport Number'
       = f.text_field :customer_id, :class => "required"
       = f.label :customer_email, 'Email Address'
