@@ -1,7 +1,7 @@
 ActiveAdmin.register AdminUser do
 
   controller do
-    actions :all, :except => [:edit, :destroy]
+    actions :all, :except => [:destroy]
   end
 
   menu :parent => "Security"

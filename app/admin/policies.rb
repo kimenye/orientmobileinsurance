@@ -8,6 +8,9 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column "Customer" do |policy|
       policy.customer.name
     end
+    column "Contact Number" do |policy|
+      policy.quote.insured_device.phone_number
+    end
     column :policy_number
     column :start_date
     column :expiry

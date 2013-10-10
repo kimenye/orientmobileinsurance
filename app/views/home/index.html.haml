@@ -96,17 +96,18 @@
                     %td Client
                   %tbody
                     - @claims.each do |claim|
-                      - if claim.is_in_claims_stage?
-                        %tr
-                          %td
-                            -if !claim.claim_no.nil?
+                      -#- if claim.is_in_claims_stage?
+                      %tr
+                        %td
+                          -if !claim.claim_no.nil?
+                            %a{:href => "/claim_search?claim_no=#{claim.claim_no}"}
                               = claim.claim_no
-                          %td
-                            -if !claim.incident_date.nil?
-                              = claim.incident_date
-                          %td
-                            -if !claim.policy.quote.insured_device.customer.name.nil?
-                              = claim.policy.quote.insured_device.customer.name
+                        %td
+                          -if !claim.incident_date.nil?
+                            = claim.incident_date
+                        %td
+                          -if !claim.policy.quote.insured_device.customer.name.nil?
+                            = claim.policy.quote.insured_device.customer.name
       - if service_centre_is_logged_in?
         %form{:method => "POST", :action => claim_search_by_no_path}
           %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}

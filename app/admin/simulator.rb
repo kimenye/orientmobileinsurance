@@ -1,6 +1,6 @@
 ActiveAdmin.register_page "Simulator" do
 
-  menu :parent => "Test"
+  #menu :parent => "Simulator"
 
   page_action :payment, :method => :post do
     puts ">>>> #{params}"
