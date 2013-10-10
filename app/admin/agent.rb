@@ -31,6 +31,7 @@ ActiveAdmin.register Agent do
 
   filter :town
   filter :code
+  filter :outlet_name
 
   form do |f|
     f.inputs "User Details" do

@@ -1,4 +1,4 @@
-ActiveAdmin.register Sms do
+ActiveAdmin.register Sms, :as => "Outgoing Message" do
 
   controller do
     actions :all, :except => [:edit, :destroy]

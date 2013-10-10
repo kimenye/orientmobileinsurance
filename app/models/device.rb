@@ -48,4 +48,8 @@ class Device < ActiveRecord::Base
   def to_s
     "#{vendor} #{model}"
   end
+
+  def name
+    to_s
+  end
 end

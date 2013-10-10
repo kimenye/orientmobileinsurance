@@ -109,6 +109,7 @@ ActiveAdmin.register Device do
     #column "Retail Price", :catalog_price
     #column :wholesale_price
     column :active
+    column :device_type
     default_actions
   end
 

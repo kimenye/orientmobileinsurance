@@ -15,7 +15,7 @@ namespace :data do
   task :seed => :environment do
     enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
     customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
-    insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012345", :yop => 2013
+    insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
     quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.first.id
     policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
     payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
@@ -69,5 +69,46 @@ namespace :data do
       device.save!
     end
   end
+
+  task :expire_leads => :environment do
+    leads = Customer.where(:lead => true)
+    leads.each do |l|
+      if !l.is_a_lead?
+        l.lead = false
+        l.save!
+      end
+    end
+  end
+
+  task :setup_admin => :environment do
+    sa = AdminUser.find_by_email("omi@korient.co.ke")
+    if !sa.nil?
+      sa.is_admin = true
+      sa.save!
+    end
+  end
+
+
+  task :update_devices => :environment do
+
+    update_file = "#{Rails.root}/doc/data/patches/#{ENV['UPDATE_FILE']}"
+    puts "Update file: #{update_file}"
+    devices = SmarterCSV.process(update_file)
+
+
+    devices.each do |device|
+      d = Device.find_by_stock_code(device[:stock_code])
+      if !d.nil?
+        d.prev_insured_value = device[:prev_insured_value]
+        d.prev_replacement_value = device[:prev_replacement_value]
+        d.prev_fd_koil_invoice_value = device[:prev_fd_koil_invoice_value]
+        d.save!
+
+        puts "Updated #{d.stock_code} : #{d.prev_insured_value}"
+      end
+    end
+
+  end
+
 
 end
