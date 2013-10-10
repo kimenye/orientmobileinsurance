@@ -1,12 +1,12 @@
 %h3
-  Test SMS Messages
+  Send SMS Messages
 %fieldset
   %form{:action => admin_simulator_sms_path, :method => "POST"}
     .field
       = label(:sms, :phone_number)
-      = text_field(:sms, :phone_number)
+      = text_field(:sms, :phone_number, {:placeholder => "+254722000000"})
     .field
       = label(:sms, :text)
-      = text_field(:sms, :text)
+      = text_field(:sms, :text, {:placeholder => "Mobile / IMEI Number"})
     .field
       = submit_tag("Submit")
