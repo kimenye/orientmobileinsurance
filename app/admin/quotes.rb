@@ -5,6 +5,9 @@ ActiveAdmin.register Quote do
   end
 
   index do
+    column "Contact Number" do |quote|
+      quote.insured_device.phone_number
+    end
     column :account_name
     column :amount_due
     column :expiry_date

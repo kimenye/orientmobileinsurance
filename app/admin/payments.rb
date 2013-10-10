@@ -5,6 +5,9 @@ ActiveAdmin.register Payment do
   end
 
   index do
+    column "Contact Number" do |payment|
+      payment.policy.quote.insured_device.phone_number
+    end
     column :amount
     column :method
     column :created_at
