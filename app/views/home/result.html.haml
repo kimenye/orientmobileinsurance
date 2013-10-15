@@ -30,6 +30,12 @@
           Detected:
         %span.model
           = @device.detected
+      %li
+        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        %b
+          UA:
+        %span.model
+          = request.env['HTTP_USER_AGENT']
     %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
       %li{"data-role" => "list-divider"}
         Catalogue Match...
