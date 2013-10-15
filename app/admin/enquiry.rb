@@ -6,7 +6,9 @@ ActiveAdmin.register Enquiry do
 
   menu :parent => "Message"
   index do
-    column :phone_number
+    column "Phone Number" do |enquiry|
+      link_to enquiry.phone_number, admin_enquiry_path(enquiry)
+    end
     column :created_at
     column :url
     column :source
@@ -18,6 +20,12 @@ ActiveAdmin.register Enquiry do
     column "Detected", :detected
   end
 
+  show do |enquiry|
+    panel "Enquiry Details" do
+      attributes_table_for enquiry, :phone_number, :source, :vendor, :model, :marketing_name, :url, :user_agent
+    end
+  end
+
   filter :phone_number
   filter :year_of_purchase
   filter :vendor
@@ -25,5 +33,5 @@ ActiveAdmin.register Enquiry do
   filter :marketing_name
   filter :created_at
 
-  actions :index
+  actions :index, :show
 end
