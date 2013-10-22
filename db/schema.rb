@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
     t.string   "vendor"
     t.string   "marketing_name"
     t.boolean  "detected"
+    t.boolean  "id_entered"
     t.string   "user_agent"
   end
 
