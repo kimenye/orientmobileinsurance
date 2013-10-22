@@ -1,20 +1,30 @@
 ActiveAdmin.register Quote do
 
   controller do
-    actions :all, :except => [:edit, :destroy]
+    actions :all, :except => [:destroy]
   end
 
   index do
     column "Contact Number" do |quote|
       quote.insured_device.phone_number
     end
-    column :account_name
+    column "Account Name" do |quote|
+      link_to quote.account_name, admin_quote_path(quote)
+    end
     column :amount_due
     column :expiry_date
     column :premium_type
     column :insured_value
     column :customer
     column :insured_device
+    default_actions
+  end
+
+  form do |f|
+    f.inputs "Details" do
+      f.input :expiry_date, :as => :datepicker
+    end
+    f.actions
   end
 
   filter :insured_device
@@ -31,5 +41,5 @@ ActiveAdmin.register Quote do
   filter :updated_at
   filter :insured_value
 
-  actions :index
+  actions :index, :edit, :update, :show
 end
