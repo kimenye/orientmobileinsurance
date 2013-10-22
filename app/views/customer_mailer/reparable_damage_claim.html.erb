@@ -429,7 +429,7 @@
                             margin-left:0;
                             text-align:left;">Claim # <%= @claim.claim_no %></h3>
                     <p> Your <%= @claim.policy.quote.insured_device.device.marketing_name %> is under repair.</p>
-                    <p>Please collect it from <%= @claim.agent.name  %> on <%= @claim.days_to_fix.business_days.from_now.to_s(:simple) %>. Please carry your ID/Passport</p>
+                    <p>Please collect it from <%= @claim.agent.name  %> on <%= (@claim.days_to_fix + 1).business_days.from_now.to_s(:simple) %>. Please carry your ID/Passport</p>
                   </td>
                 </tr>
                 <%= render :partial => "footer" %>
