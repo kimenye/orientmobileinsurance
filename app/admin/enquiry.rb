@@ -32,6 +32,7 @@ ActiveAdmin.register Enquiry do
   filter :model
   filter :marketing_name
   filter :created_at
+  filter :sales_agent_code
 
   actions :index, :show
 end
