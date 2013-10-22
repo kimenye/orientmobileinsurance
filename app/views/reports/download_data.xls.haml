@@ -1,0 +1,67 @@
+-#%table
+-#  %row
+-#    %cell
+-#      %data{"ss:type" => "String"} ID
+-#    %cell
+-#      %data{"ss:type" => "String"} Name
+-#    %cell
+-#      %data{"ss:type" => "String"} Release Date
+-#    %cell
+-#      %data{"ss:type" => "String"} Price
+-#  - @policies.each do |policy|
+-#    %row
+-#      %cell
+-#        %data{"ss:type" => "String"}= policy.id
+-#      %cell
+-#        %data{"ss:type" => "String"}= policy.policy_number
+-#      %cell
+-#        %data{"ss:type" => "String"}= policy.start_date
+-#      %cell
+-#        %data{"ss:type" => "String"}= policy.status
+-#
+-#
+
+%table{:border => "1"}
+  %tr
+    %th TTY
+    %th CODE
+    %th CLIENT NAME
+    %th NATIONAL ID
+    %th PIN
+    %th POSTAL_ADDRS
+    %th POSTAL_TOWN
+    %th POSTAL_CODE
+    %th TELEPHONE NO
+    %th MOBILE NO
+    %th COUNTRY
+    %th EFF DATE
+    %th EXP DATE
+    %th POL NO
+    %th RISK DESCRIPTION
+    %th INV DATE
+    %th INV NO
+    %th PREMIUM
+    %th LEVIES
+    %th REG NO
+  - @policies.each do |policy|
+    %tr
+      %td N
+      %td #{policy.policy_number}
+      %td #{policy.quote.insured_device.customer.name}
+      %td #{policy.quote.insured_device.customer.id_passport}
+      %td 0
+      %td P.O.Box 00000
+      %td NAIROBI
+      %td 00000
+      %td #{policy.quote.insured_device.customer.contact_number}
+      %td #{policy.quote.insured_device.customer.contact_number}
+      %td KENYA
+      %td #{policy.start_date.to_s(:simple)}
+      %td #{policy.expiry.to_s(:simple)}
+      %td KOI/OMB/000001/2013
+      %td #{policy.quote.insured_device.device.marketing_name}
+      %td #{policy.start_date.to_s(:simple)}
+      %td
+      %td
+      %td
+      %td

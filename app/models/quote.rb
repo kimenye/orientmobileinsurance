@@ -21,6 +21,22 @@ class Quote < ActiveRecord::Base
       return annual_premium
     end
   end
+  
+  def minimum_due
+    if is_installment?
+      return monthly_premium.to_f
+    else
+      return annual_premium
+    end
+  end
+  
+  def is_installment?
+    premium_type == "Monthly"
+  end
+
+  def agent_code
+    return agent.code if !agent.nil?
+  end
 
   def customer
     if policy.nil?
@@ -28,5 +44,9 @@ class Quote < ActiveRecord::Base
     else
       policy.customer.name
     end
+  end
+
+  def is_expired
+    expired = expiry_date - Time.now < 0
   end
 end

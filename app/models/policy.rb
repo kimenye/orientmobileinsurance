@@ -29,6 +29,7 @@ class Policy < ActiveRecord::Base
     status == "Pending"
   end
 
+  #TODO: Check expiry dates - needs tests
   def is_active?
     status == "Active"
   end
@@ -39,6 +40,14 @@ class Policy < ActiveRecord::Base
 
   def payment_due?
     is_pending? && pending_amount > 0
+  end
+  
+  def minimum_paid
+    amount_paid >= quote.minimum_due
+  end
+  
+  def minimum_due
+    quote.minimum_due - amount_paid
   end
 
   def status_message
@@ -75,8 +84,47 @@ class Policy < ActiveRecord::Base
     quote_amount.to_f - amount_paid.to_f
   end
 
+  def payment_option
+    if quote.is_installment?
+      return "Installment"
+    else
+      return "Annual"
+    end
+  end
+
+  def next_payment_date
+    if quote.is_installment?
+    else
+      return nil
+    end
+  end
+
+  def sales_agent_code
+    if quote.agent.nil?
+      return "Direct"
+    else
+      return quote.agent.code
+    end
+  end
+
+  def sales_agent_name
+    if quote.agent.nil?
+      return "Direct"
+    else
+      return "#{quote.agent.brand} #{quote.agent.outlet_name}"
+    end
+  end
+
   def insured_device
     quote.insured_device
+  end
+
+  def imei
+    if !insured_device.nil?
+      return insured_device.imei
+    else
+      return nil
+    end
   end
 
   def customer

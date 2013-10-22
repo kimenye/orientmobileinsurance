@@ -13,8 +13,14 @@
         .row.spacer
           .twelve.columns
             %h5.section_header
-              Please confirm receipt of:
-        = f.hidden_field :step, :value => "2"
+              -if service_centre_is_logged_in?
+                Outlet confirmed receipt of
+              -else
+                Please confirm receipt of:
+        -if service_centre_is_logged_in?
+          = f.hidden_field :step, :value => "3"
+        -else
+          = f.hidden_field :step, :value => "2"
         = f.hidden_field :claim_type
         .checks
           - if(@claim.is_theft?)
@@ -23,7 +29,7 @@
                 = f.check_box :police_abstract
                 = f.label :police_abstract
           - else
-            .row.spacer
+            .row.spacer{:class => "#{'disabled' if service_centre_is_logged_in?}"}
               .large-12.columns
                 = f.check_box :damaged_device
                 = f.label :damaged_device
@@ -36,17 +42,17 @@
                     = @claim.policy.insured_device.imei
                   )
 
-          .row.spacer
+          .row.spacer{:class => "#{'disabled' if service_centre_is_logged_in?}"}
             .large-12.columns
               = f.check_box :receipt
               = f.label :receipt, "Original purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)"
-          .row.spacer
+          .row.spacer{:class => "#{'disabled' if service_centre_is_logged_in?}"}
             .large-12.columns
               = f.check_box :original_id
               = f.label :original_id, "Original of ID/ Passport No. "
               %b
                 =@claim.policy.customer.id_passport
-          .row.spacer
+          .row.spacer{:class => "#{'disabled' if service_centre_is_logged_in?}"}
             .large-12.columns
               = f.check_box :copy_id
               = f.label :copy_id, "Copy of ID/ Passport No."
@@ -57,7 +63,10 @@
               .large-12.columns
                 = f.check_box :blocking_request, :required => "required"
                 = f.label :blocking_request, "Completed and stamped Blocking Request Form from mobile network operator"
-          - else
+          - elsif(@claim.claim_type == "Damage" && service_centre_is_logged_in?)
+            .row.spacer
+              .large-12.columns
+                %hr
             .row.spacer
               .large-12.columns
                 = f.label :dealer_description, "Please describe the damage to the device"

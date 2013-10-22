@@ -1,1 +1,1 @@
-MiniTest::Rails::Testing.default_tasks = %w(functional unit helpers mailers integration)
+MiniTest::Rails::Testing.default_tasks = %w(functional unit models helpers mailers integration)

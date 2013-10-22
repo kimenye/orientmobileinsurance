@@ -1,13 +1,12 @@
 class PremiumService
 
-  def is_insurable year_of_purchase, sales_code
+  def is_insurable year_of_purchase
     current_year = Time.now.year
-    if sales_code.nil? && current_year - year_of_purchase <= 1
+    if current_year - year_of_purchase <= 1
       return true
-    elsif !sales_code.nil?
-      return true
+    else
+      return false
     end
-    return false
   end
 
   def calculate_insurance_value catalog_price, sales_code, year_of_purchase
@@ -58,36 +57,68 @@ class PremiumService
   def calculate_total_installment base_premium
     installment = 1.15 * base_premium  # 115% of annual premium
     installment += 15 # add sms charges
-    installment += calculate_mpesa_fee (installment / 3) # add mpesa charges for installment
+    mpesa_fee_per_installment = calculate_mpesa_fee (installment / 3)
+    mpesa_fee_per_installment *= 3
+    installment += mpesa_fee_per_installment # add mpesa charges for installment
 
     installment.floor
   end
 
-  def calculate_monthly_premium agent_code, insurance_value
-    base_premium = calculate_annual_premium agent_code, insurance_value, false, false
+  def calculate_monthly_premium agent_code, insurance_value, yop
+    base_premium = calculate_annual_premium agent_code, insurance_value, yop, false, false, true
     raw = calculate_total_installment base_premium
-    (raw / 3).ceil
+    round_off((raw / 3).ceil)
   end
 
-  def calculate_annual_premium agent_code, insurance_value, add_mpesa = true, add_sms_charges = true
-    raw = calculate_premium_rate(agent_code) * insurance_value * 1.0045
-    raw = [raw.round, minimum_fee(agent_code)].max
+  def calculate_raw_annual_premium agent_code, insurance_value, yop
+    calculate_annual_premium agent_code, insurance_value, yop, false, false, false, false
+  end
+
+  def calculate_raw_monthly_premium agent_code, insurance_value, yop
+    annual = calculate_raw_annual_premium agent_code, insurance_value, yop
+    (annual * 1.15 / 3).round
+  end
+
+  def calculate_levy premium
+    (premium * 0.0045).round
+  end
+
+  def calculate_annual_premium agent_code, insurance_value, yop, add_mpesa = true, add_sms_charges = true, round_off = true, add_levy = true
+    raw = calculate_premium_rate(agent_code, yop) * insurance_value
+    raw = raw * 1.0045 if add_levy
+    raw = [raw.round, minimum_fee(agent_code, yop)].max
     raw += 15 if add_sms_charges #sms charges
     mpesa_fee = calculate_mpesa_fee raw
     raw += mpesa_fee if add_mpesa
 
     # [raw.round, minimum_fee(agent_code)].max
-    raw.round
+    if round_off
+      return round_off(raw.round)
+    else
+      return raw
+    end
   end
 
-  def minimum_fee agent_code
+  def round_off (number, nearest = 5)
+    down = round_off_figure(number, nearest, "down")
+    up = round_off_figure(number, nearest, "up")
+
+    if (up - number) <= 2
+      return up
+    else
+      return down
+    end
+  end
+
+
+  def minimum_fee agent_code, yop
     fee = 999
-    fee = 899 if is_fx_code agent_code
+    fee = 899 if (is_fx_code(agent_code) && yop == Time.now.year)
     fee
   end
 
   def is_fx_code code
-    !code.nil? && code.start_with?("FX")
+    !code.nil? && (code.start_with?("FXP") || code.start_with?("TSK") || code.start_with?("PLK") || code.start_with?("NVS") )
   end
 
   def generate_unique_account_number
@@ -96,7 +127,9 @@ class PremiumService
   end
 
   def generate_unique_policy_number
-    "OMB/AAAA/%04d"% (Policy.count + 1).to_s
+    seed = ENV['SEED_POLICY_NO'].to_i + (Policy.count)
+
+    "OMB/AAAA/%04d"% seed.to_s
   end
 
   def is_number? text
@@ -107,8 +140,8 @@ class PremiumService
     (!text.nil?) && text.strip.length == 15 && is_number?(text)
   end
 
-  def get_message_type prefix, message
-    if prefix.downcase == "omi" && (message.nil? || message.empty?)
+  def get_message_type message
+    if !message.nil? && message.downcase == ENV['KEYWORD'].downcase
       return 1
     elsif is_imei?(message)
       return 2
@@ -117,33 +150,49 @@ class PremiumService
     end
   end
 
-  def calculate_premium_rate agent_code
+  def calculate_premium_rate agent_code, yop
     rate = 0.1
-    rate = 0.095 if is_fx_code agent_code
+    rate = 0.095 if (is_fx_code(agent_code) && yop == Time.now.year)
     rate
+  end
+
+  def is_valid_imei? imei
+    id = InsuredDevice.find_by_imei imei
+    if id.nil?
+      return true
+    else
+      if id.quote.policy.is_active?
+        return false
+      end
+    end
   end
 
   def activate_policy imei, phone_number
 
-    inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.policy.nil?) }
-    if !inactive_devices.empty?
-      device = inactive_devices.last
-      device.imei = imei.strip
-      device.save!
+    if is_valid_imei? imei
 
-      policy = device.quote.policy
-      set_policy_dates policy
-      policy.save!
+      inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.policy.nil?) }
+      if !inactive_devices.empty?
+        device = inactive_devices.last
+        device.imei = imei.strip
+        device.save!
 
-      #You have successfully covered your device, value KES 19500. Orient Mobile policy OMB/AAAA/0001 valid till 11/07/14. Policy details: www.korient.co.ke/OMB/T&C
-      if policy.status == "Active"
-        sms_gateway = SMSGateway.new
-        insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-        sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: www.korient.co.ke/OMB/TC"
-        email = CustomerMailer.policy_purchase(policy).deliver
+        policy = device.quote.policy
+        set_policy_dates policy
+        policy.save!
+
+        if policy.status == "Active"
+          sms_gateway = SMSGateway.new
+          insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
+          sms_gateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
+          email = CustomerMailer.policy_purchase(policy).deliver
+        end
+      else
+        puts ">>> No devices found for the phone number #{phone_number}"
       end
     else
-      puts ">>> No devices found for the phone number #{phone_number}"
+      sms_gateway = SMSGateway.new
+      sms_gateway.send phone_number, "That IMEI number has already been activated for another policy. Please confirm and send again or call 0202962000."
     end
   end
 
@@ -152,7 +201,7 @@ class PremiumService
     pending = policy.pending_amount
     if policy.quote.premium_type == "Annual"
 
-      if pending == 0
+      if pending <= 0
         policy.start_date = Time.now
         policy.expiry = 365.days.from_now
         policy.status = "Active"
@@ -160,16 +209,32 @@ class PremiumService
         # policy.status = "Pending"
       end
     else
-      if pending == 0
-        policy.start_date = Time.now
-        policy.expiry = 365.days.from_now
+      if pending <= 0
+        if policy.start_date.nil?
+          policy.start_date = Time.now
+          policy.expiry = 365.days.from_now
+        else
+          policy.expiry = policy.start_date + 365.days
+        end
         policy.status = "Active"
       else
-        policy.start_date = Time.now
+        if policy.start_date.nil?
+          policy.start_date = Time.now
+        end
         policy.expiry = 30.days.from_now
         policy.status = "Active"
       end
     end
     # end
+  end
+
+  private
+
+  def round_off_figure(number, nearest=5, direction="down")
+    if direction == "down"
+      return number % nearest == 0 ? number : number - (number % nearest)
+    else
+      return number % nearest == 0 ? number : number + nearest - (number % nearest)
+    end
   end
 end

@@ -10,6 +10,10 @@ class Payment < ActiveRecord::Base
     policy.quote.insured_device
   end
 
+  def account
+    policy.quote.account_name
+  end
+
   def customer
     policy.customer
   end

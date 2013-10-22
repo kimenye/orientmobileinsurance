@@ -1,12 +1,17 @@
 ActiveAdmin.register Enquiry do
-  menu :parent => "Log"
+
+  controller do
+    actions :all, :except => [:edit, :destroy]
+  end
+
+  menu :parent => "Message"
   index do
-    column :phone_number
-    column :date_of_enquiry
+    column "Phone Number" do |enquiry|
+      link_to enquiry.phone_number, admin_enquiry_path(enquiry)
+    end
+    column :created_at
     column :url
     column :source
-    column "Hash(phone_number)", :hashed_phone_number
-    column "Hash(timestamp)", :hashed_timestamp
     column :sales_agent_code
     column :year_of_purchase
     column "Vendor (DA)", :vendor
@@ -15,6 +20,18 @@ ActiveAdmin.register Enquiry do
     column "Detected", :detected
   end
 
+  show do |enquiry|
+    panel "Enquiry Details" do
+      attributes_table_for enquiry, :phone_number, :source, :vendor, :model, :marketing_name, :url, :user_agent
+    end
+  end
+
   filter :phone_number
-  actions :index
+  filter :year_of_purchase
+  filter :vendor
+  filter :model
+  filter :marketing_name
+  filter :created_at
+
+  actions :index, :show
 end
