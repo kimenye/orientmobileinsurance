@@ -15,6 +15,7 @@ class ClaimsController < ApplicationController
 
   def search
     @claim = Claim.find_by_claim_no(params[:claim_no].upcase)
+    @agents = Agent.all(:conditions => "brand <> ''")
     service = ClaimService.new
     respond_to do |format|
       if dealer_is_logged_in?
