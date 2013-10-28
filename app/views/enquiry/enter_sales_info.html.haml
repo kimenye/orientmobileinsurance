@@ -11,6 +11,8 @@
       = f.text_field :year_of_purchase
       = f.label :customer_name, 'Full Name (as per ID / Passport)'
       = f.text_field :customer_name, :class => "required"
+      = f.label :id_type, "Identification Type"
+      = f.select :id_type, {"National ID" => "National ID", "Passport" => "Passport" }, {}, { "data-theme" => "c"}
       = f.label :customer_id, 'National ID or Passport Number'
       = f.text_field :customer_id, :class => "required"
       = f.label :customer_email, 'Email Address'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131015135446) do
+ActiveRecord::Schema.define(:version => 20131018094436) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -168,6 +168,7 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
     t.string   "marketing_name"
     t.boolean  "detected"
     t.string   "user_agent"
+    t.string   "id_type"
   end
 
   create_table "insured_devices", :force => true do |t|
