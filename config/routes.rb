@@ -20,6 +20,7 @@ Orientmobileinsurance::Application.routes.draw do
   match 'reports' => 'reports#index', :as => :reports
 
   match 'enquiry/secure' => 'enquiry#secure'
+  match 'insure' => 'enquiry#begin'
 
   match 'enquiry/status_check' => 'enquiry#status_check'
 
