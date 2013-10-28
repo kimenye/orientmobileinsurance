@@ -17,4 +17,15 @@ class CustomerTest < ActiveSupport::TestCase
     assert_equal true, customer.has_policy?
     assert_equal false, customer.is_a_lead?
   end
+
+  test "A customer who made multiple enquiries with different phones will display at least two phone numbers" do
+    customer = Customer.create! :name => "Test", :id_passport => "1234567890", :email => "1234567890@gmail.com", :phone_number => "254705866564"
+
+    InsuredDevice.create! :customer_id => customer.id, :device_id => nil, :imei => "123456789012345", :yop => 2013, :phone_number => "254733866564"
+    InsuredDevice.create! :customer_id => customer.id, :device_id => nil, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
+
+    customer = Customer.find(customer.id)
+    assert customer.phone_number, "254705866564"
+    assert customer.alternate_number, "254733866564"
+  end
 end

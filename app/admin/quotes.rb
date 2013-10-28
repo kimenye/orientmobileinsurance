@@ -1,19 +1,45 @@
 ActiveAdmin.register Quote do
 
-  menu false
-
   controller do
-    actions :all, :except => [:edit, :destroy]
+    actions :all, :except => [:destroy]
   end
 
   index do
-    column :account_name
+    column "Contact Number" do |quote|
+      quote.insured_device.phone_number
+    end
+    column "Account Name" do |quote|
+      link_to quote.account_name, admin_quote_path(quote)
+    end
     column :amount_due
     column :expiry_date
     column :premium_type
     column :insured_value
     column :customer
     column :insured_device
+    default_actions
   end
-  actions :index
+
+  form do |f|
+    f.inputs "Details" do
+      f.input :expiry_date, :as => :datepicker
+    end
+    f.actions
+  end
+
+  filter :insured_device
+  filter :agent
+  filter :annual_premium
+  filter :monthly_premium
+  filter :account_name
+  filter :premium_type
+  filter :insured_device_customer_name, :as => :string, :label => "Customer Name"
+  filter :insured_device_customer_id_passport, :as => :string, :label => "ID/Passport No"
+  filter :insured_device_phone_number, :as => :string, :label => "Phone No"
+  filter :expiry_date
+  filter :created_at
+  filter :updated_at
+  filter :insured_value
+
+  actions :index, :edit, :update, :show
 end

@@ -34,6 +34,10 @@ class Quote < ActiveRecord::Base
     premium_type == "Monthly"
   end
 
+  def agent_code
+    return agent.code if !agent.nil?
+  end
+
   def customer
     if policy.nil?
       return ""

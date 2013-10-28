@@ -9,6 +9,8 @@ ActiveAdmin.register Customer, :as => "Lead"  do
     end
     column :email
     column :num_enquiries
+    column "Phone #1", :phone_number
+    column "Phone #2", :alternate_number
   end
 
   show do |lead|
@@ -33,6 +35,22 @@ ActiveAdmin.register Customer, :as => "Lead"  do
 
   end
 
+  csv do
+    column :first_name
+    column :middle_name
+    column :last_name
+    column ("Tel No 1") { |customer| customer.phone_number }
+    column ("Tel No 2") { |customer| customer.alternate_number }
+    column ("Number of Enquiries") { |customer| customer.num_enquiries }
+    column ("Date Attempted") { |customer| customer.created_at }
+    column ("passport/id") { |customer| customer.id_passport }
+    column ("Phone") { |customer| customer.primary_device.device.marketing_name if !customer.primary_device.nil? }
+    column ("Insured Value") { |customer| customer.primary_device.quote.insured_value if !customer.primary_device.nil? }
+    column ("Annual Premium") { |customer| customer.primary_device.quote.annual_premium if !customer.primary_device.nil? }
+    column ("Installment Premium") { |customer| customer.primary_device.quote.monthly_premium if !customer.primary_device.nil? }
+    #column :email
+  end
+
   filter :name
   filter :id_passport
   filter :email
@@ -42,6 +60,10 @@ ActiveAdmin.register Customer, :as => "Lead"  do
 
     def scoped_collection
       Customer.where(:lead => true)
+    end
+
+    def resource
+      Customer.where(id: params[:id]).first!
     end
 
     actions :all, :except => [:edit, :destroy]
