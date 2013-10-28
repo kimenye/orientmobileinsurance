@@ -29,6 +29,7 @@ class EnquiryController < Wicked::WizardController
             @gateway.send(session[:sms_to], message)
           end
       end
+      puts "About to call the wizard..."
       render_wizard
     rescue => error
       puts "Error occured #{error}"
