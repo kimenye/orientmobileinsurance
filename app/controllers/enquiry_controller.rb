@@ -10,6 +10,8 @@ class EnquiryController < Wicked::WizardController
   steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
 
   def show
+    puts ">>> Session #{session}"
+    puts ">>> Session #{session[:enquiry_id]}"
     begin
       if session[:enquiry_id].nil?
         @enquiry = Enquiry.create!(:source => "DIRECT")
