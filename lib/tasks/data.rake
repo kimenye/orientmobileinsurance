@@ -34,6 +34,15 @@ namespace :data do
       :nearest_town => "Nairobi", :step => 2, :claim_no => "C/OMB/AAAA/0001"
   end
 
+  task :seed_expiring_policy => :environment do
+    enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
+    customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
+    insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Monthly", :annual_premium => 300, :monthly_premium => 100, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.first.id
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 2.hours.from_now
+    payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 100, :reference => "ABC"
+  end
+
   task :map_users => :environment do
     users = User.all
     users.each do |user|
@@ -132,5 +141,10 @@ namespace :data do
           :prev_fd_koil_invoice_value => row[38]
       }
     end
+  end
+
+  task :send_reminders => :environment do
+    service = ReminderService.new
+    service.send_reminders
   end
 end
