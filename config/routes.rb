@@ -21,6 +21,8 @@ Orientmobileinsurance::Application.routes.draw do
 
   match 'enquiry/secure' => 'enquiry#secure'
 
+  match 'policy/show_details' => 'policy#show_details'
+
   match 'enquiry/status_check' => 'enquiry#status_check'
 
   match 'enquiries/:hashed_phone_number/:hashed_timestamp' => 'enquiries#show'

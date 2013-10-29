@@ -47,6 +47,7 @@
                     %td Claim No.
                     %td Claim Date
                     %td Client
+                    %td Policy No.
                   %tbody
                     - @claims.each do |claim|
                       - if claim.status != 'Settled' && claim.is_in_claims_stage?
@@ -61,6 +62,10 @@
                           %td
                             -if !claim.policy.quote.insured_device.customer.name.nil?
                               = claim.policy.quote.insured_device.customer.name
+                          %td
+                            -if !claim.policy.policy_number.nil?
+                              %a{:href => "/policy/show_details?policy_no=#{claim.policy.policy_number}"}
+                                = claim.policy.policy_number
           %section
             %p.title{"data-section-title" => ""}
               %a{:href => "#"} Settled Claims
@@ -71,6 +76,7 @@
                     %td Claim No.
                     %td Claim Date
                     %td Client
+                    %td Policy No.
                   %tbody
                     - @claims.each do |claim|
                       - if claim.status == 'Settled' && claim.is_in_claims_stage?
@@ -84,6 +90,9 @@
                           %td
                             -if !claim.policy.quote.insured_device.customer.name.nil?
                               = claim.policy.quote.insured_device.customer.name
+                          %td
+                            -if !claim.policy.policy_number.nil?
+                              = claim.policy.policy_number
           %section
             %p.title{"data-section-title" => ""}
               %a{:href => "#"} All Claims
@@ -94,6 +103,7 @@
                     %td Claim No.
                     %td Claim Date
                     %td Client
+                    %td Policy No.
                   %tbody
                     - @claims.each do |claim|
                       -#- if claim.is_in_claims_stage?
@@ -108,6 +118,10 @@
                         %td
                           -if !claim.policy.quote.insured_device.customer.name.nil?
                             = claim.policy.quote.insured_device.customer.name
+                        %td
+                          -if !claim.policy.policy_number.nil?
+                            %a{:href => "policy/show_details?policy_no=#{claim.policy.policy_number}"}
+                              = claim.policy.policy_number
       - if service_centre_is_logged_in?
         %form{:method => "POST", :action => claim_search_by_no_path}
           %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
@@ -122,6 +136,7 @@
                     %td Claim No.
                     %td Claim Date
                     %td Customer
+                    %td Policy No.
                   %tbody
                     - @claims.each do |claim|
                       - if claim.is_damage?
@@ -137,6 +152,10 @@
                             %td
                               -if !claim.policy.quote.insured_device.customer.name.nil?
                                 = claim.policy.quote.insured_device.customer.name
+                            %td
+                              -if !claim.policy.policy_number.nil?
+                                %a{:href => "policy/show_details?policy_no=#{claim.policy.policy_number}"}
+                                  = claim.policy.policy_number
           %section
             %p.title{"data-section-title" => ""}
               %a{:href => "#"} Assessment Completed
@@ -147,6 +166,7 @@
                     %td Claim No.
                     %td Claim Date
                     %td Customer
+                    %td Policy No.
                   %tbody
                     - @claims.each do |claim|
                       -if claim.is_damage?
@@ -161,6 +181,9 @@
                             %td
                               -if !claim.policy.quote.insured_device.customer.name.nil?
                                 = claim.policy.quote.insured_device.customer.name
+                            %td
+                              -if !claim.policy.policy_number.nil?
+                                = claim.policy.policy_number
           %section
             %p.title{"data-section-title" => ""}
               %a{:href => "#"} All Damage Claims
@@ -171,6 +194,7 @@
                     %td Claim No.
                     %td Claim Date
                     %td Customer
+                    %td Policy No.
                   %tbody
                     - @claims.each do |claim|
                       - if claim.is_damage?
@@ -184,3 +208,6 @@
                           %td
                             -if !claim.policy.quote.insured_device.customer.name.nil?
                               = claim.policy.quote.insured_device.customer.name
+                          %td
+                            -if !claim.policy.policy_number.nil?
+                              = claim.policy.policy_number
