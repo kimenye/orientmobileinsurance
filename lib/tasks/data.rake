@@ -90,11 +90,9 @@ namespace :data do
 
 
   task :update_devices => :environment do
-
     update_file = "#{Rails.root}/doc/data/patches/#{ENV['UPDATE_FILE']}"
     puts "Update file: #{update_file}"
     devices = SmarterCSV.process(update_file)
-
 
     devices.each do |device|
       d = Device.find_by_stock_code(device[:stock_code])
@@ -107,8 +105,32 @@ namespace :data do
         puts "Updated #{d.stock_code} : #{d.prev_insured_value}"
       end
     end
-
   end
 
+  task :convert_catalogue => :environment do
+    url = "#{Rails.root}/doc/data/patches/catalogue_october_15.xlsx"
+    doc = SimpleXlsxReader.open(url)
 
+    devices = []
+    doc.sheets.first.rows[2..doc.sheets.first.rows.length].each do |row|
+      devices << {
+          :marketing_name => row[2],
+          :stock_code => row[3],
+          :vendor => row[4],
+          :model => row[5],
+          :device_type => row[6],
+          :catalog_price => row[7],
+          :wholesale_price => row[8],
+          :fd_insured_value => row[10],
+          :fd_replacement_value => row[17],
+          :fd_koil_invoice_value => row[18],
+          :yop_insured_value => row[20],
+          :yop_replacement_value => row[27],
+          :yop_fd_koil_invoice_value => row[28],
+          :prev_insured_value => row[30],
+          :prev_replacement_value => row[37],
+          :prev_fd_koil_invoice_value => row[38]
+      }
+    end
+  end
 end

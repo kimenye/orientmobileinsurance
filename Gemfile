@@ -28,7 +28,8 @@ gem 'business_time'
 gem 'newrelic_rpm'
 gem 'dynamic_form'
 gem 'activeadmin-axlsx'
-
+gem 'spreadsheet'
+gem 'simple_xlsx_reader'
 
 gem 'zurb-foundation'
 gem 'compass-rails'
