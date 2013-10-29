@@ -1,0 +1,3 @@
+1. Add the Fones Express email variable to the application.yml
+
+    FONEXPRESS_EMAIL: scadmin@fonexpress.net
