@@ -22,7 +22,7 @@ ActiveAdmin.register Enquiry do
 
   show do |enquiry|
     panel "Enquiry Details" do
-      attributes_table_for enquiry, :phone_number, :source, :vendor, :model, :marketing_name, :url, :user_agent
+      attributes_table_for enquiry, :phone_number, :source, :vendor, :model, :marketing_name, :url, :user_agent, :created_at, :updated_at
     end
   end
 
