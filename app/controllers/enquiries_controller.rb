@@ -10,6 +10,7 @@ class EnquiriesController < ApplicationController
 
     if @enquiry.nil?
       session[:enquiry_id] = nil
+      logger.info "Redirecting to start again path session: #{session} params: #{params}"
       redirect_to start_again_path
     else
       session[:enquiry_id] = @enquiry.id

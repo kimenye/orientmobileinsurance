@@ -7,7 +7,11 @@
         = render "layouts/customer_details"
         = render "layouts/incident_details"
         = f.hidden_field :step, :value => "2"
-        = f.hidden_field :agent_id, :value => current_user.agent.id
+        -#= f.hidden_field :agent_id, :value => current_user.agent.id
+        .row.spacer{:class => "#{'disabled' if service_centre_is_logged_in?}"}
+          .large-12.columns
+            = f.label :agent_id, "Choose Outlet"
+            = f.select :agent_id, @agents.collect { |d| ["#{d.brand}, #{d.outlet_name}", d.id] }, {}, {}
     .row
       .large-10.large-centered.columns
         .row.spacer
