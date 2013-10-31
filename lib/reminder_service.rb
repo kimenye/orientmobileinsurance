@@ -1,5 +1,7 @@
 class ReminderService
 
+  include ActionView::Helpers::NumberHelper
+
   def send_reminders
 
     policies_in_two_days = get_policies_expiring_in_duration(2)

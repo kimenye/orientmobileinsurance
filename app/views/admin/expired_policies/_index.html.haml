@@ -15,27 +15,29 @@
           %td Policy Number
         %tbody
           - @policies_in_two_days.each do |two_days|
-            %tr
-              %td
-                - if !two_days.quote.insured_device.customer.name.nil?
-                  = two_days.quote.insured_device.customer.name
-              %td
-                - if !two_days.expiry.nil?
-                  = two_days.expiry.to_s(:simple)
-              %td
-                - if !two_days.policy_number.nil?
-                  = two_days.policy_number
+            - if two_days.quote.premium_type == 'Monthly'
+              %tr
+                %td
+                  - if !two_days.quote.insured_device.customer.name.nil?
+                    = two_days.quote.insured_device.customer.name
+                %td
+                  - if !two_days.expiry.nil?
+                    = two_days.expiry.to_s(:simple)
+                %td
+                  - if !two_days.policy_number.nil?
+                    = two_days.policy_number
           - @policies_today.each do |today|
-            %tr
-              %td
-                - if !today.quote.insured_device.customer.name.nil?
-                  = today.quote.insured_device.customer.name
-              %td
-                - if !today.expiry.nil?
-                  = today.expiry.to_s(:simple)
-              %td
-                - if !today.policy_number.nil?
-                  = today.policy_number
+            - if today.quote.premium_type == 'Monthly'
+              %tr
+                %td
+                  - if !today.quote.insured_device.customer.name.nil?
+                    = today.quote.insured_device.customer.name
+                %td
+                  - if !today.expiry.nil?
+                    = today.expiry.to_s(:simple)
+                %td
+                  - if !today.policy_number.nil?
+                    = today.policy_number
       %form{:action => admin_expired_policies_reminders_path, :method => "POST"}
         .field
           = submit_tag("Send Reminders")
