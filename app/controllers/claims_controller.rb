@@ -15,6 +15,7 @@ class ClaimsController < ApplicationController
 
   def search
     @claim = Claim.find_by_claim_no(params[:claim_no].upcase)
+    @agents = Agent.all(:conditions => "brand <> ''")
     service = ClaimService.new
     respond_to do |format|
       if dealer_is_logged_in?
@@ -24,7 +25,11 @@ class ClaimsController < ApplicationController
           format.html { render action: "dealer_show" }
         end
       elsif service_centre_is_logged_in?
-        format.html { render action: "dealer_edit" }
+        if @claim.status != 'Settled'
+          format.html { render action: "dealer_edit" }
+        else
+          format.html { render action: "dealer_show" }
+        end
       elsif claims_is_logged_in?
         if !@claim.nil? && @claim.is_in_claims_stage?
           if @claim.replacement_limit.nil?

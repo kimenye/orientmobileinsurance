@@ -1,0 +1,50 @@
+.footer
+  .row.spacer
+  .row
+    .large-12.large-centered.columns
+      .large-4.columns
+        .title
+          %h6
+            QUICK LINKS
+        %ul.quick-links
+          %li
+            %a{:href => customer_index_path} Register a claim
+          %li
+            %a{:href => enquire_status_path} Check Status
+          %li
+            %a{:href => ""} Orient Mobile Terms & Conditions
+      .large-4.columns
+        .title
+          %h6
+            ADMIN
+        %ul.quick-links
+          %li
+            %a{:href => "#{new_user_session_path}?user_type=DP"}
+              Dealer Portal
+          %li
+            %a{:href => "#{new_user_session_path}?user_type=SC"}
+              Service Centre
+          %li
+            %a{:href => "#{new_user_session_path}?user_type=CP"}
+              Claims Portal
+          %li
+            %a{:href => admin_root_path }
+              Admin
+      .large-4.columns.copyright
+        %p
+          &copy; Copyright, 2013
+
+        %p.about
+          %b
+            Kenya Orient Insurance Limited.
+          %br
+          Corporate Headquarters
+          %br
+          Capitol Hill Towers,
+          %br
+          6th Floor, Nairobi, Kenya
+          %br
+          TEL. 020 272 860 3/4
+          %br
+          Email.
+          %a{:href=> "mailto:info@korient.co.ke"} info@korient.co.ke

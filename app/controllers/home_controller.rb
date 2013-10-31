@@ -3,8 +3,13 @@ class HomeController < ApplicationController
   include DeviceAtlasApi::ControllerHelpers
 
   def index
-    @users = User.all
-    @claims = Claim.all
+    if user_signed_in?
+      @users = User.all
+      @claims = Claim.all
+      render 'user'
+    else
+      render 'index'
+    end
   end
 
   def device

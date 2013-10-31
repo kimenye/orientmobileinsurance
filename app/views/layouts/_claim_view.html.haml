@@ -41,6 +41,35 @@
           IMEI:
         %input{:type => "text", :value => @claim.policy.quote.insured_device.imei }
       .large-4.columns
+    - if @claim.status == 'Settled'
+      .row
+        .large-12.columns
+          %hr
+          %h5
+            KOIL Decision
+      .row.disabled
+        .large-4.columns
+          %label
+            Authorization Type
+          %input{:type => "text", :value => @claim.authorization_type }
+        .large-4.columns
+          %label
+            Replacement Limit
+          %input{:type => "text", :value => @claim.replacement_limit }
+        .large-4.columns
+          %label
+            Repair Limit
+          %input{:type => "text", :value => @claim.repair_limit }
+      - if !@claim.decline_reason.nil?
+        .row.disabled
+          .large-12.columns
+            %label
+              Decline Reason
+            %input{:type => "text", :value => @claim.decline_reason }
+      .row
+        .large-12.columns
+          %hr
+
     .row.spacer
       .large-12.columns
         %hr

@@ -67,6 +67,14 @@ class Policy < ActiveRecord::Base
     quote.amount_due
   end
 
+  def amount_due
+    if quote.monthly_premium >= pending_amount
+        return quote.monthly_premium
+    else
+        return pending_amount
+    end
+  end
+
   def amount_paid
     amount_paid = 0
     payments.each do |payment|

@@ -12,7 +12,7 @@ class ClaimService
     if claim.is_damage? && claim.authorized
       # send an sms to the customer
       if claim.dealer_can_fix
-        text = "Your #{claim.policy.insured_device.device.model} is under repair. Collect it from #{claim.agent.name} on #{claim.days_to_fix.business_days.from_now.to_s(:simple)}. Carry your ID / Passport"
+        text = "Your #{claim.policy.insured_device.device.model} is under repair. Collect it from #{claim.agent.name} on #{(claim.days_to_fix + 1).business_days.from_now.to_s(:simple)}. Carry your ID / Passport"
         sms.send to, text
         claim.status_description = text
         claim.save!
@@ -33,6 +33,7 @@ class ClaimService
         CustomerMailer.loss_theft_claim(claim).deliver
       elsif claim.is_damage? && !claim.authorized
         CustomerMailer.claim_decline(claim).deliver
+        claim.authorization_type = "Decline"
         text = "We regret to inform you that your Orient Mobile DAMAGE claim has been declined. Check your email for details."
         sms.send to, text
         claim.status_description = text
@@ -41,6 +42,7 @@ class ClaimService
         CustomerMailer.claim_decline(claim).deliver
         text = "We regret to inform you that your Orient Mobile THEFT claim has been declined. Check your email for details."
         sms.send to, text
+        claim.authorization_type = "Decline"
         claim.status_description = text
         claim.save!
       end

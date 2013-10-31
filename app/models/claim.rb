@@ -10,6 +10,10 @@ class IncidentDateValidator < ActiveModel::Validator
           record.errors[:incident_date] << "Please note that Damage claims incurred within the first 2 weeks of cover are not admissible."
         end
       end
+
+      if record.incident_date > Time.now
+        record.errors[:incident_date] << "You cannot have an incident date in the future"
+      end
     end
   end
 end

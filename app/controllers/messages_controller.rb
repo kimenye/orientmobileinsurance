@@ -71,11 +71,6 @@ class MessagesController < ApplicationController
     render text: "OK"
   end
 
-  def create2
-    #TODO: remove this finally
-    render text: "OK"
-  end
-
   # POST /messages
   # POST /messages.json
   def create
