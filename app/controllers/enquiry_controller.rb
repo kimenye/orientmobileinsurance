@@ -11,7 +11,12 @@ class EnquiryController < Wicked::WizardController
 
   def show
     begin
-      @enquiry = Enquiry.find(session[:enquiry_id])
+      if Enquiry.find_by_id(session[:enquiry_id]).nil? || session[:enquiry_id].nil?
+        @enquiry = Enquiry.create!(:source => "DIRECT")
+        session[:enquiry_id] = @enquiry.id
+      else
+        @enquiry = Enquiry.find_by_id(session[:enquiry_id])
+      end
       case step
         when :complete_enquiry
           smsMessage = session[:sms_message]
@@ -24,6 +29,8 @@ class EnquiryController < Wicked::WizardController
       render_wizard
     rescue => error
       puts "Error occured #{error}"
+      logger.info "Error occured #{error}, Session: #{session}"
+      session[:enquiry] = nil
       redirect_to start_again_path
     end
   end
@@ -77,6 +84,11 @@ class EnquiryController < Wicked::WizardController
         @enquiry.update_attributes(params[:enquiry])
         
         if @enquiry.valid?
+          if !@enquiry.phone_number.starts_with? "+"
+            @enquiry.phone_number = "+#{@enquiry.phone_number}"
+            @enquiry.save!
+          end
+
           code = agent.code if !agent.nil?
           if !@enquiry.year_of_purchase.nil?
             is_insurable = premium_service.is_insurable @enquiry.year_of_purchase

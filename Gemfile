@@ -31,6 +31,7 @@ gem 'activeadmin-axlsx'
 gem 'spreadsheet'
 gem 'simple_xlsx_reader'
 
+gem 'phony_rails'
 gem 'zurb-foundation'
 gem 'compass-rails'
 gem 'smarter_csv'

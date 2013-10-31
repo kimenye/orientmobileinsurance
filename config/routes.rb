@@ -20,6 +20,7 @@ Orientmobileinsurance::Application.routes.draw do
   match 'reports' => 'reports#index', :as => :reports
 
   match 'enquiry/secure' => 'enquiry#secure'
+  match 'insure' => 'enquiry#begin'
 
   match 'policy/show_details' => 'policy#show_details'
 
@@ -42,7 +43,6 @@ Orientmobileinsurance::Application.routes.draw do
   match 'enquiries/send_sms' => 'enquiries#send_sms', :as => :send_enquiry_sms
 
   match 'notification' => 'messages#create', :as => :notifications
-  match 'notification2' => 'messages#create2', :as => :notifications
   match 'receipts' => 'messages#receipts', :as => :receipts
   match 'claim_search' => 'claims#search', :as => :claim_search
   match 'claim_search_by_no' => 'claims#search_by_claim_no', :as => :claim_search_by_no

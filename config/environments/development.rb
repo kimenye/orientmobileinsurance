@@ -35,4 +35,5 @@ Orientmobileinsurance::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+  config.logger = Logger.new(Rails.root.join("log",Rails.env + ".log"),3,5.megabytes)
 end
