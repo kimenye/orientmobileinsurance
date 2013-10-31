@@ -1,0 +1,41 @@
+-  service = ReminderService.new
+-  @policies_in_two_days = service.get_policies_expiring_in_duration(2)
+-  @policies_today = service.get_policies_expiring_in_duration(0)
+
+-if @policies_in_two_days.length == 0 && @policies_today.length == 0
+  .row
+    %p There are no reminders to be sent
+-else
+  .row
+    .large-10.large-centered.columns
+      %table
+        %thead
+          %td Customer Name
+          %td Expiry
+          %td Policy Number
+        %tbody
+          - @policies_in_two_days.each do |two_days|
+            %tr
+              %td
+                - if !two_days.quote.insured_device.customer.name.nil?
+                  = two_days.quote.insured_device.customer.name
+              %td
+                - if !two_days.expiry.nil?
+                  = two_days.expiry.to_s(:simple)
+              %td
+                - if !two_days.policy_number.nil?
+                  = two_days.policy_number
+          - @policies_today.each do |today|
+            %tr
+              %td
+                - if !today.quote.insured_device.customer.name.nil?
+                  = today.quote.insured_device.customer.name
+              %td
+                - if !today.expiry.nil?
+                  = today.expiry.to_s(:simple)
+              %td
+                - if !today.policy_number.nil?
+                  = today.policy_number
+      %form{:action => admin_expired_policies_reminders_path, :method => "POST"}
+        .field
+          = submit_tag("Send Reminders")
