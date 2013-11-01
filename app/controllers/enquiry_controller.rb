@@ -40,7 +40,7 @@ class EnquiryController < Wicked::WizardController
   end
 
   def insure
-    redirect_to secure_path
+    redirect_to "/enquiry/insure"
   end
 
   def payment_notification

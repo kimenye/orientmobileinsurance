@@ -21,7 +21,7 @@ Orientmobileinsurance::Application.routes.draw do
 
   match 'enquiry/secure' => 'enquiry#secure'
   match 'insure' => 'enquiry#insure'
-  match 'secure' => 'enquiry/insure', :as => :secure
+  #match 'enquiry/insure' => 'enquiry#insure', :as => :secure
 
   match 'policy/show_details' => 'policy#show_details'
 
