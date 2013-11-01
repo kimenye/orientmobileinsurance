@@ -7,7 +7,7 @@ ActiveAdmin.register Enquiry do
   menu :parent => "Message"
   index do
     column "Phone Number" do |enquiry|
-      link_to enquiry.phone_number, admin_enquiry_path(enquiry)
+      link_to (enquiry.phone_number.nil?? "" : enquiry.phone_number), admin_enquiry_path(enquiry)
     end
     column :created_at
     column :url
