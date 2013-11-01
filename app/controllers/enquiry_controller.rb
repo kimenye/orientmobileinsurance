@@ -7,7 +7,7 @@ class EnquiryController < Wicked::WizardController
   layout "mobile"
 
   skip_before_filter :verify_authenticity_token
-  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
+  steps :begin, :insure, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
 
   def show
     begin
@@ -37,6 +37,10 @@ class EnquiryController < Wicked::WizardController
 
   def start_again
 
+  end
+
+  def insure
+    redirect_to secure_path
   end
 
   def payment_notification
