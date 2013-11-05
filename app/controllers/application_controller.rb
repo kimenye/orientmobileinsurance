@@ -38,6 +38,11 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def add_client_properties! device_data
+    device_data["device.devicePixelRatio"] = request.cookies["device.devicePixelRatio"]
+    device_data["device.availHeight"] = request.cookies["device.availHeight"]
+  end
+
   def get_model_name device_data
     model = device_data["model"]
 
@@ -51,7 +56,7 @@ class ApplicationController < ActionController::Base
             if avail_height == 548
               model = "iPhone 5"
             else
-              model = "iPhone 4"
+              model = "iPhone 4S"
               #how to tell between 4 & 4s?
             end
           elsif device_pixel_ratio == 1

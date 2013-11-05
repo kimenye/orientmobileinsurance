@@ -18,8 +18,7 @@ class HomeController < ApplicationController
 
     vendor = device_data["vendor"]
     marketingName = device_data["marketingName"]
-    device_data["device.devicePixelRatio"] = request.cookies["device.devicePixelRatio"]
-    device_data["device.availHeight"] = request.cookies["device.availHeight"]
+    add_client_properties! device_data
     model = get_model_name device_data
     device = Device.model_search(vendor, model).first
     @device = Enquiry.new
