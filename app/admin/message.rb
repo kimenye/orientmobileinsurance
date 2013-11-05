@@ -14,5 +14,6 @@ ActiveAdmin.register Message, :as => "Incoming Message" do
   end
 
   filter :phone_number
+  filter :text
   actions :index
 end
