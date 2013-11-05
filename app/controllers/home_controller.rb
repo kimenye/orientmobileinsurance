@@ -1,7 +1,4 @@
-require 'deviceatlasapi'
 class HomeController < ApplicationController
-  include DeviceAtlasApi::ControllerHelpers
-
   def index
     if user_signed_in?
       @users = User.all
@@ -18,37 +15,19 @@ class HomeController < ApplicationController
 
   def result
     device_data = get_device_data
-    #Check for the devices among our supported devices
-    model = device_data["model"]
+
     vendor = device_data["vendor"]
     marketingName = device_data["marketingName"]
-
-    invalid_da = (vendor.nil? || vendor.empty?) && (model.nil? || model.empty?)
-
-    iphone_5 = request.cookies["device.isPhone5"]
-    puts "Reporting #{model}, #{vendor}, #{marketingName} - #{iphone_5}"
-    if iphone_5 == "true"
-       model = "IPHONE 5"
-    end
-
+    device_data["device.devicePixelRatio"] = request.cookies["device.devicePixelRatio"]
+    device_data["device.availHeight"] = request.cookies["device.availHeight"]
+    model = get_model_name device_data
+    device = Device.model_search(vendor, model).first
     @device = Enquiry.new
     @device.model = model
     @device.vendor = vendor
     @device.marketing_name = marketingName
 
-    if !invalid_da
-      device = Device.device_similar_to(vendor, model, Device.get_marketing_search_parameter(marketingName)).first
-
-      puts ">> Device is nil ? #{device.nil?}"
-
-      if device.nil?
-        device = Device.wider_search(model).first
-      end
-    end
-
-    puts ">> After device is nil ? #{device.nil?}"
     @device.detected = !device.nil?
-
     @catalogue_device = device
   end
 end
