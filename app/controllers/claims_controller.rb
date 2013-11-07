@@ -188,6 +188,9 @@ class ClaimsController < ApplicationController
         end
         format.json { head :no_content }
       else
+        if @claim.policy.insured_device.damaged_flag
+          @claim.policy.insured_device.save!
+        end
         format.html { render action: "edit" }
         format.json { render json: @claim.errors, status: :unprocessable_entity }
       end
