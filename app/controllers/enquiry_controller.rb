@@ -40,7 +40,7 @@ class EnquiryController < Wicked::WizardController
   end
 
   def insure
-    redirect_to secure_path
+    redirect_to "/enquiry/insure"
   end
 
   def payment_notification
@@ -103,7 +103,8 @@ class EnquiryController < Wicked::WizardController
           device_data = get_device_data
           session[:device] = device_data
           #Check for the devices among our supported devices
-          model = device_data["model"]
+          add_client_properties! device_data
+          model = get_model_name device_data
           vendor = device_data["vendor"]
           marketingName = device_data["marketingName"]
 
@@ -114,13 +115,7 @@ class EnquiryController < Wicked::WizardController
           @enquiry.vendor = vendor
           @enquiry.marketing_name = marketingName
 
-          iphone_5 = request.cookies["device.isPhone5"]
-          puts "Reporting #{model}, #{vendor}, #{marketingName} - #{iphone_5}"
-          if iphone_5 == "true"
-            model = "IPHONE 5"
-          end
-
-          puts ">> Searching for #{model}, #{vendor}, #{marketingName}"
+          logger.info ">> Searching for #{model}, #{vendor}, #{marketingName}"
 
           device = nil
 
