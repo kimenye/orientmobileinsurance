@@ -4,6 +4,43 @@ ActiveAdmin.register Policy, :as => "Customer" do
     actions :all, :except => [:edit, :destroy]
   end
 
+
+
+  active_admin_import_anything do |file|
+    
+    doc = SimpleXlsxReader.open(file.tempfile)
+        
+    main_sheet = doc.sheets.first
+    corporate_name = main_sheet.rows.first[2]
+    sales_agent_code = main_sheet.rows[2][2]
+    policy_type = main_sheet.rows[3][2]
+    payment_mode = main_sheet.rows[4][2]
+
+    # puts "Processing #{corporate_name} - #{sales_agent_code} - #{policy_type} - #{payment_mode}"
+
+    main_sheet.rows[6..main_sheet.rows.length].each do |row|      
+      model = row[1]
+      imei = row[2]
+      date_of_purchase = row[3]
+      insured_value = row[4]
+      total_paid = row[5]
+      replacement_value = row[7]
+      payment_date = row[8]
+      payment_ref = row[10]
+      policy_start = row[11]
+      policy_end = row[12]
+      email = row[13]
+      number = row[14]
+      id = row[15]
+
+      # puts "#{model} #{imei} #{date_of_purchase} #{insured_value}"
+      if !row[0].nil? && !row[0].empty?
+        PolicyService.create_corporate_policy corporate_name, id, email, number, policy_type, sales_agent_code, payment_mode, model,
+          payment_date, insured_value, replacement_value, total_paid, payment_ref, imei, policy_start, policy_end
+      end
+    end
+  end
+
   index do
     column "Customer" do |policy|
       policy.customer.name
