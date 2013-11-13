@@ -7,7 +7,7 @@ class PolicyService
 		# first check if the customer exists
 		customer = Customer.find_by_id_passport(customer_id)
 		if customer.nil?
-			customer = Customer.create! :name => customer_name, :id_passport => customer_id, :email => email, :phone_number => "+#{phone_number}"
+			customer = Customer.create! :name => customer_name, :id_passport => customer_id, :email => email, :phone_number => "+#{phone_number}", :lead => false
 		end
 		# binding.pry
 		agent = Agent.find_by_code(sales_agent_code)
