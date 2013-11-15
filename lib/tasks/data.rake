@@ -147,4 +147,10 @@ namespace :data do
     service = ReminderService.new
     service.send_reminders
   end
+
+  task :map_code => :environment do
+    a = Agent.find_by_code("AG005064")
+    a.tag = "FBANK"
+    a.save!
+  end
 end
