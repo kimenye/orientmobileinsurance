@@ -11,8 +11,14 @@ class EnquiryController < Wicked::WizardController
 
   def show
     begin
-      if Enquiry.find_by_id(session[:enquiry_id]).nil? || session[:enquiry_id].nil?
-        @enquiry = Enquiry.create!(:source => "DIRECT")
+      if Enquiry.find_by_id(session[:enquiry_id]).nil? || session[:enquiry_id].nil?        
+        code = nil
+        if params.has_key? "q"
+          a = Agent.find_by_tag params[:q]
+          code = a.code if !a.nil?
+        end
+        @enquiry = Enquiry.create!(:source => "DIRECT", :sales_agent_code => code)
+        
         session[:enquiry_id] = @enquiry.id
       else
         @enquiry = Enquiry.find_by_id(session[:enquiry_id])
@@ -40,7 +46,11 @@ class EnquiryController < Wicked::WizardController
   end
 
   def insure
-    redirect_to "/enquiry/insure"
+    if params.has_key? "q"
+      redirect_to "/enquiry/insure?q=#{params[:q]}"
+    else 
+      redirect_to "/enquiry/insure" 
+    end
   end
 
   def payment_notification
