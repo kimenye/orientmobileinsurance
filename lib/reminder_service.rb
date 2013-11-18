@@ -6,11 +6,13 @@ class ReminderService
     policies_today = get_policies_expiring_in_duration(0)
     Rails.logger.info "Policies expiring in 2 days #{policies_in_two_days.length}"
     Rails.logger.info "Policies expiring today #{policies_today.length}"
+    count = 0
 
     policies_in_two_days.each do |policy|
       if policy.quote.premium_type == 'Monthly'
         sms_gateway.send policy.quote.insured_device.phone_number, "Dear #{policy.quote.insured_device.customer.name}, your Orient Mobile premium is due on #{policy.expiry.to_s(:simple)}. Total balance #{ActionController::Base.helpers.number_to_currency(policy.pending_amount, :unit => "KES ", :precision => 0, :delimiter => "")}. Payment due #{ActionController::Base.helpers.number_to_currency(policy.amount_due, :unit => "KES ", :precision => 0, :delimiter => "")}."
         sms_gateway.send policy.quote.insured_device.phone_number, "Please pay via MPesa (Business No. 530100) or Airtel Money (Business Name JAMBOPAY). Your account no. is #{policy.quote.account_name}"
+        count += 1
       end
     end
 
@@ -18,8 +20,10 @@ class ReminderService
       if policy.quote.premium_type == 'Monthly'
         sms_gateway.send policy.quote.insured_device.phone_number, "Dear #{policy.quote.insured_device.customer.name}, your Orient Mobile premium is due today. Total balance #{ActionController::Base.helpers.number_to_currency(policy.pending_amount, :unit => "KES ", :precision => 0, :delimiter => "")}. Payment due #{ActionController::Base.helpers.number_to_currency(policy.amount_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Your account no. is #{policy.quote.account_name}."
         sms_gateway.send policy.quote.insured_device.phone_number, "Please pay via MPesa (Business No. 530100) or Airtel Money (Business Name JAMBOPAY). Policy lapses at 11:59PM if payment is not made by then."
+        count += 1
       end
     end
+    count
   end
 
   def get_policies_expiring_in_duration (duration, time=Time.now)
