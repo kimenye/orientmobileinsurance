@@ -4,6 +4,8 @@ class ReminderService
     sms_gateway = SMSGateway.new
     policies_in_two_days = get_policies_expiring_in_duration(2)
     policies_today = get_policies_expiring_in_duration(0)
+    Rails.logger.info "Policies expiring in 2 days #{policies_in_two_days.length}"
+    Rails.logger.info "Policies expiring today #{policies_today.length}"
 
     policies_in_two_days.each do |policy|
       if policy.quote.premium_type == 'Monthly'
