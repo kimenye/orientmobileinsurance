@@ -46,7 +46,16 @@ ActiveAdmin.register_page "Simulator" do
   end
 
   page_action :change_expiry, :method => :post do
-
+    expired_policies = Policy.where("expiry < ?", ReminderService._get_start_of_day(Time.now))    
+    count = 0
+    expired_policies.each do |policy|
+      if !policy.has_claim?  
+        policy.expiry = ReminderService._get_end_of_day(1.day.from_now)
+        policy.save!
+        count += 1
+      end      
+    end
+    redirect_to admin_simulator_path, :notice => "Changed #{count} expiry dates"
   end
 
 
@@ -126,6 +135,7 @@ ActiveAdmin.register_page "Simulator" do
             p.expiry.to_s(:simple)
           end
         end 
+        render "update"
       end
     end
   end
