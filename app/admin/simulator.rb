@@ -45,6 +45,10 @@ ActiveAdmin.register_page "Simulator" do
     redirect_to admin_simulator_path, :notice => "Sent #{count} Reminders"
   end
 
+  page_action :change_expiry, :method => :post do
+
+  end
+
 
   content do
 
@@ -107,7 +111,7 @@ ActiveAdmin.register_page "Simulator" do
     columns do
       column do
         h3 "Lapsed Policies"
-        policies = Policy.where("expiry < ?", Time.now)
+        policies = Policy.where("expiry < ?", ReminderService._get_start_of_day(Time.now))
         table_for policies, :class=> "index_table" do |p|
           column "Customer" do |p|
             p.customer.name
