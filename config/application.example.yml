@@ -39,4 +39,4 @@ SEED_POLICY_NO: 1
 CATALOG_VERSION: 1
 UPDATE_FILE: catalogue_october.csv
 FONEXPRESS_EMAIL: scadmin@fonexpress.net
-
+CLAIM_REGISTRATION_EMAILS: scadmin@fonexpress.net, ombclaims@korient.co.ke
