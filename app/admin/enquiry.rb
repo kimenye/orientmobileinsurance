@@ -2,6 +2,10 @@ ActiveAdmin.register Enquiry do
 
   controller do
     actions :all, :except => [:edit, :destroy]
+
+    def max_csv_records                                                          
+      150_000                                                                    
+    end
   end
 
   menu :parent => "Message"
