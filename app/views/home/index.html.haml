@@ -1,4 +1,52 @@
-.row.spacer
-  .large-5.columns.large-centered
-    %a{:href => "enquiry/insure"}
-      %img{:src => "/assets/busted.jpg"}
+.hero
+  .row
+    .large-12.columns
+      %ul{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fade';animation_speed:1500;"}
+        %li{"data-orbit-slide" => "damaged"}
+          %img{:src => "/assets/damaged_banner.png"}        
+        %li{"data-orbit-slide" => "stolen"}
+          %img{:src => "/assets/stolen_banner.png"}
+.jumbo
+  .row
+    .large-8.large-centered.columns
+      %p
+        This is an insurance service provided by Kenya Orient Insurance Limited to cover your mobile devices, specifically mobile phones and tablets. Orient Mobile provides compensation for the loss 
+  .row
+    .large-4.columns
+      .feature
+        %img{:src => "/assets/stolen_icon.png"}
+        %h5
+          STOLEN?
+        %p
+          Theft of your phone/ tablet assuming you have taken reasonable precautions to keep your device secure. Theft claims MUST be reported to the police within 48 hours of the theft. If the loss occurs when you are outside Kenya, please report the incident to the police in the country you are in within 48 hours and get a written report of the same.
+    .large-4.columns
+      .feature
+        %img{:src => "/assets/damaged_icon.png"}
+        %h5
+          DAMAGED?
+        %p
+          We cover accidental damage e.g. damage caused by dropping the phone/ tablet, malicious damage i.e. vandalism and liquid damage
+    .large-4.columns
+      .feature
+        %img{:src => "/assets/lost_icon.png"}
+        %h5
+          LOST?
+        %p
+          Loss of your phone/ tablet assuming you have taken reasonable precautions to keep your device secure. Loss claims MUST be reported to the police within 48 hours of the loss. If the loss occurs when you are outside Kenya, please report the incident to the police in the country you are in within 48 hours and get a written report of the same.
+/ .how-to
+/   .row
+/     .large-12.columns.bg
+/       %h4
+/         Secure your device in 2 easy steps
+/       %p
+/         SMS mobile to 70707
+/       .row
+/         .large-6.columns
+/         .large-6.columns
+/           %p
+/             You will recieve an SMS with a link to the orient mobile website. Click on this link to continue with the orient sign up process.
+.devices
+  .row
+    .large-12.columns.large-centered
+      %h4
+        Devices Covered

@@ -16,5 +16,4 @@ $(function(){
     if ($('.incident_location select').val() != "Vehicle") {
         $('.theft-questions input, .theft-questions textarea').prop('disabled', true);
     }
-	
 });

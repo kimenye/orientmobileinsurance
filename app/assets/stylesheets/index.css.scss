@@ -1,0 +1,69 @@
+.home.index {
+	header {
+		border-top: 3px solid #d41117;
+
+		a.logo {
+			display: block;
+			width: 120px;
+			height: 120px;
+			background-image: url('/assets/logo.png'); 
+			background-repeat: no-repeat;
+		}
+	}
+
+	.hero, .how-to {
+		background-color: #11110d;
+	}
+
+	.orbit-container .orbit-prev, .orbit-container .orbit-next {
+		background-color: transparent;
+	}
+
+	.jumbo {
+		margin-top: 30px;
+
+		p {
+			text-align: center;
+			font-weight: 400;
+		}
+
+		.feature {
+			text-align: center;			
+
+			h5 {
+				color: #19286d;
+			}
+		}
+	}
+
+	.devices {
+		h4 {
+			text-align: center;
+			color: #5c686f;
+		}
+	}	
+
+	.how-to {
+		.bg {
+			background-image: url('/assets/smoke_banner.png');
+			background-repeat: no-repeat;
+			min-height: 600px;
+			background-position: top right;
+			    p{
+			    	color: #ffffff;
+			    	.left{
+			    		margin-left: 50px;
+			    	}
+			    	.right{
+			    		float: right;
+			    	}
+			    }
+				h4{
+					margin-top: 50px;
+					//font-size: 
+					text-align: center;
+					color: #ffffff;
+				}
+		}
+	}
+}
