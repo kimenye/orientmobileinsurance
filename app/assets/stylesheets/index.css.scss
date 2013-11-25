@@ -112,20 +112,29 @@
 		border-top: 3px solid #d41117;
 		padding-top: 20px;
 		background-color: #202767;
+		font-size: 0.9em;
+
+		a {
+			color: #bcbec0;				
+		}
+
 
 		.vcard {
 			border: none;
 			color: #ffffff;
-			font-size: 0.9em;
+		}
 
-			a {
-				color: #bcbec0;				
+		.links {
+			li {
+				margin-bottom: 0px;
+				padding-bottom: 0px;
 			}
 		}
 
-		h5 {
+		h6 {
 			color: #ffffff;
 			font-weight: 300;
+			margin-top: 8px;
 		}
 	}
 
