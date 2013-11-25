@@ -108,14 +108,19 @@
 		}
 	}
 
-	footer {
+	.footer {
 		border-top: 3px solid #d41117;
 		padding-top: 20px;
 		background-color: #202767;
-		font-size: 0.9em;
+		
 
 		a {
 			color: #bcbec0;				
+			font-size: 0.9em;
+		}
+
+		p, li {
+			font-size: 0.8em;
 		}
 
 
@@ -131,11 +136,36 @@
 			}
 		}
 
-		h6 {
+		h6, p {
 			color: #ffffff;
 			font-weight: 300;
 			margin-top: 8px;
 		}
-	}
 
+		p {
+			margin-bottom: 0.5em;
+		}
+
+		.signup, .signup:hover {
+			background-color: #d40e14;
+			border-color: #d40e14;
+			box-shadow: none;
+		}
+
+		.social-icons {
+			a {
+				display: block;
+				height: 23px;
+				width: 25px;				
+			}
+
+
+			a.facebook {
+				background: url('/assets/facebook.png') no-repeat;
+			}
+			a.twitter {
+				background: url('/assets/twitter.png') no-repeat;
+			}
+		}
+	}
 }
