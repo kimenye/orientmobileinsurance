@@ -1,4 +1,11 @@
 .home.index {
+
+	font-family: Lato, 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: Lato, 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;		
+	}
+
 	header {
 		border-top: 3px solid #d41117;
 
@@ -67,4 +74,59 @@
 				}
 		}
 	}
+
+	.testimonials {
+		background-color: #17286d;
+		margin-top: 30px;
+		// margin-bottom: 10px;
+		// padding: 50px;
+
+		li {
+			padding: 30px;
+		}
+
+		img.quote {
+			margin: 20px auto 0px;
+			display: block;
+		}
+
+		blockquote {
+			color: #ffffff;
+			border-left: none;
+			display: block;
+			min-height: 200px;
+		}
+
+		cite {
+			color: #ffffff;
+			padding-top: 10px;
+			text-align: center;
+		}
+
+		.orbit-container {
+			background-color: #17286d;
+		}
+	}
+
+	footer {
+		border-top: 3px solid #d41117;
+		padding-top: 20px;
+		background-color: #202767;
+
+		.vcard {
+			border: none;
+			color: #ffffff;
+			font-size: 0.9em;
+
+			a {
+				color: #bcbec0;				
+			}
+		}
+
+		h5 {
+			color: #ffffff;
+			font-weight: 300;
+		}
+	}
+
 }
