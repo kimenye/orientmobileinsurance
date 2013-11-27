@@ -102,7 +102,7 @@
       %form.subscribe{:method => "POST", :action => customer_login_path}
         .row.collapse          
           .large-8.columns
-            %input{:type => "text", :placeholder => "Your ID / Passport Number *"}
+            %input{:type => "text", :name => "customer_id", :id => "customer_id", :placeholder => "Your ID / Passport Number *"}
           .large-4.columns
             %input.button.postfix.expand.signup{:type => "submit", :value => "Begin"}  
 
