@@ -94,12 +94,12 @@
 	}
 
 	.devices {
-		text-align: center;
-		
-		h4 {			
-			color: #5c686f;
-		}
+		text-align: center;				
 	}	
+
+	h4 {			
+		color: #5c686f;
+	}
 
 	.how-to {
 		.bg {
@@ -127,7 +127,7 @@
 
 	.testimonials {
 		background-color: #17286d;
-		margin-top: 30px;
+		// margin-top: 30px;
 		// margin-bottom: 10px;
 		// padding: 50px;
 
@@ -156,6 +156,22 @@
 		.orbit-container {
 			background-color: #17286d;
 		}
+	}
+
+	.claims {
+		padding-top: 30px;
+		padding-bottom: 30px;
+		background-color: #eef0f0;
+
+		ol {
+			margin-left: 20px;
+		}
+	}
+
+	.signup, .signup:hover {
+		background-color: #d40e14;
+		border-color: #d40e14;
+		box-shadow: none;
 	}
 
 	.footer {
@@ -195,13 +211,7 @@
 
 		p {
 			margin-bottom: 0.5em;
-		}
-
-		.signup, .signup:hover {
-			background-color: #d40e14;
-			border-color: #d40e14;
-			box-shadow: none;
-		}
+		}		
 
 		.social-icons {
 			a {

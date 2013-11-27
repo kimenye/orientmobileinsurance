@@ -11,6 +11,9 @@
           %a#devices
             DEVICES
         %li
+          %a#claims
+            CLAIMS
+        %li
           %a#testimonials
             TESTIMONIALS
         / %li
@@ -54,25 +57,13 @@
           LOST?
         %p
           Loss of your phone/ tablet assuming you have taken reasonable precautions to keep your device secure. Loss claims MUST be reported to the police within 48 hours of the loss. If the loss occurs when you are outside Kenya, please report the incident to the police in the country you are in within 48 hours and get a written report of the same.
-/ .how-to
-/   .row
-/     .large-12.columns.bg
-/       %h4
-/         Secure your device in 2 easy steps
-/       %p
-/         SMS mobile to 70707
-/       .row
-/         .large-6.columns
-/         .large-6.columns
-/           %p
-/             You will recieve an SMS with a link to the orient mobile website. Click on this link to continue with the orient sign up process.
 .devices
   .row
     .large-12.columns.large-centered
       %h4
         Devices Covered
       %p
-        At the moment, Orient Mobile can only cover selected models of the following phone manufacturers
+        At the moment, Orient Mobile can only cover selected models of the following phone manufacturers. The list of covered devices will be reviewed on a regular basis. Please note that at the moment, Orient Mobile can only cover devices that can access the internet. 
   .row
     .large-12.columns.large-centered.small-centered
       %ul.large-block-grid-6
@@ -98,6 +89,63 @@
           %img.th{:src => "/assets/samsung.png"}
         %li
           %img.th{:src => "/assets/sony.png"}
+.claims
+  .row
+    .large-6.columns
+      %h4
+        Registering a Claim
+
+      %p
+        Lost / Damaged your insured mobile device? Don't worry, registering a Claim online is easy and takes only a couple of minutes. All
+        you need is the ID that you used to register for your Orient Mobile Policy.
+
+      %form.subscribe{:method => "POST", :action => customer_login_path}
+        .row.collapse          
+          .large-8.columns
+            %input{:type => "text", :placeholder => "Your ID / Passport Number *"}
+          .large-4.columns
+            %input.button.postfix.expand.signup{:type => "submit", :value => "Begin"}  
+
+    .large-6.columns
+      %h4
+        Claim Registration Checklist
+      %p
+        Depending on your type of claim, you will need certain documents before you claim is successfully processed.
+
+      .section-container.auto{"data-section" => ""}
+        %section.active
+          %p.title{"data-section-title" => ""}
+            %a{:href => "#damage-claims"} Damage
+          #damage-claims.content.active
+            %p
+              For a Damage claim you need the following:
+            %ol
+              %li
+                The Damaged Device
+              %li
+                Original or certified copy of purchase receipt/ warranty
+              %li
+                Original ID or Passport
+              %li
+                Copy of ID or Passport           
+        %section
+          %p.title{"data-section-title" => ""}
+            %a{:href => "#theft-claims"} Theft / Loss
+          #theft-claims.content.active
+            %p
+              For a Theft claim you need the following:
+            %ol
+              %li
+                Police Abstract
+              %li
+                Original or certified copy of purchase receipt/ warranty
+              %li
+                Completed and stamped Blocking Request Form from mobile network operator
+              %li
+                Original ID or Passport
+              %li
+                Copy of ID or Passport        
+
 .testimonials
   .row
     .large-12.columns.large-centered
