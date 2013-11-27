@@ -11,11 +11,11 @@
         = yield(:head)
   %body{:class => "#{controller_name} #{action_name}"}
     #container.container
-      %header
-        .row
-          .large-3.columns
-            %a.logo
-          .large-9.columns
+      / %header
+      /   .row
+      /     .large-3.columns
+      /       %a.logo
+      /     .large-9.columns
       #main{:role => "main"}
         = yield
       / %footer

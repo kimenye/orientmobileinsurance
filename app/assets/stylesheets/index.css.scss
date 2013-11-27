@@ -6,15 +6,40 @@
 		font-family: Lato, 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;		
 	}
 
-	header {
-		border-top: 3px solid #d41117;
+	.logo-holder {
+		border-top: 3px solid #ffffff;	
+		position: fixed;
+		width: 100%;
+		z-index: 10000;
 
 		a.logo {
 			display: block;
 			width: 120px;
 			height: 120px;
+			position: absolute;
+			top: -3px;
 			background-image: url('/assets/logo.png'); 
 			background-repeat: no-repeat;
+		}
+	}
+
+	.top-links {
+		float: right;
+		list-style-type: none;
+		margin-top: 10px;
+
+		li {
+			float: left;
+			margin-right: 30px; 
+		}
+
+		a {
+			color: #ffffff;
+			font-weight: 700;
+		}
+
+		a.active {
+			border-bottom: 3px solid #d61d23;
 		}
 	}
 

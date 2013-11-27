@@ -1,7 +1,24 @@
 .hero
+  .logo-holder
+    .row    
+      %a.logo      
+      %ul.top-links.hide-for-small
+        %li
+          %a.active
+            INSURE
+        %li
+          %a
+            DEVICES
+        %li
+          %a
+            TERMS & CONDITIONS
+        %li
+          %a
+            TESTIMONIALS
+
   .row
     .large-12.columns
-      %ul{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fade';animation_speed:1500;"}
+      %ul{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fade';animation_speed:1500;timer:false;"}
         %li{"data-orbit-slide" => "damaged"}
           %img{:src => "/assets/damaged_banner.png"}        
         %li{"data-orbit-slide" => "stolen"}
