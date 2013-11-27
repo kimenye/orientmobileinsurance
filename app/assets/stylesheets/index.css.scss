@@ -111,7 +111,7 @@
 	.footer {
 		border-top: 3px solid #d41117;
 		padding-top: 20px;
-		background-color: #202767;
+		background-color: #3d437b;
 		
 
 		a {
@@ -127,6 +127,7 @@
 		.vcard {
 			border: none;
 			color: #ffffff;
+			padding: 0.625em 0;
 		}
 
 		.links {
@@ -165,6 +166,21 @@
 			}
 			a.twitter {
 				background: url('/assets/twitter.png') no-repeat;
+			}
+		}
+	}
+
+	.copyright {
+		background-color: #202767;
+
+		p {
+			color: #ffffff;
+			font-size: .8em;
+			padding: 0.9em 0;
+			margin-bottom: 0px;
+
+			a {
+				color: #ffffff;
 			}
 		}
 	}
