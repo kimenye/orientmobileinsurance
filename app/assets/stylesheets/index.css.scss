@@ -47,6 +47,27 @@
 		background-color: #11110d;
 	}
 
+	.learn-more {
+		position: absolute;
+		top: 380px;
+		width: 100%;
+
+		a {
+			color: #ffffff;
+			margin: auto;	
+			display: block;
+			text-align: center;
+			margin-bottom: 10px;
+		}
+
+		a.img-link {
+			background: url('/assets/learn-more.png') no-repeat;			
+			width: 41px;
+			height: 41px;		
+			margin-bottom: 0px;	
+		}
+	}
+
 	.orbit-container .orbit-prev, .orbit-container .orbit-next {
 		background-color: transparent;
 	}

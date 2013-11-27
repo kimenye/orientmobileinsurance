@@ -2,20 +2,20 @@
   .logo-holder
     .row    
       %a.logo      
+      / %ul.top-links.hide-for-small{"data-magellan-expedition" => "fixed"}
       %ul.top-links.hide-for-small
+        %li{"data-magellan-arrival" => "build"}
+          %a#insure.active
+            INSURE        
         %li
-          %a.active
-            INSURE
-        %li
-          %a
+          %a#devices
             DEVICES
         %li
-          %a
-            TERMS & CONDITIONS
-        %li
-          %a
+          %a#testimonials
             TESTIMONIALS
-
+        %li
+          %a#copyright
+            TERMS & CONDITIONS
   .row
     .large-12.columns
       %ul{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fade';animation_speed:1500;timer:false;"}
@@ -23,7 +23,11 @@
           %img{:src => "/assets/damaged_banner.png"}        
         %li{"data-orbit-slide" => "stolen"}
           %img{:src => "/assets/stolen_banner.png"}
-.jumbo
+      .learn-more
+        %a
+          LEARN MORE
+        %a.img-link
+.jumbo.insure
   .row
     .large-8.large-centered.columns
       %p

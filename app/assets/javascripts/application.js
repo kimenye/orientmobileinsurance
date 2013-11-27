@@ -16,5 +16,10 @@
 //= require jquery-ui-1.10.3.custom.min
 //= require jquery.validate.min
 //= require home
+//= require jquery.smint
 
-$(function(){ $(document).foundation(); });
+$(function(){ 
+	$(document).foundation(); 
+
+	$('.top-links').smint({'offSetElement' : 'jumbo'});
+});
