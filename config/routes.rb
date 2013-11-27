@@ -30,7 +30,10 @@ Orientmobileinsurance::Application.routes.draw do
   match 'enquiries/:hashed_phone_number/:hashed_timestamp' => 'enquiries#show'
 
   devise_for :users, :controllers => { :sessions => "users/sessions" }
-  # ActiveAdmin.routes(self)
+  
+  if ENV['PLATFORM'] == "PROD"
+    ActiveAdmin.routes(self)  
+  end
 
   resources :users, :mobile, :messages, :enquiry
   resources :enquiries, :status, :customer, :claims
