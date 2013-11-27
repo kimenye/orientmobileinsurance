@@ -1,6 +1,6 @@
 .hero
   .logo-holder
-    .row    
+    .row.menu-holder    
       %a.logo      
       / %ul.top-links.hide-for-small{"data-magellan-expedition" => "fixed"}
       %ul.top-links.hide-for-small
@@ -13,12 +13,12 @@
         %li
           %a#testimonials
             TESTIMONIALS
-        %li
-          %a#copyright
-            TERMS & CONDITIONS
+        / %li
+        /   %a#copyright
+        /     TERMS & CONDITIONS
   .row
     .large-12.columns
-      %ul{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fade';animation_speed:1500;timer:false;"}
+      %ul.banner-orbit{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fade';animation_speed:1500;timer:false;"}
         %li{"data-orbit-slide" => "damaged"}
           %img{:src => "/assets/damaged_banner.png"}        
         %li{"data-orbit-slide" => "stolen"}
@@ -104,7 +104,6 @@
       %img.quote{:src => "/assets/quotes.png"}
       %ul{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fadeAndPop';animation_speed:1500;timer:false;"}
         %li{"data-orbit-slide" => "client_one"}
-          / %img{:src => "/assets/damaged_banner.png"}        
           %blockquote
             thank you very much ,i have picked the phone from Nakumatt Lifestle Nairobi and most greatful to Kenya Orient. i swear to be a good ambassodor to you guys!!!!!!!!!!!!! bravo! this is the best thing that ever happened to Kenyans!
             %cite
@@ -119,12 +118,6 @@
             %cite
               Tom Ndege
 .footer
-  / .row
-  /   .large-12.columns.large-centered
-  /     %h4
-  /       Devices Covered
-  /     %p
-  /       At the moment, Orient Mobile can only cover selected models of the following phone manufacturers
   .row
     .large-12.columns
       .row

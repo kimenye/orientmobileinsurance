@@ -21,7 +21,8 @@ If you like Smint, or have suggestions on how it could be improved, send me a tw
 		$(this).addClass('smint')
 
 		var settings = $.extend({
-		            'scrollSpeed '  : 500
+		            'scrollSpeed '  : 500		            
+		            // 'offSetElement' : '.smint'
 		}, options);
 
 		//Set the variables needed
@@ -37,11 +38,10 @@ If you like Smint, or have suggestions on how it could be improved, send me a tw
 
 			//Fill the menu
 			var id = $(this).attr("id");
-			optionLocs.push(Array($("div."+id).position().top-menuHeight, $("div."+id).height()+$("div."+id).position().top, id));
+			stickyTop = settings.stickyTop;
 
-			///////////////////////////////////
-			// get initial top offset for the menu 
-			var stickyTop = $('.smint').offset().top;	
+			// optionLocs.push(Array($("div."+id).position().top-menuHeight, $("div."+id).height()+$("div."+id).position().top, id));
+			optionLocs.push(Array($("div."+id).position().top-menuHeight+stickyTop, $("div."+id).height()+$("div."+id).position().top + stickyTop, id));
 
 			// check position and make sticky if needed
 			var stickyMenu = function(direction){
@@ -52,10 +52,12 @@ If you like Smint, or have suggestions on how it could be improved, send me a tw
 				// if we scroll more than the navigation, change its position to fixed and add class 'fxd', otherwise change it back to absolute and remove the class
 				if (scrollTop > stickyTop) { 
 					// $('.smint').css({ 'position': 'fixed', 'top':0 }).addClass('fxd');	
-					$('.smint').addClass('fxd');	
+					// $('.smint').addClass('fxd');	
+					$(settings.toggleTarget).addClass('fxd');
 				} else {
 					// $('.smint').css({ 'position': 'absolute', 'top':stickyTop }).removeClass('fxd'); 
-					$('.smint').removeClass('fxd'); 
+					// $('.smint').removeClass('fxd'); 
+					$(settings.toggleTarget).removeClass('fxd');
 				}   
 
 				//Check if the position is inside then change the menu
@@ -74,7 +76,7 @@ If you like Smint, or have suggestions on how it could be improved, send me a tw
 					}
 					$.each(optionLocs, function(i){
 						if(id != optionLocs[i][2]){
-							console.log(i);
+							// console.log(i);
 							$("#"+optionLocs[i][2]).removeClass("active");
 						}
 					});
@@ -130,7 +132,7 @@ If you like Smint, or have suggestions on how it could be improved, send me a tw
 				var goTo =  $('div.'+ id).offset().top -selectorHeight;
 
 				// Scroll the page to the desired position!
-				$("html, body").animate({ scrollTop: goTo }, scrollSpeed);
+				$("html, body").animate({ scrollTop: goTo - 30 }, scrollSpeed);
 
 			});	
 		});

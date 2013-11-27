@@ -43,13 +43,17 @@
 		}
 	}
 
+	.menu-holder.fxd {
+		background: #000000;
+	}
+
 	.hero, .how-to {
 		background-color: #11110d;
 	}
 
 	.learn-more {
 		position: absolute;
-		top: 380px;
+		bottom: 10px;
 		width: 100%;
 
 		a {

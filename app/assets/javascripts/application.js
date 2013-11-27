@@ -20,6 +20,5 @@
 
 $(function(){ 
 	$(document).foundation(); 
-
-	$('.top-links').smint({'offSetElement' : 'jumbo'});
+	$('.top-links').smint({ 'offSetElement' : '.jumbo', 'stickyTop' : 420, 'toggleTarget' : '.menu-holder' });	
 });
