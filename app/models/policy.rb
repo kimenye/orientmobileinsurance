@@ -146,4 +146,8 @@ class Policy < ActiveRecord::Base
   def has_claim?
     !claim.nil?
   end
+
+  def has_active_claim?
+    has_claim? && claim.is_in_customer_stage?
+  end
 end

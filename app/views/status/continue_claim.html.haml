@@ -1,0 +1,7 @@
+#continue-claim{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Continue Claim Online
+  %section{"data-role" => "content", "role" => "main"}
+    %p
+      You already have an existing claim. Please #{link_to("click here", "#{ENV['BASE_URL']}customer", :class => "inline continue", :rel => "external")}  to continue with claim registration
