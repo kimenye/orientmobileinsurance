@@ -43,6 +43,7 @@ ActiveAdmin.register Agent do
       f.input :location
       f.input :phone_number
       f.input :email
+      f.input :tag
     end
     f.actions
   end
