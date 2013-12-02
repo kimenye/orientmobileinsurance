@@ -165,6 +165,62 @@
             Your customer service is very good, Thank you
             %cite
               Tom Ndege
+.contact_us
+  .row
+    .large-6.columns
+      %h4
+        Talk to us
+      .form
+        =form_for(Feedback.new(), remote: true, :html => { "data-abide" => ""} ) do |f|
+          .row
+            .large-6.columns
+              =f.label :name
+              =f.text_field :name, :placeholder => "Your Name*", :required => ""
+              %small.error
+                A name is required
+            .large-6.columns
+              =f.label :email
+              =f.email_field :email, :placeholder => "Your Email*", :required => ""
+              %small.error
+                An email address is required.
+          =f.label :message
+          =f.text_area :message, :placeholder => "Your feedback here*", :required => ""
+          %small.error
+            An message is required. 
+      
+          %input.button.small.send{:type => "submit", :value => "Send"}
+      %p.thankyou-feedback.hide
+        Thank you for your feedback. Someone from our team will get in touch with you shortly.
+
+    .large-6.columns
+      %h4
+        Contact Centre
+      .contact_center
+        %ul.vcard
+          %li
+            Kenya Orient Contact Center
+          %li.street-address
+            Tel: 
+            %span.tel
+              020 2962000    
+          %li.street-address
+            Email: 
+            %a{:href =>"mailto:info@korient.co.ke"}
+              mobile@korient.co.ke    
+
+        %p
+          We are social too:
+        %ul.social-icons
+          %li
+            %a.facebook{:href => "https://www.facebook.com/lovemobke"}              
+          %li
+            %a.twitter{:href => "http://twitter.com/lovemobke"}
+
+        %p.survey-text
+          Take our new survey and stand a chance to win
+          %a.button.survey.small
+            CUSTOMER SURVEY
+
 .footer
   .row
     .large-12.columns

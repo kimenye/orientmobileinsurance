@@ -158,9 +158,18 @@
 		}
 	}
 
-	.claims, .devices, .testimonials {
+	.claims, .devices, .testimonials, .contact_us  {
 		padding-top: 55px;
 		padding-bottom: 45px;
+	}
+
+	.contact_us {
+		color: #5c686f;
+		background-color: #eef0f0;
+
+		textarea{
+			height: 150px;	
+		}
 	}
 
 	.claims {
@@ -172,10 +181,51 @@
 		}
 	}
 
-	.signup, .signup:hover {
+	.contact_center {
+		background: url(/assets/contact_center.png) top right no-repeat;
+
+		p {
+			margin-top: 20px;
+		}
+	}
+
+
+	.signup, .signup:hover, .survey, .survey:hover, .send, .send:hover {
 		background-color: #d40e14;
 		border-color: #d40e14;
 		box-shadow: none;
+	}
+
+	.vcard {
+		border: none;		
+		padding: 0.625em 0;
+
+		a, .tel {
+			color: #5c686f;
+			font-weight: bold;
+		}
+	}
+
+	.social-icons {
+		list-style-type:  none;
+		
+		li {
+			margin-bottom: 5px;
+		}
+
+		a {
+			display: block;
+			height: 23px;
+			width: 25px;				
+		}
+
+
+		a.facebook {
+			background: url('/assets/facebook.png') no-repeat;
+		}
+		a.twitter {
+			background: url('/assets/twitter.png') no-repeat;
+		}
 	}
 
 	.footer {
@@ -183,6 +233,9 @@
 		padding-top: 20px;
 		background-color: #3d437b;
 		
+		.vcard {
+			color: #ffffff;
+		}
 
 		a {
 			color: #bcbec0;				
@@ -194,11 +247,7 @@
 		}
 
 
-		.vcard {
-			border: none;
-			color: #ffffff;
-			padding: 0.625em 0;
-		}
+		
 
 		.links {
 			li {
@@ -217,21 +266,7 @@
 			margin-bottom: 0.5em;
 		}		
 
-		.social-icons {
-			a {
-				display: block;
-				height: 23px;
-				width: 25px;				
-			}
-
-
-			a.facebook {
-				background: url('/assets/facebook.png') no-repeat;
-			}
-			a.twitter {
-				background: url('/assets/twitter.png') no-repeat;
-			}
-		}
+		
 	}
 
 	.copyright {

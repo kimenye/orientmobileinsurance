@@ -1,8 +1,10 @@
 Orientmobileinsurance::Application.routes.draw do
+  get "feedbacks/create"
+
   resources :claims
 
 
-  resources :insured_devices, :subscriptions
+  resources :insured_devices, :subscriptions, :feedbacks
 
 
   devise_for :admin_users, ActiveAdmin::Devise.config

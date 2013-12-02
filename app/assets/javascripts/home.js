@@ -26,4 +26,12 @@ $(function(){
     $('.new_subscription').on("ajax:error", function(e, data, status, error) {
         $('.email_error_message').removeClass('hide').html("Email " + data.responseJSON.email[0]);
     });
+
+
+    $('.new_feedback').on("ajax:success", function(e, data, status, xhr) {        
+        $('.new_feedback').hide( "fade", { direction: "down" }, "slow", function()  {
+            $('.thankyou-feedback').show( "fade", { direction: "down" }, "fast");    
+        });
+        
+    });
 });
