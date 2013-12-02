@@ -208,12 +208,16 @@
         .large-4.columns
           %p
             Sign up to our newsletter:
-          %form.subscribe
+          = form_for(Subscription.new(), remote: true) do |f|
             .row.collapse
               .large-8.columns
-                %input{:type => "email", :placeholder => "Your Email*"}
+                = f.email_field :email, :placeholder => "Your Email*"
+                %small.error.email_error_message.hide
+                %p.thankyou.hide
+                  Thank you for signing up to our newsletter!
               .large-4.columns
                 %input.button.postfix.expand.signup{:type => "submit", :value => "Sign Up"}
+
         .large-2.columns
           %p
             We are social too:

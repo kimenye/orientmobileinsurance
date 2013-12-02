@@ -19,6 +19,11 @@ ul.nav {
   }
 }
 
+p.hide, small.hide {
+  display: none;
+  // color: #ffffff;
+}
+
 ul.errors {
   list-style-type: none;
   color: red;
