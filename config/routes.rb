@@ -2,7 +2,7 @@ Orientmobileinsurance::Application.routes.draw do
   resources :claims
 
 
-  resources :insured_devices
+  resources :insured_devices, :subscriptions
 
 
   devise_for :admin_users, ActiveAdmin::Devise.config
