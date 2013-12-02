@@ -294,6 +294,9 @@ GEM
     url_shortener (0.0.7)
       hashie (~> 0.4.0)
       httparty (~> 0.5.0)
+    valid_email (0.0.4)
+      activemodel
+      mail
     warden (1.2.3)
       rack (>= 1.0)
     wicked (0.6.1)
@@ -355,5 +358,6 @@ DEPENDENCIES
   turn
   uglifier (>= 1.0.3)
   url_shortener
+  valid_email
   wicked
   zurb-foundation

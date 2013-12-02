@@ -36,6 +36,7 @@ gem 'phony_rails'
 gem 'zurb-foundation'
 gem 'compass-rails'
 gem 'smarter_csv'
+gem 'valid_email'
 
 group :development do
   gem 'better_errors'
