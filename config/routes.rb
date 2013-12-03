@@ -53,4 +53,5 @@ Orientmobileinsurance::Application.routes.draw do
   match 'start_again' => 'enquiry#start_again', :as => :start_again
   match 'test' => 'home#device', :as => :test
   match 'result' => 'home#result', :as => :result
+  match 'terms_and_conditions' => 'home#tnc', :as => :tnc
 end

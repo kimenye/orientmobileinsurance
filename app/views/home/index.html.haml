@@ -45,7 +45,7 @@
     .large-12.columns
       %ul.banner-orbit{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fade';animation_speed:1500;timer:false;"}
         %li{"data-orbit-slide" => "damaged"}
-          %img{:src => "/assets/damaged_banner.png"}    
+          %img{:src => "/assets/damaged.png"}    
           .tagline
             %p
               Before the end of the day you could lose your phone or crack
@@ -53,7 +53,15 @@
             %a.button.small.survey.cta
               INSURE
         %li{"data-orbit-slide" => "stolen"}
-          %img{:src => "/assets/stolen_banner.png"}
+          %img{:src => "/assets/stolen.png"}
+          .tagline
+            %p
+              Before the end of the day you could lose your phone or crack
+              it's screen. Then what?
+            %a.button.small.survey.cta
+              INSURE
+        %li{"data-orbit-slide" => "lost"}
+          %img{:src => "/assets/lost.png"}
           .tagline
             %p
               Before the end of the day you could lose your phone or crack
@@ -286,7 +294,7 @@
               %a{:href => '/new_status'}
                 Check Status
             %li
-              %a{:href => '#'}
+              %a{:href => "terms_and_conditions" }
                 Terms & Conditions
             %li
               %a{:href => '/users/sign_in?user_type=DP'}
@@ -325,7 +333,7 @@
         Copyright &copy; 2013 Kenya Orient Insurance Limited
     .large-2.columns
       %p
-        %a
+        %a{:href => "terms_and_conditions" }
           Terms
         &nbsp;|&nbsp;
         %a

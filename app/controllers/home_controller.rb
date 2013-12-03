@@ -9,6 +9,9 @@ class HomeController < ApplicationController
     end
   end
 
+  def tnc
+  end
+
   def device
     render :layout => "mobile"
   end
