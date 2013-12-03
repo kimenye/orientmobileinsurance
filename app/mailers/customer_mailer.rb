@@ -71,4 +71,8 @@ class CustomerMailer < ActionMailer::Base
     end
   end
 
+  def feedback_mailer(feedback)
+    mail(:from => "#{feedback.email}", :to => "feedback@korient.co.ke", :subject => "#{feedback.name} says #{feedback.message}")
+  end
+
 end
