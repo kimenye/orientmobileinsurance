@@ -326,18 +326,39 @@
 		.top-bar {
 			background-color: #ffffff;			
 
+
 			li.toggle-topbar.menu-icon {
 				background: #17286d;
 				padding-right: 10px;
+				margin-top: 0px;
+				right: 0px;
+				top: 0px;
 
 				span {
 					padding-right: 20px;
 				}
 			}
+
+			.small-block-grid-2 > li {
+				padding: 0 0.625em 0;
+			}
 		}
 
 		.top-bar.expanded .title-area {
 			background-color: #ffffff;
+		}
+
+		.top-bar.expanded {
+
+			.top-bar-section ul li.alt,
+			.top-bar-section ul li.alt > a {
+				background: #111c4c;
+			}
+
+			.top-bar-section ul li,
+			.top-bar-section ul li > a {
+				background: #19286d;
+			}
 		}
 
 		.learn-more, .tagline {
