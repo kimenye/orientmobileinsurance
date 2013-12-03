@@ -53,10 +53,25 @@
 		background-color: #11110d;
 	}
 
+	.hero {
+		.row {
+			max-width: 80em;
+		}
+	}
+
+	p.tagline {
+		position: absolute;
+		top: 330px;
+		width: 300px;
+		color: #ffffff;
+		margin-left: 175px;
+	}
+
 	.learn-more {
 		position: absolute;
 		bottom: 10px;
 		width: 100%;
+		z-index: 10000;
 
 		a {
 			color: #ffffff;
