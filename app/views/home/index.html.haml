@@ -1,11 +1,49 @@
 .hero
+  .show-for-small
+    / %nav.top-bar{"data-topbar" => "", "data-options" => "is_hover: false;"}
+    /   %ul.title-area
+    /     %li.toggle-topbar.menu-icon
+    /       %a
+    /         %span
+    /           MENU
+
+    /   %section.top-bar-section
+    /     %ul.right
+    /       %li
+    /         %a#insure
+    /           INSURE
+    /       %li
+    /         %a#devices
+    /           DEVICES
+    /       %li
+    /         %a#claims
+    /           CLAIMS
+    %nav.top-bar
+      %ul.title-area
+        / Title Area
+        %li.name
+          %h1
+            %a{href: "#"} Kenya Orient
+        / Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone
+        %li.toggle-topbar.menu-icon
+          %a{href: "#"}
+            %span Menu
+      %section.top-bar-section
+        %ul.left
+        /   %li.divider
+        /   %li.active
+        /     %a{href: "#"} Main Item 1
+        /   %li.divider
+          %li
+            %a#devices{href: "#"} INSURE
+        /   %li.divider
   .logo-holder
-    .row.menu-holder    
+    .row.menu-holder.hide-for-small    
       .large-12.columns
         %a.logo      
         %ul.top-links.hide-for-small{"data-magellan-expedition" => ""}      
           %li.active{"data-magellan-arrival" => "insure"}
-            %a#insure{:href => "#insure"}
+            %a#insure
               INSURE        
           %li{"data-magellan-arrival" => "devices"}
             %a#devices
@@ -24,15 +62,20 @@
       %ul.banner-orbit{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fade';animation_speed:1500;timer:false;"}
         %li{"data-orbit-slide" => "damaged"}
           %img{:src => "/assets/damaged_banner.png"}    
-          %p.tagline
-            Before the end of the day you could lose your phone or crack
-            it's screen. Then what?
-
+          .tagline
+            %p
+              Before the end of the day you could lose your phone or crack
+              it's screen. Then what?
+            %a.button.small.survey.cta
+              INSURE
         %li{"data-orbit-slide" => "stolen"}
           %img{:src => "/assets/stolen_banner.png"}
-          %p.tagline
-            Before the end of the day you could lose your phone or crack
-            it's screen. Then what?
+          .tagline
+            %p
+              Before the end of the day you could lose your phone or crack
+              it's screen. Then what?
+            %a.button.small.survey.cta
+              INSURE
       .learn-more
         %a
           LEARN MORE
