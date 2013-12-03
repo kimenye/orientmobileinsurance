@@ -11,7 +11,7 @@
 
     settings : {
       activeClass: 'active',
-      threshold: 0
+      threshold: 450
     },
 
     init : function (scope, method, options) {
@@ -75,7 +75,7 @@
             if (typeof $expedition.data('magellan-fixed-position') === 'undefined') {
               $expedition.data('magellan-fixed-position', false)
             }
-            console.log("threshold ", self.settings.threshold);
+            // console.log("threshold ", self.settings.threshold);
             var fixed_position = (windowScrollTop + self.settings.threshold) > $expedition.data("magellan-top-offset");
             var attr = $expedition.attr('data-magellan-top-offset');
 

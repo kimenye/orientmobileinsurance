@@ -3,11 +3,9 @@
     .row.menu-holder    
       .large-12.columns
         %a.logo      
-        / %ul.top-links.hide-for-small
-        / %ul.top-links.hide-for-small{"data-magellan-expedition" => "", "data-options" => "threshold:480;"}      
         %ul.top-links.hide-for-small{"data-magellan-expedition" => ""}      
           %li.active{"data-magellan-arrival" => "insure"}
-            %a{:href => "#insure"}
+            %a#insure{:href => "#insure"}
               INSURE        
           %li{"data-magellan-arrival" => "devices"}
             %a#devices
