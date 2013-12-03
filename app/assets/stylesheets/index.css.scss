@@ -20,6 +20,7 @@
 			top: -3px;
 			background-image: url('/assets/logo.png'); 
 			background-repeat: no-repeat;
+			margin-left: -1px;
 		}
 	}
 
@@ -59,14 +60,20 @@
 		}
 	}
 
-	p.tagline {
+	.tagline {
 		position: absolute;
 		top: 54%;
 		width: 35%;
-		color: #ffffff;
 		margin-left: 14%;
-	}
+		
+		p {
+			color: #ffffff;			
+		}
+		a.cta {
 
+		}
+	}
+	
 	.learn-more {
 		position: absolute;
 		bottom: 10px;
@@ -207,7 +214,7 @@
 	}
 
 
-	.signup, .signup:hover, .survey, .survey:hover, .send, .send:hover {
+	.signup, .signup:hover, .survey, .survey:hover, .send, .send:hover, .cta, .cta:hover {
 		background-color: #d40e14;
 		border-color: #d40e14;
 		box-shadow: none;
@@ -300,6 +307,41 @@
 			a {
 				color: #ffffff;
 			}
+		}
+	}
+
+	@media only screen and (max-width: 40em) {
+		.hero {
+			background-color: #ffffff;
+
+			.logo-holder {
+				position: relative;
+
+				.logo {
+					position: inherit;
+				}
+			}
+		}
+
+		.top-bar {
+			background-color: #ffffff;			
+
+			li.toggle-topbar.menu-icon {
+				background: #17286d;
+				padding-right: 10px;
+
+				span {
+					padding-right: 20px;
+				}
+			}
+		}
+
+		.top-bar.expanded .title-area {
+			background-color: #ffffff;
+		}
+
+		.learn-more, .tagline {
+			display: none;
 		}
 	}
 }

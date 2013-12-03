@@ -18,6 +18,7 @@
 //= require foundation/foundation.abide
 //= require foundation/foundation.placeholder
 //= require foundation/foundation.section
+//= require foundation/foundation.topbar.js
 //= require jquery-ui-1.10.3.custom.min
 //= require jquery.validate.min
 //= require home
