@@ -74,7 +74,8 @@ class CustomerMailer < ActionMailer::Base
   def feedback_mailer(feedback)
     begin
       @feedback = feedback
-      mail(:from => "feedback@korient.co.ke", :to => "mobile@korient.co.ke", :subject => "Customer Feedback: #{@feedback.name} #{@feedback.message}")
+      # mail(:from => "feedback@korient.co.ke", :to => "mobile@korient.co.ke", :subject => "Customer Feedback: #{@feedback.name} #{@feedback.message}")
+      mail(:from => "#{ENV['FEEDBACK_FROM_EMAIL']}", :to => "#{ENV['FEEDBACK_TO_EMAIL']}", :subject => "Customer Feedback: #{@feedback.name} #{@feedback.message}")
     rescue
       # Do nothing
       binding.pry
