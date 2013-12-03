@@ -12,19 +12,31 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require foundation
+//= require foundation/foundation
+//= require foundation/foundation.orbit
+//= require foundation/foundation.forms
+//= require foundation/foundation.abide
+//= require foundation/foundation.placeholder
+//= require foundation/foundation.section
 //= require jquery-ui-1.10.3.custom.min
 //= require jquery.validate.min
 //= require home
+//= require foundation.magellan
 //= require jquery.smint
 
 $(function(){ 
 	$(document).foundation(); 
-	$('.top-links').smint({ 'offSetElement' : '.jumbo', 'stickyTop' : 420, 'toggleTarget' : '.menu-holder' });	
 
 	$('.learn-more a').click(function(e) {
 		e.preventDefault();
 		var goTo =  $('div.insure').offset().top - 30
 		$("html, body").animate({ scrollTop: goTo - 30 }, 500);
+	});
+
+	$('ul.top-links a').click(function(e) {
+		var id = $(this)[0].id;
+		var goTo = $('div.' + id).offset().top - 30
+		$("html, body").animate({ scrollTop: goTo - 30 }, 500);
+		e.preventDefault();
 	});
 });

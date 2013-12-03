@@ -31,7 +31,6 @@ $(function(){
     $('.new_feedback').on("ajax:success", function(e, data, status, xhr) {        
         $('.new_feedback').hide( "fade", { direction: "down" }, "slow", function()  {
             $('.thankyou-feedback').show( "fade", { direction: "down" }, "fast");    
-        });
-        
+        });        
     });
 });

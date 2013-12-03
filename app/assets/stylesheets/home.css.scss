@@ -113,6 +113,25 @@ label.error {
   border-bottom: 1px solid lightgrey;
 }
 
+[data-magellan-expedition] {
+  background: transparent;
+  min-width: 0;
+}
+
+[data-magellan-expedition].fxd {
+  background: #000000;
+}
+
+
+
+.menu-holder {
+  .fixed {
+    width: auto;
+    right: auto;
+    left: auto;
+  }
+}
+
 
 /*footer {
   position: fixed;

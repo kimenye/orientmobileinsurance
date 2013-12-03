@@ -1,36 +1,44 @@
 .hero
   .logo-holder
     .row.menu-holder    
-      %a.logo      
-      / %ul.top-links.hide-for-small{"data-magellan-expedition" => "fixed"}
-      %ul.top-links.hide-for-small
-        %li{"data-magellan-arrival" => "build"}
-          %a#insure.active
-            INSURE        
-        %li
-          %a#devices
-            DEVICES
-        %li
-          %a#claims
-            CLAIMS
-        %li
-          %a#testimonials
-            TESTIMONIALS
-        / %li
-        /   %a#copyright
-        /     TERMS & CONDITIONS
+      .large-12.columns
+        %a.logo      
+        %ul.top-links.hide-for-small{"data-magellan-expedition" => ""}      
+          %li.active{"data-magellan-arrival" => "insure"}
+            %a#insure{:href => "#insure"}
+              INSURE        
+          %li{"data-magellan-arrival" => "devices"}
+            %a#devices
+              DEVICES
+          %li{"data-magellan-arrival" => "claims"}
+            %a#claims
+              CLAIMS
+          %li{"data-magellan-arrival" => "testimonials"}
+            %a#testimonials
+              TESTIMONIALS
+          %li{"data-magellan-arrival" => "contact_us"}
+            %a#contact_us
+              CONTACT US
   .row
     .large-12.columns
       %ul.banner-orbit{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fade';animation_speed:1500;timer:false;"}
         %li{"data-orbit-slide" => "damaged"}
-          %img{:src => "/assets/damaged_banner.png"}        
+          %img{:src => "/assets/damaged_banner.png"}    
+          %p.tagline
+            Before the end of the day you could lose your phone or crack
+            it's screen. Then what?
+
         %li{"data-orbit-slide" => "stolen"}
           %img{:src => "/assets/stolen_banner.png"}
+          %p.tagline
+            Before the end of the day you could lose your phone or crack
+            it's screen. Then what?
       .learn-more
         %a
           LEARN MORE
         %a.img-link
-.jumbo.insure
+%a{:name => "insure"}
+.jumbo.insure{"data-magellan-destination" => "insure"}
   .row
     .large-8.large-centered.columns
       %p
@@ -57,7 +65,8 @@
           LOST?
         %p
           Loss of your phone/ tablet assuming you have taken reasonable precautions to keep your device secure. Loss claims MUST be reported to the police within 48 hours of the loss. If the loss occurs when you are outside Kenya, please report the incident to the police in the country you are in within 48 hours and get a written report of the same.
-.devices
+%a{:name => "devices"}
+.devices{"data-magellan-destination" => "devices"}
   .row
     .large-12.columns.large-centered
       %h4
@@ -89,7 +98,7 @@
           %img.th{:src => "/assets/samsung.png"}
         %li
           %img.th{:src => "/assets/sony.png"}
-.claims
+.claims{"data-magellan-destination" => "claims"}
   .row
     .large-6.columns
       %h4
@@ -146,7 +155,7 @@
               %li
                 Copy of ID or Passport        
 
-.testimonials
+.testimonials{"data-magellan-destination" => "testimonials"}
   .row
     .large-12.columns.large-centered
       %img.quote{:src => "/assets/quotes.png"}
@@ -165,7 +174,7 @@
             Your customer service is very good, Thank you
             %cite
               Tom Ndege
-.contact_us
+.contact_us{"data-magellan-destination" => "contact_us"}
   .row
     .large-6.columns
       %h4
@@ -175,16 +184,16 @@
           .row
             .large-6.columns
               =f.label :name
-              =f.text_field :name, :placeholder => "Your Name*", :required => ""
+              =f.text_field :name, :placeholder => "Your Name *", :required => ""
               %small.error
                 A name is required
             .large-6.columns
               =f.label :email
-              =f.email_field :email, :placeholder => "Your Email*", :required => ""
+              =f.email_field :email, :placeholder => "Your Email *", :required => ""
               %small.error
                 An email address is required.
           =f.label :message
-          =f.text_area :message, :placeholder => "Your feedback here*", :required => ""
+          =f.text_area :message, :placeholder => "Your feedback here *", :required => ""
           %small.error
             An message is required. 
       
@@ -212,11 +221,11 @@
           We are social too:
         %ul.social-icons
           %li
-            %a.facebook{:href => "https://www.facebook.com/lovemobke"}              
+            %a.facebook{:href => "https://www.facebook.com/lovemobke"} /LoveMobKE              
           %li
-            %a.twitter{:href => "http://twitter.com/lovemobke"}
+            %a.twitter{:href => "http://twitter.com/lovemobke"} @LovemobKE
 
-        %p.survey-text
+        %p.survey-text.hide
           Take our new survey and stand a chance to win
           %a.button.survey.small
             CUSTOMER SURVEY
