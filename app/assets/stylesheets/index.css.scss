@@ -38,12 +38,14 @@
 			font-weight: 700;
 		}
 
-		a.active {
-			border-bottom: 3px solid #d61d23;
+		.active {
+			a {
+				border-bottom: 3px solid #d61d23;	
+			}			
 		}
 	}
 
-	.menu-holder.fxd {
+	.menu-holder.fxd, .menu-holder.fixed {
 		background: #000000;
 	}
 
