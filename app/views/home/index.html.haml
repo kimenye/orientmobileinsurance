@@ -1,44 +1,22 @@
 .hero
   .show-for-small
-    / %nav.top-bar{"data-topbar" => "", "data-options" => "is_hover: false;"}
-    /   %ul.title-area
-    /     %li.toggle-topbar.menu-icon
-    /       %a
-    /         %span
-    /           MENU
-
-    /   %section.top-bar-section
-    /     %ul.right
-    /       %li
-    /         %a#insure
-    /           INSURE
-    /       %li
-    /         %a#devices
-    /           DEVICES
-    /       %li
-    /         %a#claims
-    /           CLAIMS
     %nav.top-bar
-      %ul.title-area
-        / Title Area
-        %li.name
-          %h1
-            %a{href: "#"} Kenya Orient
-        / Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone
+      %ul.title-area.logo-holder
+        %a.logo
         %li.toggle-topbar.menu-icon
           %a{href: "#"}
             %span Menu
-      %section.top-bar-section
+      %section.top-bar-section.menu
         %ul.left.small-block-grid-2
+          %li.alt.left
+            %a#insure{:href => "#"} INSURE
           %li.alt
-            %a#insure{href: "#"} INSURE
-          %li.alt
-            %a#devices{href: "#"} DEVICES
-          %li
+            %a#devices{:href => "#"} DEVICES
+          %li.left
             %a#claims{href: "#"} CLAIMS
           %li
             %a#testimonials{href: "#"} TESTIMONIALS
-          %li.alt
+          %li.alt.left
             %a#contact_us{href: "#"} CONTACT US
           %li.alt
             %a
@@ -63,7 +41,7 @@
           %li{"data-magellan-arrival" => "contact_us"}
             %a#contact_us
               CONTACT US
-  .row
+  .row.orbit
     .large-12.columns
       %ul.banner-orbit{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fade';animation_speed:1500;timer:false;"}
         %li{"data-orbit-slide" => "damaged"}

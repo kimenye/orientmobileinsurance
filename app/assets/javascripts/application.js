@@ -34,7 +34,7 @@ $(function(){
 		$("html, body").animate({ scrollTop: goTo - 30 }, 500);
 	});
 
-	$('ul.top-links a').click(function(e) {
+	$('ul.top-links a, .menu a').click(function(e) {
 		var id = $(this)[0].id;
 		var goTo = $('div.' + id).offset().top - 30
 		$("html, body").animate({ scrollTop: goTo - 30 }, 500);

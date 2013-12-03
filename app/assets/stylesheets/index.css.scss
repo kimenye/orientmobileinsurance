@@ -6,6 +6,14 @@
 		font-family: Lato, 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;		
 	}
 
+	.top-bar {
+		overflow: visible;
+
+		.menu {
+			display: none;
+		}
+	}
+
 	.logo-holder {
 		border-top: 3px solid #ffffff;	
 		position: fixed;
@@ -311,6 +319,12 @@
 	}
 
 	@media only screen and (max-width: 40em) {
+
+		
+		.logo-holder {
+			border-top: none;
+		}
+
 		.hero {
 			background-color: #ffffff;
 
@@ -319,45 +333,84 @@
 
 				.logo {
 					position: inherit;
+					left: 5px;
 				}
 			}
+		}
+
+		.row.orbit {
+			margin-top: 45px;
 		}
 
 		.top-bar {
 			background-color: #ffffff;			
 
 
+
 			li.toggle-topbar.menu-icon {
-				background: #17286d;
+				background: #ffffff;
 				padding-right: 10px;
 				margin-top: 0px;
-				right: 0px;
-				top: 0px;
+				top: 25%;
 
 				span {
 					padding-right: 20px;
+					color: #19286d;
 				}
 			}
 
 			.small-block-grid-2 > li {
 				padding: 0 0.625em 0;
 			}
+
+			.toggle-topbar a span {
+				box-shadow: 0 10px 0 1px #19286d, 0 16px 0 1px #19286d, 0 22px 0 1px #19286d;
+			}
 		}
 
 		.top-bar.expanded .title-area {
-			background-color: #ffffff;
+			background-color: #19286d;
 		}
 
 		.top-bar.expanded {
+
+			a {
+				text-align: center;
+			}
+
+			li.toggle-topbar.menu-icon {
+				background: transparent;
+			}
+
+			.logo-holder {
+				border-top: none;
+			}
 
 			.top-bar-section ul li.alt,
 			.top-bar-section ul li.alt > a {
 				background: #111c4c;
 			}
 
+			.top-bar-section ul li.left {
+				border-right: 1px solid #050817;
+			}
+
 			.top-bar-section ul li,
 			.top-bar-section ul li > a {
 				background: #19286d;
+			}
+
+			.menu {
+				display: block;
+			}
+
+			.name {
+				display: none;
+			}
+
+			.toggle-topbar a span {
+				box-shadow: 0 10px 0 1px #ffffff, 0 16px 0 1px #ffffff, 0 22px 0 1px #ffffff;
+				color: #ffffff;
 			}
 		}
 
