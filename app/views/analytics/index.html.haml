@@ -70,6 +70,12 @@
     = render_chart @overall, 'overall'
   .large-6.columns
     %h3.subheader
-      Insured Values vs Policies vs Claims (Values)
+      Insured vs Policies vs Claims (v)
     #values
     = render_chart @values, 'values'
+.row
+  .large-6.columns
+    %h3.subheader
+      Devices
+    #devices
+    = render_chart @devices, 'devices'

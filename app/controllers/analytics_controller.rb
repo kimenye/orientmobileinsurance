@@ -113,7 +113,26 @@ class AnalyticsController < ApplicationController
 
 		opts   = { :width => 500, :height => 450, :title => '', :legend => 'bottom' }
   		@values = GoogleVisualr::Interactive::LineChart.new(values, opts)
-  		
 
+  		vendors = Enquiry.uniq.pluck(:vendor)
+  		data_table = GoogleVisualr::DataTable.new
+  		data_table.new_column('string', 'Vendor')
+  		data_table.new_column('number', 'Number')
+		
+		vendors.reject!  do |v|
+			v.nil?
+		end
+		data_table.add_rows(vendors.count)
+
+		i = 0
+		vendors.each do |vendor|
+			amount = Enquiry.where("vendor = ?", vendor).count
+			data_table.set_cell(i,0,vendor)
+			data_table.set_cell(i,1,amount)
+			i += 1
+		end
+		
+		opts = { :width => 400, :height => 300, :is3D => true }
+  		@devices = GoogleVisualr::Interactive::PieChart.new(data_table, opts)	
 	end
 end
