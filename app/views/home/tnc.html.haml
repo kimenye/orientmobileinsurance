@@ -1,7 +1,29 @@
+.hero
+  .show-for-small
+    %nav.top-bar
+      %ul.title-area.logo-holder
+        %a.logo
+        %li.toggle-topbar.menu-icon
+          %a{href: "#"}
+            %span Menu
+      %section.top-bar-section.menu
+        %ul.left.small-block-grid-2
+          %li.alt.left
+            %a#insure{:href => "/"} Back Home
+
+  .logo-holder
+    .row.menu-holder.hide-for-small    
+      .large-12.columns
+        %a.logo      
+        %ul.top-links.hide-for-small{"data-magellan-expedition" => ""}      
+          %li.active{"data-magellan-arrival" => "home"}
+            %a{:href => "/"} Back Home
+
+
 
 .row
   .large-8.large-centered.columns
-    %h1.subheader
+    %h1.subheader.first
       SECTION A: PRODUCT DESCRIPTION
     %ol.terms
       %li
