@@ -40,3 +40,7 @@ CATALOG_VERSION: 1
 UPDATE_FILE: catalogue_october.csv
 FONEXPRESS_EMAIL: scadmin@fonexpress.net
 CLAIM_REGISTRATION_EMAILS: scadmin@fonexpress.net, ombclaims@korient.co.ke
+ANALYTICS_ID: sdfsdf
+SITE: korient.co.ke
+FEEDBACK_FROM_EMAIL: feedback@korient.co.ke
+FEEDBACK_TO_EMAIL: mobile@korient.co.ke

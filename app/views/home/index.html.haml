@@ -1,4 +1,271 @@
-.row.spacer
-  .large-5.columns.large-centered
-    %a{:href => "enquiry/insure"}
-      %img{:src => "/assets/busted.jpg"}
+.hero
+  .show-for-small
+    %nav.top-bar
+      %ul.title-area.logo-holder
+        %a.logo
+        %li.toggle-topbar.menu-icon
+          %a{href: "#"}
+            %span Menu
+      %section.top-bar-section.menu
+        %ul.left.small-block-grid-2
+          %li.alt.left
+            %a#insure{:href => "#"} INSURE
+          %li.alt
+            %a#devices{:href => "#"} DEVICES
+          %li.left
+            %a#claims{href: "#"} CLAIMS
+          %li
+            %a#testimonials{href: "#"} TESTIMONIALS
+          %li.alt.left
+            %a#contact_us{href: "#"} CONTACT US
+          %li.alt
+            %a
+              &nbsp;
+  .logo-holder
+    .row.menu-holder.hide-for-small    
+      .large-12.columns
+        %a.logo      
+        %ul.top-links.hide-for-small{"data-magellan-expedition" => ""}      
+          %li.active{"data-magellan-arrival" => "insure"}
+            %a#insure
+              INSURE        
+          %li{"data-magellan-arrival" => "devices"}
+            %a#devices
+              DEVICES
+          %li{"data-magellan-arrival" => "claims"}
+            %a#claims
+              CLAIMS
+          %li{"data-magellan-arrival" => "testimonials"}
+            %a#testimonials
+              TESTIMONIALS
+          %li{"data-magellan-arrival" => "contact_us"}
+            %a#contact_us
+              CONTACT US
+  .row.orbit
+    .large-12.columns
+      %ul.banner-orbit{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fade';timer_speed: 10000;animation_speed:1500;timer:true;"}
+        %li{"data-orbit-slide" => "damaged"}
+          %img{:src => "/assets/damaged.png"}    
+          .tagline
+            %p
+              Before the end of the day you could lose your phone or crack
+              it's screen. Then what?
+            %a.button.small.survey.cta{:href => "/insure"}
+              INSURE
+        %li{"data-orbit-slide" => "stolen"}
+          %img{:src => "/assets/stolen.png"}
+          .tagline
+            %p
+              Before the end of the day your phone could be stolen. Then what?
+            %a.button.small.survey.cta{:href => "/insure"}
+              INSURE
+        %li{"data-orbit-slide" => "lost"}
+          %img{:src => "/assets/lost.png"}
+          .tagline
+            %p
+              Before the end of the day you could lose your phone or crack
+              it's screen. Then what?
+            %a.button.small.survey.cta{:href => "/insure"}
+              INSURE
+      .learn-more
+        %a
+          LEARN MORE
+        %a.img-link
+%a{:name => "insure"}
+.jumbo.insure{"data-magellan-destination" => "insure"}
+  .row
+    .large-8.large-centered.columns
+      %p
+        This is an insurance service provided by Kenya Orient Insurance Limited to cover your mobile devices, specifically mobile phones and tablets. Orient Mobile provides compensation for the loss 
+  .row
+    .large-4.columns
+      .feature
+        %img{:src => "/assets/stolen_icon.png"}
+        %h5
+          STOLEN?
+        %p
+          Theft of your phone/ tablet assuming you have taken reasonable precautions to keep your device secure. Theft claims MUST be reported to the police within 48 hours of the theft. If the loss occurs when you are outside Kenya, please report the incident to the police in the country you are in within 48 hours and get a written report of the same.
+    .large-4.columns
+      .feature
+        %img{:src => "/assets/damaged_icon.png"}
+        %h5
+          DAMAGED?
+        %p
+          We cover accidental damage e.g. damage caused by dropping the phone/ tablet, malicious damage i.e. vandalism and liquid damage
+    .large-4.columns
+      .feature
+        %img{:src => "/assets/lost_icon.png"}
+        %h5
+          LOST?
+        %p
+          Loss of your phone/ tablet assuming you have taken reasonable precautions to keep your device secure. Loss claims MUST be reported to the police within 48 hours of the loss. If the loss occurs when you are outside Kenya, please report the incident to the police in the country you are in within 48 hours and get a written report of the same.
+  .row.show-for-small
+    .small-4.columns.small-centered
+      %a.button.small.survey.cta{:href => "/insure"}
+        INSURE      
+%a{:name => "devices"}
+.devices{"data-magellan-destination" => "devices"}
+  .row
+    .large-12.columns.large-centered
+      %h4
+        Devices Covered
+      %p
+        At the moment, Orient Mobile can only cover selected models of the following phone manufacturers. The list of covered devices will be reviewed on a regular basis. Please note that at the moment, Orient Mobile can only cover devices that can access the internet. 
+  .row
+    .large-12.columns.large-centered.small-centered
+      %ul.large-block-grid-6.small-block-grid-2
+        %li
+          %img.th{:src => "/assets/alcatel.png"}
+        %li
+          %img.th{:src => "/assets/apple.png"}
+        %li
+          %img.th{:src => "/assets/blackberry.png"}
+        %li
+          %img.th{:src => "/assets/hp.png"}
+        %li
+          %img.th{:src => "/assets/htc.png"}
+        %li
+          %img.th{:src => "/assets/lg.png"}
+        %li
+          %img.th{:src => "/assets/mifone.png"}
+        %li
+          %img.th{:src => "/assets/motorola.png"}
+        %li
+          %img.th{:src => "/assets/nokia.png"}
+        %li
+          %img.th{:src => "/assets/samsung.png"}
+        %li
+          %img.th{:src => "/assets/sony.png"}
+.claims{"data-magellan-destination" => "claims"}
+  .row
+    .large-6.columns
+      %h4
+        Registering a Claim
+
+      %p
+        Lost / Damaged your insured mobile device? Don't worry, registering a Claim online is easy and takes only a couple of minutes. All
+        you need is the ID that you used to register for your Orient Mobile Policy.
+
+      %form.subscribe{:method => "POST", :action => customer_login_path}
+        .row.collapse          
+          .large-8.columns
+            %input{:type => "text", :name => "customer_id", :id => "customer_id", :placeholder => "Your ID / Passport Number *"}
+          .large-4.columns
+            %input.button.postfix.expand.signup{:type => "submit", :value => "Begin"}  
+
+    .large-6.columns
+      %h4
+        Claim Registration Checklist
+      %p
+        Depending on your type of claim, you will need certain documents before you claim is successfully processed.
+
+      .section-container.auto{"data-section" => ""}
+        %section.active
+          %p.title{"data-section-title" => ""}
+            %a{:href => "#damage-claims"} Damage
+          #damage-claims.content.active
+            %p
+              For a Damage claim you need the following:
+            %ol
+              %li
+                The Damaged Device
+              %li
+                Original or certified copy of purchase receipt/ warranty
+              %li
+                Original ID or Passport
+              %li
+                Copy of ID or Passport           
+        %section
+          %p.title{"data-section-title" => ""}
+            %a{:href => "#theft-claims"} Theft / Loss
+          #theft-claims.content.active
+            %p
+              For a Theft claim you need the following:
+            %ol
+              %li
+                Police Abstract
+              %li
+                Original or certified copy of purchase receipt/ warranty
+              %li
+                Completed and stamped Blocking Request Form from mobile network operator
+              %li
+                Original ID or Passport
+              %li
+                Copy of ID or Passport        
+
+.testimonials{"data-magellan-destination" => "testimonials"}
+  .row
+    .large-12.columns.large-centered
+      %img.quote{:src => "/assets/quotes.png"}
+      %ul{"data-orbit" => "", "data-options" => "navigation_arrows:true;slide_number:false;bullets:false;animation:'fadeAndPop';animation_speed:1500;timer:false;"}
+        %li{"data-orbit-slide" => "client_one"}
+          %blockquote
+            thank you very much ,i have picked the phone from Nakumatt Lifestle Nairobi and most greatful to Kenya Orient. i swear to be a good ambassodor to you guys!!!!!!!!!!!!! bravo! this is the best thing that ever happened to Kenyans!
+            %cite
+              Edwin Waini Ndege /
+              Nairobi
+
+
+        %li{"data-orbit-slide" => "client_two"}
+          %blockquote
+            I have been talking about it to all my work colleagues. They didn’t believe it. I also didn’t believe in the Mobile insurance however I still took it up. My phone was stolen a month later and Kenya Orient replaced it within a week’s time. I still can’t believe it. The process to insure and claim is so easy. I have already taken up insurance for the replaced phone that I got from Fone Express. 
+            Your customer service is very good, Thank you
+            %cite
+              Tom Ndege
+.contact_us{"data-magellan-destination" => "contact_us"}
+  .row
+    .large-6.columns
+      %h4
+        Talk to us
+      .form
+        =form_for(Feedback.new(), remote: true, :html => { "data-abide" => ""} ) do |f|
+          .row
+            .large-6.columns
+              =f.label :name
+              =f.text_field :name, :placeholder => "Your Name *", :required => ""
+              %small.error
+                A name is required
+            .large-6.columns
+              =f.label :email
+              =f.email_field :email, :placeholder => "Your Email *", :required => ""
+              %small.error
+                An email address is required.
+          =f.label :message
+          =f.text_area :message, :placeholder => "Your feedback here *", :required => ""
+          %small.error
+            An message is required. 
+      
+          %input.button.small.send{:type => "submit", :value => "Send"}
+      %p.thankyou-feedback.hide
+        Thank you for your feedback. Someone from our team will get in touch with you shortly.
+
+    .large-6.columns
+      %h4
+        Contact Centre
+      .contact_center
+        %ul.vcard
+          %li
+            Kenya Orient Contact Center
+          %li.street-address
+            Tel: 
+            %span.tel
+              020 2962000    
+          %li.street-address
+            Email: 
+            %a{:href =>"mailto:info@korient.co.ke"}
+              mobile@korient.co.ke    
+
+        %p
+          We are social too:
+        %ul.social-icons
+          %li
+            %a.facebook{:href => "https://www.facebook.com/lovemobke"} /LoveMobKE              
+          %li
+            %a.twitter{:href => "http://twitter.com/lovemobke"} @LovemobKE
+
+        %p.survey-text.hide
+          Take our new survey and stand a chance to win
+          %a.button.survey.small
+            CUSTOMER SURVEY
+
+= render "layouts/footer_new"

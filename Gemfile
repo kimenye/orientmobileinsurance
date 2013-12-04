@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 ruby '1.9.3'
 gem 'rails', '3.2.11'
 gem "mail"
@@ -31,11 +31,12 @@ gem 'dynamic_form'
 gem 'activeadmin-axlsx'
 gem 'spreadsheet'
 gem 'simple_xlsx_reader'
-
+gem 'google_visualr'
 gem 'phony_rails'
 gem 'zurb-foundation'
 gem 'compass-rails'
 gem 'smarter_csv'
+gem 'valid_email'
 
 group :development do
   gem 'better_errors'
@@ -50,8 +51,8 @@ group :development, :test do
   gem 'pry'
   gem 'factory_girl_rails'
 end
-group :production do
-  gem 'pg'
+gem 'pg'
+group :production do  
   gem 'therubyracer', :platforms => :ruby
 end
 #group :test do

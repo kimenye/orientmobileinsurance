@@ -19,6 +19,11 @@ ul.nav {
   }
 }
 
+p.hide, small.hide, .hide {
+  display: none;
+  // color: #ffffff;
+}
+
 ul.errors {
   list-style-type: none;
   color: red;
@@ -108,8 +113,27 @@ label.error {
   border-bottom: 1px solid lightgrey;
 }
 
+[data-magellan-expedition] {
+  background: transparent;
+  min-width: 0;
+}
 
-footer {
+[data-magellan-expedition].fxd {
+  background: #000000;
+}
+
+
+
+.menu-holder {
+  .fixed {
+    width: auto;
+    right: auto;
+    left: auto;
+  }
+}
+
+
+/*footer {
   position: fixed;
   background-color: #e8ebf1;
   width: 100%;
@@ -158,4 +182,4 @@ footer {
       }
     }
   }
-}
+}*/

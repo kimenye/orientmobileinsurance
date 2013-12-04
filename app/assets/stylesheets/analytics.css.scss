@@ -1,0 +1,55 @@
+.analytics.index {
+	.logo {
+		padding: 10px;
+	}
+
+	header {
+		.row {
+			border-bottom: 1px solid #eee;
+		}
+	}
+
+	.grid {
+		border: 1px solid #eee;
+
+		table {
+			border: none;
+			width: 100%;
+			text-align: center;
+		}
+
+		table thead tr th {
+			color: #979899;
+			text-align: center;
+			padding-bottom: 0px;
+			font-weight: normal;
+			width: 33%;
+		}
+
+		thead {
+			background: #fff;
+		}
+
+		table {
+			tbody {
+				tr.headline {
+					td {
+						padding: 0px;
+						h1.subheader {
+							margin-top: 0px;
+							margin-bottom: 0px;
+						}
+					}
+				}
+
+				tr.footer {
+					td {
+						color: #979899;
+						padding-bottom: 0px;
+						font-weight: normal;
+					}
+				}
+			}
+		}
+	}
+}

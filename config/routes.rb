@@ -1,8 +1,10 @@
 Orientmobileinsurance::Application.routes.draw do
+  get "feedbacks/create"
+
   resources :claims
 
 
-  resources :insured_devices
+  resources :insured_devices, :subscriptions, :feedbacks
 
 
   devise_for :admin_users, ActiveAdmin::Devise.config
@@ -51,4 +53,6 @@ Orientmobileinsurance::Application.routes.draw do
   match 'start_again' => 'enquiry#start_again', :as => :start_again
   match 'test' => 'home#device', :as => :test
   match 'result' => 'home#result', :as => :result
+  match 'terms_and_conditions' => 'home#tnc', :as => :tnc
+  match 'analytics' => 'analytics#index', :as => :analytics
 end
