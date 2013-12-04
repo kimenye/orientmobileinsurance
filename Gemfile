@@ -51,8 +51,8 @@ group :development, :test do
   gem 'pry'
   gem 'factory_girl_rails'
 end
-group :production do
-  gem 'pg'
+gem 'pg'
+group :production do  
   gem 'therubyracer', :platforms => :ruby
 end
 #group :test do
