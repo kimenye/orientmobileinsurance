@@ -1,7 +1,7 @@
 .row
   .large-12.columns
     %h2.subheader
-      Orient Mobile Analytics
+      Orient Mobile Analytics Dashboard
 .row
   .large-6.columns
     %h3.subheader
@@ -15,7 +15,7 @@
             %th
               Quotes
             %th
-              Customers
+              Policies
         %tbody
           %tr.headline
             %td
@@ -39,27 +39,37 @@
             %th
               Insured Value
             %th
-              Premiums Owing
+              Claims Paid
         %tbody
           %tr.headline
             %td
               %h1.subheader
-                = @total
+                = number_to_currency(@total, :unit => "", :precision => 0, :delimiter => ",")
             %td
               %h1.subheader
-                = @insured_value
+                = number_to_currency(@insured_value, :unit => "", :precision => 0, :delimiter => ",") 
             %td
               %h1.subheader
-                = @pending
+                = number_to_currency(@claims_paid, :unit => "", :precision => 0, :delimiter => ",") 
 .row
-  .large-12.columns
+  .large-6.columns
     %h3.subheader
       Conversions    
     #chart
     = render_chart @chart, 'chart'
-.row
-  .large-12.columns
+  .large-6.columns
     %h3.subheader
       Policies vs Claims
     #piechart
     = render_chart @piechart, 'piechart'
+.row
+  .large-6.columns
+    %h3.subheader
+      Leads vs Policies vs Claims
+    #overall
+    = render_chart @overall, 'overall'
+  .large-6.columns
+    %h3.subheader
+      Insured Values vs Policies vs Claims (Values)
+    #values
+    = render_chart @values, 'values'

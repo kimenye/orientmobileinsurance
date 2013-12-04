@@ -1,7 +1,7 @@
 class AnalyticsService
 
 	def self.months_between(start_date, end_date)
-		(start_date..end_date)..map{ |m| m.strftime('%Y%m') }.uniq.map{ |m| "#{Date::ABBR_MONTHNAMES[ Date.strptime(m, '%Y%m').mon ]} #{Date.strptime(m,'%Y%m').year}" }
+		(start_date..end_date).map{ |m| m.strftime('%Y%m') }.uniq.map{ |m| "#{Date::ABBR_MONTHNAMES[ Date.strptime(m, '%Y%m').mon ]} #{Date.strptime(m,'%Y%m').year}" }
 	end
 
 	def self.month_range(month)
