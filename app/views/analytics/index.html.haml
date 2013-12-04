@@ -1,0 +1,81 @@
+.row
+  .large-12.columns
+    %h2.subheader
+      Orient Mobile Analytics Dashboard
+.row
+  .large-6.columns
+    %h3.subheader
+      Overview
+    .overview.grid
+      %table
+        %thead
+          %tr
+            %th
+              Enquiries
+            %th
+              Quotes
+            %th
+              Policies
+        %tbody
+          %tr.headline
+            %td
+              %h1.subheader
+                = @enquiries.count
+            %td
+              %h1.subheader
+                = @quotes.count
+            %td
+              %h1.subheader
+                = @policies.count
+  .large-6.columns
+    %h3.subheader
+      Revenue To Date
+    .overview.grid
+      %table
+        %thead
+          %tr
+            %th
+              Premiums Collected
+            %th
+              Insured Value
+            %th
+              Claims Paid
+        %tbody
+          %tr.headline
+            %td
+              %h1.subheader
+                = number_to_currency(@total, :unit => "", :precision => 0, :delimiter => ",")
+            %td
+              %h1.subheader
+                = number_to_currency(@insured_value, :unit => "", :precision => 0, :delimiter => ",") 
+            %td
+              %h1.subheader
+                = number_to_currency(@claims_paid, :unit => "", :precision => 0, :delimiter => ",") 
+.row
+  .large-6.columns
+    %h3.subheader
+      Conversions    
+    #chart
+    = render_chart @chart, 'chart'
+  .large-6.columns
+    %h3.subheader
+      Policies vs Claims
+    #piechart
+    = render_chart @piechart, 'piechart'
+.row
+  .large-6.columns
+    %h3.subheader
+      Leads vs Policies vs Claims
+    #overall
+    = render_chart @overall, 'overall'
+  .large-6.columns
+    %h3.subheader
+      Insured vs Policies vs Claims (v)
+    #values
+    = render_chart @values, 'values'
+.row
+  .large-6.columns
+    %h3.subheader
+      Devices
+    #devices
+    = render_chart @devices, 'devices'
