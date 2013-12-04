@@ -31,7 +31,7 @@ gem 'dynamic_form'
 gem 'activeadmin-axlsx'
 gem 'spreadsheet'
 gem 'simple_xlsx_reader'
-
+gem 'google_visualr'
 gem 'phony_rails'
 gem 'zurb-foundation'
 gem 'compass-rails'
