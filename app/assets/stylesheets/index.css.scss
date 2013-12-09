@@ -30,6 +30,13 @@
 			background-repeat: no-repeat;
 			margin-left: -1px;
 		}
+
+		a.logo.landscape {
+			background-image: url('/assets/orient_mobile_logo.png');
+			width: 211px;
+			height: 43px;
+			top: 10px;
+		}
 	}
 
 	.top-links {
