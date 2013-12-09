@@ -44,3 +44,5 @@ ANALYTICS_ID: sdfsdf
 SITE: korient.co.ke
 FEEDBACK_FROM_EMAIL: feedback@korient.co.ke
 FEEDBACK_TO_EMAIL: mobile@korient.co.ke
+ANALTICS_USERNAME: <<username>>
+ANALYTICS_PASSWORD: <<password>>

@@ -54,5 +54,6 @@ Orientmobileinsurance::Application.routes.draw do
   match 'test' => 'home#device', :as => :test
   match 'result' => 'home#result', :as => :result
   match 'terms_and_conditions' => 'home#tnc', :as => :tnc
+  match 'terms' => 'home#tnc', :as => :tnc_short
   match 'analytics' => 'analytics#index', :as => :analytics
 end

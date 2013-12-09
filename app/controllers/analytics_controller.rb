@@ -1,4 +1,6 @@
 class AnalyticsController < ApplicationController
+	http_basic_authenticate_with :name => ENV['ANALYTICS_USERNAME'], :password => ENV['ANALYTICS_PASSWORD']
+
 	layout "analytics"
 
 	def index
