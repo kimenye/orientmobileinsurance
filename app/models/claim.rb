@@ -39,6 +39,7 @@ class Claim < ActiveRecord::Base
   validates_presence_of :dealer_description, if: :service_centre_damage_claim?
   validates_presence_of :incident_date, if: :is_saved?
   validates_with IncidentDateValidator, if: :is_in_customer_stage?
+  validates :claim_no, :uniqueness => true, if: :claim_no
 
   def is_forward_to_koil?
     return (step == 2 && is_theft?) || (step == 3 && is_damage?)
