@@ -18,4 +18,8 @@ class ClaimServiceTest < ActiveSupport::TestCase
 		c = Claim.new :claim_type => "Damage",  :claim_no => "C/OMB/AAAA/0023"
 		assert_equal false, c.valid?
 	end
+
+#	test "A claim number should not have lowercase charachters" do
+#		claim = Claim.new :claim_type => "Damage", :claim_no => "C/OMB/aaa/0023"
+#	end
 end
