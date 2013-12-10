@@ -41,11 +41,14 @@ $(function(){
 		e.preventDefault();
 	});
 
-	var headerTop = Math.max($('.jumbo').offset().top + 5, 575);
-	$(window).scroll(function(){
-		if( $(window).scrollTop() > headerTop) 
-			$('.logo').addClass('landscape');		
-		else
-			$('.logo').removeClass('landscape');
-	});
+	if ($('.jumbo').length > 0) {
+		var headerTop = Math.max($('.jumbo').offset().top + 5, 575);
+		$(window).scroll(function(){
+			if( $(window).scrollTop() > headerTop) 
+				$('.logo').addClass('landscape');		
+			else
+				$('.logo').removeClass('landscape');
+		});		
+	}
+
 });
