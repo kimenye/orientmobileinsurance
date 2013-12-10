@@ -106,11 +106,12 @@ class ClaimService
   end
 
   def create_claim_no
+    
     last_claim = Claim.last
     next_digits = last_claim.claim_no[/\d{1,4}$/].to_i + 1
     next_digits_as_string = next_digits.to_s.rjust(4, '0')
     "C/OMB/AAAA/"+next_digits_as_string
-    #C/OMB/AAAA/%04d"% (Claim.count + 1).to_s
+  
   end
 
   def find_brands_in_town town
