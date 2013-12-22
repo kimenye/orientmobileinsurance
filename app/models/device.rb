@@ -30,7 +30,7 @@ class Device < ActiveRecord::Base
   def get_insurance_value (code, year_of_purchase)
     
     service = PremiumService.new
-    if service.is_fx_code(code)  && Time.now.year == year_of_purchase
+    if (service.is_fx_code(code) || service.is_stl_code(code))  && Time.now.year == year_of_purchase
       return fd_insured_value
     elsif year_of_purchase == Time.now.year
       return yop_insured_value

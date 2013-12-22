@@ -41,9 +41,12 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert false == insurable
   end
 
-  test "Insurance value should be 100% of catalogue price if sales code starts with FX" do
+  test "Insurance value should be 100% of catalogue price if sales code starts with FX or STL" do
     service = PremiumService.new
     insurance_value = service.calculate_insurance_value(800, "FXP001" , Time.now.year)
+    assert insurance_value == 800, "Catalogue price should equal insurance value"
+
+    insurance_value = service.calculate_insurance_value(800, "STL001" , Time.now.year)
     assert insurance_value == 800, "Catalogue price should equal insurance value"
   end
 

@@ -10,6 +10,7 @@ class DeviceTest < ActiveSupport::TestCase
       :marketing_name => "iPhone",
       :fd_insured_value => 10.0,
       :yop_insured_value => 7.0,
+      :stl_insured_value => 10.0,
       :prev_insured_value => 5.0
     })
   end
@@ -19,8 +20,16 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal 10.0, v
   end
 
-  test "For a code starting with FX the if the year of purchase is not the current year then the insurance value is that of the previous year" do
+  test "For a code starting with STL the stl_insured_value is used for the insurance value" do
+    v = @device.get_insurance_value "STL000", Time.now.year
+    assert_equal 10.0, v
+  end
+
+  test "For a code starting with FX or STL the if the year of purchase is not the current year then the insurance value is that of the previous year" do
     v = @device.get_insurance_value "FXP001", Time.now.year - 1
+    assert_equal 5.0, v
+
+    v = @device.get_insurance_value "STL000", Time.now.year - 1
     assert_equal 5.0, v
   end
 
