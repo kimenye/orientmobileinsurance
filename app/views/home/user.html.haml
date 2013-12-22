@@ -1,4 +1,3 @@
-= render "layouts/banner"
 - if user_signed_in?
   .row
     .large-10.large-centered.columns
@@ -36,7 +35,7 @@
               %input.small.button{:type => "submit"}
       - if claims_is_logged_in?
         %form{:method => "POST", :action => claim_search_by_no_path}
-          %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
+          %input{:type => 'text', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
         .section-container.tabs{"data-section" => "tabs"}
           %section
             %p.title{"data-section-title" => ""}
@@ -124,8 +123,12 @@
                             %a{:href => "policy/show_details?policy_no=#{claim.policy.policy_number}"}
                               = claim.policy.policy_number
       - if service_centre_is_logged_in?
-        %form{:method => "POST", :action => claim_search_by_no_path}
-          %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
+        %form{:method => "POST", :action => claim_search_by_no_path}      
+          .row.collapse
+            .large-10.columns
+              %input{:type => 'text', :placeholder =>'Search by Claim No.', :name => 'claim_no'}  
+            .large-2.columns
+              %input.button.postfix.expand.signup{:type => "submit", :value => "Search"}
         .section-container.tabs{"data-section" => "tabs"}
           %section
             %p.title{"data-section-title" => ""}
