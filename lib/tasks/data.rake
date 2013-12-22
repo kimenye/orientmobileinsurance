@@ -153,4 +153,9 @@ namespace :data do
     a.tag = "FBANK"
     a.save!
   end
+
+  task :create_dealers => :environment do
+    fone_express = Dealer.create! :code => "FD", :name => "Fones Express"
+    simba = Dealer.create! :code => "STL", :name => "Simba Telecom"
+  end
 end

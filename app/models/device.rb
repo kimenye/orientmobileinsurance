@@ -10,7 +10,8 @@ class Device < ActiveRecord::Base
 
   attr_accessible :vendor, :model, :marketing_name, :catalog_price, :wholesale_price, :fd_insured_value, :device_type,
                   :fd_replacement_value, :fd_koil_invoice_value, :yop_insured_value, :yop_replacement_value,
-                  :yop_fd_koil_invoice_value, :prev_insured_value, :prev_replacement_value, :prev_fd_koil_invoice_value, :stock_code, :active, :version
+                  :yop_fd_koil_invoice_value, :prev_insured_value, :prev_replacement_value, :prev_fd_koil_invoice_value, 
+                  :stock_code, :active, :version, :stl_insured_value, :stl_replacement_value, :stl_koil_invoice_value, :dealer_code
 
 
   scope :model_search, (lambda do |vendor, model|
