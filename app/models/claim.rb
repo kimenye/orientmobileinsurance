@@ -8,9 +8,12 @@ class IncidentDateValidator < ActiveModel::Validator
       if ENV['CLAIM_DATE_VALIDATION'] == 'true'
         if record.is_damage? && ( (record.incident_date - record.policy.start_date) / (24 * 3600) ).to_i <= 14
           record.errors[:incident_date] << "Please note that Damage claims incurred within the first 2 weeks of cover are not admissible."
-          id = record.policy.insured_device
-          id.damaged_flag = true
-          id.damage_reported = Time.now
+          if !record.policy.nil? && !record.policy.insured_device.nil?
+            id = record.policy.insured_device
+            id.damaged_flag = true
+            id.damage_reported = Time.now
+            id.save!
+          end
         end
       end
 

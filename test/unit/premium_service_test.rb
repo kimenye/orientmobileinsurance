@@ -29,6 +29,12 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert true == insurable
   end
 
+  test "An STL code starts with STL" do
+    service = PremiumService.new
+    assert_equal true, service.is_stl_code("STL001")
+    assert_equal false, service.is_stl_code("FXP000")
+  end
+
   test "Should not insure phones purchased more than a year ago if no sales code is provided" do
     service = PremiumService.new
     insurable = service.is_insurable Time.now.year-2

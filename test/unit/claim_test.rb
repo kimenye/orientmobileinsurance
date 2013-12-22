@@ -2,9 +2,11 @@ require 'test_helper'
 class ClaimTest < ActiveSupport::TestCase
 
   before do
-    
+    @quote = Quote.create!
+
     @policy = Policy.new({
-      :start_date => 3.days.ago
+      :start_date => 3.days.ago,
+      :quote_id => @quote.id
     })
     @policy.save!
 

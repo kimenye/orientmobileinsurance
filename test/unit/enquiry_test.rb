@@ -2,7 +2,7 @@ require 'test_helper'
 class EnquiryTest < ActiveSupport::TestCase
 
   before do
-    @enquiry = Enquiry.create!(:source => "DIRECT", :year_of_purchase => 2013, :customer_id => "1234567890")
+    @enquiry = Enquiry.create!(:source => "DIRECT", :year_of_purchase => 2013)
   end
 
   test "A valid phone number will start with 2547..." do
