@@ -10,7 +10,6 @@ class PremiumService
   end
 
   def calculate_insurance_value catalog_price, sales_code, year_of_purchase
-
     if is_fx_code sales_code
       return catalog_price
     elsif !is_fx_code(sales_code) && year_of_purchase == Time.now.year
