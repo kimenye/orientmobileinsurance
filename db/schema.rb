@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131222084145) do
+ActiveRecord::Schema.define(:version => 20131222185003) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(:version => 20131222084145) do
     t.string   "brand_2"
     t.string   "brand_3"
     t.string   "brand_4"
+    t.string   "brand_5"
   end
 
   create_table "bundled_products", :force => true do |t|
