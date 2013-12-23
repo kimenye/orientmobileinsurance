@@ -17,5 +17,5 @@ ActiveAdmin.register Brand do
     column :brand_5
     actions
   end
-  actions :index, :edit, :show
+  actions :index, :edit, :show, :update
 end

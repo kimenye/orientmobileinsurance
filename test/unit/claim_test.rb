@@ -54,6 +54,7 @@ class ClaimTest < ActiveSupport::TestCase
     @theft_claim.copy_id = true
     @theft_claim.blocking_request = true
     @theft_claim.receipt = true
+    @theft_claim.agent_id = 1
 
     result = @theft_claim.valid?
     assert_equal true, result, "Should be true because of validation pass"

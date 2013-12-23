@@ -63,4 +63,22 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal result.id, inactive.id
   end
 
+  test "A device is STL serviceable only if the phone make is either Forme, Tecno, iTel or G-Tide" do
+    Device.delete_all
+    device = Device.create! :vendor => "Tecno", :model => "N7", :marketing_name => "N7", :catalog_price => 5
+    assert_equal true, device.is_stl
+
+    device = Device.create! :model => "iPhoneTel", :vendor => "Apple", :marketing_name => "iPhone", :catalog_price => 5, :wholesale_price => 4, :active => false, :fd_insured_value => 10.0, :yop_insured_value => 7.0, :prev_insured_value => 5.0
+    assert_equal false, device.is_stl
+
+    device = Device.create! :vendor => "Forme", :model => "N7", :marketing_name => "N7", :catalog_price => 5
+    assert_equal true, device.is_stl
+
+    device = Device.create! :vendor => "iTel", :model => "N7", :marketing_name => "N7", :catalog_price => 5
+    assert_equal true, device.is_stl
+
+    device = Device.create! :vendor => "G-Tide", :model => "N7", :marketing_name => "N7", :catalog_price => 5
+    assert_equal true, device.is_stl
+  end
+
 end

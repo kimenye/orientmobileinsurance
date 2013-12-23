@@ -24,10 +24,10 @@
                 %li
                   = link_to('Change Password', edit_user_registration_path)
               -else
-                %li
+                %li.customer-link
                   %a{:href => customer_index_path }
                     Customer Claims
-                %li
+                %li.dealer-link
                   %a{:href => "#{new_user_session_path}?user_type=DP"}
                     Dealer Portal
                 %li

@@ -1,7 +1,7 @@
 ActiveAdmin.register Claim do
 
   controller do
-    actions :all, :except => [:edit]
+    actions :all, :except => [:destroy]
   end
 
   #index do
@@ -11,5 +11,5 @@ ActiveAdmin.register Claim do
   #  column :policy
   #  column :status
   #end
-  actions :index, :show, :destroy
+  actions :index, :show, :destroy, :update, :edit
 end

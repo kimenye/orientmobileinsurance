@@ -30,4 +30,14 @@
       <% end %>
     </div>
    </div>
+
+   <script type="text/javascript">
+      <% if resource.user_type == "CP" %>
+          $('.customer-link').addClass('active');
+      <% elsif resource.user_type == "DP" %>
+          $('.dealer-link').addClass('active');
+      <% elsif resource.user_type == "SC" %>
+          $('.customer-link').addClass('active');
+      <% end %>      
+   </script>
 </div>

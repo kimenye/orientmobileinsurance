@@ -47,6 +47,10 @@ class Device < ActiveRecord::Base
     return ""
   end
 
+  def is_stl
+    return (vendor == "Tecno" || vendor == "G-Tide" || vendor == "iTel" || vendor == "Forme")
+  end
+
   def to_s
     "#{vendor} #{model}"
   end

@@ -1,7 +1,15 @@
-.row
-  .large-10.large-centered.columns
-    %h4.centered.header
-      Welcome to Orient Mobile Claims
-.row
-  .large-10.large-centered.columns
+.row.banner
+  .large-12.columns
+    %h4.subheader
+      ORIENT MOBILE CLAIMS
+.row.spacer
+  .large-12.columns.large-centered
+    %h4.subheader.centered
+      Welcome to Orient Mobile
+.row.spacer
+  .large-8.large-centered.columns
     = render 'login_form'
+:javascript
+	$(function(){
+  	$('.customer-link').addClass('active');
+  });

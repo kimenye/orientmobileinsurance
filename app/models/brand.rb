@@ -18,4 +18,8 @@ class Brand < ActiveRecord::Base
     brand
   end
 
+  def is_stl_location
+    brand_1 == "Simba Telecom" || brand_2 == "Simba Telecom" || brand_3 == "Simba Telecom" || brand_4 == "Simba Telecom" || brand_5 == "Simba Telecom"
+  end
+
 end

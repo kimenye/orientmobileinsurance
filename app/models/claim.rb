@@ -41,6 +41,7 @@ class Claim < ActiveRecord::Base
   validates_acceptance_of :damaged_device, :allow_nil => false, if: :dealer_damage_claim?, accept: true
   validates_presence_of :dealer_description, if: :service_centre_damage_claim?
   validates_presence_of :incident_date, if: :is_saved?
+  validates_presence_of :agent_id, if: :is_in_dealer_stage?
   validates_with IncidentDateValidator, if: :is_in_customer_stage?
   validates :claim_no, :uniqueness => true, if: :claim_no
 

@@ -101,6 +101,7 @@ ActiveAdmin.register Device do
       f.input :model
       f.input :marketing_name
       f.input :active
+      f.input :dealer_code
     end
     f.actions
   end
