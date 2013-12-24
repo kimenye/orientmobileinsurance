@@ -16,21 +16,13 @@ class ClaimService
   end
 
   def find_nearest_locations claim
-    # device = claim.policy.insured_device.device
-    
-    # if device.is_stl 
-      # locations = towns.reject! { |t| !t.is_stl_location }
-    #   return locations.collect { |t| t.town_name }
-    # else
-    #   return towns.collect { |t| t.town_name }
-    # end
     towns = Brand.order("town_name")
     if claim.is_stl_only
       locations = towns.reject! { |t| !t.is_stl_location }
       return locations.collect { |t| t.town_name }
-    elsif claim.is_fxp_only
-      locations = towns.reject! { |t| t.is_stl_location }
-      return locations.collect { |t| t.town_name }
+    # elsif claim.is_fxp_only
+      # locations = towns.reject! { |t| t.is_stl_location }
+      # return locations.collect { |t| t.town_name }
     else
       return towns.collect { |t| t.town_name }
     end

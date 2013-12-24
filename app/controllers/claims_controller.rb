@@ -82,7 +82,7 @@ class ClaimsController < ApplicationController
     service = ClaimService.new
     brands = service.find_brands_in_town(@claim.nearest_town)
     # @nearest_dealers = brands.brands
-    dealers = service.find_nearest_brands(@claim.nearest_town, @claim.policy.insured_device.device.is_stl)
+    dealers = service.find_nearest_brands(@claim.nearest_town, @claim.is_stl_only)
     @nearest_dealers = dealers.join(" , ")
 
 
