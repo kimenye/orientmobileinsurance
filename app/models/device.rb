@@ -52,7 +52,7 @@ class Device < ActiveRecord::Base
   end
 
   def is_servicable_at_stl
-    return is_stl || dealer_code == "Both"
+    return is_stl || dealer_code == "STL"
   end
 
   def is_servicable_at_both

@@ -85,7 +85,7 @@ class DeviceTest < ActiveSupport::TestCase
     Device.delete_all
     device = Device.create! :vendor => "RIM", :dealer_code => "Both", :model => "9300 3G", :catalog_price => 5, :marketing_name => "abc"
 
-    assert_equal true, device.is_servicable_at_stl
+    assert_equal true, device.is_servicable_at_both
   end
 
   test "A device is serviceable by STL and FD if it is stocked by both" do
