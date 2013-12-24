@@ -42,13 +42,12 @@ ActiveAdmin.register Device do
         device = Device.find_by_stock_code stock_code
         if device.nil?
           # create a new one
-          Device.create!({ 
-            :dealer_code => dealer_code, :stock_code => stock_code, :marketing_name => marketing_name, :vendor => vendor,
+          Device.create! :dealer_code => dealer_code, :stock_code => stock_code, :marketing_name => marketing_name, :vendor => vendor,
             :model => model, :device_type => device_type, :catalog_price => catalog_price, :fd_insured_value => fd_insured_value,
-            :fd_replacement_value => fd_replacement_value, :fd_koil_invoice_value => fd_koil_invoice_value, 
+            :fd_replacement_value => fd_replacement_value, :fd_koil_invoice_value => fd_koil_invoice_value,
             :stl_insured_value => stl_insured_value, :stl_replacement_value => stl_replacement_value, :stl_koil_invoice_value => stl_koil_invoice_value,
             :prev_insured_value => prev_insured_value, :prev_replacement_value => prev_replacement_value, :prev_fd_koil_invoice_value => prev_fd_koil_invoice_value,
-            :active => true})
+            :active => true
         else
           # update everything apart from the model
           device.dealer_code = dealer_code
