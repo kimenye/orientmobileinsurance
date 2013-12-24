@@ -51,6 +51,14 @@ class Device < ActiveRecord::Base
     return (vendor == "Tecno" || vendor == "G-Tide" || vendor == "iTel" || vendor == "Forme")
   end
 
+  def is_servicable_at_stl
+    return is_stl || dealer_code == "Both"
+  end
+
+  def is_servicable_at_both
+    dealer_code == "Both"
+  end
+
   def to_s
     "#{vendor} #{model}"
   end

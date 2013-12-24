@@ -93,6 +93,18 @@ class Claim < ActiveRecord::Base
     return step == 3
   end
 
+  def is_stl_only
+    policy.insured_device.device.is_servicable_at_stl && (!policy.quote.agent.nil? && policy.quote.agent.is_stl)
+  end
+
+  def is_fxp_only
+    !policy.insured_device.device.is_servicable_at_stl || (!policy.quote.agent.nil? && !policy.quote.agent.is_stl)
+  end
+
+  def is_fxp_and_stl
+    policy.insured_device.device.is_servicable_at_both && (policy.quote.agent.nil? || policy.quote.agent.is_neither_fd_nor_stl)
+  end
+  
   private
 
   def dealer_theft_claim?
