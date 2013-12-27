@@ -1,0 +1,127 @@
+.banner.row
+	.large-12.columns
+		%h4.subheader
+			CORPORATE PORTAL \	
+.row
+	.large-12.columns
+		%h5.subheader
+			NEW CORPORATE QUOTATION
+= form_for(Quote.new(), {:html => {"data-abide" => ""}}) do |f|
+	.row
+		.large-4.columns
+			.row
+				.large-12.columns
+					%label{:for => "quote[company_name]"}
+						Company Name
+			.row	
+				.large-12.columns
+					%input{:name => "quote[company_name]", :type => "text", :required => "required"}
+					%small.error
+						The Company Name is required
+		.large-4.columns
+			.row
+				.large-12.columns
+					%label{:for => "quote[company_pin]"}
+						Company PIN
+			.row	
+				.large-12.columns
+					%input{:name => "quote[company_pin]", :type => "text", :required => "required"}
+					%small.error
+						The Company PIN is required
+		.large-4.columns
+			.row
+				.large-12.columns
+					%label{:for => "quote[contact_person]"}
+						Contact Person Name
+			.row	
+				.large-12.columns
+					%input{:name => "quote[contact_person]", :type => "text", :required => "required"}
+					%small.error
+						The Contact Person Name is required
+	.row
+		.large-3.columns
+			.row
+				.large-12.columns
+					%label{:for => "quote[mobile_number]"}
+						Contact Mobile Number
+			.row	
+				.large-12.columns
+					%input{:name => "quote[mobile_number]", :type => "text", :required => "required"}
+					%small.error
+						The Contact Mobile Number is required
+		.large-4.columns
+			.row
+				.large-12.columns
+					%label{:for => "quote[email_address]"}
+						Contact Email Address
+			.row	
+				.large-12.columns
+					%input{:name => "quote[email_address]", :type => "text", :required => "required"}
+					%small.error
+						The Contact Email Address is required
+		.large-5.columns
+			.row
+				.large-12.columns
+					%label{:for => "quote[sales_agent_code]"}
+						Orient Mobile Sales Agent Code
+			.row	
+				.large-12.columns
+					= collection_select(:quote, :sales_agent_code, Agent.all, :id, :display_name, {}, {:class => "searchable"})
+	.row
+		.large-8.columns
+			%h6.subheader
+				DEVICES
+
+				%a.button.new.tiny
+					New
+	.row
+		.large-12.columns
+			%table.device-table
+				%thead
+					%th Device
+					%th Year of Purchase
+					%th IMEI #
+					%th Mobile Number
+				%tbody
+					%tr.editable
+						%td
+							= collection_select(:quote, :device, Device.all, :id, :name, {}, {:class => "searchable", :name => "quote[device][0][id]"})
+						%td
+							%select.yop{:type => "text", :name => "quote[device][0][yop]"}
+								%option{:value => Time.now.year} 
+									= Time.now.year
+								%option{:value => Time.now.year - 1 } 
+									= Time.now.year - 1 
+						%td
+							%input.imei{:type => "text", :name => "quote[device][0][imei]", :required => "required" }
+							%small.error
+								The IMEI number is required
+						%td
+							%input.phone_number{:type => "text", :name => "quote[device][0][phone_number]", :required => "required" }
+							%small.error
+								The Phone number is required
+	.row
+		.large-12.columns
+			%input.button.small{:type => "submit"}
+
+:javascript
+	$('#quote_sales_agent_code').prepend('<option value=""> - Please Select a Sales Agent Code - </option>');
+	$('select.searchable').chosen();
+
+	$('.button.new').click(function() {
+		var num_rows = $('tr.editable').length;
+
+		var last = $('table.device-table tr.editable:last');
+		var width = last.find('.chzn-container').width();
+		var clone = last.clone();
+		clone.find('.chzn-container').remove();
+		
+		clone.find('select.searchable').removeClass('chzn-done').css("display", "block").width(width).removeAttr("id").attr("name", "quote[device][" + num_rows + "][id]");
+
+		clone.find('select.yop').attr("name", "quote[device][" + num_rows + "][yop]");
+		clone.find('input.imei').attr("name", "quote[device][" + num_rows + "][imei]").val('');
+		clone.find('input.phone_number').attr("name", "quote[device][" + num_rows + "][phone_number]").val('');
+		
+		last.after(clone);
+		clone.find('select.searchable').chosen();		
+	});

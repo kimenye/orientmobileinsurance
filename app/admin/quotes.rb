@@ -6,7 +6,7 @@ ActiveAdmin.register Quote do
 
   index do
     column "Contact Number" do |quote|
-      quote.insured_device.phone_number
+      # quote.insured_device.phone_number
     end
     column "Account Name" do |quote|
       link_to quote.account_name, admin_quote_path(quote)

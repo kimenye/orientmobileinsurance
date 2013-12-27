@@ -158,4 +158,11 @@ namespace :data do
     fone_express = Dealer.create! :code => "FD", :name => "Fones Express"
     simba = Dealer.create! :code => "STL", :name => "Simba Telecom"
   end
+
+  task :map_customer_type => :environment do
+    Customer.all.each do |c|
+      c.customer_type = "Invidual"
+      c.save!
+    end
+  end
 end

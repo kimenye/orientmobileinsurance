@@ -5,7 +5,7 @@ class Customer < ActiveRecord::Base
   validates :email, presence: true
 
 
-  attr_accessible :name, :id_passport, :email, :phone_number, :alternate_phone_number, :lead
+  attr_accessible :name, :id_passport, :email, :phone_number, :alternate_phone_number, :lead, :customer_type, :company_name
   has_many :insured_devices, :order => 'created_at DESC'
   
   def contact_number

@@ -1,0 +1,37 @@
+.banner.row
+	.large-12.columns
+		%h4.subheader
+			CORPORATE PORTAL \	
+.row
+	.large-12.columns
+		%h5.subheader
+			= @quote.account_name
+			%small
+				= @quote.customer.company_name
+.row.disabled
+	.large-4.columns
+		.row
+			.large-12.columns
+				%label{:for => "quote[company_name]"}
+					Company Name
+		.row	
+			.large-12.columns
+				%input{:name => "quote[company_name]", :type => "text", :value => @quote.customer.company_name}
+	.large-4.columns
+		.row
+			.large-12.columns
+				%label{:for => "quote[company_pin]"}
+					Company PIN
+		.row	
+			.large-12.columns
+				%input{:name => "quote[company_pin]", :type => "text", :required => "required", :value => @quote.customer.id_passport}
+	.large-4.columns
+		.row
+			.large-12.columns
+				%label{:for => "quote[contact_person]"}
+					Contact Person Name
+		.row	
+			.large-12.columns
+				%input{:name => "quote[contact_person]", :type => "text", :required => "required", :value => @quote.customer.name}
+:javascript
+	$('.disabled').

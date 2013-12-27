@@ -8,6 +8,11 @@ class Agent < ActiveRecord::Base
   	code.start_with?("STL")
   end
 
+  def display_name
+    "#{code} - #{outlet_name}"
+  end
+
+
   def is_fd
   	premium_service = PremiumService.new
   	premium_service.is_fx_code code

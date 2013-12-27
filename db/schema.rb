@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131222185003) do
+ActiveRecord::Schema.define(:version => 20131227150221) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -136,6 +136,8 @@ ActiveRecord::Schema.define(:version => 20131222185003) do
     t.string   "phone_number"
     t.string   "alternate_phone_number"
     t.boolean  "lead",                   :default => true
+    t.string   "customer_type"
+    t.string   "company_name"
   end
 
   create_table "dealers", :force => true do |t|
@@ -208,16 +210,21 @@ ActiveRecord::Schema.define(:version => 20131222185003) do
     t.integer  "customer_id"
     t.integer  "device_id"
     t.string   "imei"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.integer  "yop"
     t.string   "phone_number"
     t.boolean  "damaged_flag"
     t.datetime "damage_reported"
+    t.decimal  "insurance_value"
+    t.decimal  "replacement_value"
+    t.decimal  "premium_value"
+    t.integer  "quote_id"
   end
 
   add_index "insured_devices", ["customer_id"], :name => "index_insured_devices_on_customer_id"
   add_index "insured_devices", ["device_id"], :name => "index_insured_devices_on_device_id"
+  add_index "insured_devices", ["quote_id"], :name => "index_insured_devices_on_quote_id"
 
   create_table "messages", :force => true do |t|
     t.string   "phone_number"
@@ -275,9 +282,12 @@ ActiveRecord::Schema.define(:version => 20131222185003) do
     t.datetime "updated_at",        :null => false
     t.decimal  "insured_value"
     t.integer  "agent_id"
+    t.string   "quote_type"
+    t.integer  "customer_id"
   end
 
   add_index "quotes", ["agent_id"], :name => "index_quotes_on_agent_id"
+  add_index "quotes", ["customer_id"], :name => "index_quotes_on_customer_id"
   add_index "quotes", ["insured_device_id"], :name => "index_quotes_on_insured_device_id"
 
   create_table "roles", :force => true do |t|

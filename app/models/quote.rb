@@ -1,8 +1,9 @@
 class Quote < ActiveRecord::Base
   belongs_to :insured_device
   belongs_to :agent
+  belongs_to :customer
   has_many :policies
-  attr_accessible :account_name, :annual_premium, :expiry_date, :monthly_premium, :insured_device_id, :premium_type, :insured_value, :agent_id
+  attr_accessible :account_name, :annual_premium, :expiry_date, :monthly_premium, :insured_device_id, :premium_type, :insured_value, :agent_id, :quote_type, :customer_id
 
 
   def name
@@ -38,13 +39,13 @@ class Quote < ActiveRecord::Base
     return agent.code if !agent.nil?
   end
 
-  def customer
-    if policy.nil?
-      return ""
-    else
-      policy.customer.name
-    end
-  end
+  # def customer
+  #   if policy.nil?
+  #     return ""
+  #   else
+  #     policy.customer.name
+  #   end
+  # end
 
   def is_expired
     expired = expiry_date - Time.now < 0

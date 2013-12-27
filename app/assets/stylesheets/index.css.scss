@@ -433,3 +433,13 @@
 		list-style-type: none;
 	}
 }
+
+.admin.quotes {
+	.footer {
+		display: none;
+	}
+
+	#main .banner {
+		margin-bottom: 25px;
+	}
+}
