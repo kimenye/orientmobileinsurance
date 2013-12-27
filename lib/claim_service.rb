@@ -5,6 +5,29 @@ class ClaimService
     towns = Brand.order("town_name").collect { |t| t.town_name }
   end
 
+  def find_nearest_brands town, is_stl, is_both=false
+    b = Brand.find_by_town_name(town)
+    brands = [b.brand_1, b.brand_2, b.brand_3, b.brand_4, b.brand_5]
+    brands.reject! { |b| b.nil? }
+    if is_stl
+      brands.reject! { |b| b != "Simba Telecom" }
+    end
+    brands
+  end
+
+  def find_nearest_locations claim
+    towns = Brand.order("town_name")
+    if claim.is_stl_only
+      locations = towns.reject! { |t| !t.is_stl_location }
+      return locations.collect { |t| t.town_name }
+    # elsif claim.is_fxp_only
+      # locations = towns.reject! { |t| t.is_stl_location }
+      # return locations.collect { |t| t.town_name }
+    else
+      return towns.collect { |t| t.town_name }
+    end
+  end
+
   def resolve_claim claim
     sms = SMSGateway.new
     to = claim.policy.customer.contact_number
@@ -108,10 +131,13 @@ class ClaimService
   def create_claim_no
     
     last_claim = Claim.last
-    next_digits = last_claim.claim_no[/\d{1,4}$/].to_i + 1
-    next_digits_as_string = next_digits.to_s.rjust(4, '0')
-    "C/OMB/AAAA/"+next_digits_as_string
-  
+    if !last_claim.nil?
+      next_digits = last_claim.claim_no[/\d{1,4}$/].to_i + 1
+      next_digits_as_string = next_digits.to_s.rjust(4, '0')
+      return "C/OMB/AAAA/"+next_digits_as_string
+    else
+      return "C/OMB/AAAA/0001"
+    end
   end
 
   def find_brands_in_town town

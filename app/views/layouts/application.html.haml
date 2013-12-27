@@ -9,13 +9,42 @@
         = javascript_include_tag "application"
         = csrf_meta_tags
         = yield(:head)
-  %body{:class => "#{controller_name} #{action_name}"}
+  %body.admin{:class => "#{controller_name} #{action_name}"}
     #container.container
-      %header
-        = render 'layouts/navigation'
-        = render  'layouts/banner'
-        -#= render 'layouts/messages'
+      #header.row
+        .large-12.columns
+          .logo.left
+            %a{:href => root_path}
+              %img.banner{:src => "/assets/logo_small.png"}
+          .nav.right
+            %ul
+              - if user_signed_in?
+                %li
+                  = link_to('Logout', destroy_user_session_path, :method => :delete)
+                %li
+                  = link_to('Change Password', edit_user_registration_path)
+              -else
+                %li.customer-link
+                  %a{:href => customer_index_path }
+                    Customer Claims
+                %li.dealer-link
+                  %a{:href => "#{new_user_session_path}?user_type=DP"}
+                    Dealer Portal
+                %li
+                  %a{:href => "#{new_user_session_path}?user_type=SC"}
+                    Service Centre
+                %li
+                  %a{:href => "#{new_user_session_path}?user_type=CP"}
+                    Claims
+              %li
+                %a{:href => admin_root_path }
+                  Admin
+              %li.corporate-link
+                %a{:href => admin_area_path }
+                  Corporate
+
       #main{:role => "main"}
         = yield
-      %footer
+      / %footer
+      = render "layouts/footer_new"
     / ! end of #container

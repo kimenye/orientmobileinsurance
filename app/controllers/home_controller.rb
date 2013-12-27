@@ -3,7 +3,7 @@ class HomeController < ApplicationController
     if user_signed_in?
       @users = User.all
       @claims = Claim.all
-      render 'user'
+      render 'user', :layout => "application"
     else
       render 'index'
     end

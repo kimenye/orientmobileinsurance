@@ -78,7 +78,6 @@ class CustomerMailer < ActionMailer::Base
       mail(:from => "#{ENV['FEEDBACK_FROM_EMAIL']}", :to => "#{ENV['FEEDBACK_TO_EMAIL']}", :subject => "Customer Feedback: #{@feedback.name} #{@feedback.message}")
     rescue
       # Do nothing
-      binding.pry
     end
   end
 
