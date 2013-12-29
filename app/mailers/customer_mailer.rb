@@ -14,6 +14,15 @@ class CustomerMailer < ActionMailer::Base
     end
   end
 
+  def corporate_quotation(quote)
+    begin
+      @quote = quote
+      attachments.inline['logo.png'] = File.read("#{Rails.root}/app/assets/images/logo_small.png")
+      mail(:from => "mobile@korient.co.ke", :to => "#{@quote.customer.name} <#{@quote.customer.email}>", :subject => "OMB Quotation #{@quote.account_name}")
+    rescue
+    end
+  end
+
   def policy_purchase(policy)
     begin
       @policy = policy
