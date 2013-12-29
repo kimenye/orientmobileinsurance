@@ -24,7 +24,7 @@
 					Company PIN
 		.row	
 			.large-12.columns
-				%input{:name => "quote[company_pin]", :type => "text", :required => "required", :value => @quote.customer.id_passport}
+				%input{:name => "quote[company_pin]", :type => "text", :value => @quote.customer.id_passport}
 	.large-4.columns
 		.row
 			.large-12.columns
@@ -32,6 +32,82 @@
 					Contact Person Name
 		.row	
 			.large-12.columns
-				%input{:name => "quote[contact_person]", :type => "text", :required => "required", :value => @quote.customer.name}
-:javascript
-	$('.disabled').
+				%input{:name => "quote[contact_person]", :type => "text", :value => @quote.customer.name}
+.row.disabled
+	.large-3.columns
+		.row
+			.large-12.columns
+				%label{:for => "quote[mobile_number]"}
+					Contact Mobile Number
+		.row	
+			.large-12.columns
+				%input{:name => "quote[mobile_number]", :type => "text", :value => @quote.customer.phone_number}
+	.large-4.columns
+		.row
+			.large-12.columns
+				%label{:for => "quote[email_address]"}
+					Contact Email Address
+		.row	
+			.large-12.columns
+				%input{:name => "quote[email_address]", :type => "text", :value => @quote.customer.email}
+	.large-5.columns
+		.row
+			.large-12.columns
+				%label{:for => "quote[sales_agent_code]"}
+					Orient Mobile Sales Agent Code
+		.row
+			.large-12.columns
+				%input{:name => "quote[sales_agent_code]", :type => "text", :value => @quote.agent.nil? ? "" : @quote.agent.name }
+.row.spacer
+	.large-12.columns
+		%p
+			This quotation has been emailed to 
+			%em
+				= @quote.customer.email
+.row.spacer
+	.large-8.columns
+		%h6.subheader
+			DEVICES
+.row
+	.large-12.columns
+		%table.device-table
+			%thead
+				%th Device
+				%th Year of Purchase
+				%th IMEI #
+				%th Insurance Value
+				%th Annual Premium
+			%tbody
+				- InsuredDevice.find_all_by_quote_id(@quote.id).each do |id|
+					%tr
+						%td
+							= id.device.name
+						%td
+							= id.yop
+						%td
+							= id.imei
+						%td
+							= number_to_currency(id.insurance_value, :unit => "KES ", :precision => 0, :delimiter => ",")
+						%td
+							= number_to_currency(id.premium_value, :unit => "KES ", :precision => 0, :delimiter => ",")
+				%tr.total
+					%td.lbl{:colspan => "3"}
+						Total
+					%td
+						= number_to_currency(@quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => ",")
+					%td
+						= number_to_currency(@quote.annual_premium, :unit => "KES ", :precision => 0, :delimiter => ",")
+.row.spacer
+	.large-8.columns
+		%h6.subheader
+			PAYMENT
+.row
+	.large-12.columns
+		%p
+			Quotation / Account # (Please quote this when making payment): 
+			%em
+				#{@quote.account_name}. 
+			This Quotation / Account NO is valid until
+			#{@quote.expiry_date.utc.to_s(:full)}
+		%p
+			Payment can be made via MPesa Business No. #{ENV['MPESA']}, Airtel Money Business Name #{ENV['AIRTEL']},  Visa, MasterCard or Kenswitch.

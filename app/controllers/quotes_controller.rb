@@ -27,7 +27,7 @@ class QuotesController < ApplicationController
 
 		premium_service = PremiumService.new
 		
-		@quote = Quote.new(:quote_type => "Corporate", :premium_type => "Annual", :annual_premium => 0, :customer_id => customer.id)
+		@quote = Quote.new(:quote_type => "Corporate", :premium_type => "Annual", :annual_premium => 0, :customer_id => customer.id, :insured_value => 0, :expiry_date => 3.days.from_now)
 		@quote.account_name = "OMB#{premium_service.generate_unique_account_number}"
 		@quote.save!
 
@@ -38,9 +38,11 @@ class QuotesController < ApplicationController
   			iv = dev.get_insurance_value(quote[:sales_agent_code], d[:yop].to_i)  			
   			annual_premium = premium_service.calculate_annual_premium(quote[:sales_agent_code], iv, d[:yop].to_i)
   			id = InsuredDevice.new({ :premium_value => annual_premium, :customer_id => customer.id, :device_id => dev.id,
-  				:imei => d[:imei], :phone_number => d[:phone_number], :insurance_value => iv, :quote_id => @quote.id })
+  				:imei => d[:imei], :phone_number => d[:phone_number], :insurance_value => iv, :quote_id => @quote.id, :yop => d[:yop].to_i })
+  			id.save!
 
   			@quote.annual_premium += annual_premium
+  			@quote.insured_value += iv
 		end
 		
 		@quote.save!
