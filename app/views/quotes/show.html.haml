@@ -2,6 +2,9 @@
 	.large-12.columns
 		%h4.subheader
 			CORPORATE PORTAL \	
+			- flash.each do |name, msg|			
+				- if msg.is_a?(String)
+					= content_tag :small, msg, :id => "flash_#{name}"
 .row
 	.large-12.columns
 		%h5.subheader
@@ -111,3 +114,25 @@
 			#{@quote.expiry_date.utc.to_s(:full)}
 		%p
 			Payment can be made via MPesa Business No. #{ENV['MPESA']}, Airtel Money Business Name #{ENV['AIRTEL']},  Visa, MasterCard or Kenswitch.
+.row.spacer
+	= form_for(@quote, {:html => {"data-abide" => ""}}) do |f|
+		.large-12.columns
+			%h6.subheader
+				MAKE A CHEQUE PAYMENT
+			.row.spacer
+				.large-3.columns
+					= label(:payment, :amount)
+				.large-3.columns
+					= label(:payment, :transaction_ref)
+				.large-3.columns					
+				.large-3.columns					
+			.row
+				.large-3.columns
+					= text_field(:payment, :amount, {:placeholder => "1000.00"})
+				.large-3.columns
+					= text_field(:payment, :transaction_ref, {:placeholder => "XXXXXX"})
+				.large-3.columns
+					= submit_tag("Submit", {:class => "button small" })
+				.large-3.columns
+.row.spacer
+.row.spacer

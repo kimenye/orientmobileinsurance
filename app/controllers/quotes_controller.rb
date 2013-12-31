@@ -9,6 +9,17 @@ class QuotesController < ApplicationController
 		@quote = Quote.find(params[:id])
 	end
 
+	def update
+		@quote = Quote.find(params[:id])
+		payment = params[:payment]
+
+		payment = Payment.new({:amount => payment[:amount], :reference => payment[:transaction_ref]})
+
+		respond_to do |format|
+			format.html { redirect_to quote_path(@quote), notice: 'Payment was updated.' }
+		end
+	end
+
 	def create
 		
 		quote = params[:quote]
