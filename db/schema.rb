@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131227150221) do
+ActiveRecord::Schema.define(:version => 20140103142820) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -243,9 +243,11 @@ ActiveRecord::Schema.define(:version => 20131227150221) do
     t.string   "method"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "quote_id"
   end
 
   add_index "payments", ["policy_id"], :name => "index_payments_on_policy_id"
+  add_index "payments", ["quote_id"], :name => "index_payments_on_quote_id"
 
   create_table "policies", :force => true do |t|
     t.integer  "quote_id"
@@ -253,10 +255,12 @@ ActiveRecord::Schema.define(:version => 20131227150221) do
     t.string   "policy_number"
     t.datetime "start_date"
     t.datetime "expiry"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "insured_device_id"
   end
 
+  add_index "policies", ["insured_device_id"], :name => "index_policies_on_insured_device_id"
   add_index "policies", ["quote_id"], :name => "index_policies_on_quote_id"
 
   create_table "product_licences", :force => true do |t|

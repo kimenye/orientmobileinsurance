@@ -34,7 +34,7 @@ Orientmobileinsurance::Application.routes.draw do
   devise_for :users, :controllers => { :sessions => "users/sessions" }
   ActiveAdmin.routes(self)
 
-  resources :users, :mobile, :messages, :enquiry
+  resources :users, :mobile, :messages, :enquiry, :policies
   resources :enquiries, :status, :customer, :claims, :quotes
 
   match 'administration' => 'admin#index', :as => :admin_area

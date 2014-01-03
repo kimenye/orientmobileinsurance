@@ -13,7 +13,8 @@ class QuotesController < ApplicationController
 		@quote = Quote.find(params[:id])
 		payment = params[:payment]
 
-		payment = Payment.new({:amount => payment[:amount], :reference => payment[:transaction_ref]})
+		@payment = Payment.create! :amount => payment[:amount], :reference => payment[:transaction_ref], :quote_id => @quote.id, :method => "Cheque" 
+
 
 		respond_to do |format|
 			format.html { redirect_to quote_path(@quote), notice: 'Payment was updated.' }
@@ -38,7 +39,7 @@ class QuotesController < ApplicationController
 
 		premium_service = PremiumService.new
 		
-		@quote = Quote.new(:quote_type => "Corporate", :premium_type => "Annual", :annual_premium => 0, :customer_id => customer.id, :insured_value => 0, :expiry_date => 3.days.from_now)
+		@quote = Quote.new(:quote_type => "Corporate", :premium_type => "Annual", :annual_premium => 0, :agent_id => quote[:sales_agent_code], :customer_id => customer.id, :insured_value => 0, :expiry_date => 3.days.from_now)
 		@quote.account_name = "OMB#{premium_service.generate_unique_account_number}"
 		@quote.save!
 

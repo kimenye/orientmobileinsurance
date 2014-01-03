@@ -1,8 +1,10 @@
 class Policy < ActiveRecord::Base
   belongs_to :quote
+  belongs_to :insured_device
   has_many :claims
   has_many :payments
-  attr_accessible :expiry, :policy_number, :start_date, :status, :quote_id
+  attr_accessible :expiry, :policy_number, :start_date, :status, :quote_id, :insured_device_id
+  validates :insured_device_id, presence: true
 
   def is_open_for_claim
     days_after_start = Time.now - start_date
@@ -123,9 +125,9 @@ class Policy < ActiveRecord::Base
     end
   end
 
-  def insured_device
-    quote.insured_device
-  end
+  # def insured_device
+  #   quote.insured_device if !quote.is_corporate?
+  # end
 
   def imei
     if !insured_device.nil?

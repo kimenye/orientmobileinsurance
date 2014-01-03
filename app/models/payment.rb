@@ -1,6 +1,6 @@
 class Payment < ActiveRecord::Base
   belongs_to :policy
-  attr_accessible :amount, :method, :reference, :status, :policy_id
+  attr_accessible :amount, :method, :reference, :status, :policy_id, :quote_id
 
   def for
     policy.policy_number

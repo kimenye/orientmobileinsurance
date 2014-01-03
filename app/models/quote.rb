@@ -3,11 +3,20 @@ class Quote < ActiveRecord::Base
   belongs_to :agent
   belongs_to :customer
   has_many :policies
+  has_many :payments
   attr_accessible :account_name, :annual_premium, :expiry_date, :monthly_premium, :insured_device_id, :premium_type, :insured_value, :agent_id, :quote_type, :customer_id
 
 
   def name
     account_name
+  end
+
+  def corporate_amount_paid 
+    amount = 0
+    payments.each do |payment|
+      amount += payment.amount
+    end
+    amount
   end
 
 
@@ -33,6 +42,10 @@ class Quote < ActiveRecord::Base
   
   def is_installment?
     premium_type == "Monthly"
+  end
+
+  def is_corporate?
+    quote_type == "Corporate"
   end
 
   def agent_code
