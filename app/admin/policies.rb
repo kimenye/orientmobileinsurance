@@ -77,9 +77,7 @@ ActiveAdmin.register Policy, :as => "Customer" do
     ## adding a column to the report
     column("TTY") { |p| "N" }
     column("CODE") { |p| p.policy_number }
-    # column("CLIENT NAME") {|p| p.quote.insured_device.customer.name }
     column("CLIENT NAME") {|p| p.quote.customer.name }
-    # column("NATIONAL ID") { |p| p.quote.insured_device.customer.id_passport }
     column("NATIONAL ID") { |p| p.quote.customer.id_passport }
     column("PIN") { |p| 0 }
     column("POSTAL_ADDRS") { |p| "P.O.Box 00000" }

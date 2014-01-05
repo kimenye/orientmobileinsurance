@@ -197,7 +197,6 @@ class EnquiryController < Wicked::WizardController
         end
       when :confirm_personal_details
         @enquiry.update_attributes(params[:enquiry])
-        # binding.pry
 
         if @enquiry.customer_payment_option == "Annual"
           due = session[:quote_details]["annual_premium"]
