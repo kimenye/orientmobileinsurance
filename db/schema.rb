@@ -185,6 +185,7 @@ ActiveRecord::Schema.define(:version => 20140103142820) do
     t.boolean  "detected"
     t.string   "user_agent"
     t.string   "id_type"
+    t.string   "customer_id"
   end
 
   create_table "feedbacks", :force => true do |t|

@@ -77,28 +77,30 @@ ActiveAdmin.register Policy, :as => "Customer" do
     ## adding a column to the report
     column("TTY") { |p| "N" }
     column("CODE") { |p| p.policy_number }
-    column("CLIENT NAME") {|p| p.quote.insured_device.customer.name }
-    column("NATIONAL ID") { |p| p.quote.insured_device.customer.id_passport }
+    # column("CLIENT NAME") {|p| p.quote.insured_device.customer.name }
+    column("CLIENT NAME") {|p| p.quote.customer.name }
+    # column("NATIONAL ID") { |p| p.quote.insured_device.customer.id_passport }
+    column("NATIONAL ID") { |p| p.quote.customer.id_passport }
     column("PIN") { |p| 0 }
     column("POSTAL_ADDRS") { |p| "P.O.Box 00000" }
     column("POSTAL_TOWN") { |p| "NAIROBI" }
     column("POSTAL_CODE") { |p| "00000" }
-    column("TELEPHONE NO") { |p| "#{p.quote.insured_device.customer.contact_number}" }
-    column("MOBILE NO") { |p| "#{p.quote.insured_device.customer.contact_number}" }
+    column("TELEPHONE NO") { |p| "#{p.quote.customer.contact_number}" }
+    column("MOBILE NO") { |p| "#{p.quote.customer.contact_number}" }
     column("COUNTRY") { |p| "KENYA" }
     column("EFF DATE") {|p| (p.start_date.to_s(:export) if !p.start_date.nil?) }
     column("EXP DATE") {|p| (p.expiry.to_s(:export) if !p.expiry.nil?) }
     column("POL NO") {|p| "KOI/OMB/000001/2013" }
-    column("RISK DESCRIPTION") { |p| p.quote.insured_device.device.marketing_name }
+    column("RISK DESCRIPTION") { |p| p.insured_device.device.marketing_name }
     column("INV DATE") { |p| (p.start_date.to_s(:export) if !p.start_date.nil?) }
     column("INV NO") { |p| "00000" }
     column("PREMIUM") { |p|
       service = PremiumService.new
       premium = 0
       if p.quote.is_installment?
-        premium = service.calculate_raw_monthly_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+        premium = service.calculate_raw_monthly_premium(p.quote.agent_code, p.insured_device.insurance_value, p.insured_device.yop)
       else
-        premium = service.calculate_raw_annual_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+        premium = service.calculate_raw_annual_premium(p.quote.agent_code, p.insured_device.insurance_value, p.insured_device.yop)
       end
       premium
     }
@@ -106,22 +108,22 @@ ActiveAdmin.register Policy, :as => "Customer" do
       service = PremiumService.new
       premium = nil
       if p.quote.is_installment?
-        premium = service.calculate_raw_monthly_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+        premium = service.calculate_raw_monthly_premium(p.quote.agent_code, p.insured_device.insurance_value, p.insured_device.yop)
       else
-        premium = service.calculate_raw_annual_premium(p.quote.agent_code, p.quote.insured_value, p.quote.insured_device.yop)
+        premium = service.calculate_raw_annual_premium(p.quote.agent_code, p.insured_device.insurance_value, p.insured_device.yop)
       end
       service.calculate_levy premium
     }
-    column("Reg No") { |p| "#{p.policy_number}/#{p.quote.insured_device.imei}" }
-    column("Make/Model") { |p| p.quote.insured_device.device.marketing_name }
-    column("Model/Type") { |p| p.quote.insured_device.device.marketing_name }
-    column("YOM") { |p| p.quote.insured_device.yop }
+    column("Reg No") { |p| "#{p.policy_number}/#{p.insured_device.imei}" }
+    column("Make/Model") { |p| p.insured_device.device.marketing_name }
+    column("Model/Type") { |p| p.insured_device.device.marketing_name }
+    column("YOM") { |p| p.insured_device.yop }
     column("CC rate") { |p| "" }
     column("Chasis No.") { |p| "" }
     column("W/screen") { |p| 0 }
     column("Radio/Stereo") { |p| 0 }
     column("Cover Type") { |p| "STD" }
-    column("Sum Insured") { |p| p.quote.insured_value }
+    column("Sum Insured") { |p| p.insured_device.insurance_value }
     column("Cert No") { |p| "" }
     column("Section 5") { |p| 0 }
     column("Section 6") { |p| 0 }

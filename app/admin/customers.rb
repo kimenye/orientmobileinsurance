@@ -27,7 +27,7 @@ ActiveAdmin.register Customer, :as => "Lead"  do
         column "Phone Number", :phone_number
         column :created_at
         column :insurance_value
-        column "Premium", :premium
+        column "Premium", :premium_value
       end
     end
 

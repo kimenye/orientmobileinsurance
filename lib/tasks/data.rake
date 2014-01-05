@@ -161,13 +161,9 @@ namespace :data do
 
   task :prepare_corporate_version => :environment do
 
-    Quote.all.each do |q|
-      q.quote_type = "Individual" if q.quote_type.nil?
-      q.save!
-    end
-
     Customer.all.each do |c|
       c.customer_type = "Invidual" if c.customer_type.nil?
+      c.phone_number = c.insured_devices.first.phone_number if c.phone_number.nil?
       c.save!
     end
 
@@ -180,7 +176,24 @@ namespace :data do
     # add a customer to every quote
     Quote.all.each do |quote|
       quote.customer_id = quote.insured_device.customer_id if !quote.insured_device.nil?
+      quote.quote_type = "Individual" if quote.quote_type.nil?
       quote.save!
     end
+
+    # set the premium and replacement values for all devices
+    InsuredDevice.all.each do |id|
+      quote = Quote.find_by_insured_device_id(id)
+      id.quote_id = quote.id if !quote.nil?
+      id.insurance_value = id.quote.insured_value if !id.quote.nil?
+      id.premium_value = id.quote.amount_due if !id.quote.nil?
+      id.save!
+    end
+
+    Policy.all.each do |p|
+      id = InsuredDevice.find_by_quote_id(p.quote_id)
+      p.insured_device_id = id.id
+      p.save!
+    end
+
   end
 end
