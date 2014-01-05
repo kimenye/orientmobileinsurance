@@ -25,6 +25,15 @@ ActiveAdmin.register_page "Simulator" do
 
   end
 
+  page_action :message, :method => :post do
+    text = params["sms"]["text"]
+    mobile = params["sms"]["phone_number"]
+
+    gateway = SMSGateway.new
+    gateway.send mobile, text
+    redirect_to admin_simulator_path, :notice => "SMS sent"
+  end
+
   page_action :sms, :method => :post do
 
     text = params["sms"]["text"]
@@ -33,9 +42,9 @@ ActiveAdmin.register_page "Simulator" do
 
     begin
       service.handle_sms_sending(text, mobile)
-      redirect_to admin_simulator_path, :notice => "SMS was successfully sent"
+      redirect_to admin_simulator_path, :notice => "Message was received"
     rescue
-      redirect_to admin_simulator_path, :notice => "SMS sending failed"
+      redirect_to admin_simulator_path, :notice => "Message was not received"
     end
   end
 
@@ -68,6 +77,14 @@ ActiveAdmin.register_page "Simulator" do
 
       column do
         render "message"
+      end
+    end
+
+    columns do
+      column do
+        render "sms"
+      end
+      column do
       end
     end
 
