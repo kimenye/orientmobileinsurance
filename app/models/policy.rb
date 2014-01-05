@@ -66,7 +66,11 @@ class Policy < ActiveRecord::Base
   end
 
   def premium
-    return quote.amount_due if !quote.is_corporate? else insured_device.premium_value
+    if !quote.is_corporate? 
+      return quote.amount_due
+    else 
+      return insured_device.premium_value
+    end
   end
 
   def amount_due
