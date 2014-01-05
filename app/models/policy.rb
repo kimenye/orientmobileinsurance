@@ -102,11 +102,7 @@ class Policy < ActiveRecord::Base
   end
 
   def payment_option
-    if quote.is_installment?
-      return "Installment"
-    else
-      return "Annual"
-    end
+    quote.payment_option
   end
 
   def next_payment_date

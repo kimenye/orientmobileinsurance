@@ -31,6 +31,14 @@ class Quote < ActiveRecord::Base
       return annual_premium
     end
   end
+
+  def payment_option
+    if is_installment?
+      return "Installment"
+    else
+      return "Annual"
+    end
+  end
   
   def minimum_due
     if is_installment?
