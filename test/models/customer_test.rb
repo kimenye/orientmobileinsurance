@@ -4,7 +4,7 @@ class CustomerTest < ActiveSupport::TestCase
 
   test "A customer is a lead if the customer has received a quote but hasn't made a payment" do
 
-    customer = Customer.create! :name => "Test", :id_passport => "1234567890", :email => "1234567890@gmail.com"
+    customer = Customer.create! :name => "Test", :id_passport => "1234567890", :email => "1234567890@gmail.com", :phone_number => "254705866564"
     assert_equal true, customer.is_a_lead?
     assert_equal false, customer.has_policy?
 

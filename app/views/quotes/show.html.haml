@@ -115,6 +115,34 @@
 		%p
 			Payment can be made via MPesa Business No. #{ENV['MPESA']}, Airtel Money Business Name #{ENV['AIRTEL']},  Visa, MasterCard or Kenswitch.
 .row.spacer
+	.large-8.columns
+		%h6.subheader
+			PAYMENTS MADE
+.row
+	.larger-12.columns
+		%table
+			%thead
+				%th
+					DATE
+				%th
+					REFERENCE
+				%th
+					AMOUNT				
+				%th
+					METHOD
+			%tbody
+				- Payment.find_all_by_quote_id(@quote.id).each do |payment|
+					%tr
+						%td
+							= payment.created_at.to_s(:full)
+						%td
+							= payment.reference
+						%td
+							= number_to_currency(payment.amount, :unit => "KES ", :precision => 0, :delimiter => ",")
+						%td
+							= payment.method
+
+.row.spacer
 	= form_for(@quote, {:html => {"data-abide" => ""}}) do |f|
 		.large-12.columns
 			%h6.subheader
@@ -128,9 +156,13 @@
 				.large-3.columns					
 			.row
 				.large-3.columns
-					= text_field(:payment, :amount, {:placeholder => "1000.00"})
+					= text_field(:payment, :amount, {:placeholder => "1000.00", :required => "required" })
+					%small.error
+						The amount is required
 				.large-3.columns
-					= text_field(:payment, :transaction_ref, {:placeholder => "XXXXXX"})
+					= text_field(:payment, :transaction_ref, {:placeholder => "XXXXXX", :required => "required" })
+					%small.error
+						The reference is required
 				.large-3.columns
 					= submit_tag("Submit", {:class => "button small" })
 				.large-3.columns

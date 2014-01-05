@@ -13,7 +13,8 @@ class QuotesController < ApplicationController
 		@quote = Quote.find(params[:id])
 		payment = params[:payment]
 
-		@payment = Payment.create! :amount => payment[:amount], :reference => payment[:transaction_ref], :quote_id => @quote.id, :method => "Cheque" 
+		service = PaymentService.new()
+		service.handle_payment(@quote.account_name, payment[:amount], payment[:transaction_ref], "Cheque")
 
 
 		respond_to do |format|
@@ -33,6 +34,7 @@ class QuotesController < ApplicationController
 		customer.name = quote[:contact_person]
 		customer.email = quote[:email_address]
 		customer.customer_type = "Corporate"
+		customer.lead = false
 		customer.phone_number = quote[:mobile_number]
 
 		customer.save!

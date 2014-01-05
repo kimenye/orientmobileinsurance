@@ -159,10 +159,28 @@ namespace :data do
     simba = Dealer.create! :code => "STL", :name => "Simba Telecom"
   end
 
-  task :map_customer_type => :environment do
+  task :prepare_corporate_version => :environment do
+
+    Quote.all.each do |q|
+      q.quote_type = "Individual" if q.quote_type.nil?
+      q.save!
+    end
+
     Customer.all.each do |c|
-      c.customer_type = "Invidual"
+      c.customer_type = "Invidual" if c.customer_type.nil?
       c.save!
+    end
+
+    # map all payments to a quote
+    Payment.all.each do |payment|
+      payment.quote_id = payment.policy.quote_id if !payment.policy.nil?
+      payment.save!
+    end
+
+    # add a customer to every quote
+    Quote.all.each do |quote|
+      quote.customer_id = quote.insured_device.customer_id if !quote.insured_device.nil?
+      quote.save!
     end
   end
 end

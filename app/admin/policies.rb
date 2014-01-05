@@ -46,7 +46,7 @@ ActiveAdmin.register Policy, :as => "Customer" do
       policy.customer.name
     end
     column "Contact Number" do |policy|
-      policy.quote.insured_device.phone_number
+      policy.quote.customer.phone_number
     end
     column :policy_number
     column :start_date
@@ -55,7 +55,7 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column "Total Due", :premium
     column "Amount Paid", :amount_paid
     column "Total Balance", :pending_amount
-    column "Next Payment Due", :minimum_due
+    column "Next Payment Due", :pending_amount
     column "IMEI", :imei
     column :sales_agent_code
     column :sales_agent_name
@@ -65,8 +65,8 @@ ActiveAdmin.register Policy, :as => "Customer" do
   filter :start_date
   filter :expiry
   filter :quote_account_name, :as => :string, :label => "Account Name"
-  filter :quote_insured_device_customer_name, :as => :string, :label => "Customer Name"
-  filter :quote_insured_device_phone_number, :as => :string, :label => "Phone Number"
+  filter :quote_customer_name, :as => :string, :label => "Customer Name"
+  filter :quote_customer_phone_number, :as => :string, :label => "Phone Number"
 
   xlsx(:header_style => {:bg_color => 'C0BFBF', :fg_color => '000000' }) do
 
@@ -144,6 +144,6 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column("IMEI") { |p| p.imei }
     column :sales_agent_code
     column :sales_agent_name
-    column ("Phone Number") { |p| p.quote.insured_device.phone_number }
+    column ("Phone Number") { |p| p.customer.phone_number }
   end
 end

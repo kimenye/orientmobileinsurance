@@ -21,12 +21,12 @@ class InsuredDevice < ActiveRecord::Base
     device.marketing_name
   end
 
-  def insured_value
-    quote.insured_value
-  end
+  # def insured_value
+  #   quote.insured_value
+  # end
 
   def premium
-    quote.amount_due
+    # quote.amount_due
   end
 
   def name

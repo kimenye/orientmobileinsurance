@@ -66,7 +66,7 @@ class Policy < ActiveRecord::Base
   end
 
   def premium
-    quote.amount_due
+    return quote.amount_due if !quote.is_corporate? else insured_device.premium_value
   end
 
   def amount_due
@@ -79,6 +79,8 @@ class Policy < ActiveRecord::Base
 
   def amount_paid
     amount_paid = 0
+    amount_paid = premium if quote.is_corporate?
+    
     payments.each do |payment|
       amount_paid += payment.amount.to_f
     end
@@ -87,6 +89,7 @@ class Policy < ActiveRecord::Base
 
   def pending_amount
     quote_amount = quote.amount_due
+    quote_amount = premium if quote.is_corporate?
     #if quote.premium_type == "Monthly"
     #  quote_amount *= 3
     #end
@@ -138,7 +141,7 @@ class Policy < ActiveRecord::Base
   end
 
   def customer
-    quote.insured_device.customer
+    quote.customer
   end
   
   def can_claim?

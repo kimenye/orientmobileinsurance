@@ -30,13 +30,14 @@ class PaymentServiceTest < ActiveSupport::TestCase
 	    policy = Policy.find_by_quote_id(quote.id)
 	    assert_equal false, policy.nil?
 	    assert_equal false, policy.is_owing?
+	    assert_equal 300, policy.premium.to_i
 	end
 
-	test "Payment of a multiple device quote is only completed when the entire amount is paid up" do
+	test "Payment of a multiple device quote is only completed when the entire amount is paid up" do		
 		customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com", :customer_type => "Corporate"
 		quote = Quote.create! :insured_value => 1000, :premium_type => "Annual", :annual_premium => 3000, :monthly_premium => 0, :account_name => "OMIXRY9832", :quote_type => "Corporate", :expiry_date => 3.days.from_now, :customer_id => customer.id
-		insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564", :quote_id => quote.id
-		insured_device2 = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012347", :yop => 2013, :phone_number => "254705866565", :quote_id => quote.id
+		insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564", :quote_id => quote.id, :premium_value => 1000 
+		insured_device2 = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012347", :yop => 2013, :phone_number => "254705866565", :quote_id => quote.id, :premium_value => 1000
 
 		service = PaymentService.new()
 		assert_equal true, service.is_pending_payment?(quote.account_name)
@@ -52,7 +53,10 @@ class PaymentServiceTest < ActiveSupport::TestCase
 		assert_equal false, service.is_pending_payment?(quote.account_name)
 
 		policies = Policy.find_all_by_quote_id(quote.id)
-		assert_equal 2, policies.length		
-
+		assert_equal 2, policies.length
+		policy = Policy.first
+		assert_equal 1000, policy.premium.to_i 	
+		assert_equal 0, policy.pending_amount.to_i
+		assert_equal false, policy.is_owing? 		
 	end
 end

@@ -72,17 +72,6 @@ ActiveRecord::Schema.define(:version => 20140103142820) do
     t.string   "brand_5"
   end
 
-  create_table "bundled_products", :force => true do |t|
-    t.string   "name"
-    t.text     "description"
-    t.text     "instructions"
-    t.decimal  "standalone_price"
-    t.decimal  "bundled_price"
-    t.decimal  "cutoff_price"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-  end
-
   create_table "claims", :force => true do |t|
     t.string   "claim_no"
     t.datetime "incident_date"
@@ -262,18 +251,6 @@ ActiveRecord::Schema.define(:version => 20140103142820) do
 
   add_index "policies", ["insured_device_id"], :name => "index_policies_on_insured_device_id"
   add_index "policies", ["quote_id"], :name => "index_policies_on_quote_id"
-
-  create_table "product_licences", :force => true do |t|
-    t.string   "key"
-    t.boolean  "used"
-    t.integer  "bundled_product_id"
-    t.integer  "policy_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
-  end
-
-  add_index "product_licences", ["bundled_product_id"], :name => "index_product_licences_on_bundled_product_id"
-  add_index "product_licences", ["policy_id"], :name => "index_product_licences_on_policy_id"
 
   create_table "quotes", :force => true do |t|
     t.integer  "insured_device_id"

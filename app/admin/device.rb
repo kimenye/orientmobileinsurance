@@ -45,6 +45,7 @@ ActiveAdmin.register Device do
           Device.create! :dealer_code => dealer_code, :stock_code => stock_code, :marketing_name => marketing_name, :vendor => vendor,
             :model => model, :device_type => device_type, :catalog_price => catalog_price, :fd_insured_value => fd_insured_value,
             :fd_replacement_value => fd_replacement_value, :fd_koil_invoice_value => fd_koil_invoice_value,
+            :yop_insured_value => yop_insured_value, :yop_replacement_value => yop_replacement_value, :yop_fd_koil_invoice_value => yop_fd_koil_invoice_value,
             :stl_insured_value => stl_insured_value, :stl_replacement_value => stl_replacement_value, :stl_koil_invoice_value => stl_koil_invoice_value,
             :prev_insured_value => prev_insured_value, :prev_replacement_value => prev_replacement_value, :prev_fd_koil_invoice_value => prev_fd_koil_invoice_value,
             :active => true
