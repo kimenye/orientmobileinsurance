@@ -415,7 +415,7 @@
                                                 margin-left:0;
                                                 text-align:left;">Kenya Orient - Because You Can</h3>
 
-                                            Thank you for you interest in Orient Mobile. Find attached a quotation for Orient Mobile for your organisation.
+                                            Thank you for purchasing an Orient Mobile policy. Your policy details are as follows:
                                         </td>
                                     </tr>
                                     <tr>
@@ -423,18 +423,20 @@
                                             <table border="0" cellpadding="10" cellspacing="0" width="94%" class="policyDetails" style="font-family: Cambria,Helvetica;border:1px solid #BBBBBB;">
                                                 <tr style="background-color: #eee;">
                                                     <td>Device</td>
+                                                    <td>Policy</td>
                                                     <td>Insured Value</td>
                                                     <td>Premium</td>
                                                 </tr>
                                                 <% InsuredDevice.find_all_by_quote_id(@quote.id).each do |id| %>
                                                     <tr>
                                                         <td><%= id.device.name %></td>
+                                                        <td><%= Policy.find_by_insured_device_id(id.id).policy_number %></td>
                                                         <td><%= number_to_currency(id.insurance_value, :unit => "KES ", :precision => 0, :delimiter => ",") %></td>
                                                         <td><%= number_to_currency(id.premium_value, :unit => "KES ", :precision => 0, :delimiter => ",") %></td>
                                                     </tr>
                                                 <% end %>
                                                 <tr style="background-color: #eee;font-weight:bold;">
-                                                    <td>
+                                                    <td colspan="2">
                                                         Total
                                                     </td>
                                                     <td><%= number_to_currency(@quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => ",") %></td>
@@ -456,10 +458,8 @@
                                                   padding-left: 20px;
                                                   text-align: left;">
 
-                                            Quotation / Account # (Please quote this when making payment): <i><%= @quote.account_name %></i>. This Quotation / Account NO is valid until <%= @quote.expiry_date.utc.to_s(:full) %>.
 
-
-                                            Payment can be made via MPesa Business No. <%= ENV['MPESA'] %>, Airtel Money Business Name <%= ENV['AIRTEL'] %>,  Visa, MasterCard or Kenswitch.
+                                                  The policies are active from <%= Policy.find_by_insured_device_id(InsuredDevice.last.id).expiry.strftime("%d %b %Y")  %> to <%= Policy.find_by_insured_device_id(InsuredDevice.last.id).expiry.strftime("%d %b %Y") %>
                                         </td>
                                     </tr>
                                 </table>
