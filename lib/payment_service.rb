@@ -76,6 +76,7 @@ class PaymentService
             insured_devices.each do |id|
               p = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Active", :start_date => Time.now, :expiry => 365.days.from_now, :insured_device_id => id.id
             end
+            email = CustomerMailer.bulk_policy_purchase(quote).deliver
           end
         else
           return false

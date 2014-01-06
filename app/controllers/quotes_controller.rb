@@ -62,6 +62,9 @@ class QuotesController < ApplicationController
 		@quote.save!
 
 		# @quote = Quote.first
+		email = CustomerMailer.corporate_quotation(@quote).deliver
+
+
 
 
 		respond_to do |format|
