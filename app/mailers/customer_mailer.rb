@@ -25,7 +25,7 @@ class CustomerMailer < ActionMailer::Base
 
   def bulk_policy_purchase(quote)
     begin
-      @policies = Policy.find_by_quote_id(quote.id)
+      @policies = Policy.find_all_by_quote_id(quote.id)
       attachments.inline['logo.png'] = File.read("#{Rails.root}/app/assets/images/logo_small.png")
       mail(:from => "mobile@korient.co.ke", :to => "#{@quote.customer.name} <#{@quote.customer.email}>", :subject => "Orient Mobile Policy Puchase")
     rescue
