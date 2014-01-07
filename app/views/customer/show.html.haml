@@ -51,6 +51,7 @@
           %td Phone Number
           %td IMEI
           %td Policy No
+          %td
         %tbody
           - @customer.insured_devices.each do |id|
             - if !id.quote.policy.nil?
@@ -83,6 +84,21 @@
                 %td
                   - if !id.quote.policy.policy_number.nil?
                     = id.quote.policy.policy_number
+                %td
+                  - if id.quote.policy.has_claim?
+                    - if id.quote.policy.claim.is_in_customer_stage?
+                      %a.button.small{:href => edit_claim_path(id.quote.policy.claim)}
+                        Edit Claim 
+                    - elsif (!id.quote.policy.claim.is_in_customer_stage?) && (id.quote.policy.expiry - Time.now > 0)
+                      %a.button.small{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                        New Claim
+                    - else
+                      %a.button.small{:href => claim_path(id.quote.policy.claim)}
+                        View Claim
+                  - else
+                    %a.button.small{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                      New
+
 
   / .row.spacer
   /   .large-12.columns

@@ -4,6 +4,9 @@ class Brand < ActiveRecord::Base
 
   attr_accessible :town_name, :brand_1, :brand_2, :brand_3, :brand_4, :brand_5
 
+  def name
+  end
+
   def brands
     brand = brand_1
     if !brand_2.blank?
