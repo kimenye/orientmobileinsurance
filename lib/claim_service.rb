@@ -55,6 +55,7 @@ class ClaimService
         text = "Your claim has been processed. Visit #{claim.agent.name} with ID or Passport for a replacement device. Limit #{replacement}"
         sms.send to, text
         claim.status_description = text
+        claim.authorization_type = "Replace"
         claim.save!
         CustomerMailer.loss_theft_claim(claim).deliver
       elsif claim.is_damage? && !claim.authorized

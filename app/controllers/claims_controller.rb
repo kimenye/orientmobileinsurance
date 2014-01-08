@@ -16,7 +16,7 @@ class ClaimsController < ApplicationController
   def search
     @claim = Claim.find_by_claim_no(params[:claim_no].upcase)
     @agents = Agent.all(:conditions => "brand <> ''")
-    if @claim.policy.insured_device.device.is_stl
+    if @claim.is_stl_only
       @agents.reject! { |a| !a.is_stl }
     end
     # @agents.push(Agent.new({ :brand => "", :outlet_name => "Please select" }))
