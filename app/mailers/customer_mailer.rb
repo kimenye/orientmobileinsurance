@@ -4,13 +4,15 @@ class CustomerMailer < ActionMailer::Base
 
   def claim_registration(claim)
     begin
+
       @claim = claim
-      service = ClaimService.new
+      service = ClaimService.new      
       @nearest_dealers = service.find_nearest_brands(@claim.nearest_town, @claim.is_stl_only)
       attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMB Claim Registration Details. Claim No. #{@claim.claim_no}", :bcc => ["#{ENV['CLAIM_REGISTRATION_EMAILS']}"])
     rescue => exception
       #  Do nothing
+      binding.pry
     end
   end
 

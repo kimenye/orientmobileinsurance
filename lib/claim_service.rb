@@ -7,10 +7,13 @@ class ClaimService
 
   def find_nearest_brands town, is_stl, is_both=false
     b = Brand.find_by_town_name(town)
-    brands = [b.brand_1, b.brand_2, b.brand_3, b.brand_4, b.brand_5]
-    brands.reject! { |b| b.nil? }
-    if is_stl
-      brands.reject! { |b| b != "Simba Telecom" }
+    brands = []
+    if !b.nil?
+      brands = [b.brand_1, b.brand_2, b.brand_3, b.brand_4, b.brand_5]
+      brands.reject! { |b| b.nil? }
+      if is_stl
+        brands.reject! { |b| b != "Simba Telecom" }
+      end
     end
     brands
   end
