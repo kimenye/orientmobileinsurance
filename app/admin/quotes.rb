@@ -32,7 +32,8 @@ ActiveAdmin.register Quote do
   filter :annual_premium
   filter :monthly_premium
   filter :account_name
-  filter :premium_type  
+  filter :premium_type 
+  filter :quote_type
   filter :customer_name, :as => :string, :label => "Customer Name"
   filter :customer_id_passport, :as => :string, :label => "ID/Passport No"
   filter :customer_phone_number, :as => :string, :label => "Phone No"
