@@ -45,7 +45,7 @@ class PaymentService
 
 
           
-          quote.premium_type = "Annual" if payment.amount.to_f == quote.annual_premium.to_f && first_payment
+          quote.premium_type = "Annual" if payment.amount.to_f >= quote.annual_premium.to_f && first_payment
           quote.save!
         
           customer.lead = false

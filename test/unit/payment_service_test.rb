@@ -67,7 +67,7 @@ class PaymentServiceTest < ActiveSupport::TestCase
 
         service = PaymentService.new()
 
-        service.handle_payment(quote.account_name, 1025, "ABCDEFGH", "MPESA")
+        service.handle_payment(quote.account_name, 1030, "ABCDEFGH", "MPESA")
         quote = Quote.first
         assert_equal "Annual", quote.premium_type
 	end
