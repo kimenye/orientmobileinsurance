@@ -519,7 +519,7 @@
                       Please visit an authorized dealer in <%= @claim.nearest_town %> with the following:
                     </p>
 
-                    <%= render :partial => "dealers", locals: {brand: @brand} %>
+                    <%= render :partial => "dealers", locals: {dealers: @nearest_dealers} %>
 
                     <p>
                       <b>

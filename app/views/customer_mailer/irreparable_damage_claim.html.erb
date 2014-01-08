@@ -436,7 +436,7 @@
                       Please visit an authorized dealer in <%= @claim.nearest_town %> with ID or Passport for a replacement device. Limit <%= number_to_currency(@claim.replacement_limit, :unit => 'KES ', :delimiter => "")  %>
                     </p>
 
-                    <%= render :partial => "dealers", locals: {brand: @brand} %>
+                    <%= render :partial => "dealers", locals: {dealers: @nearest_dealers} %>                    
                   </td>
                 </tr>
                 <%= render :partial => "footer" %>
