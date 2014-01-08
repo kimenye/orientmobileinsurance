@@ -118,17 +118,8 @@ class ClaimService
   end
   
   def get_replacement_amount_for_claim claim
-    service = PremiumService.new
-    if !claim.policy.quote.agent.nil? &&  service.is_fx_code(claim.policy.quote.agent.code)
-      return claim.policy.insured_device.device.fd_replacement_value
-      # Check if it was the same year or previous      
-    elsif claim.policy.insured_device.yop == Time.now.year
-      # same year
-      return claim.policy.insured_device.device.yop_replacement_value
-    else
-      # previous year
-      return claim.policy.insured_device.device.prev_replacement_value
-    end
+    insured_value = 0.9 * claim.policy.quote.insured_value
+    return insured_value
   end
 
   def create_claim_no
