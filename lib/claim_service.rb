@@ -13,6 +13,8 @@ class ClaimService
       brands.reject! { |b| b.nil? }
       if is_stl
         brands.reject! { |b| b != "Simba Telecom" }
+      else
+        brands.reject! { |b| b == "Simba Telecom" }
       end
     end
     brands
