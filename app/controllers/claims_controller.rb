@@ -87,7 +87,6 @@ class ClaimsController < ApplicationController
     dealers = service.find_nearest_brands(@claim.nearest_town, @claim.is_stl_only)
     @nearest_dealers = dealers.join(" , ")
 
-
     respond_to do |format|
       if dealer_is_logged_in?
         format.html { render action: "dealer_show" }
