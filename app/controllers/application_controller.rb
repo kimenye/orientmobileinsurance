@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
   def get_model_name device_data
     model = device_data["model"]
 
-    if device_data["osiOs"]
+    if !device_data["osiOs"].nil? && !device_data["osVersion"].nil?
       numeric_version =  device_data["osVersion"].gsub("_", ".").to_f
       avail_height = device_data["device.availHeight"].to_i
       device_pixel_ratio = device_data["device.devicePixelRatio"].to_i

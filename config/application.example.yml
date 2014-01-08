@@ -46,3 +46,6 @@ FEEDBACK_FROM_EMAIL: feedback@korient.co.ke
 FEEDBACK_TO_EMAIL: mobile@korient.co.ke
 ANALTICS_USERNAME: <<username>>
 ANALYTICS_PASSWORD: <<password>>
+DEBUG_DEVICE_ATLAS: false
+DEBUG_DEVICE_ATLAS_MODEL: Safari - OS X
+DEBUG_DEVICE_ATLAS_VENDOR: Apple

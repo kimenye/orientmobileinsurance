@@ -10,10 +10,9 @@ class PremiumService
   end
 
   def calculate_insurance_value catalog_price, sales_code, year_of_purchase
-
-    if is_fx_code sales_code
+    if is_fx_code(sales_code) || is_stl_code(sales_code)
       return catalog_price
-    elsif !is_fx_code(sales_code) && year_of_purchase == Time.now.year
+    elsif !is_fx_code(sales_code) && !is_stl_code(sales_code) && year_of_purchase == Time.now.year
       return 0.875 * catalog_price
     else
       return 0.375 * catalog_price
@@ -115,6 +114,10 @@ class PremiumService
     fee = 999
     fee = 899 if (is_fx_code(agent_code) && yop == Time.now.year)
     fee
+  end
+
+  def is_stl_code code
+    !code.nil? && code.start_with?("STL")
   end
 
   def is_fx_code code

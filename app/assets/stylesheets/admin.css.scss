@@ -1,0 +1,87 @@
+.admin {
+	table {
+		width: 100%;
+	}
+	#main {
+		min-height: 500px;
+
+		.banner {
+			background: #eee;
+
+			h4 {
+				text-transform: uppercase;
+			}
+			margin-bottom: 50px;
+		}
+	}
+
+  table {
+    button, .button {
+      margin: 0px;
+    }
+  }
+
+  thead {
+    background: #eee;    
+    color: #5c686f;
+
+    th {
+      font-weight: 300;
+    }
+  }
+
+  .results.hidden {
+    display: none;
+  }
+
+	#header { 
+		height: 60px; 
+		padding: 0px; 
+		// font-size:0.875rem; 
+		// color: #3C3C3B; 
+		// position: relative;
+  
+		.logo { 
+			float: left; 
+			padding: 10px 0 0 0;
+		}
+		
+		.nav {
+  		ul { 
+  			list-style: none; 
+  			float:left; 
+  			margin: 0 20px 0 0;
+  		}
+  		li { 
+  			float: left; 
+  			list-style: none; 
+  			padding: 10px; 
+  			height: 60px; 
+
+  			&:hover {
+    				background: #f9f9f9;
+    			}
+    			a { 
+    				font-size: 0.875em; 
+    				text-transform: uppercase;
+    				color: #3C3C3B; 
+    				height:50px; 
+    				padding: 10px 0 0 0;
+    				position: relative; 
+    				display:block; 
+    				overflow: hidden; 
+    				width:100%; 
+    				border-right:1px solid dotted #3C3C3B; 
+
+    				&:hover {
+      				color: #999;
+    				}
+    			}
+  		}
+
+      li.active {
+        background: #eee;
+      }
+  	}
+  }
+}

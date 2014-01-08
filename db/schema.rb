@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131202102056) do
+ActiveRecord::Schema.define(:version => 20140107092942) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(:version => 20131202102056) do
     t.string   "brand_2"
     t.string   "brand_3"
     t.string   "brand_4"
+    t.string   "brand_5"
   end
 
   create_table "claims", :force => true do |t|
@@ -126,6 +127,14 @@ ActiveRecord::Schema.define(:version => 20131202102056) do
     t.boolean  "lead",                   :default => true
   end
 
+  create_table "dealers", :force => true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.string   "sales_code_prefix"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
   create_table "devices", :force => true do |t|
     t.string   "vendor"
     t.string   "model"
@@ -147,6 +156,10 @@ ActiveRecord::Schema.define(:version => 20131202102056) do
     t.string   "stock_code"
     t.boolean  "active",                     :default => true
     t.integer  "version",                    :default => 0
+    t.decimal  "stl_insured_value"
+    t.decimal  "stl_replacement_value"
+    t.decimal  "stl_koil_invoice_value"
+    t.string   "dealer_code"
   end
 
   create_table "enquiries", :force => true do |t|

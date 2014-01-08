@@ -1,14 +1,14 @@
-.row
-  .large-10.large-centered.columns
-    %h4.centered.header
-      Welcome to Orient Mobile Claims
-      - if !current_user.nil?
-        - if claims_is_logged_in?
-          #{': Claims Portal'}
-        - elsif dealer_is_logged_in?
-          #{': Fones Direct Outlet Portal'}
-        - else
-          #{': Fones Direct Service Centre'}
+/ .row
+/   .large-10.large-centered.columns
+/     %h4.centered.header
+/       Welcome to Orient Mobile Claims
+/       - if !current_user.nil?
+/         - if claims_is_logged_in?
+/           #{': Claims Portal'}
+/         - elsif dealer_is_logged_in?
+/           #{': Fones Direct Outlet Portal'}
+/         - else
+/           #{': Fones Direct Service Centre'}
 .row
   .large-10.large-centered.columns
     - if !current_user.nil?

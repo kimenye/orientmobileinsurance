@@ -1,3 +1,7 @@
+.row.banner
+  .large-12.columns
+    %h4.subheader
+      DEALER PORTAL \
 = render "layouts/claims_header"
 
 = form_for(@claim, :method => :put) do |f|
@@ -11,7 +15,7 @@
         .row.spacer{:class => "#{'disabled' if service_centre_is_logged_in?}"}
           .large-12.columns
             = f.label :agent_id, "Choose Outlet"
-            = f.select :agent_id, @agents.collect { |d| ["#{d.brand}, #{d.outlet_name}", d.id] }, {}, {}
+            = f.select :agent_id, @agents.collect { |d| ["#{d.brand}, #{d.outlet_name}", d.id] }.insert(0, ["Please Select", nil]), {}, {}
     .row
       .large-10.large-centered.columns
         .row.spacer
@@ -49,7 +53,7 @@
           .row.spacer{:class => "#{'disabled' if service_centre_is_logged_in?}"}
             .large-12.columns
               = f.check_box :receipt
-              = f.label :receipt, "Original purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)"
+              = f.label :receipt, "Original or Certified Copy of ETR Receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)"
           .row.spacer{:class => "#{'disabled' if service_centre_is_logged_in?}"}
             .large-12.columns
               = f.check_box :original_id
@@ -108,6 +112,9 @@
           $('.fixable input').prop('disabled', false);
     });
 
+    $('.footer').hide();
+    //$('select').chosen({allow_single_deselect:true, include_empty: true});
+
     var fix_rules = {
       required : {
           depends : function()  {
@@ -117,6 +124,14 @@
         number: true
     };
 
+    var agent_rules = {
+      required : {
+        depends : function() {
+          return $('#claim_agent_id').val() != "Please Select";
+        }
+      }
+    }
+
     $('.edit_claim').validate({
       rules : {
         "claim[police_abstract]" : {
@@ -124,7 +139,7 @@
         },
         "claim[damaged_device]" : {
           required : true
-        },
+        },        
 
         "claim[blocking_request]" : {
           required : true
@@ -146,6 +161,9 @@
           required : true
         },
 
+        "claim[agent_id]" : {
+          required : true
+        },
         "claim[dealer_cost_estimate]" : fix_rules,
         "claim[days_to_fix]" : fix_rules
       },
@@ -153,4 +171,7 @@
         "claim[dealer_can_fix]" : "Please specify"
       }
     });
+    
+    var settings = $.data($('.edit_claim')[0], 'validator').settings;
+    settings.ignore += ':not(.chzn-done)';
   })
