@@ -62,8 +62,10 @@ ActiveAdmin.register Policy, :as => "Customer" do
   end
 
   filter :policy_number
+  filter :quote_type
   filter :start_date
   filter :expiry
+  filter :quote_quote_type, :as => :string, :label => "Quote Type"
   filter :quote_account_name, :as => :string, :label => "Account Name"
   filter :quote_customer_name, :as => :string, :label => "Customer Name"
   filter :quote_customer_phone_number, :as => :string, :label => "Phone Number"
