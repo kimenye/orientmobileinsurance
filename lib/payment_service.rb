@@ -22,13 +22,13 @@ class PaymentService
     service = PremiumService.new
     sms = SMSGateway.new
     if !quote.nil?
-      puts ">> Quote is not nil #{quote}"
+      
       customer = quote.insured_device.customer if !quote.is_corporate?
       customer = quote.customer if quote.is_corporate?
-      sms_gateway = SMSGateway.new
 
       if !quote.is_corporate?
-        if quote.policy.nil?
+        first_payment = quote.policy.nil?
+        if quote.policy.nil? 
           policy = Policy.create! :quote_id => quote.id, :policy_number => service.generate_unique_policy_number, :status => "Pending", :insured_device_id => quote.insured_device.id
         end
 
@@ -37,9 +37,17 @@ class PaymentService
 
 
         if payment.nil?
-          payment = Payment.create! :quote_id => quote.id, :policy_id => policy.id, :amount => amount, :method => channel, :reference => transaction_ref
-          
+          payment = Payment.create! :quote_id => quote.id,
+                                    :policy_id => policy.id,
+                                    :amount => amount, 
+                                    :method => channel,
+                                    :reference => transaction_ref
 
+
+          
+          quote.premium_type = "Annual" if payment.amount.to_f == quote.annual_premium.to_f && first_payment
+          quote.save!
+        
           customer.lead = false
           customer.save!
 
@@ -55,9 +63,10 @@ class PaymentService
             policy.save!
             
             insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-            sms_gateway.send quote.insured_device.phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
+            sms.send quote.insured_device.phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
             email = CustomerMailer.policy_purchase(policy).deliver
           end
+
           return true
         else
           return false

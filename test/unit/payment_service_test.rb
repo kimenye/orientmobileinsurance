@@ -59,4 +59,16 @@ class PaymentServiceTest < ActiveSupport::TestCase
 		assert_equal 0, policy.pending_amount.to_i
 		assert_equal false, policy.is_owing? 		
 	end
+
+	test "It converts quote premium_type from monthly to annual if one pays annual amount in the first payment." do
+		customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com", :customer_type => "Invidual"
+	    insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
+	    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Monthly", :annual_premium => 1025, :monthly_premium => 390, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now
+
+        service = PaymentService.new()
+
+        service.handle_payment(quote.account_name, 1025, "ABCDEFGH", "MPESA")
+        quote = Quote.first
+        assert_equal "Annual", quote.premium_type
+	end
 end
