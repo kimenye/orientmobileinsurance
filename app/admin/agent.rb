@@ -1,7 +1,7 @@
 ActiveAdmin.register Agent do
 
   controller do
-    actions :all, :except => [:edit, :destroy]
+    actions :all, :except => [:destroy]
   end
 
   menu :parent => "Reference Data"

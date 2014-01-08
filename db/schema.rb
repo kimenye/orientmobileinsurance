@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131222185003) do
+ActiveRecord::Schema.define(:version => 20140107092942) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -70,17 +70,6 @@ ActiveRecord::Schema.define(:version => 20131222185003) do
     t.string   "brand_3"
     t.string   "brand_4"
     t.string   "brand_5"
-  end
-
-  create_table "bundled_products", :force => true do |t|
-    t.string   "name"
-    t.text     "description"
-    t.text     "instructions"
-    t.decimal  "standalone_price"
-    t.decimal  "bundled_price"
-    t.decimal  "cutoff_price"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
   end
 
   create_table "claims", :force => true do |t|
@@ -194,6 +183,7 @@ ActiveRecord::Schema.define(:version => 20131222185003) do
     t.boolean  "detected"
     t.string   "user_agent"
     t.string   "id_type"
+    t.string   "customer_id"
   end
 
   create_table "feedbacks", :force => true do |t|
@@ -251,18 +241,6 @@ ActiveRecord::Schema.define(:version => 20131222185003) do
   end
 
   add_index "policies", ["quote_id"], :name => "index_policies_on_quote_id"
-
-  create_table "product_licences", :force => true do |t|
-    t.string   "key"
-    t.boolean  "used"
-    t.integer  "bundled_product_id"
-    t.integer  "policy_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
-  end
-
-  add_index "product_licences", ["bundled_product_id"], :name => "index_product_licences_on_bundled_product_id"
-  add_index "product_licences", ["policy_id"], :name => "index_product_licences_on_policy_id"
 
   create_table "quotes", :force => true do |t|
     t.integer  "insured_device_id"
