@@ -37,7 +37,7 @@ class PaymentService
 
 
         if payment.nil?
-          payment = Payment.create! :policy_id => policy.id, :amount => amount, :method => channel, :reference => transaction_ref
+          payment = Payment.create! :quote_id => quote.id, :policy_id => policy.id, :amount => amount, :method => channel, :reference => transaction_ref
           
 
           customer.lead = false
