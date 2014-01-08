@@ -24,6 +24,7 @@
 //= require home
 //= require foundation.magellan
 //= require jquery.smint
+//= require chosen.jquery.min
 
 $(function(){ 
 	$(document).foundation(); 

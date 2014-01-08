@@ -1,16 +1,14 @@
-= render "layouts/banner"
 - if user_signed_in?
-  .row
-    .large-10.large-centered.columns
-      %h4.centered.header
-        Welcome to Orient Mobile Claims :
+  .row.banner
+    .large-12.columns
+      %h4.subheader
         - if claims_is_logged_in?
-          Claims Portal
+          Claims Portal \
         - elsif dealer_is_logged_in?
-          Fones Direct Outlet Portal
+          Fones Direct Outlet Portal \
         - else
-          Fones Direct Service Centre
-  .row
+          Fones Direct Service Centre \
+  .row.spacer
     .large-10.large-centered.columns
 
       - if dealer_is_logged_in?
@@ -36,7 +34,7 @@
               %input.small.button{:type => "submit"}
       - if claims_is_logged_in?
         %form{:method => "POST", :action => claim_search_by_no_path}
-          %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
+          %input{:type => 'text', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
         .section-container.tabs{"data-section" => "tabs"}
           %section
             %p.title{"data-section-title" => ""}
@@ -124,8 +122,12 @@
                             %a{:href => "policy/show_details?policy_no=#{claim.policy.policy_number}"}
                               = claim.policy.policy_number
       - if service_centre_is_logged_in?
-        %form{:method => "POST", :action => claim_search_by_no_path}
-          %input{:type => 'search', :placeholder =>'Search by Claim No.', :name => 'claim_no'}
+        %form{:method => "POST", :action => claim_search_by_no_path}      
+          .row.collapse
+            .large-10.columns
+              %input{:type => 'text', :placeholder =>'Search by Claim No.', :name => 'claim_no'}  
+            .large-2.columns
+              %input.button.postfix.expand.signup{:type => "submit", :value => "Search"}
         .section-container.tabs{"data-section" => "tabs"}
           %section
             %p.title{"data-section-title" => ""}
@@ -212,3 +214,7 @@
                           %td
                             -if !claim.policy.policy_number.nil?
                               = claim.policy.policy_number
+:javascript
+  $(function(){
+    $('.footer').hide();
+  });

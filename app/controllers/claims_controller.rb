@@ -16,9 +16,16 @@ class ClaimsController < ApplicationController
   def search
     @claim = Claim.find_by_claim_no(params[:claim_no].upcase)
     @agents = Agent.all(:conditions => "brand <> ''")
+    if @claim.is_stl_only
+      @agents.reject! { |a| !a.is_stl }
+    else
+      @agents.reject! { |a| a.is_stl }
+    end
+    # @agents.push(Agent.new({ :brand => "", :outlet_name => "Please select" }))
+
     service = ClaimService.new
     respond_to do |format|
-      if dealer_is_logged_in?
+      if dealer_is_logged_in?        
         if !@claim.nil? && @claim.is_in_customer_stage?
           format.html { render action: "dealer_edit" }
         else
@@ -76,7 +83,9 @@ class ClaimsController < ApplicationController
 
     service = ClaimService.new
     brands = service.find_brands_in_town(@claim.nearest_town)
-    @nearest_dealers = brands.brands
+    # @nearest_dealers = brands.brands
+    dealers = service.find_nearest_brands(@claim.nearest_town, @claim.is_stl_only)
+    @nearest_dealers = dealers.join(" , ")
 
     respond_to do |format|
       if dealer_is_logged_in?
@@ -108,7 +117,8 @@ class ClaimsController < ApplicationController
   
 
     claim_service = ClaimService.new
-    @towns = claim_service.find_nearest_towns
+    # @towns = claim_service.find_nearest_towns
+    @towns = claim_service.find_nearest_locations @claim
 
     respond_to do |format|
       format.html # new.html.erb

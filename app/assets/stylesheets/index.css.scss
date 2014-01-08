@@ -1,4 +1,4 @@
-.home.index, .home.tnc {
+.home.index, .home.tnc, .admin {
 
 	font-family: Lato, 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;
 
@@ -273,6 +273,7 @@
 		border-top: 3px solid #d41117;
 		padding-top: 20px;
 		background-color: #3d437b;
+		position: relative;
 		
 		.vcard {
 			color: #ffffff;
