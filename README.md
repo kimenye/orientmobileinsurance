@@ -16,9 +16,9 @@ Installation
     DEBUG_DEVICE_ATLAS_VENDOR: Tecno
 3. Comment out the file app/admin/policies.rb
 4. Copy database.example.yml to database.yml and edit database.yml appropriately.
-4. run rake db:migrate
+4. run ```rake db:migrate```
 5. Uncomment app/admin/policies.rb
-5. Start server rails server
+5. Start server ```rails server```
 
 After install
 --------------
