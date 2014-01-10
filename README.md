@@ -26,7 +26,7 @@ After install
 
 - Import dealers portal users (used in outlet collecting and veryfying claim) through: log in to admin -> reference data -> agents -> import agents /path/to/app/doc/data/patches/simba_telecom_agents.csv
 
-You have to create users for use with Sercive Portal (SP) and Claims Portal (CP) manually by: log in to admin -> reference data -> agents -> New agent who the super admin will go on to add as users who can later log in to the Claims Portal or Service Portal.
+- You have to create users for use with Sercive Portal (SP) and Claims Portal (CP) manually by: log in to admin -> reference data -> agents -> New agent who the super admin will go on to add as users who can later log in to the Claims Portal or Service Portal.
 ________________________
 
 License
