@@ -1,4 +1,9 @@
 class Policy < ActiveRecord::Base
+  scope :pending, where(:status => "Pending")
+  scope :active, where("status = ? and start_date <= ? and expiry >= ?", "Active", Time.now, Time.now)
+  scope :expired, where("expiry <= ?", Time.now)
+  scope :all, where("")
+
   belongs_to :quote
   has_many :claims
   has_many :payments
@@ -48,6 +53,10 @@ class Policy < ActiveRecord::Base
   
   def minimum_due
     quote.minimum_due - amount_paid
+  end
+
+  def expired
+    Time.now > expiry
   end
 
   def status_message

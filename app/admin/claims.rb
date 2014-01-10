@@ -1,4 +1,6 @@
 ActiveAdmin.register Claim do
+  scope :all
+  scope :settled
 
   controller do
     actions :all, :except => [:edit]
