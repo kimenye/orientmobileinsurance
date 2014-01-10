@@ -158,4 +158,15 @@ namespace :data do
     fone_express = Dealer.create! :code => "FD", :name => "Fones Express"
     simba = Dealer.create! :code => "STL", :name => "Simba Telecom"
   end
+
+  task :set_settlement_date => :environment do
+    Claim.all.each do |claim|
+      if claim.status == 'Settled' && claim.settlement_date.nil?
+          claim.status = claim.updated_at
+          claim.save!
+        end
+      end
+    end
+  end
+
 end
