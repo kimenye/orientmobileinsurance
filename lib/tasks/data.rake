@@ -160,13 +160,6 @@ namespace :data do
   end
 
   task :set_settlement_date => :environment do
-    Claim.all.each do |claim|
-      if claim.status == 'Settled' && claim.settlement_date.nil?
-          claim.status = claim.updated_at
-          claim.save!
-        end
-      end
-    end
+    Claim.update_all ['settlement_date = updated_at'], ['status = ?', 'Settled']
   end
-
 end
