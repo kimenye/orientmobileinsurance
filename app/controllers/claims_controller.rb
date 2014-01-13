@@ -179,6 +179,7 @@ class ClaimsController < ApplicationController
           else
             @claim.authorized = false
           end
+          @claim.settlement_date = Time.now()
           @claim.status = 'Settled'
           if @claim.is_theft?
             policy = @claim.policy

@@ -31,6 +31,10 @@ class User < ActiveRecord::Base
       where(conditions).first
     end
   end
+
+  def is_sc?
+    user_type == "SC"
+  end
 end
 
 class User::ParameterSanitizer < Devise::ParameterSanitizer

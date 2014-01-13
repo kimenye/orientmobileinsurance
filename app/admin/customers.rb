@@ -56,6 +56,8 @@ ActiveAdmin.register Customer, :as => "Lead"  do
   filter :id_passport
   filter :email
   filter :created_at
+  filter :phone_number
+  filter :alternate_number
 
   controller do
 
