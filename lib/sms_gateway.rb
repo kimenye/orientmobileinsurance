@@ -21,7 +21,7 @@ class SMSGateway
         response = ""
         puts ">>> Sent: #{txt} to #{to}"
 
-        if Rails.env != "production"
+        if Rails.env == "production"
           options = {
               :body => xml,
               :headers => { "content-type" => "text/xml;charset=utf8" }
