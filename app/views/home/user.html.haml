@@ -5,9 +5,13 @@
         - if claims_is_logged_in?
           Claims Portal \
         - elsif dealer_is_logged_in?
-          Fones Direct Outlet Portal \
+          Outlet Portal \
+          %small
+            = "#{current_user.agent.brand}, #{current_user.agent.outlet_name}"
         - else
-          Fones Direct Service Centre \
+          Service Centre \ 
+          %small
+            = "#{current_user.agent.brand}, #{current_user.agent.outlet_name}"
   .row.spacer
     .large-10.large-centered.columns
 
