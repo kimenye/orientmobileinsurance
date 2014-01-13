@@ -4,7 +4,7 @@ class ApplicationControllerTest < ActionController::TestCase
 
   test 'the model for a non ios device is returned as is' do
     data = {
-        "osiOs" => false,
+        "osIOs" => false,
         "model" => "GT-I9000"
     }
 
@@ -13,7 +13,7 @@ class ApplicationControllerTest < ActionController::TestCase
 
   test 'If iOS is greater than 5, it must be either an iPhone4,iPhone5,iPhone4s or greater ' do
     data = {
-        "osiOs" => true,
+        "osIOs" => true,
         "model" => "iPhone",
         "osVersion" => "4_1"
     }
@@ -23,7 +23,7 @@ class ApplicationControllerTest < ActionController::TestCase
 
   test 'If devicePixel ratio > 2 and device.availHeight = 538 then it its an iphone5 or higher' do
     data = {
-        "osiOs" => true,
+        "osIOs" => true,
         "model" => "iPhone",
         "osVersion" => "6_1",
         "device.availHeight" => "548",

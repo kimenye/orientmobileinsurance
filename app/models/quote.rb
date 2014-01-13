@@ -1,4 +1,8 @@
 class Quote < ActiveRecord::Base
+  scope :corporate, where(:quote_type => "Corporate")
+  scope :individual, where(:quote_type => "Individual")
+  scope :all, where("")
+
   belongs_to :insured_device
   belongs_to :agent
   belongs_to :customer

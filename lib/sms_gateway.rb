@@ -23,7 +23,8 @@ class SMSGateway
 
         if Rails.env == "production"
           options = {
-              :body => xml
+              :body => xml,
+              :headers => { "content-type" => "text/xml;charset=utf8" }
           }
           response = HTTParty.post( @base_uri, options)
           # puts ">>>> before sleep"

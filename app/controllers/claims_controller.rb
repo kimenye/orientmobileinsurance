@@ -16,8 +16,10 @@ class ClaimsController < ApplicationController
   def search
     @claim = Claim.find_by_claim_no(params[:claim_no].upcase)
     @agents = Agent.all(:conditions => "brand <> ''")
-    if @claim.policy.insured_device.device.is_stl
+    if @claim.is_stl_only
       @agents.reject! { |a| !a.is_stl }
+    else
+      @agents.reject! { |a| a.is_stl }
     end
     # @agents.push(Agent.new({ :brand => "", :outlet_name => "Please select" }))
 
@@ -84,7 +86,6 @@ class ClaimsController < ApplicationController
     # @nearest_dealers = brands.brands
     dealers = service.find_nearest_brands(@claim.nearest_town, @claim.is_stl_only)
     @nearest_dealers = dealers.join(" , ")
-
 
     respond_to do |format|
       if dealer_is_logged_in?
@@ -178,6 +179,7 @@ class ClaimsController < ApplicationController
           else
             @claim.authorized = false
           end
+          @claim.settlement_date = Time.now()
           @claim.status = 'Settled'
           @claim.policy.status = 'Expired'
           if @claim.is_theft?

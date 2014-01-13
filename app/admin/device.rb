@@ -82,6 +82,7 @@ ActiveAdmin.register Device do
   filter :marketing_name
   filter :stock_code
   filter :active
+  filter :dealer_code
 
   index do
     column :stock_code

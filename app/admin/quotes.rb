@@ -1,5 +1,8 @@
 ActiveAdmin.register Quote do
-
+  scope :all
+  scope :corporate
+  scope :individual
+  
   controller do
     actions :all, :except => [:destroy]
   end
@@ -15,6 +18,7 @@ ActiveAdmin.register Quote do
     column :expiry_date
     column :premium_type
     column :insured_value
+    column :quote_type
     # column :customer
     # column :insured_device
     default_actions

@@ -1,27 +1,10 @@
-<% if !brand.nil? %>
+<% if !dealers.nil? %>
     <p>The following are the dealers available in your town:</p>
 
     <ul>
 
-      <% if !brand.brand_1.nil? %>
-          <li>
-            <%= brand.brand_1   %>
-          </li>
-      <% end %>
-      <% if !brand.brand_2.nil? %>
-          <li>
-            <%= brand.brand_2   %>
-          </li>
-      <% end %>
-      <% if !brand.brand_3.nil? %>
-          <li>
-            <%= brand.brand_3   %>
-          </li>
-      <% end %>
-      <% if !brand.brand_4.nil? %>
-          <li>
-            <%= brand.brand_4   %>
-          </li>
+      <% dealers.each do |dealer| %>
+        <li><%= dealer %></li>
       <% end %>
 
     </ul>

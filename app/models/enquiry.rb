@@ -35,6 +35,10 @@ class Enquiry < ActiveRecord::Base
     self.customer_phone_number = ''
   end
 
+  def name
+    "Enquiry"
+  end
+
   attr_accessor :customer_name, :customer_email, :customer_payment_option, :customer_phone_number
 
 end
