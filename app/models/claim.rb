@@ -25,6 +25,9 @@ class IncidentDateValidator < ActiveModel::Validator
 end
 
 class Claim < ActiveRecord::Base
+  scope :settled, where(:status => "Settled")
+  scope :all, where(:status => "Settled", :status => nil)
+
   belongs_to :policy
   belongs_to :agent
   attr_accessible :claim_no, :claim_type, :contact_email, :contact_number, :incident_date, :incident_description, :policy_id, :status, :status_description,

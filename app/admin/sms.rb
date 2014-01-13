@@ -7,7 +7,9 @@ ActiveAdmin.register Sms, :as => "Outgoing Message" do
   menu :label => "Outgoing Messages", :parent => "Message"
 
   index do
-    column :to
+    column "To" do |sms|
+      link_to sms.to, admin_outgoing_message_path(sms)
+    end
     column :text
     column "Sent at", :created_at
   end
