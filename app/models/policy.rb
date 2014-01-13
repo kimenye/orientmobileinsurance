@@ -3,8 +3,8 @@ class Policy < ActiveRecord::Base
   scope :active, where("status = ? and start_date <= ? and expiry >= ?", "Active", Time.now, Time.now)
   scope :expired, where("expiry <= ?", Time.now)
   scope :all, where("")
-  scope :corporate, lambda { where("quote_type is ?", "Corporate").joins(:quote) }
-  scope :individual, lambda { where("quote_type is ?", "Individual").joins(:quote) }
+  scope :corporate, lambda { where("quote_type = ?", "Corporate").joins(:quote) }
+  scope :individual, lambda { where("quote_type = ?", "Individual").joins(:quote) }
 
   belongs_to :quote
   belongs_to :insured_device
