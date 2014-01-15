@@ -423,21 +423,26 @@
                                             <table border="0" cellpadding="10" cellspacing="0" width="94%" class="policyDetails" style="font-family: Cambria,Helvetica;border:1px solid #BBBBBB;">
                                                 <tr style="background-color: #eee;">
                                                     <td>Device</td>
+                                                    <td>YOP</td>
+                                                    <td>IMEI</td>
                                                     <td>Insured Value</td>
                                                     <td>Premium</td>
                                                 </tr>
                                                 <% InsuredDevice.find_all_by_quote_id(@quote.id).each do |id| %>
                                                     <tr>
                                                         <td><%= id.device.name %></td>
+                                                        <td><%= id.yop %></td>
+                                                        <td><%= id.imei %></td>
                                                         <td><%= number_to_currency(id.insurance_value, :unit => "KES ", :precision => 0, :delimiter => ",") %></td>
                                                         <td><%= number_to_currency(id.premium_value, :unit => "KES ", :precision => 0, :delimiter => ",") %></td>
                                                     </tr>
                                                 <% end %>
                                                 <tr style="background-color: #eee;font-weight:bold;">
-                                                    <td>
+                                                    <td colspan = "3">
                                                         Total
                                                     </td>
-                                                    <td><%= number_to_currency(@quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => ",") %></td>
+
+                                                    <td class = "large-offset-2"><%= number_to_currency(@quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => ",") %></td>
                                                     <td><%= number_to_currency(@quote.annual_premium, :unit => "KES ", :precision => 0, :delimiter => ",") %></td>
                                                 </tr>
 
