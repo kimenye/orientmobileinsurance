@@ -11,6 +11,7 @@
 			= @quote.account_name
 			%small
 				= @quote.customer.company_name
+			=link_to "Download pdf", "#{@quote.id}/download_pdf"
 .row.disabled
 	.large-4.columns
 		.row

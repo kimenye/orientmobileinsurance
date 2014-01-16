@@ -62,7 +62,8 @@ class QuotesController < ApplicationController
 		@quote.save!
 
 		# @quote = Quote.first
-		email = CustomerMailer.corporate_quotation(@quote).deliver
+		email = CustomerMailer.corporate_quotation(quote)
+		email.deliver
 
 
 
@@ -70,5 +71,16 @@ class QuotesController < ApplicationController
 		respond_to do |format|
 			format.html { redirect_to quote_path(@quote), notice: 'Quote was successfully updated.' }
 		end
+	end
+
+	def download_pdf
+		@quote = Quote.find(params[:id])
+		send_data generate_pdf(@quote),
+		          filename: "quote.pdf",
+		          type: "application.pdf"
+	end
+
+	def generate_pdf(quote)
+		AttachmentService.generate_pdf(quote).render		
 	end
 end

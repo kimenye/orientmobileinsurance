@@ -57,4 +57,6 @@ Orientmobileinsurance::Application.routes.draw do
   match 'terms_and_conditions' => 'home#tnc', :as => :tnc
   match 'terms' => 'home#tnc', :as => :tnc_short
   match 'analytics' => 'analytics#index', :as => :analytics
+
+  match 'quotes/:id/download_pdf' => 'quotes#download_pdf', :as => :download_pdf
 end
