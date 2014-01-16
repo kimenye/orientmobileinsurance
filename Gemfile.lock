@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    Ascii85 (1.0.2)
     actionmailer (3.2.11)
       actionpack (= 3.2.11)
       mail (~> 2.4.4)
@@ -45,6 +46,7 @@ GEM
     activesupport (3.2.11)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    afm (0.2.0)
     ansi (1.4.3)
     arbre (1.0.1)
       activesupport (>= 3.0.0)
@@ -133,6 +135,7 @@ GEM
     has_scope (0.6.0.rc)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
+    hashery (2.1.1)
     hashie (0.4.0)
     hike (1.2.3)
     hpricot (0.8.6)
@@ -201,6 +204,12 @@ GEM
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     orm_adapter (0.4.0)
+    pdf-reader (1.3.3)
+      Ascii85 (~> 1.0.0)
+      afm (~> 0.2.0)
+      hashery (~> 2.0)
+      ruby-rc4
+      ttfunk
     pg (0.16.0)
     phony (1.9.0)
     phony_rails (0.4.2)
@@ -210,6 +219,9 @@ GEM
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
+    prawn (0.12.0)
+      pdf-reader (>= 0.9.0)
+      ttfunk (~> 1.0.2)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -250,6 +262,7 @@ GEM
       railties (>= 3.2, < 5)
     rolify (3.2.0)
     ruby-ole (1.2.11.7)
+    ruby-rc4 (0.1.5)
     ruby_parser (3.1.3)
       sexp_processor (~> 4.1)
     rubyzip (1.0.0)
@@ -286,6 +299,7 @@ GEM
     treetop (1.4.14)
       polyglot
       polyglot (>= 0.3.1)
+    ttfunk (1.0.3)
     turn (0.9.6)
       ansi
     tzinfo (0.3.37)
@@ -344,6 +358,7 @@ DEPENDENCIES
   newrelic_rpm
   pg
   phony_rails
+  prawn
   pry
   pry-nav
   quiet_assets

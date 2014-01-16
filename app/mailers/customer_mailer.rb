@@ -18,8 +18,10 @@ class CustomerMailer < ActionMailer::Base
     begin
       @quote = quote
       attachments.inline['logo.png'] = File.read("#{Rails.root}/app/assets/images/logo_small.png")
+      attachments['quote.pdf'] = AttachmentService.generate_pdf(quote).render
       mail(:from => "mobile@korient.co.ke", :to => "#{@quote.customer.name} <#{@quote.customer.email}>", :subject => "OMB Quotation #{@quote.account_name}")
-    rescue
+    rescue => error
+      puts "Error in bulk email #{error}"
     end
   end
 

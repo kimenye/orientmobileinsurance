@@ -37,6 +37,7 @@ gem 'zurb-foundation'
 gem 'compass-rails'
 gem 'smarter_csv'
 gem 'valid_email'
+gem 'prawn'
 
 group :development do
   gem 'better_errors'
