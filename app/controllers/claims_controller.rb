@@ -179,6 +179,7 @@ class ClaimsController < ApplicationController
             @claim.authorized = false
           end
           @claim.status = 'Settled'
+          @claim.policy.status = 'Expired'
           if @claim.is_theft?
             policy = @claim.policy
             policy.expiry = @claim.incident_date
