@@ -133,7 +133,14 @@
 	}
 
 	.devices {
-		text-align: center;				
+		text-align: center;
+
+		li.smaller {
+			img {
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+		}				
 	}	
 
 	h4 {			
