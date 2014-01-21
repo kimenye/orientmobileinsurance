@@ -1,4 +1,10 @@
 ActiveAdmin.register Policy, :as => "Customer" do
+  scope :all
+  scope :pending
+  scope :active
+  scope :expired
+  scope :corporate
+  scope :individual
 
   controller do
     actions :all, :except => [:edit, :destroy]

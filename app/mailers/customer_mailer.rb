@@ -5,11 +5,11 @@ class CustomerMailer < ActionMailer::Base
   def claim_registration(claim)
     begin
       @claim = claim
-      service = ClaimService.new
-      @brand = service.find_brands_in_town(@claim.nearest_town)
+      service = ClaimService.new      
+      @nearest_dealers = service.find_nearest_brands(@claim.nearest_town, @claim.is_stl_only)
       attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMB Claim Registration Details. Claim No. #{@claim.claim_no}", :bcc => ["#{ENV['CLAIM_REGISTRATION_EMAILS']}"])
-    rescue
+    rescue => exception
       #  Do nothing
     end
   end
@@ -61,7 +61,8 @@ class CustomerMailer < ActionMailer::Base
     begin
       @claim = claim
       service = ClaimService.new
-      @brand = service.find_brands_in_town(@claim.nearest_town)
+      # @brand = service.find_brands_in_town(@claim.nearest_town)
+      @nearest_dealers = service.find_nearest_brands(@claim.nearest_town, @claim.is_stl_only)
       attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMB Claim No. #{@claim.claim_no}", :bcc => ["#{ENV['FONEXPRESS_EMAIL']}"])
     rescue
@@ -73,7 +74,8 @@ class CustomerMailer < ActionMailer::Base
     begin
       @claim = claim
       service = ClaimService.new
-      @brand = service.find_brands_in_town(@claim.nearest_town)
+      # @brand = service.find_brands_in_town(@claim.nearest_town)
+      @nearest_dealers = service.find_nearest_brands(@claim.nearest_town, @claim.is_stl_only)
       attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMB Claim No. #{@claim.claim_no}", :bcc => ["#{ENV['FONEXPRESS_EMAIL']}"])
     rescue
@@ -85,7 +87,8 @@ class CustomerMailer < ActionMailer::Base
     begin
       @claim = claim
       service = ClaimService.new
-      @brand = service.find_brands_in_town(@claim.nearest_town)
+      # @brand = service.find_brands_in_town(@claim.nearest_town)
+      @nearest_dealers = service.find_nearest_brands(@claim.nearest_town, @claim.is_stl_only)       
       attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
       mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMB Claim No. #{@claim.claim_no}", :bcc => ["#{ENV['FONEXPRESS_EMAIL']}"])
     rescue

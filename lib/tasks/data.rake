@@ -196,4 +196,8 @@ namespace :data do
     end
 
   end
+
+  task :set_settlement_date => :environment do
+    Claim.update_all ['settlement_date = updated_at'], ['status = ?', 'Settled']
+  end
 end

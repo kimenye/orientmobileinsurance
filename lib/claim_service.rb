@@ -7,10 +7,15 @@ class ClaimService
 
   def find_nearest_brands town, is_stl, is_both=false
     b = Brand.find_by_town_name(town)
-    brands = [b.brand_1, b.brand_2, b.brand_3, b.brand_4, b.brand_5]
-    brands.reject! { |b| b.nil? }
-    if is_stl
-      brands.reject! { |b| b != "Simba Telecom" }
+    brands = []
+    if !b.nil?
+      brands = [b.brand_1, b.brand_2, b.brand_3, b.brand_4, b.brand_5]
+      brands.reject! { |b| b.nil? }
+      if is_stl
+        brands.reject! { |b| b != "Simba Telecom" }
+      else
+        brands.reject! { |b| b == "Simba Telecom" }
+      end
     end
     brands
   end
@@ -34,7 +39,7 @@ class ClaimService
     replacement = ActionController::Base.helpers.number_to_currency(claim.replacement_limit, :unit => "KES ", :precision => 0, :delimiter => "")
     if claim.is_damage? && claim.authorized
       # send an sms to the customer
-      if claim.dealer_can_fix
+      if claim.dealer_can_fix && claim.authorization_type == "Repair"
         text = "Your #{claim.policy.insured_device.device.model} is under repair. Collect it from #{claim.agent.name} on #{(claim.days_to_fix + 1).business_days.from_now.to_s(:simple)}. Carry your ID / Passport"
         sms.send to, text
         claim.status_description = text
@@ -52,6 +57,7 @@ class ClaimService
         text = "Your claim has been processed. Visit #{claim.agent.name} with ID or Passport for a replacement device. Limit #{replacement}"
         sms.send to, text
         claim.status_description = text
+        claim.authorization_type = "Replace"
         claim.save!
         CustomerMailer.loss_theft_claim(claim).deliver
       elsif claim.is_damage? && !claim.authorized
@@ -78,7 +84,7 @@ class ClaimService
     yop = claim.policy.insured_device.yop
     claim_type = "DAMAGE" if claim.is_damage?
     claim_type = "THEFT" if claim.is_theft?
-    brand = find_brands_in_town claim.nearest_town
+    brand = find_nearest_brands(claim.nearest_town, claim.is_stl_only).first
     customer = claim.policy.customer
 
     requirements = "the Claim Registration Form, damaged device, purchase receipt/ warranty, original and copy of ID/ Passport." if claim.is_damage?
@@ -87,7 +93,7 @@ class ClaimService
     insured_value_str = ActionController::Base.helpers.number_to_currency(claim.policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
     text = "#{device}, Year #{claim.policy.insured_device.yop}, Value #{insured_value_str}. #{claim_type} claim booked under Ref #{claim.claim_no}. Check email for Claim Registration Form."
     gateway.send(customer.contact_number, text)
-    gateway.send(customer.contact_number, "Visit #{brand.brand_1} with #{requirements}")
+    gateway.send(customer.contact_number, "Visit #{brand} with #{requirements}")
   end
   
   def is_serial_claimant id_number
@@ -115,17 +121,8 @@ class ClaimService
   end
   
   def get_replacement_amount_for_claim claim
-    service = PremiumService.new
-    if !claim.policy.quote.agent.nil? &&  service.is_fx_code(claim.policy.quote.agent.code)
-      return claim.policy.insured_device.device.fd_replacement_value
-      # Check if it was the same year or previous      
-    elsif claim.policy.insured_device.yop == Time.now.year
-      # same year
-      return claim.policy.insured_device.device.yop_replacement_value
-    else
-      # previous year
-      return claim.policy.insured_device.device.prev_replacement_value
-    end
+    insured_value = 0.9 * claim.policy.quote.insured_value
+    return insured_value
   end
 
   def create_claim_no

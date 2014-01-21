@@ -42,6 +42,7 @@ ActiveAdmin.register Customer, :as => "Lead"  do
     column ("Tel No 1") { |customer| customer.phone_number }
     column ("Tel No 2") { |customer| customer.alternate_number }
     column ("Number of Enquiries") { |customer| customer.num_enquiries }
+    column ("Email") { |customer| customer.email }
     column ("Date Attempted") { |customer| customer.created_at }
     column ("passport/id") { |customer| customer.id_passport }
     column ("Phone") { |customer| customer.primary_device.device.marketing_name if !customer.primary_device.nil? }
@@ -55,6 +56,8 @@ ActiveAdmin.register Customer, :as => "Lead"  do
   filter :id_passport
   filter :email
   filter :created_at
+  filter :phone_number
+  filter :alternate_number
 
   controller do
 
