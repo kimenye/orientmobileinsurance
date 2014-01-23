@@ -1,4 +1,6 @@
 class Quote < ActiveRecord::Base
+
+
   scope :corporate, where(:quote_type => "Corporate")
   scope :individual, where(:quote_type => "Individual")
   scope :all, where("")
@@ -75,4 +77,6 @@ class Quote < ActiveRecord::Base
   def is_expired
     expired = expiry_date - Time.now < 0
   end
+
+  
 end

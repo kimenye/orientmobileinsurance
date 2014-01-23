@@ -38,6 +38,7 @@ gem 'compass-rails'
 gem 'smarter_csv'
 gem 'valid_email'
 gem 'prawn'
+gem 'axlsx'
 
 group :development do
   gem 'better_errors'

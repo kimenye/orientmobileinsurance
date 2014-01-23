@@ -13,6 +13,8 @@
 				= @quote.customer.company_name
 			%br
 			=link_to "Download as PDF", "#{@quote.id}/download_pdf", {:class => "button tiny"}
+			=link_to "Download as xlsx", "#{@quote.id}/download_xlsx.xlsx", {:class => "button tiny"}
+			
 .row.disabled
 	.large-4.columns
 		.row

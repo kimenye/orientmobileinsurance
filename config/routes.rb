@@ -59,4 +59,5 @@ Orientmobileinsurance::Application.routes.draw do
   match 'analytics' => 'analytics#index', :as => :analytics
 
   match 'quotes/:id/download_pdf' => 'quotes#download_pdf', :as => :download_pdf
+  match 'quotes/:id/download_xlsx' => 'quotes#download_xlsx', :as => :download_xlsx
 end

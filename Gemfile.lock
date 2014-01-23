@@ -330,6 +330,7 @@ DEPENDENCIES
   active_admin_importable
   activeadmin
   activeadmin-axlsx
+  axlsx
   better_errors
   binding_of_caller
   business_time

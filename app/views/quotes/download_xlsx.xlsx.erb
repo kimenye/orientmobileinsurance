@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<table width="500">
+  <tr>
+    <th>Vendor</th>
+    <th>Model</th>
+    <th>Y.O.P</th>
+    <th>IMEI No.</th>
+    <th>Insurance Value</th>
+    <th>Annual Premium</th>
+  </tr>
+
+
+  <% InsuredDevice.find_all_by_quote_id(@quote.id).each do |phone| %>
+  <tr>
+    <td><%= phone.device.vendor %></td>
+    <td><%= phone.device.model %></td>
+    <td><%= phone.yop %></td>
+    <td><%= phone.imei %></td>
+    <td><%= phone.insurance_value.to_s %></td>
+    <td><%= phone.premium_value.to_s %></td>
+  </tr>
+  <% end %>
+
+  
+    <td colspan="4">Total</td>
+ 
+    <td><%= InsuredDevice.find_all_by_quote_id(@quote.id).map {|n| n.insurance_value.to_f}.sum %></td>
+    <td><%= InsuredDevice.find_all_by_quote_id(@quote.id).map {|n| n.premium_value.to_f}.sum %></td>
+</table>
+<body>
+</html>
