@@ -81,38 +81,8 @@ class QuotesController < ApplicationController
 		          type: "application.pdf"
 	end
 
-	# def download_xlsx
-	# 	@quote = Quote.find(params[:id])
-
-	# 	respond_to do |format|
-	# 		format.html
-	# 		format.json {render :json => @posts}
-	# 		format.xlsx{
-	# 			xlsx_package = Quote.to_xlsx
-	# 			begin
-	# 				temp = Tempfile.new("quote.xlsx")
-	# 				xlsx_package.serialize temp.path
-	# 				send_file temp.path, :filename => "quote.xlsx",
-	# 				                     :type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-	# 		    ensure
-	# 		    	temp.close
-	# 		    	temp.unlink
-	# 		    end
-	# 		}
-	# 	end
-	# end
-
-	# def download_xlsx
-		# @quote = Quote.find(params[:id])
-		# File.open("/home/urbanslug/tmp/rails/foo.xlsx", "w") { |f| 
-  #                 f.write(ExcelService.generate_xlsx(@quote)) }
-		# send_data ExcelService.generate_xlsx(@quote),
-		#           filename: "quote.xlsx",
-		#           type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-	# end
 
 	def download_xlsx
-		# binding.pry
 		@quote = Quote.find(params[:id])
 		respond_to do |format|
 	      format.html

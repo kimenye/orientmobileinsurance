@@ -42,6 +42,11 @@ class AttachmentService
 
 		    end
 
+		    total_insurance_value = InsuredDevice.find_all_by_quote_id(quote.id).map {|n| n.insurance_value.to_f}.sum
+		    total_premium_value = InsuredDevice.find_all_by_quote_id(quote.id).map {|n| n.premium_value.to_f}.sum
+
+		    data.push [{content: "<b>TOTAL</b>", colspan:3}, "<b>#{total_insurance_value}</b>", "<b>#{total_premium_value}</b>"]
+
 
 
 
