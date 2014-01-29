@@ -15,7 +15,6 @@ class EnquiryController < Wicked::WizardController
 
   def corporate_payment_form
     @bp = BulkPayment.find_by_code(params[:code])
-    # binding.pry
     if @bp.nil?
       redirect_to corporate_payment_path, :layout => "application", :notice => "No account with the code #{params[:code]} exists"
     else
@@ -28,7 +27,6 @@ class EnquiryController < Wicked::WizardController
   end
 
   def corporate_receipt
-    puts ">>>> #{params}"
     @bp = BulkPayment.find_by_code(params[:JP_MERCHANT_ORDERID])
     amount = params[:JP_AMOUNT]
     if @bp.reference != params[:JP_TRANID]
