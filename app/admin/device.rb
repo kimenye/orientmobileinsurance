@@ -113,5 +113,5 @@ ActiveAdmin.register Device do
     end
   end
 
-  actions :index, :edit, :update, :show
+  # actions :index, :edit, :update, :show, :new
 end

@@ -54,6 +54,14 @@ ActiveAdmin.register_page "Simulator" do
     redirect_to admin_simulator_path, :notice => "Sent #{count} Reminders"
   end
 
+  page_action :add_bulk_payment, :method => :post do
+    code = params["payment"]["code"]
+    amount = params["payment"]["amount"]
+
+    bp = BulkPayment.create! :code => code, :amount_required => amount
+    redirect_to admin_simulator_path, :notice => "Bulk Payment created #{bp.code}"
+  end
+
   page_action :change_expiry, :method => :post do
     expired_policies = Policy.where("expiry < ?", ReminderService._get_start_of_day(Time.now))    
     count = 0
@@ -85,6 +93,7 @@ ActiveAdmin.register_page "Simulator" do
         render "sms"
       end
       column do
+        render "add_bulk_payment"
       end
     end
 

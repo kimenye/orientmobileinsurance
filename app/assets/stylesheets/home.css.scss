@@ -108,6 +108,17 @@ label.error {
   }
 }
 
+.corporate_payment_form {
+  input.jambopay {
+    margin: auto;
+    display: block;
+  }
+
+  .due {
+    text-align: center;
+  }
+}
+
 .section_header  {
   font-weight: normal;
   border-bottom: 1px solid lightgrey;
