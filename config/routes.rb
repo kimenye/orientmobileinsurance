@@ -57,4 +57,8 @@ Orientmobileinsurance::Application.routes.draw do
   match 'terms_and_conditions' => 'home#tnc', :as => :tnc
   match 'terms' => 'home#tnc', :as => :tnc_short
   match 'analytics' => 'analytics#index', :as => :analytics
+
+  match 'corporate_payment' => 'enquiry#corporate_payment', :as => :corporate_payment
+  match 'corporate_payment_form' => 'enquiry#corporate_payment_form', :as => :corporate_payment_form
+  match 'corporate_receipt' => 'enquiry#corporate_receipt', :as => :corporate_receipt
 end
