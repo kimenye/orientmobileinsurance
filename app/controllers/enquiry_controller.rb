@@ -9,6 +9,36 @@ class EnquiryController < Wicked::WizardController
   skip_before_filter :verify_authenticity_token
   steps :begin, :insure, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
 
+  def corporate_payment
+    render 'corporate_payment', :layout => "application"
+  end
+
+  def corporate_payment_form
+    @bp = BulkPayment.find_by_code(params[:code])
+    if @bp.nil?
+      redirect_to corporate_payment_path, :layout => "application", :notice => "No account with the code #{params[:code]} exists"
+    else
+      @bp.email = params[:email]
+      @bp.phone_number = params[:phone_number]
+      @bp.save!
+
+      render 'corporate_payment_form', :layout => "application"
+    end    
+  end
+
+  def corporate_receipt
+    @bp = BulkPayment.find_by_code(params[:JP_MERCHANT_ORDERID])
+    amount = params[:JP_AMOUNT]
+    if @bp.reference != params[:JP_TRANID]
+      @bp.amount_paid = 0 if @bp.amount_paid.nil?
+      @bp.amount_paid += amount.to_f
+      @bp.reference = params[:JP_TRANID]
+      @bp.save!
+    end
+
+    render 'corporate_receipt', :layout => "application"
+  end
+
   def show
     begin
       if Enquiry.find_by_id(session[:enquiry_id]).nil? || session[:enquiry_id].nil?        
