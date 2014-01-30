@@ -25,6 +25,13 @@ ActiveAdmin.register Claim do
   end
    actions :index, :show
 
+  xlsx(:header_style => {:bg_color => 'C0BFBF', :fg_color => '000000' }) do
+    
+    column ("Insured") {|claim| claim.policy.customer.name}
+    column ("Policy")  {|claim| claim.policy.policy_number }
+
+  end
+
   csv do
     column :id
     column ("Insured") {|claim| claim.policy.customer.name}
