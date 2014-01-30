@@ -36,11 +36,11 @@ ActiveAdmin.register Enquiry do
 
     enquiries = Enquiry.all(:conditions => ["created_at >= ? AND created_at <= ? AND detected = ?",created_at_gte, created_at_lte, false])
     csv = CSV.generate( encoding: 'Windows-1251' ) do |csv|
-      csv << ["Phone Number", "Date", "Vendor", "Model", "Full Name"]
+      csv << ["Phone Number", "Date", "Vendor", "Model", "Device Name", "Year of Purchase"]
 
       enquiries.each do |enquiry|
         if !Device.find_by_vendor_and_model(enquiry.vendor, enquiry.model).nil?
-          csv << [enquiry.phone_number, enquiry.created_at, enquiry.vendor, enquiry.model, enquiry.marketing_name]
+          csv << [enquiry.phone_number, enquiry.created_at, enquiry.vendor, enquiry.model, enquiry.marketing_name, enquiry.year_of_purchase]
         end
       end
     end
