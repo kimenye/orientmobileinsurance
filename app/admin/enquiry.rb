@@ -30,6 +30,28 @@ ActiveAdmin.register Enquiry do
     end
   end
 
+  collection_action :download_report, :method => :get do
+    created_at_gte = params[:q][:created_at_gte]
+    created_at_lte = params[:q][:created_at_lte]
+
+    enquiries = Enquiry.all(:conditions => ["created_at >= ? AND created_at <= ? AND detected = ?",created_at_gte, created_at_lte, false])
+    csv = CSV.generate( encoding: 'Windows-1251' ) do |csv|
+      csv << ["Phone Number", "Date", "Vendor", "Model", "Device Name", "Year of Purchase"]
+
+      enquiries.each do |enquiry|
+        if !Device.find_by_vendor_and_model(enquiry.vendor, enquiry.model).nil?
+          csv << [enquiry.phone_number, enquiry.created_at, enquiry.vendor, enquiry.model, enquiry.marketing_name, enquiry.year_of_purchase]
+        end
+      end
+    end
+
+    send_data csv.encode('Windows-1251'), type: 'text/csv; charset=windows-1251; header=present', disposition: "attachment; filename=report.csv"
+  end
+
+  action_item only: :index do
+    link_to('Download Eligible Devices', params.merge(:action => :download_report))
+  end
+
   filter :phone_number
   filter :year_of_purchase
   filter :vendor
