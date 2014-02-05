@@ -63,7 +63,7 @@ class QuotesController < ApplicationController
 		@quote.save!
 
 		# @quote = Quote.first
-		email = CustomerMailer.corporate_quotation(quote).deliver
+		email = CustomerMailer.corporate_quotation(@quote).deliver
 		
 		respond_to do |format|
 			format.html { redirect_to quote_path(@quote), notice: 'Quote was successfully updated.' }
