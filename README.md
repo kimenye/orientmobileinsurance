@@ -17,7 +17,7 @@ Installation
 3. Comment out the file app/admin/policies.rb
 4. Copy database.example.yml to database.yml and edit database.yml appropriately.
 5. Create a blank file log/development.log (if log directory does not exist create it).
-6. bundle install
+6. bundle install --without production
 7. run ```rake db:migrate```
 8. Uncomment app/admin/policies.rb
 9. Start server ```rails server```

@@ -1,5 +1,5 @@
-# source 'http://rubygems.org'
-source 'http://ruby.taobao.org/'
+source 'http://rubygems.org'
+# source 'http://ruby.taobao.org/'
 ruby '1.9.3'
 gem 'rails', '3.2.11'
 gem "mail"
@@ -54,9 +54,9 @@ group :development, :test do
   gem 'pry'
   gem 'factory_girl_rails'
 end
-gem 'pg'
 group :production do  
   gem 'therubyracer', :platforms => :ruby
+  gem 'pg'
 end
 #group :test do
   gem 'minitest-rails'
