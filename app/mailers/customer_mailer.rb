@@ -14,6 +14,28 @@ class CustomerMailer < ActionMailer::Base
     end
   end
 
+  def corporate_quotation(quote)
+    begin
+      @quote = quote
+      attachments.inline['logo.png'] = File.read("#{Rails.root}/app/assets/images/logo_small.png")
+      attachments['quote.pdf'] = AttachmentService.generate_pdf(quote).render
+      mail(:from => "mobile@korient.co.ke", :to => "#{@quote.customer.name} <#{@quote.customer.email}>", :subject => "OMB Quotation #{@quote.account_name}")
+    rescue => error
+      puts "Error in bulk email #{error}"
+    end
+  end
+
+  def bulk_policy_purchase(quote)
+    begin
+      @quote = quote
+      @policies = Policy.find_all_by_quote_id(quote.id)
+      attachments.inline['logo.png'] = File.read("#{Rails.root}/app/assets/images/logo_small.png")
+      mail(:from => "mobile@korient.co.ke", :to => "#{@quote.customer.name} <#{@quote.customer.email}>", :subject => "Orient Mobile Policy Puchase")
+    rescue => error
+      puts "Error in bulk email #{error}"
+    end
+  end
+
   def policy_purchase(policy)
     begin
       @policy = policy

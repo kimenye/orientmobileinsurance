@@ -26,8 +26,8 @@ ActiveAdmin.register Customer, :as => "Lead"  do
         column "Year of Purchase", :yop
         column "Phone Number", :phone_number
         column :created_at
-        column :insured_value
-        column "Premium", :premium
+        column :insurance_value
+        column "Premium", :premium_value
       end
     end
 
@@ -46,7 +46,7 @@ ActiveAdmin.register Customer, :as => "Lead"  do
     column ("Date Attempted") { |customer| customer.created_at }
     column ("passport/id") { |customer| customer.id_passport }
     column ("Phone") { |customer| customer.primary_device.device.marketing_name if !customer.primary_device.nil? }
-    column ("Insured Value") { |customer| customer.primary_device.quote.insured_value if !customer.primary_device.nil? }
+    column ("Insured Value") { |customer| customer.primary_device.insurance_value if !customer.primary_device.nil? }
     column ("Annual Premium") { |customer| customer.primary_device.quote.annual_premium if !customer.primary_device.nil? }
     column ("Installment Premium") { |customer| customer.primary_device.quote.monthly_premium if !customer.primary_device.nil? }
     #column :email

@@ -170,11 +170,10 @@ class PremiumService
     end
   end
 
-  def activate_policy imei, phone_number
+  def activate_policy imei, phone_number    
+    if is_valid_imei? imei      
+      inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.nil? && !id.quote.policy.nil?) }
 
-    if is_valid_imei? imei
-
-      inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.policy.nil?) }
       if !inactive_devices.empty?
         device = inactive_devices.last
         device.imei = imei.strip

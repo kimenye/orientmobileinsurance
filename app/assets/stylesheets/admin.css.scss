@@ -30,6 +30,15 @@
     }
   }
 
+  tr.total {
+    font-weight: bold;
+    background: #eee;
+    
+    td.lbl {
+      text-align: right;
+    }
+  }
+
   .results.hidden {
     display: none;
   }

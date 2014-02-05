@@ -211,12 +211,12 @@ class EnquiryController < Wicked::WizardController
               jump_to :serial_claimants
             end
 
-            insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number
+            insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number, :insurance_value => session[:quote_details]["insurance_value_uf"]
             q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
                               :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
                               :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
                               :insured_value => session[:quote_details]["insurance_value_uf"],
-                              :agent_id => @enquiry.agent_id)
+                              :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
 
             @gateway = SMSGateway.new
 
@@ -241,6 +241,10 @@ class EnquiryController < Wicked::WizardController
           q.premium_type = @enquiry.customer_payment_option
           q.save!
         end
+
+        id = q.insured_device
+        id.premium_value = q.amount_due
+        id.save!
 
         smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]
         session[:sms_message] = smsMessage

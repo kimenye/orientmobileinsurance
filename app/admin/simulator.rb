@@ -149,10 +149,10 @@ ActiveAdmin.register_page "Simulator" do
         policies = Policy.where("expiry < ?", ReminderService._get_start_of_day(Time.now))
         table_for policies, :class=> "index_table" do |p|
           column "Customer" do |p|
-            p.customer.name
+            p.customer.name if !p.customer.nil?
           end
           column "Number" do |p|
-            p.quote.insured_device.phone_number
+            p.quote.insured_device.phone_number if !p.quote.insured_device.nil?
           end
           column "Policy Number" do |p|
             p.policy_number

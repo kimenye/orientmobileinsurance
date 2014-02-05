@@ -45,7 +45,6 @@ class ApplicationController < ActionController::Base
 
   def get_model_name device_data
     model = device_data["model"]
-
     if device_data["osIOs"]
       numeric_version =  device_data["osVersion"].gsub("_", ".").to_f
       avail_height = device_data["device.availHeight"].to_i

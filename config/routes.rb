@@ -34,8 +34,8 @@ Orientmobileinsurance::Application.routes.draw do
   devise_for :users, :controllers => { :sessions => "users/sessions" }
   ActiveAdmin.routes(self)
 
-  resources :users, :mobile, :messages, :enquiry
-  resources :enquiries, :status, :customer, :claims
+  resources :users, :mobile, :messages, :enquiry, :policies
+  resources :enquiries, :status, :customer, :claims, :quotes
 
   match 'administration' => 'admin#index', :as => :admin_area
   match 'customer-login' => 'customer#login', :as => :customer_login
@@ -58,6 +58,8 @@ Orientmobileinsurance::Application.routes.draw do
   match 'terms' => 'home#tnc', :as => :tnc_short
   match 'analytics' => 'analytics#index', :as => :analytics
 
+  match 'quotes/:id/download_pdf' => 'quotes#download_pdf', :as => :download_pdf
+  match 'quotes/:id/download_xlsx' => 'quotes#download_xlsx', :as => :download_xlsx
   match 'corporate_payment' => 'enquiry#corporate_payment', :as => :corporate_payment
   match 'corporate_payment_form' => 'enquiry#corporate_payment_form', :as => :corporate_payment_form
   match 'corporate_receipt' => 'enquiry#corporate_receipt', :as => :corporate_receipt
