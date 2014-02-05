@@ -1,5 +1,5 @@
 GEM
-  remote: http://ruby.taobao.org/
+  remote: http://rubygems.org/
   specs:
     Ascii85 (1.0.2)
     actionmailer (3.2.11)
@@ -102,7 +102,7 @@ GEM
     currencies (0.4.2)
     daemons (1.1.9)
     debug_inspector (0.0.2)
-    deviceatlasapi (0.0.7.1)
+    deviceatlasapi (0.0.7.2)
       httparty
       railties (~> 3.1)
     devise (3.0.0)
@@ -202,7 +202,7 @@ GEM
     mobile-fu (1.2.1)
       rack-mobile-detect
       rails
-    multi_json (1.8.2)
+    multi_json (1.8.4)
     newrelic_rpm (3.6.6.147)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
