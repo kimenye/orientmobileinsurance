@@ -124,7 +124,7 @@ class ClaimServiceTest < ActiveSupport::TestCase
         policy = Policy.create! :policy_number => "AAA/000", 
                                 :quote_id => quote.id, 
                                 :status => "Active", 
-                                :start_date => Time.now, 
+                                :start_date => Time.now,
                                 :expiry => 1.year.from_now,
                                 :insured_device_id => insured_device.id
 

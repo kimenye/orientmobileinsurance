@@ -60,4 +60,7 @@ Orientmobileinsurance::Application.routes.draw do
 
   match 'quotes/:id/download_pdf' => 'quotes#download_pdf', :as => :download_pdf
   match 'quotes/:id/download_xlsx' => 'quotes#download_xlsx', :as => :download_xlsx
+  match 'corporate_payment' => 'enquiry#corporate_payment', :as => :corporate_payment
+  match 'corporate_payment_form' => 'enquiry#corporate_payment_form', :as => :corporate_payment_form
+  match 'corporate_receipt' => 'enquiry#corporate_receipt', :as => :corporate_receipt
 end

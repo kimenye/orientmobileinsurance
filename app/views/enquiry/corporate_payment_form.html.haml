@@ -1,0 +1,28 @@
+.row
+    .banner
+        %h4.subheader
+            CORPORATE BULK PAYMENTS
+.row.spacer
+    .large-12.columns.large-centered
+        %h4.subheader.centered
+            Make your payment
+.row.spacer
+    .large-12.columns.large-centered
+        %p.due.subheader
+            The amount due is #{number_to_currency(@bp.amount_required, :unit => "KES ", :precision => 0, :delimiter => ",")}. Click the PAY NOW button below to make the payment.
+.row.spacer
+    .large-6.columns.large-centered
+        %form{:action => "https://www.jambopay.com/JPExpress.aspx", :method => "post", :target => "_blank"}
+            %input{:name => "jp_item_type", :type => "hidden", :value => "cart"}/
+            %input{:name => "jp_item_name", :type => "hidden", :value => "OMB Insurance"}/
+            %input{:name => "order_id", :type => "hidden", :value => "#{@bp.code}"}/
+            %input{:name => "jp_business", :type => "hidden", :value => "#{ENV['JP_BUSINESS']}"}/
+            %input{:name => "jp_amount_1", :type => "hidden", :value => "#{@bp.amount_required.to_s}" }/
+            %input{:name => "jp_amount_2", :type => "hidden", :value => "0" }/
+            %input{:name => "jp_amount_5", :type => "hidden", :value => "0" }/
+            %input{:name => "jp_payee", :type => "hidden", :value => "#{@bp.email}"}/
+            %input{:name => "jp_shipping", :type => "hidden", :value => "company name" }/
+            %input{:name => "jp_rurl", :type => "hidden", :value => "#{ENV['BASE_URL']}corporate_receipt"}/
+            %input{:name => "jp_furl", :type => "hidden", :value => "#{ENV['BASE_URL']}corporate_receipt"}/
+            %input{:name => "jp_curl", :type => "hidden", :value => "#{ENV['BASE_URL']}corporate_receipt"}/
+            %input.jambopay{:src => "https://www.jambopay.com/jp_image/paynow.png", :type => "image"}/
