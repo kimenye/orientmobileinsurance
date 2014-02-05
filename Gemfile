@@ -40,6 +40,7 @@ gem 'smarter_csv'
 gem 'valid_email'
 gem 'prawn'
 gem 'axlsx'
+gem 'axlsx_rails'
 
 group :development do
   gem 'better_errors'

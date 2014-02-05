@@ -63,12 +63,8 @@ class QuotesController < ApplicationController
 		@quote.save!
 
 		# @quote = Quote.first
-		email = CustomerMailer.corporate_quotation(quote)
-		email.deliver
-
-
-
-
+		email = CustomerMailer.corporate_quotation(quote).deliver
+		
 		respond_to do |format|
 			format.html { redirect_to quote_path(@quote), notice: 'Quote was successfully updated.' }
 		end
@@ -85,8 +81,10 @@ class QuotesController < ApplicationController
 	def download_xlsx
 		@quote = Quote.find(params[:id])
 		respond_to do |format|
-	      format.html
-	      format.xlsx
+			format.xlsx {
+		    	# response.headers['Content-Disposition'] = 'attachment; filename="quote_#{@quote.account_name}.xlsx"'
+		    	  render xlsx: "download_xlsx", disposition: "attachment", filename: "quote_#{@quote.account_name}.xlsx"
+			}
 	    end
 	end
 

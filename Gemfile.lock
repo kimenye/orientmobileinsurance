@@ -55,6 +55,9 @@ GEM
       htmlentities (~> 4.3.1)
       nokogiri (>= 1.4.1)
       rubyzip (~> 1.0.0)
+    axlsx_rails (0.1.5)
+      axlsx
+      rails (>= 3.1)
     bcrypt-ruby (3.1.1)
     better_errors (0.9.0)
       coderay (>= 1.0.0)
@@ -332,6 +335,7 @@ DEPENDENCIES
   activeadmin
   activeadmin-axlsx
   axlsx
+  axlsx_rails
   better_errors
   binding_of_caller
   business_time
