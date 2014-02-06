@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141018094436) do
+ActiveRecord::Schema.define(:version => 20140206121405) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -265,6 +265,14 @@ ActiveRecord::Schema.define(:version => 20141018094436) do
 
   add_index "policies", ["insured_device_id"], :name => "index_policies_on_insured_device_id"
   add_index "policies", ["quote_id"], :name => "index_policies_on_quote_id"
+
+  create_table "products", :force => true do |t|
+    t.string   "serial"
+    t.decimal  "price"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "quotes", :force => true do |t|
     t.integer  "insured_device_id"
