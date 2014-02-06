@@ -3,7 +3,7 @@ require 'prawn'
 class AttachmentService
 	def self.generate_pdf quote
 		doc = Prawn::Document.new do |pdf|
-			pdf.image "#{Rails.root}/app/assets/images/koil_logo.png", :scale => 0.4, :vposition => 0, :position => :left
+			pdf.image "#{Rails.root}/app/assets/images/KOIL_Logo_2013.jpg", :scale => 0.1, :vposition => 0, :position => :left
 			
 			pdf.move_down 10
 
