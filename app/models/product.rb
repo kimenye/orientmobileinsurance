@@ -5,4 +5,7 @@ class Product < ActiveRecord::Base
   validates :price, presence: true
   validates :serial, presence: true
   validates :serial, uniqueness: true
+
+  has_many :product_quotes
+  has_many :quotes, through: :product_quotes
 end

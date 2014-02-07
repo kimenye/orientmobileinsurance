@@ -16,4 +16,5 @@ ActiveAdmin.register Product do
     column :serial    
     default_actions
   end
+  
 end

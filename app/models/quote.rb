@@ -9,7 +9,9 @@ class Quote < ActiveRecord::Base
   belongs_to :agent
   belongs_to :customer
   has_many :policies
-  has_many :payments
+  has_many :payments      
+  has_many :product_quotes
+  has_many :products, through: :product_quotes
   attr_accessible :account_name, :annual_premium, :expiry_date, :monthly_premium, :insured_device_id, :premium_type, :insured_value, :agent_id, :quote_type, :customer_id
 
 
