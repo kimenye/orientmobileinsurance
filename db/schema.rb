@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140206145949) do
+ActiveRecord::Schema.define(:version => 20141018094436) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -272,6 +272,7 @@ ActiveRecord::Schema.define(:version => 20140206145949) do
     t.integer  "quote_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.decimal  "price"
   end
 
   add_index "product_quotes", ["product_id"], :name => "index_product_quotes_on_product_id"
@@ -292,12 +293,13 @@ ActiveRecord::Schema.define(:version => 20140206145949) do
     t.string   "account_name"
     t.string   "premium_type"
     t.datetime "expiry_date"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.decimal  "insured_value"
     t.integer  "agent_id"
     t.string   "quote_type"
     t.integer  "customer_id"
+    t.string   "product_type",      :default => "Device"
   end
 
   add_index "quotes", ["agent_id"], :name => "index_quotes_on_agent_id"

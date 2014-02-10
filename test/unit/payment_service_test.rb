@@ -13,7 +13,30 @@ class PaymentServiceTest < ActiveSupport::TestCase
 	    Message.delete_all
 	    Sms.delete_all
 	    Device.delete_all
+	    Product.delete_all
+	    ProductQuote.delete_all
 	    Device.create! :vendor => "Tecno", :model => "N7", :marketing_name => "Tecno N7", :catalog_price => 200
+	    @product = Product.create! :serial => "345678", :price => 3000, :name => "Norton"
+	end
+
+	test "It can handle the payment of a product" do
+		customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com", :customer_type => "Invidual"
+		quote = Quote.create! :quote_type => "Invidual", :product_type => "Product", :account_name => "OMB8373", :customer_id => customer.id
+		ProductQuote.create! :quote_id => quote.id, :product_id => @product.id, :price => @product.price
+
+		service = PaymentService.new()
+
+		assert_equal true, service.is_pending_payment?(quote.account_name)
+
+		service.handle_payment(quote.account_name, @product.price - 300, "1290342343", "MPESA")
+		assert_equal true, service.is_pending_payment?(quote.account_name)		
+
+		# when a payment is less than the total amount due, the system should send a sms asking for a top up
+
+		service.handle_payment(quote.account_name, 300, "1230342343", "MPESA")
+		assert_equal false, service.is_pending_payment?(quote.account_name)		
+
+		# when the full payment is made an sms is sent to the customer telling them that an email has been sent with product activation details
 	end
 
 	test "It can handle the payment of a single device quote" do			

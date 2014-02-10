@@ -12,14 +12,14 @@ class Quote < ActiveRecord::Base
   has_many :payments      
   has_many :product_quotes
   has_many :products, through: :product_quotes
-  attr_accessible :account_name, :annual_premium, :expiry_date, :monthly_premium, :insured_device_id, :premium_type, :insured_value, :agent_id, :quote_type, :customer_id
+  attr_accessible :account_name, :annual_premium, :expiry_date, :monthly_premium, :insured_device_id, :premium_type, :insured_value, :agent_id, :quote_type, :customer_id, :product_type
 
 
   def name
     account_name
   end
 
-  def corporate_amount_paid 
+  def amount_paid 
     amount = 0
     payments.each do |payment|
       amount += payment.amount
@@ -33,10 +33,18 @@ class Quote < ActiveRecord::Base
   end
 
   def amount_due
-    if premium_type == "Monthly"
-      return monthly_premium.to_f * 3
+    if product_type == "Device"
+      if premium_type == "Monthly"
+        return monthly_premium.to_f * 3
+      else
+        return annual_premium
+      end
     else
-      return annual_premium
+      total = 0
+      product_quotes.each do |pq|
+        total += pq.price
+      end
+      return total
     end
   end
 

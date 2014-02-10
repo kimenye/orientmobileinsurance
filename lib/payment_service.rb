@@ -4,7 +4,7 @@ class PaymentService
 
   def is_pending_payment? (account_name)
     q = Quote.find_by_account_name(account_name)
-    if !q.is_corporate?
+    if !q.is_corporate? && q.product_type == "Device"
       policy = q.policy
       if policy.nil?
         return true
@@ -12,13 +12,34 @@ class PaymentService
         return policy.is_owing?
       end
     else
-      return q.corporate_amount_paid < q.amount_due
+      return q.amount_paid < q.amount_due
     end
+  end
+
+  def handle_product_payment(quote, amount, transaction_ref, channel)
+    payment = Payment.find_by_reference(transaction_ref)
+    if payment.nil?
+
+      payment = Payment.create! :quote_id => quote.id,
+                                    # :policy_id => policy.id,
+                                    :amount => amount, 
+                                    :method => channel,
+                                    :reference => transaction_ref
+
+      return true
+    end
+    return false
+
   end
 
   def handle_payment(account_name, amount, transaction_ref, channel)
 
     quote = Quote.find_by_account_name account_name.upcase
+    
+    if quote.product_type == "Product"
+      return handle_product_payment(quote, amount, transaction_ref, channel)
+    end
+
     service = PremiumService.new
     sms = SMSGateway.new
     if !quote.nil?
@@ -77,7 +98,7 @@ class PaymentService
           payment = Payment.create! :quote_id => quote.id, :amount => amount, :method => channel, :reference => transaction_ref
 
           if is_pending_payment?(quote.account_name)
-            sms.send quote.customer.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency(quote.amount_due - quote.corporate_amount_paid, :unit => "KES ", :precision => 0, :delimiter => "")} to proceed."
+            sms.send quote.customer.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency(quote.amount_due - quote.amount_paid, :unit => "KES ", :precision => 0, :delimiter => "")} to proceed."
             # send an email as well
           else
             # create policies for all the devices
