@@ -18,6 +18,7 @@ class PaymentService
 
   def handle_product_payment(quote, amount, transaction_ref, channel)
     payment = Payment.find_by_reference(transaction_ref)
+    sms = SMSGateway.new
     if payment.nil?
 
       payment = Payment.create! :quote_id => quote.id,
@@ -25,11 +26,15 @@ class PaymentService
                                     :amount => amount, 
                                     :method => channel,
                                     :reference => transaction_ref
+      if amount < quote.amount_due
+        sms.send quote.customer.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.amount_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency((quote.amount_due - quote.amount_paid), :unit => "KES ", :precision => 0, :delimiter => "")} to proceed."
+      else
+        sms.send quote.customer.phone_number, "Thank you for registering for this service. You have been sent an email with the product's activation details."
+      end
 
       return true
     end
     return false
-
   end
 
   def handle_payment(account_name, amount, transaction_ref, channel)

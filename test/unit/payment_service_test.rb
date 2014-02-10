@@ -16,7 +16,7 @@ class PaymentServiceTest < ActiveSupport::TestCase
 	    Product.delete_all
 	    ProductQuote.delete_all
 	    Device.create! :vendor => "Tecno", :model => "N7", :marketing_name => "Tecno N7", :catalog_price => 200
-	    @product = Product.create! :serial => "345678", :price => 3000, :name => "Norton"
+	    @product = Product.create! :serial => "345678", :price => 550, :name => "Norton"
 	end
 
 	test "It can handle the payment of a product" do
@@ -28,14 +28,17 @@ class PaymentServiceTest < ActiveSupport::TestCase
 
 		assert_equal true, service.is_pending_payment?(quote.account_name)
 
+		Sms.delete_all
 		service.handle_payment(quote.account_name, @product.price - 300, "1290342343", "MPESA")
-		assert_equal true, service.is_pending_payment?(quote.account_name)		
+		assert_equal true, service.is_pending_payment?(quote.account_name)	
+		assert_equal 1, Sms.count	
 
 		# when a payment is less than the total amount due, the system should send a sms asking for a top up
 
-		service.handle_payment(quote.account_name, 300, "1230342343", "MPESA")
+	 	Sms.delete_all
+		service.handle_payment(quote.account_name, 550, "1230342343", "MPESA")
 		assert_equal false, service.is_pending_payment?(quote.account_name)		
-
+		assert_equal 1, Sms.count
 		# when the full payment is made an sms is sent to the customer telling them that an email has been sent with product activation details
 	end
 
