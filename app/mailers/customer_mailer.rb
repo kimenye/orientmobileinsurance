@@ -105,5 +105,16 @@ class CustomerMailer < ActionMailer::Base
       # Do nothing
     end
   end
+  
+   def product_purchase(quote, product_serial)
+    begin
+      @quote = quote
+      @product_serial = product_serial
+      attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
+      mail(:from => "mobile@korient.co.ke", :to => "#{quote.customer.name} <#{quote.customer.email}>", :subject => "#{product_serial.product.name} - Activation Details")
+    rescue
+    #  Do nothing
+    end
+  end
 
 end

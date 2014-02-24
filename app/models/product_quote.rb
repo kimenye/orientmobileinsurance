@@ -1,5 +1,6 @@
 class ProductQuote < ActiveRecord::Base
   belongs_to :product
   belongs_to :quote
-  attr_accessible :status, :product_id, :quote_id, :price
+  belongs_to :product_quote
+  attr_accessible :status, :product_id, :quote_id, :price, :product_serial_id
 end

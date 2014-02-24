@@ -3,6 +3,8 @@ class Quote < ActiveRecord::Base
 
   scope :corporate, where(:quote_type => "Corporate")
   scope :individual, where(:quote_type => "Individual")
+  scope :product, where(:product_type => "Product")
+  scope :device, where(:product_type => "Device")
   scope :all, where("")
 
   belongs_to :insured_device

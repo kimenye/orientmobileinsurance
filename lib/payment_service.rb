@@ -26,10 +26,20 @@ class PaymentService
                                     :amount => amount, 
                                     :method => channel,
                                     :reference => transaction_ref
-      if amount < quote.amount_due
+      if is_pending_payment?(quote.account_name)
         sms.send quote.customer.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.amount_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency((quote.amount_due - quote.amount_paid), :unit => "KES ", :precision => 0, :delimiter => "")} to proceed."
       else
         sms.send quote.customer.phone_number, "Thank you for registering for this service. You have been sent an email with the product's activation details."
+        product_quote = ProductQuote.find_by_quote_id(quote.id)
+       product_serial = ProductSerial.find_by_product_id_and_used(product_quote.product.id, false)
+       
+       product_quote.product_serial_id = product_serial.id
+       product_quote.save!
+       
+       product_serial.used = true
+       product_serial.save!
+
+       CustomerMailer.product_purchase(quote, product_serial).deliver
       end
 
       return true
@@ -41,16 +51,23 @@ class PaymentService
 
     quote = Quote.find_by_account_name account_name.upcase
     
-    if quote.product_type == "Product"
-      return handle_product_payment(quote, amount, transaction_ref, channel)
-    end
+    # if quote.product_type == "Product"
+    #   return handle_product_payment(quote, amount, transaction_ref, channel)
+    # end
 
     service = PremiumService.new
     sms = SMSGateway.new
     if !quote.nil?
       
-      customer = quote.insured_device.customer if !quote.is_corporate?
-      customer = quote.customer if quote.is_corporate?
+      # customer = quote.insured_device.customer if !quote.is_corporate?
+      # customer = quote.customer if quote.is_corporate?
+
+      if quote.product_type == "Product"
+        customer = quote.customer if quote.is_corporate?
+        return handle_product_payment(quote, amount, transaction_ref, channel)
+      else
+        customer = quote.insured_device.customer if !quote.is_corporate?
+      end
 
       if !quote.is_corporate?
         first_payment = quote.policy.nil?

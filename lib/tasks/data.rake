@@ -10,14 +10,18 @@ namespace :data do
     Enquiry.delete_all
     Message.delete_all
     Sms.delete_all
+    Product.delete_all
+    ProductSerial.delete_all
+    ProductQuote.delete_all
+
   end
 
   task :seed => :environment do
     enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
     customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
     insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.find_by_vendor("Tecno").id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
-    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.find_by_code("STL050").id
-    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :customer_id => customer.id, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.find_by_code("STL050").id
+    policy = Policy.create! :policy_number => "AAA/000", :insured_device_id => insured_device.id, :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
     payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
   end
 
@@ -199,5 +203,15 @@ namespace :data do
 
   task :set_settlement_date => :environment do
     Claim.update_all ['settlement_date = updated_at'], ['status = ?', 'Settled']
+  end
+
+  desc "Task description"
+  task :seed_product_quote => :environment do
+    @product = Product.create! :price => 550, :name => "Norton"
+    @product_serial = ProductSerial.create! :serial => "AJD934", :product_id => @product.id
+    
+    customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "+2547722778438", :email => "muadh24@gmail.com", :customer_type => "Invidual"
+    quote = Quote.create! :quote_type => "Invidual", :product_type => "Product", :account_name => "OMB8373", :customer_id => customer.id
+    product_quote = ProductQuote.create! :quote_id => quote.id, :product_id => @product.id, :price => @product.price
   end
 end

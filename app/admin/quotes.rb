@@ -2,6 +2,8 @@ ActiveAdmin.register Quote do
   scope :all
   scope :corporate
   scope :individual
+  scope :product
+  scope :device
   
   controller do
     actions :all, :except => [:destroy]
@@ -30,7 +32,7 @@ ActiveAdmin.register Quote do
     end
     f.actions
   end
-
+  
   filter :insured_device
   filter :agent
   filter :annual_premium
