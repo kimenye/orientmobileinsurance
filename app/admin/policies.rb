@@ -49,7 +49,7 @@ ActiveAdmin.register Policy, :as => "Customer" do
 
   index do
     column "Customer" do |policy|
-      policy.customer.name
+      link_to policy.customer.name, admin_lead_path(policy.customer)
     end
     column "Contact Number" do |policy|
       policy.quote.customer.phone_number
