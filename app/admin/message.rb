@@ -16,5 +16,9 @@ ActiveAdmin.register Message, :as => "Incoming Message" do
   filter :phone_number
   filter :text
   filter :created_at
+
+  types = [ { id: 1, label: "Enquiry" }, { id: 2, label:  "IMEI" }, { id: 3, label: "Unknown" }]  
+  filter :message_type, :collection => proc { types.map { |t| [ t[:label], t[:id] ] } }, :as => :select
+  
   actions :index
 end

@@ -33,6 +33,7 @@ ActiveAdmin.register Payment do
   csv do
     column ("Customer") { |payment| payment.quote.customer.name }
     column ("Phone Number") { |payment| payment.quote.customer.phone_number }
+    column ("Email Address") { |payment| payment.quote.customer.email }
     column ("Device") { |payment| payment.policy.insured_device.device.marketing_name if !payment.policy.nil? }
     column ("Insured Value") { |payment| payment.policy.insured_device.insurance_value if !payment.policy.nil? }
     column ("Amount Paid") { |payment| payment.amount }
