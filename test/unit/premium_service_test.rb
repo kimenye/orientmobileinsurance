@@ -138,6 +138,7 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal 2, (service.get_message_type "123456789012345")
     assert_equal 1, (service.get_message_type "Mobile")
     assert_equal 1, (service.get_message_type "Mobi")
+    assert_equal 1, (service.get_message_type "MOBI")
     assert_equal 1, (service.get_message_type "Mombile")
     assert_equal 1, (service.get_message_type "Phone")
     assert_equal 3, (service.get_message_type "OMI")
