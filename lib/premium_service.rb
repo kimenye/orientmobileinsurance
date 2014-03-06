@@ -142,14 +142,19 @@ class PremiumService
   def is_imei? text
     (!text.nil?) && text.strip.length == 15 && is_number?(text)
   end
-
+  
   def get_message_type message
-    if !message.nil? && message.downcase == ENV['KEYWORD'].downcase
-      return 1
-    elsif is_imei?(message)
-      return 2
-    else
-      return 3
+    if !message.nil?
+      ENV['KEYWORDS'].split(",").each do |keyword|
+        if message.downcase == keyword.strip.downcase
+          return 1  
+        end
+      end
+      if is_imei?(message)
+        return 2
+      else
+        return 3
+      end
     end
   end
 

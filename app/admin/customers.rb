@@ -13,6 +13,15 @@ ActiveAdmin.register Customer, :as => "Lead"  do
     column "Phone #2", :alternate_number
   end
 
+  form do |f|
+    f.inputs "Customer Details" do
+        f.input :name
+        f.input :id_passport
+        f.input :email
+    end
+    f.actions
+  end
+
   show do |lead|
     panel "Lead Details" do
       attributes_table_for lead, :name, :id_passport, :email, :created_at
@@ -69,7 +78,7 @@ ActiveAdmin.register Customer, :as => "Lead"  do
       Customer.where(id: params[:id]).first!
     end
 
-    actions :all, :except => [:edit, :destroy]
+    actions :all, :except => [:destroy]
   end
 
   actions  :index, :show, :edit, :update

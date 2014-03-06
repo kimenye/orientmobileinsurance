@@ -49,7 +49,7 @@ ActiveAdmin.register Policy, :as => "Customer" do
 
   index do
     column "Customer" do |policy|
-      policy.customer.name
+      link_to policy.customer.name, admin_lead_path(policy.customer)
     end
     column "Contact Number" do |policy|
       policy.quote.customer.phone_number
@@ -62,7 +62,9 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column "Amount Paid", :amount_paid
     column "Total Balance", :pending_amount
     column "Next Payment Due", :pending_amount
-    column "IMEI", :imei
+    column "IMEI", :imei do |policy|
+      link_to policy.insured_device.imei, admin_insured_device_path(policy.insured_device)
+    end
     column :sales_agent_code
     column :sales_agent_name
   end

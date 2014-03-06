@@ -4,7 +4,7 @@
   %form{:action => admin_simulator_payment_path, :method => "POST"}
     .field
       = label(:payment, :account_id)
-      = collection_select(:payment, :account_name, Quote.all, :account_name, :account_name)
+      = text_field(:payment, :account_name, {:placeholder => "Account Name"})
     .field
       = label(:payment, :amount)
       = text_field(:payment, :amount, {:placeholder => "1000.00"})

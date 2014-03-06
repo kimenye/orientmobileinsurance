@@ -26,18 +26,18 @@
 = form_for(@customer, :method => :put) do |f|
   .row.spacer
     .large-12.columns
-      .row
-        .large-4.columns
-          = f.label :name, "Change the name that you provided"
-          = f.text_field :name
-        .large-4.columns
-          = f.label :id, "Change the ID or passport number provided"
-          = f.text_field :id_passport
-        .large-4.columns
+      / .row
+      /   .large-4.columns
+      /     = f.label :name, "Change the name that you provided"
+      /     = f.text_field :name
+      /   .large-4.columns
+      /     = f.label :id, "Change the ID or passport number provided"
+      /     = f.text_field :id_passport
+      /   .large-4.columns
           
       .row
         .large-4.columns
-          = f.label :alternate_phone_number, "Change the ID number that you provided"
+          = f.label :alternate_phone_number
           = f.text_field :alternate_phone_number
         .large-4.columns
           = f.label :email
