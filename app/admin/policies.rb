@@ -10,6 +10,30 @@ ActiveAdmin.register Policy, :as => "Customer" do
     actions :all, :except => [:edit, :destroy]
   end
 
+  collection_action :generate_product_code, :method => :get do
+    devices = InsuredDevice.all(:conditions => ['device_id = ? OR device_id = ?', Device.find_by_vendor("Apple").id, Device.find_by_vendor("Samsung").id])
+    
+    customers = []
+
+    devices.each do |device|
+      customers << device.customer
+    end
+    premium_service = PremiumService.new
+    csv = CSV.generate( encoding: 'Windows-1251' ) do |csv|
+      csv << ["Code", "Email", "Customer Name"]
+
+      customers.each do |customer|
+        csv << ["OMB#{premium_service.generate_unique_account_number}", customer.email, "#{customer.first_name} #{customer.last_name}"]
+      end
+    end
+
+    send_data csv.encode('Windows-1251'), type: 'text/csv; charset=windows-1251; header=present', disposition: "attachment; filename=product_codes.csv"
+  end
+
+  action_item only: :index do
+    link_to('Generate Product Codes', params.merge(:action => :generate_product_code))
+  end
+
 
 
   active_admin_import_anything do |file|
