@@ -3,7 +3,7 @@ class InsuredDevice < ActiveRecord::Base
   belongs_to :device
   has_many :quotes
 
-  attr_accessible :customer_id, :device_id, :imei, :yop, :phone_number, :damaged_flag, :damage_reported
+  attr_accessible :customer_id, :device_id, :imei, :yop, :phone_number, :damaged_flag, :damage_reported, :insurance_value, :replacement_value, :premium_value, :quote_id
 
   def quote
     quotes.first
@@ -19,14 +19,6 @@ class InsuredDevice < ActiveRecord::Base
 
   def model
     device.marketing_name
-  end
-
-  def insured_value
-    quote.insured_value
-  end
-
-  def premium
-    quote.amount_due
   end
 
   def name

@@ -1,0 +1,14 @@
+wb = xlsx_package.workbook
+style_shout = wb.styles.add_style sz: 16, b: true, alignment: { horizontal: :center }
+wb.add_worksheet(name: "Quotes") do |sheet|
+  sheet.add_row ['', 'Insured', @quote.customer.name]
+  sheet.add_row ['', 'Sales Agent Code', (@quote.agent.nil? ? "" : @quote.agent.name)]
+  
+  sheet.add_row []
+  sheet.add_row ['', 'Make & Model', 'YOP', 'IMEI', 'Insurance Value', 'Premium Value']
+  InsuredDevice.find_all_by_quote_id(@quote.id).each do |id|
+    sheet.add_row ['', id.device.name, id.yop, id.imei, id.insurance_value, id.premium_value]
+  end
+
+  sheet.add_row ['','','','Total', @quote.insured_value, @quote.annual_premium]  
+end

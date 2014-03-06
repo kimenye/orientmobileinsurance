@@ -137,6 +137,10 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal 2, (service.get_message_type "123456789012345")
     assert_equal 2, (service.get_message_type "123456789012345")
     assert_equal 1, (service.get_message_type "Mobile")
+    assert_equal 1, (service.get_message_type "Mobi")
+    assert_equal 1, (service.get_message_type "MOBI")
+    assert_equal 1, (service.get_message_type "Mombile")
+    assert_equal 1, (service.get_message_type "Phone")
     assert_equal 3, (service.get_message_type "OMI")
     assert_equal 3, (service.get_message_type "OMI 123456789012345")
     assert_equal 3, (service.get_message_type "Mobile 123456789012345")
@@ -296,7 +300,7 @@ class PremiumServiceTest < ActiveSupport::TestCase
     InsuredDevice.delete_all
     insured_device = InsuredDevice.create! :imei => "123456789012345", :yop => 2013
     quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now
-    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => insured_device.id
 
     service = PremiumService.new
     result = service.is_valid_imei? "animeinumberthatdoesntexist"
@@ -317,13 +321,14 @@ class PremiumServiceTest < ActiveSupport::TestCase
     result = service.generate_unique_policy_number
     assert_equal expected, result
 
+    id = InsuredDevice.create! :imei => "123456789012345", :yop => 2013
 
-    policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => id.id
     expected = "OMB/AAAA/000#{seed+1}"
     result = service.generate_unique_policy_number
     assert_equal expected, result
 
-    policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    policy = Policy.create! :policy_number => "AAA/000", :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => id.id
     expected = "OMB/AAAA/000#{seed+2}"
     result = service.generate_unique_policy_number
     assert_equal expected, result

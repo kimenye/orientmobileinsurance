@@ -181,6 +181,7 @@ class ClaimsController < ApplicationController
           end
           @claim.settlement_date = Time.now()
           @claim.status = 'Settled'
+          @claim.policy.status = 'Expired'
           if @claim.is_theft?
             policy = @claim.policy
             policy.expiry = @claim.incident_date

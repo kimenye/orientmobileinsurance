@@ -133,7 +133,14 @@
 	}
 
 	.devices {
-		text-align: center;				
+		text-align: center;
+
+		li.smaller {
+			img {
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+		}				
 	}	
 
 	h4 {			
@@ -431,5 +438,15 @@
 .home.tnc {
 	.terms {
 		list-style-type: none;
+	}
+}
+
+.admin.quotes {
+	.footer {
+		display: none;
+	}
+
+	#main .banner {
+		margin-bottom: 25px;
 	}
 }

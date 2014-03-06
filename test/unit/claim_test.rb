@@ -4,9 +4,12 @@ class ClaimTest < ActiveSupport::TestCase
   before do
     @quote = Quote.create!
 
+    @insured_device = InsuredDevice.create! 
+
     @policy = Policy.new({
       :start_date => 3.days.ago,
-      :quote_id => @quote.id
+      :quote_id => @quote.id,
+      :insured_device_id => @insured_device.id
     })
     @policy.save!
 
@@ -111,7 +114,7 @@ class ClaimTest < ActiveSupport::TestCase
     insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => device.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
     agent = Agent.create! :outlet_name => "STL", :code => "STL050"
     quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => agent.id
-    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => insured_device.id
     payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
     
     claim = Claim.new ({:policy_id => policy.id})
@@ -125,7 +128,7 @@ class ClaimTest < ActiveSupport::TestCase
     insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => device.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
     agent = Agent.create! :outlet_name => "STL", :code => "STL050"
     quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => agent.id
-    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => insured_device.id
     payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
     
     claim = Claim.new ({:policy_id => policy.id})
@@ -139,7 +142,7 @@ class ClaimTest < ActiveSupport::TestCase
     insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => device.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
     agent = Agent.create! :outlet_name => "STL", :code => "FXP001"
     quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => agent.id
-    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => insured_device.id
     payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
     
     claim = Claim.new ({:policy_id => policy.id})
@@ -153,7 +156,7 @@ class ClaimTest < ActiveSupport::TestCase
     insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => device.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
     agent = Agent.create! :outlet_name => "STL", :code => "AG00000"
     quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => agent.id
-    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => insured_device.id
     payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
     
     claim = Claim.new ({:policy_id => policy.id})

@@ -29,7 +29,7 @@ class ClaimServiceTest < ActionDispatch::IntegrationTest
     @insured_device = InsuredDevice.create! :customer_id => @customer.id, :device_id => @device.id
 
     @quote = Quote.create! :account_name => "ABCDEFGHI", :insured_device_id => @insured_device.id
-    @policy = Policy.create! :quote_id => @quote.id, :start_date => 365.days.ago
+    @policy = Policy.create! :quote_id => @quote.id, :start_date => 365.days.ago, :insured_device_id => @insured_device.id
 
     @claim_one = Claim.create! :policy_id => @policy.id, :incident_date => 300.days.ago
     @claim_two = Claim.create! :policy_id => @policy.id, :incident_date => 200.days.ago

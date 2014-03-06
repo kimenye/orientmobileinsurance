@@ -16,9 +16,9 @@ namespace :data do
     enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
     customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
     insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.find_by_vendor("Tecno").id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
-    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.find_by_code("STL050").id
-    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
-    payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :customer_id => customer.id, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.find_by_code("STL050").id
+    policy = Policy.create! :policy_number => "AAA/000", :insured_device_id => insured_device.id, :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    payment = Payment.create! :method => "JP", :policy_id => policy.id, :quote_id => quote.id, :amount => 300, :reference => "ABC"
   end
 
   task :seed_claim => :environment do
@@ -157,6 +157,44 @@ namespace :data do
   task :create_dealers => :environment do
     fone_express = Dealer.create! :code => "FD", :name => "Fones Express"
     simba = Dealer.create! :code => "STL", :name => "Simba Telecom"
+  end
+
+  task :prepare_corporate_version => :environment do
+
+    Customer.all.each do |c|
+      c.customer_type = "Invidual" if c.customer_type.nil?
+      c.phone_number = c.insured_devices.first.phone_number if c.phone_number.nil?
+      c.save!
+    end
+
+    # map all payments to a quote
+    Payment.all.each do |payment|
+      payment.quote_id = payment.policy.quote_id if !payment.policy.nil?
+      payment.save!
+    end
+
+    # add a customer to every quote
+    Quote.all.each do |quote|
+      quote.customer_id = quote.insured_device.customer_id if !quote.insured_device.nil?
+      quote.quote_type = "Individual" if quote.quote_type.nil?
+      quote.save!
+    end
+
+    # set the premium and replacement values for all devices
+    InsuredDevice.all.each do |id|
+      quote = Quote.find_by_insured_device_id(id)
+      id.quote_id = quote.id if !quote.nil?
+      id.insurance_value = id.quote.insured_value if !id.quote.nil?
+      id.premium_value = id.quote.amount_due if !id.quote.nil?
+      id.save!
+    end
+
+    Policy.all.each do |p|
+      id = InsuredDevice.find_by_quote_id(p.quote_id)
+      p.insured_device_id = id.id
+      p.save!
+    end
+
   end
 
   task :set_settlement_date => :environment do

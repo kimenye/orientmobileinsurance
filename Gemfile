@@ -1,4 +1,5 @@
 source 'http://rubygems.org'
+# source 'http://ruby.taobao.org/'
 ruby '1.9.3'
 gem 'rails', '3.2.11'
 gem "mail"
@@ -37,6 +38,9 @@ gem 'zurb-foundation'
 gem 'compass-rails'
 gem 'smarter_csv'
 gem 'valid_email'
+gem 'prawn'
+gem 'axlsx'
+gem 'axlsx_rails'
 
 group :development do
   gem 'better_errors'
@@ -48,19 +52,18 @@ group :development do
   gem 'pry-nav'
 end
 group :development, :test do
-  gem 'pry'
   gem 'factory_girl_rails'
 end
-gem 'pg'
+
 group :production do  
+  gem 'pg'
   gem 'therubyracer', :platforms => :ruby
 end
-#group :test do
-  gem 'minitest-rails'
-  gem 'minitest-rails-capybara'
-  gem 'minitest-colorize'
-  gem 'minitest-focus'
-  gem 'minitest-spec-rails'
-  gem 'capybara_minitest_spec'
-  gem 'turn'
-#end
+
+gem 'minitest-rails'
+gem 'minitest-rails-capybara'
+gem 'minitest-colorize'
+gem 'minitest-focus'
+gem 'minitest-spec-rails'
+gem 'capybara_minitest_spec'
+gem 'turn'
