@@ -33,7 +33,8 @@ SPLIT_SMS: true
 CLAIM_DATE_VALIDATION: false
 MANDRILL_APIKEY: <<MANDRILL_APIKEY>>
 MANDRILL_USERNAME: <<MANDRILL_USERNAME>>
-KEYWORD: "Mobile, mombile, mobi, phone"
+KEYWORD: Mobile
+KEYWORDS: "Mobile, mombile, mobi, phone"
 OMB_URL: http://korient.co.ke/omb
 SEED_POLICY_NO: 1
 CATALOG_VERSION: 1
