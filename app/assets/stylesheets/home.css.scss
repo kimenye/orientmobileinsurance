@@ -127,10 +127,23 @@ label.error {
 [data-magellan-expedition] {
   background: transparent;
   min-width: 0;
+  position: relative;
+
+  padding-left: 50px;
 }
 
 [data-magellan-expedition].fxd {
   background: #000000;
+  position: relative;
+}
+
+a.home{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background: url("/assets/home.png") no-repeat;
+  width: 24px;
+  height: 24px;
 }
 
 
