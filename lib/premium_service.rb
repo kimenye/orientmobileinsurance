@@ -145,7 +145,7 @@ class PremiumService
   
   def get_message_type message
     if !message.nil?
-      ENV['KEYWORD'].split(",").each do |keyword|
+      ENV['KEYWORDS'].split(",").each do |keyword|
         if message.downcase == keyword.strip.downcase
           return 1  
         end
