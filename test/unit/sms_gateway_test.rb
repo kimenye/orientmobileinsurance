@@ -84,7 +84,7 @@ class SMSGatewayTest < ActiveSupport::TestCase
                 </member>
                 <member>
                   <name>Receipt</name>
-                  <value>Y</value>
+                  <value>N</value>
                 </member>
                 <member>
                   <name>Channel</name>
@@ -92,7 +92,7 @@ class SMSGatewayTest < ActiveSupport::TestCase
                 </member>
                 <member>
                   <name>Priority</name>
-                  <value>Bulk</value>
+                  <value>Urgent</value>
                 </member>
                 <member>
                   <name>MaxSegments</name>
@@ -108,5 +108,18 @@ class SMSGatewayTest < ActiveSupport::TestCase
 
     service = SMSGateway.new
     xml = service.create_message "254722200200", "Hello World"
+    assert_equal valid_xml, xml
+  end
+
+  test "The sms identifier from the gateway is saved to the sms record" do
+    Sms.delete_all
+
+    service = SMSGateway.new
+    xml = service.send "254722200200", "Hello World"
+
+    assert_equal 1, Sms.count
+    sms = Sms.first
+
+    assert_equal "365d6a84", sms.receipt_id
   end
 end
