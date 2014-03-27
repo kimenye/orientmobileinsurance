@@ -48,10 +48,11 @@ group :development do
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'sqlite3'
-  gem 'pry'
-  gem 'pry-nav'
+  
 end
 group :development, :test do
+  gem 'pry'
+  gem 'pry-nav'
   gem 'factory_girl_rails'
 end
 

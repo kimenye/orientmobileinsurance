@@ -1,3 +1,4 @@
+require 'json'
 class SMSGateway
 
   def initialize
@@ -41,7 +42,8 @@ class SMSGateway
                       {"name"=>"Identifier", "value"=>{"string"=>"365d6a84"}}}}}}}}
         end
         resp = response.to_s
-        Sms.create! :to => to, :text => txt, :request => xml,  :response => resp, :receipt_id => nil
+        receipt_id = response["methodResponse"]["params"]["param"]["value"]["struct"]["member"]["value"]["string"]
+        Sms.create! :to => to, :text => txt, :request => xml,  :response => resp, :receipt_id => receipt_id
       end
     rescue
     #  Do nothing
