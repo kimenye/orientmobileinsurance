@@ -49,9 +49,11 @@ class MessagesController < ApplicationController
         params[:receipts][:receipt].each do |receipt|
           receipt_id = receipt[:reference]
           delivered = receipt[:status]
+          time_of_delivery = receipt[:timestamp]
           sms = Sms.find_by_receipt_id receipt_id
           if !sms.nil?
             sms.delivered = delivered == "D"
+            sms.time_of_delivery = time_of_delivery
             sms.save!
           end
         end
@@ -60,9 +62,11 @@ class MessagesController < ApplicationController
           receipt = params[:receipts][:receipt]
           receipt_id = receipt[:reference]
           delivered = receipt[:status]
+          time_of_delivery = receipt[:timestamp]
           sms = Sms.find_by_receipt_id receipt_id
           if !sms.nil?
             sms.delivered = delivered == "D"
+            sms.time_of_delivery = time_of_delivery
             sms.save!
           end
         end
