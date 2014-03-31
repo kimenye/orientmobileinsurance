@@ -86,7 +86,7 @@ class SMSGateway
                 </member>
                 <member>
                   <name>Receipt</name>
-                  <value>N</value>
+                  <value>#{ENV['SMS_USE_RECEIPTS']}</value>
                 </member>
                 <member>
                   <name>Channel</name>
