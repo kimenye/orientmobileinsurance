@@ -12,6 +12,7 @@ ActiveAdmin.register Sms, :as => "Outgoing Message" do
     end
     column :text
     column "Sent at", :created_at
+    column :delivered
   end
 
   filter :to
