@@ -75,6 +75,50 @@ ActiveAdmin.register_page "Simulator" do
     redirect_to admin_simulator_path, :notice => "Changed #{count} expiry dates"
   end
 
+  page_action :generate_quote, method: :post do
+    customer_name = params["quote"]["customer_name"]
+    customer_id = params["quote"]["id"]
+    email = params["quote"]["email_address"]
+    code = params["quote"]["sales_agent_code"]
+    yop = params["quote"]["year_of_purchase"]
+    phone_number = params["quote"]["phone_number"]
+
+    device_id = params["quote"]["device"]["0"]["id"]
+
+    device = Device.find(device_id)
+    iv = device.get_insurance_value(code, yop)
+    premium_service = PremiumService.new
+
+    annual_premium = premium_service.calculate_annual_premium(code, iv, yop)
+
+    customer = Customer.find_by_id_passport(customer_id)
+
+    if(customer.nil?)
+      customer = Customer.create!(:name => customer_name, :id_passport => customer_id, :email => email, :phone_number => phone_number)
+    end
+
+    agent = Agent.find_by_code(code)
+    agent_id = nil
+    if !agent.nil?
+      agent_id = agent.id
+    end
+
+    account_name = "OMB#{premium_service.generate_unique_account_number}"
+
+    insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => device_id, :yop => yop, :phone_number => phone_number, :insurance_value => iv
+    q = Quote.create!(:account_name => account_name, :annual_premium => annual_premium,
+                      :expiry_date => 72.hours.from_now,
+                      :insured_device_id => insured_device.id, :premium_type => "Annual",
+                      :insured_value => iv,
+                      :agent_id => agent_id, :customer_id => customer.id, :quote_type => "Individual")
+
+    
+    gateway = SMSGateway.new
+    gateway.send(phone_number, "#{device.marketing_name}, Year #{yop}. Insurance Value is #{ActionController::Base.helpers.number_to_currency(iv, :unit => 'KES ', :precision => 0, :delimiter => '')}. Payment due is #{ActionController::Base.helpers.number_to_currency(annual_premium, :unit => 'KES ', :precision => 0, :delimiter => '')}")
+    gateway.send(phone_number, "Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{account_name} is valid till #{q.expiry_date.utc.to_s(:full)}.")
+
+    redirect_to admin_simulator_path, :notice => "#{customer_name}, #{iv}"
+  end
 
   content do
 
@@ -94,6 +138,14 @@ ActiveAdmin.register_page "Simulator" do
       end
       column do
         render "add_bulk_payment"
+      end
+    end
+
+    columns do
+      column do
+        render "generate_quote"
+      end
+      column do
       end
     end
 

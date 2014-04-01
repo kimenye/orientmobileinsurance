@@ -15,7 +15,7 @@ class Device < ActiveRecord::Base
 
 
   scope :model_search, (lambda do |vendor, model|
-    {:conditions => ["lower(vendor) like ? and active = 't' and lower(model) like ?", "#{!vendor.nil? ? vendor.downcase : '%'}", "%#{!model.nil? ? model.downcase : ''}%"] }
+    {:conditions => ["lower(vendor) like ? and active = 't' and lower(model) like ?", "#{!vendor.nil? ? vendor.downcase : '%'}", "#{!model.nil? ? model.downcase : '%'}"] }
   end )
 
   scope :device_similar_to, (lambda do |vendor, model, marketing_name|
