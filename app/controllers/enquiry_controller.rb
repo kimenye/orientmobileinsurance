@@ -339,6 +339,7 @@ class EnquiryController < Wicked::WizardController
                         :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
                         :insured_value => session[:quote_details]["insurance_value_uf"],
                         :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
+      session[:quote] = q
     end
   end
 
