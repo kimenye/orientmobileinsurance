@@ -21,6 +21,6 @@
     = text_field(:quote, :year_of_purchase, {:placeholder => "2004"})
   .field
     = label(:quote, :device)
-    = collection_select(:quote, :device, Device.all, :id, :name, {}, {:class => "searchable", :name => "quote[device][0][id]"})
+    = collection_select(:quote, :device, Device.where(active: true).order(:vendor, :model), :id, :name, {}, {:class => "searchable", :name => "quote[device][0][id]"})
   .field
     = submit_tag("Add") 
