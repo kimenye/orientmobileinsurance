@@ -7,7 +7,7 @@ class EnquiryController < Wicked::WizardController
   layout "mobile"
 
   skip_before_filter :verify_authenticity_token
-  steps :begin, :insure, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
+  steps :begin, :insure, :enter_sales_info, :not_insurable, :confirm_device, :serial_claimants, :confirm_personal_details, :complete_enquiry
 
   def corporate_payment
     render 'corporate_payment', :layout => "application"
@@ -142,11 +142,15 @@ class EnquiryController < Wicked::WizardController
 
           device_data = get_device_data
           session[:device] = device_data
+          session[:is_insurable] = is_insurable
+          session[:code] = code
+
           #Check for the devices among our supported devices
           add_client_properties! device_data
           model = get_model_name device_data
           vendor = device_data["vendor"]
           marketingName = device_data["marketingName"]
+          # binding.pry
 
           invalid_da = (vendor.nil? || vendor.empty?) && (model.nil? || model.empty?)
           puts ">> Invalid match from device atlas : #{invalid_da}"
@@ -159,72 +163,98 @@ class EnquiryController < Wicked::WizardController
 
           device = nil
 
-          if !invalid_da
-            device = Device.model_search(vendor, model).first
+          customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
+          if(customer.nil?)
+            customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => @enquiry.phone_number)
           end
 
-          puts ">> After device is nil ? #{device.nil?}"
-          @enquiry.user_agent = request.env['HTTP_USER_AGENT']
-          @enquiry.detected_device_id= device.id if ! device.nil?
-          @enquiry.detected = !device.nil?
-          @enquiry.save!
+          session[:customer_id] = customer.id
 
-          if device.nil? || is_insurable == false
-            jump_to :not_insurable
+          if model.starts_with?("iPhone") || model.starts_with?("iPad")
+            if model.starts_with?("iPhone 5") || model.starts_with?("iPad")
+              possible_devices = Device.model_like_search(vendor, model).collect { |d| d.model }
+              session[:possible_models] = possible_devices
+              # device = Device.model_like_search(vendor, model)
+            else
+              possible_devices = Device.model_like_search(vendor, "iPhone 4").collect { |d| d.model }
+              session[:possible_models] = possible_devices
+              # device = Device.model_like_search(vendor, model)
+            end
+            jump_to :confirm_device
           else
-            session[:device] = device
-            iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
-            annual_premium = premium_service.calculate_annual_premium(code, iv, @enquiry.year_of_purchase)
-            installment_premium = premium_service.calculate_monthly_premium(code, iv, @enquiry.year_of_purchase)
-            details = {
-              "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0, :delimiter => ""),
-              "insurance_value_uf" => iv,
-              "annual_premium" => number_to_currency(annual_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
-              "annual_premium_uf" => annual_premium,
-              "quarterly_premium" => number_to_currency(installment_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
-              "quarterly_premium_uf" => installment_premium,
-              "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
-            }
-
-            session[:quote_details] = details
-
-            customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
-            if(customer.nil?)
-              customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => @enquiry.phone_number)
+            if !invalid_da
+              device = Device.model_search(vendor, model).first
+              puts "Device => #{device}"
             end
+          
+            puts ">> After device is nil ? #{device.nil?}"
+            @enquiry.user_agent = request.env['HTTP_USER_AGENT']
+            @enquiry.detected_device_id= device.id if ! device.nil?
+            @enquiry.detected = !device.nil?
+            @enquiry.save!
 
-            account_name = "OMB#{premium_service.generate_unique_account_number}"
+            if device.nil? || is_insurable == false
+              jump_to :not_insurable
+            else
+              session[:device] = device
+              iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
+              annual_premium = premium_service.calculate_annual_premium(code, iv, @enquiry.year_of_purchase)
+              installment_premium = premium_service.calculate_monthly_premium(code, iv, @enquiry.year_of_purchase)
+              details = {
+                "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0, :delimiter => ""),
+                "insurance_value_uf" => iv,
+                "annual_premium" => number_to_currency(annual_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
+                "annual_premium_uf" => annual_premium,
+                "quarterly_premium" => number_to_currency(installment_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
+                "quarterly_premium_uf" => installment_premium,
+                "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
+              }
 
-            user_details = {
-                "customer_name" => @enquiry.customer_name,
-                "customer_id" => @enquiry.customer_id,
-                "customer_email" => @enquiry.customer_email,
-                "customer_phone_number" => @enquiry.phone_number,
-                "account_name" => account_name
-            }
+              session[:quote_details] = details
 
-            session[:user_details] = user_details
+              customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
+              # if(customer.nil?)
+              #   customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => @enquiry.phone_number)
+              # end
 
-            claim_service = ClaimService.new
+              account_name = "OMB#{premium_service.generate_unique_account_number}"
 
-            if(claim_service.is_serial_claimant(params[:enquiry][:customer_id]))
-              jump_to :serial_claimants
+              user_details = {
+                  "customer_name" => @enquiry.customer_name,
+                  "customer_id" => @enquiry.customer_id,
+                  "customer_email" => @enquiry.customer_email,
+                  "customer_phone_number" => @enquiry.phone_number,
+                  "account_name" => account_name
+              }
+
+              session[:user_details] = user_details
+              # might
+              claim_service = ClaimService.new
+
+              if(claim_service.is_serial_claimant(params[:enquiry][:customer_id]))
+                jump_to :serial_claimants
+              end
+
+              insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number, :insurance_value => session[:quote_details]["insurance_value_uf"]
+              q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
+                                :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
+                                :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
+                                :insured_value => session[:quote_details]["insurance_value_uf"],
+                                :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
+
+              @gateway = SMSGateway.new
+
+              session[:quote] = q              
+              jump_to :confirm_personal_details              
             end
-
-            insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number, :insurance_value => session[:quote_details]["insurance_value_uf"]
-            q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
-                              :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
-                              :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
-                              :insured_value => session[:quote_details]["insurance_value_uf"],
-                              :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
-
-            @gateway = SMSGateway.new
-
-            session[:quote] = q
-
-            jump_to :confirm_personal_details
           end
         end
+      when :confirm_device
+        device = Device.model_search(@enquiry.vendor, params[:enquiry][:model]).first
+        session[:device] = device
+        session[:device].marketing_name = params[:enquiry][:model]
+        generate_quote device, session[:is_insurable], session[:code], premium_service
+        jump_to :confirm_personal_details
       when :confirm_personal_details
         @enquiry.update_attributes(params[:enquiry])
 
@@ -251,6 +281,65 @@ class EnquiryController < Wicked::WizardController
         session[:sms_to] = @enquiry.phone_number
     end
     render_wizard @enquiry
+  end
+
+  def generate_quote device, is_insurable = true, code, premium_service
+    puts ">> After device is nil ? #{device.nil?}"
+    @enquiry.user_agent = request.env['HTTP_USER_AGENT']
+    @enquiry.detected_device_id= device.id if ! device.nil?
+    @enquiry.detected = !device.nil?
+    @enquiry.save!
+
+    agent = Agent.find_by_code(code)
+
+    if device.nil? || is_insurable == false
+      jump_to :not_insurable
+    else
+      session[:device] = device
+      iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
+      annual_premium = premium_service.calculate_annual_premium(code, iv, @enquiry.year_of_purchase)
+      installment_premium = premium_service.calculate_monthly_premium(code, iv, @enquiry.year_of_purchase)
+      details = {
+        "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0, :delimiter => ""),
+        "insurance_value_uf" => iv,
+        "annual_premium" => number_to_currency(annual_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
+        "annual_premium_uf" => annual_premium,
+        "quarterly_premium" => number_to_currency(installment_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
+        "quarterly_premium_uf" => installment_premium,
+        "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
+      }
+
+      session[:quote_details] = details
+      customer = Customer.find(session[:customer_id])
+      # if(customer.nil?)
+      #   customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => @enquiry.phone_number)
+      # end
+
+      account_name = "OMB#{premium_service.generate_unique_account_number}"
+
+      user_details = {
+          "customer_name" => customer.name,
+          "customer_id" => customer.id,
+          "customer_email" => customer.email,
+          "customer_phone_number" => customer.phone_number,
+          "account_name" => account_name
+      }
+
+      session[:user_details] = user_details
+      # might
+      claim_service = ClaimService.new
+
+      if(claim_service.is_serial_claimant(customer.id))
+        jump_to :serial_claimants
+      end
+
+      insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number, :insurance_value => session[:quote_details]["insurance_value_uf"]
+      q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
+                        :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
+                        :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
+                        :insured_value => session[:quote_details]["insurance_value_uf"],
+                        :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
+    end
   end
 
   def destroy

@@ -1,0 +1,9 @@
+#confirm-devise-page{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Confirm Device
+  %section{"data-role" => "content", "role" => "main"}
+    = form_for(@enquiry, :url => wizard_path(:confirm_device), :method => :put, :html => ({"data-ajax" => "false"} if is_asha?) ) do |f|
+      = f.label :vendor, "Vendor - Apple"
+      = f.select :model, session[:possible_models].collect {|model| [model]}, {}, { "data-theme" => "c"}
+      = f.submit "Continue"

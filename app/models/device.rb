@@ -13,9 +13,12 @@ class Device < ActiveRecord::Base
                   :yop_fd_koil_invoice_value, :prev_insured_value, :prev_replacement_value, :prev_fd_koil_invoice_value, 
                   :stock_code, :active, :version, :stl_insured_value, :stl_replacement_value, :stl_koil_invoice_value, :dealer_code
 
-
   scope :model_search, (lambda do |vendor, model|
     {:conditions => ["lower(vendor) like ? and active = 't' and lower(model) like ?", "#{!vendor.nil? ? vendor.downcase : '%'}", "#{!model.nil? ? model.downcase : '%'}"] }
+  end )
+
+  scope :model_like_search, (lambda do |vendor, model|
+    {:conditions => ["lower(vendor) like ? and active = 't' and lower(model) like ?", "#{!vendor.nil? ? vendor.downcase+'%' : '%'}", "#{!model.nil? ? model.downcase+'%' : '%'}"] }
   end )
 
   scope :device_similar_to, (lambda do |vendor, model, marketing_name|
