@@ -329,7 +329,7 @@ class EnquiryController < Wicked::WizardController
       # might
       claim_service = ClaimService.new
 
-      if(claim_service.is_serial_claimant(customer.id))
+      if(claim_service.is_serial_claimant(customer.id_passport))
         jump_to :serial_claimants
       end
 
