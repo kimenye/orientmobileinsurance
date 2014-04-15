@@ -172,11 +172,11 @@ class EnquiryController < Wicked::WizardController
 
           if model.starts_with?("iPhone") || model.starts_with?("iPad")
             if model.starts_with?("iPhone 5") || model.starts_with?("iPad")
-              possible_devices = Device.model_like_search(vendor, model).collect { |d| d.model }
+              possible_devices = Device.model_like_search(vendor, model).collect { |d| d.model }.uniq
               session[:possible_models] = possible_devices
               # device = Device.model_like_search(vendor, model)
             else
-              possible_devices = Device.model_like_search(vendor, "iPhone 4").collect { |d| d.model }
+              possible_devices = Device.model_like_search(vendor, "iPhone 4").collect { |d| d.model }.uniq
               session[:possible_models] = possible_devices
               # device = Device.model_like_search(vendor, model)
             end
