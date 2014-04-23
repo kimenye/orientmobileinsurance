@@ -17,6 +17,22 @@ class MessagesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'it handles messages with the keyword mobile' do
+    Message.delete_all
+    post :create, { "MobileNumber" => "254705876765", "Text" => "Mobile" }
+    assert_response :success
+
+    assert_equal 1, Message.count
+  end
+
+  test 'it forwards the message with keyword test to the development server' do
+    Message.delete_all
+    post :create, { "MobileNumber" => "254705876765", "Text" => "test" }
+    assert_response :success
+
+    assert_equal 0, Message.count
+  end
+
   test "Mark message as delivered if receipt id matches the respose's reference" do
     Sms.delete_all
 

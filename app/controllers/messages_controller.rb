@@ -82,13 +82,24 @@ class MessagesController < ApplicationController
     begin
 
       text = params["Text"]
-      mobile = params["MobileNumber"]
-      service = SmsService.new
 
-      @message = service.handle_sms_sending(text, mobile)
+      if text.downcase != "test"
+        mobile = params["MobileNumber"]
+        service = SmsService.new
 
-      respond_to do |format|
-        format.all { render json: @message, status: :created, location: @message }
+        @message = service.handle_sms_sending(text, mobile)
+
+        respond_to do |format|
+          format.all { render json: @message, status: :created, location: @message }
+        end
+      else
+        # respond_to do |format|
+        #   # format.all { render json: @message, status: :created, location: @message }
+        # end
+        if Rails.env == "production"
+          HTTParty.post(ENV['DEVELOPEMENT_SERVER_URL'], :query => { "Text" => "Mobile", "MobileNumber" => params["MobileNumber"] })
+        end
+        render text: "OK"
       end
     rescue => error
       puts ">>>>> in error #{error}"
