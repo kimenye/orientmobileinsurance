@@ -1,0 +1,26 @@
+%h3
+  Generate a Customer Quote
+%form{:action => admin_simulator_generate_quote_path, :method => "POST"}
+  .field
+    = label(:quote, :customer_name)
+    = text_field(:quote, :customer_name, {:placeholder => "John Kamau"})
+  .field
+    = label(:quote, :phone_number)
+    = text_field(:quote, :phone_number, {:placeholder => "+254722200200"})
+  .field
+    = label(:quote, :id)
+    = text_field(:quote, :id, {:placeholder => "24333333"})
+  .field
+    = label(:quote, :sales_agent_code)
+    = text_field(:quote, :sales_agent_code, {:placeholder => "AGXXXXX"})
+  .field
+    = label(:quote, :email_address)
+    = text_field(:quote, :email_address, {:placeholder => "me@example.com"})
+  .field
+    = label(:quote, :year_of_purchase)
+    = text_field(:quote, :year_of_purchase, {:placeholder => "2004"})
+  .field
+    = label(:quote, :device)
+    = collection_select(:quote, :device, Device.where(active: true).order(:vendor, :model), :id, :name, {}, {:class => "searchable", :name => "quote[device][0][id]"})
+  .field
+    = submit_tag("Add") 

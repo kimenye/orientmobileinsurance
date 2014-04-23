@@ -1,32 +1,57 @@
 = render "layouts/claims_header"
+.row.banner
+  .large-12.columns
+    %h4.subheader
+      ORIENT MOBILE CLAIMS
 .row
-  .large-10.large-centered.columns
-    .large-5.columns.details
+  .large-12.columns
+    %h5
+      Welcome #{@customer.name}
+    %h6.subheader
+      Please confirm the details below about your Orient Mobile policy.
+.row
+  .large-12.columns
+    .large-6.columns.details
       Client Name: #{@customer.name}
-    .large-5.columns.details
-      Telephone #: #{@customer.phone_number}
+    .large-6.columns.details
+      Telephone Number: #{@customer.phone_number}
 .row.spacer
-  .large-10.large-centered.columns
-    .large-5.columns.details
+  .large-12.large-centered.columns
+    .large-6.columns.details
       Other Telephone : #{@customer.contact_number}
 .row.spacer
-  .large-10.large-centered.columns
-    %h6
+  .large-12.large-centered.columns
+    %h6.subheader
       Please provide an alternative mobile telephone no. and email address at which you can be reached while your claim is being processed.
 = form_for(@customer, :method => :put) do |f|
   .row.spacer
-    .large-10.large-centered.columns
-      = f.label :alternate_phone_number, "Alternate Phone Number"
-      = f.text_field :alternate_phone_number
-      = f.label :email
-      = f.email_field :email
+    .large-12.columns
+      / .row
+      /   .large-4.columns
+      /     = f.label :name, "Change the name that you provided"
+      /     = f.text_field :name
+      /   .large-4.columns
+      /     = f.label :id, "Change the ID or passport number provided"
+      /     = f.text_field :id_passport
+      /   .large-4.columns
+          
+      .row
+        .large-4.columns
+          = f.label :alternate_phone_number
+          = f.text_field :alternate_phone_number
+        .large-4.columns
+          = f.label :email
+          = f.email_field :email
+        .large-4.columns
+          %br
+          = f.submit "Update Contact Information", {:class=> "button small"}
 
   .row.spacer
-    .large-10.large-centered.columns
-      %h6
+    .large-12.columns
+      %h6.subheader
         Please select the device for which you are making a claim
   .row.spacer
-    .large-10.large-centered.columns
+    .large-12.columns
       %table
         %thead
           %td Make & Model
@@ -35,6 +60,7 @@
           %td Phone Number
           %td IMEI
           %td Policy No
+          %td
         %tbody
           - @customer.insured_devices.each do |id|
             - if !id.quote.policy.nil?
@@ -67,7 +93,27 @@
                 %td
                   - if !id.quote.policy.policy_number.nil?
                     = id.quote.policy.policy_number
+                %td
+                  - if id.quote.policy.has_claim?
+                    - if id.quote.policy.claim.is_in_customer_stage?
+                      %a.button.small{:href => edit_claim_path(id.quote.policy.claim)}
+                        Edit Claim 
+                    - elsif (!id.quote.policy.claim.is_in_customer_stage?) && (id.quote.policy.expiry - Time.now > 0)
+                      %a.button.small{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                        New Claim
+                    - else
+                      %a.button.small{:href => claim_path(id.quote.policy.claim)}
+                        View Claim
+                  - else
+                    %a.button.small{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                      New
 
-  .row.spacer
-    .large-10.large-centered.columns
-      = f.submit "Update", {:class=> "button small"}
+
+  / .row.spacer
+  /   .large-12.columns
+  /     = f.submit "Update", {:class=> "button small"}
+:javascript
+  $(function(){
+    $('.customer-link').addClass('active');
+    $('.footer').hide();
+  });

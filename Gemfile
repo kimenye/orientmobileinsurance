@@ -1,4 +1,5 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
+# source 'http://ruby.taobao.org/'
 ruby '1.9.3'
 gem 'rails', '3.2.11'
 gem "mail"
@@ -18,6 +19,7 @@ gem 'rolify'
 gem 'thin'
 gem 'activeadmin'
 gem 'active_admin_importable'
+gem 'active_admin_import_anything'
 gem 'httparty'
 gem 'deviceatlasapi'
 gem 'url_shortener'
@@ -28,11 +30,17 @@ gem 'business_time'
 gem 'newrelic_rpm'
 gem 'dynamic_form'
 gem 'activeadmin-axlsx'
-
-
+gem 'spreadsheet'
+gem 'simple_xlsx_reader'
+gem 'google_visualr'
+gem 'phony_rails'
 gem 'zurb-foundation'
 gem 'compass-rails'
 gem 'smarter_csv'
+gem 'valid_email'
+gem 'prawn'
+gem 'axlsx'
+gem 'axlsx_rails'
 
 group :development do
   gem 'better_errors'
@@ -40,23 +48,23 @@ group :development do
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'sqlite3'
-  gem 'pry'
-  gem 'pry-nav'
+  
 end
 group :development, :test do
   gem 'pry'
+  gem 'pry-nav'
   gem 'factory_girl_rails'
 end
-group :production do
+
+group :production do  
   gem 'pg'
   gem 'therubyracer', :platforms => :ruby
 end
-#group :test do
-  gem 'minitest-rails'
-  gem 'minitest-rails-capybara'
-  gem 'minitest-colorize'
-  gem 'minitest-focus'
-  gem 'minitest-spec-rails'
-  gem 'capybara_minitest_spec'
-  gem 'turn'
-#end
+
+gem 'minitest-rails'
+gem 'minitest-rails-capybara'
+gem 'minitest-colorize'
+gem 'minitest-focus'
+gem 'minitest-spec-rails'
+gem 'capybara_minitest_spec'
+gem 'turn'

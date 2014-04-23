@@ -1,7 +1,7 @@
 ActiveAdmin.register Brand do
 
   controller do
-    actions :all, :except => [:edit, :destroy]
+    actions :all, :except => [:destroy]
   end
 
   menu :parent => "Reference Data"
@@ -14,6 +14,8 @@ ActiveAdmin.register Brand do
     column :brand_2
     column :brand_3
     column :brand_4
+    column :brand_5
+    actions
   end
-  actions :index
+  actions :index, :edit, :show, :update
 end

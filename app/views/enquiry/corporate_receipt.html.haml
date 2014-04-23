@@ -1,0 +1,12 @@
+.row
+    .banner
+        %h4.subheader
+            CORPORATE BULK PAYMENTS
+.row.spacer
+    .large-12.columns.large-centered
+        %h4.subheader.centered
+            Thank you for your payment of #{number_to_currency(@bp.amount_paid, :unit => "KES ", :precision => 0, :delimiter => ",")}. 
+            %br
+            The reference was: #{@bp.reference}. 
+            %br
+            A receipt was sent to your email address: #{@bp.email}

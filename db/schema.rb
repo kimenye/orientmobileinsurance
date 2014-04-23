@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131015135446) do
+ActiveRecord::Schema.define(:version => 20141018094436) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.string   "outlet_name"
+    t.string   "tag"
   end
 
   create_table "brands", :force => true do |t|
@@ -68,6 +69,19 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
     t.string   "brand_2"
     t.string   "brand_3"
     t.string   "brand_4"
+    t.string   "brand_5"
+  end
+
+  create_table "bulk_payments", :force => true do |t|
+    t.string   "code"
+    t.string   "reference"
+    t.decimal  "amount_required"
+    t.decimal  "amount_paid"
+    t.string   "channel"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "email"
+    t.string   "phone_number"
   end
 
   create_table "claims", :force => true do |t|
@@ -109,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
     t.integer  "days_to_fix"
     t.decimal  "repair_limit"
     t.string   "authorization_type"
+    t.datetime "settlement_date"
   end
 
   add_index "claims", ["agent_id"], :name => "index_claims_on_agent_id"
@@ -123,6 +138,16 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
     t.string   "phone_number"
     t.string   "alternate_phone_number"
     t.boolean  "lead",                   :default => true
+    t.string   "customer_type"
+    t.string   "company_name"
+  end
+
+  create_table "dealers", :force => true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.string   "sales_code_prefix"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "devices", :force => true do |t|
@@ -146,6 +171,10 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
     t.string   "stock_code"
     t.boolean  "active",                     :default => true
     t.integer  "version",                    :default => 0
+    t.decimal  "stl_insured_value"
+    t.decimal  "stl_replacement_value"
+    t.decimal  "stl_koil_invoice_value"
+    t.string   "dealer_code"
   end
 
   create_table "enquiries", :force => true do |t|
@@ -168,20 +197,37 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
     t.string   "marketing_name"
     t.boolean  "detected"
     t.string   "user_agent"
+    t.string   "id_type"
+    t.string   "customer_id"
+  end
+
+  create_table "feedbacks", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.text     "message"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "insured_devices", :force => true do |t|
     t.integer  "customer_id"
     t.integer  "device_id"
     t.string   "imei"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.integer  "yop"
     t.string   "phone_number"
+    t.boolean  "damaged_flag"
+    t.datetime "damage_reported"
+    t.decimal  "insurance_value"
+    t.decimal  "replacement_value"
+    t.decimal  "premium_value"
+    t.integer  "quote_id"
   end
 
   add_index "insured_devices", ["customer_id"], :name => "index_insured_devices_on_customer_id"
   add_index "insured_devices", ["device_id"], :name => "index_insured_devices_on_device_id"
+  add_index "insured_devices", ["quote_id"], :name => "index_insured_devices_on_quote_id"
 
   create_table "messages", :force => true do |t|
     t.string   "phone_number"
@@ -200,9 +246,11 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
     t.string   "method"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "quote_id"
   end
 
   add_index "payments", ["policy_id"], :name => "index_payments_on_policy_id"
+  add_index "payments", ["quote_id"], :name => "index_payments_on_quote_id"
 
   create_table "policies", :force => true do |t|
     t.integer  "quote_id"
@@ -210,11 +258,33 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
     t.string   "policy_number"
     t.datetime "start_date"
     t.datetime "expiry"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "insured_device_id"
   end
 
+  add_index "policies", ["insured_device_id"], :name => "index_policies_on_insured_device_id"
   add_index "policies", ["quote_id"], :name => "index_policies_on_quote_id"
+
+  create_table "product_quotes", :force => true do |t|
+    t.string   "status"
+    t.integer  "product_id"
+    t.integer  "quote_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.decimal  "price"
+  end
+
+  add_index "product_quotes", ["product_id"], :name => "index_product_quotes_on_product_id"
+  add_index "product_quotes", ["quote_id"], :name => "index_product_quotes_on_quote_id"
+
+  create_table "products", :force => true do |t|
+    t.string   "serial"
+    t.decimal  "price"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "quotes", :force => true do |t|
     t.integer  "insured_device_id"
@@ -223,13 +293,17 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
     t.string   "account_name"
     t.string   "premium_type"
     t.datetime "expiry_date"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.decimal  "insured_value"
     t.integer  "agent_id"
+    t.string   "quote_type"
+    t.integer  "customer_id"
+    t.string   "product_type",      :default => "Device"
   end
 
   add_index "quotes", ["agent_id"], :name => "index_quotes_on_agent_id"
+  add_index "quotes", ["customer_id"], :name => "index_quotes_on_customer_id"
   add_index "quotes", ["insured_device_id"], :name => "index_quotes_on_insured_device_id"
 
   create_table "roles", :force => true do |t|
@@ -256,12 +330,19 @@ ActiveRecord::Schema.define(:version => 20131015135446) do
   create_table "sms", :force => true do |t|
     t.string   "to"
     t.string   "text"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.text     "request"
     t.text     "response"
     t.string   "receipt_id"
     t.boolean  "delivered"
+    t.datetime "time_of_delivery"
+  end
+
+  create_table "subscriptions", :force => true do |t|
+    t.string   "email"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

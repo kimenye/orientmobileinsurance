@@ -1,0 +1,18 @@
+%h3
+  Policies Expiring
+
+%table.index_table
+  %thead
+    %th
+      Contact number	    
+    %th
+      Contact name	    
+    %th
+      Policy number	    
+    %th
+      Expiry Date	
+  %tbody
+    - policies.each do |policy|
+      %tr
+        %td
+          = policy.quote.insured_device.phone_number

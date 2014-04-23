@@ -1,20 +1,34 @@
 ActiveAdmin.register Quote do
-
+  scope :all
+  scope :corporate
+  scope :individual
+  
   controller do
-    actions :all, :except => [:edit, :destroy]
+    actions :all, :except => [:destroy]
   end
 
   index do
     column "Contact Number" do |quote|
-      quote.insured_device.phone_number
+      quote.customer.phone_number
     end
-    column :account_name
+    column "Account Name" do |quote|
+      link_to quote.account_name, admin_quote_path(quote)
+    end
     column :amount_due
     column :expiry_date
     column :premium_type
     column :insured_value
-    column :customer
-    column :insured_device
+    column :quote_type
+    # column :customer
+    # column :insured_device
+    default_actions
+  end
+
+  form do |f|
+    f.inputs "Details" do
+      f.input :expiry_date, :as => :datepicker
+    end
+    f.actions
   end
 
   filter :insured_device
@@ -22,14 +36,15 @@ ActiveAdmin.register Quote do
   filter :annual_premium
   filter :monthly_premium
   filter :account_name
-  filter :premium_type
-  filter :insured_device_customer_name, :as => :string, :label => "Customer Name"
-  filter :insured_device_customer_id_passport, :as => :string, :label => "ID/Passport No"
-  filter :insured_device_phone_number, :as => :string, :label => "Phone No"
+  filter :premium_type 
+  filter :quote_type
+  filter :customer_name, :as => :string, :label => "Customer Name"
+  filter :customer_id_passport, :as => :string, :label => "ID/Passport No"
+  filter :customer_phone_number, :as => :string, :label => "Phone No"
   filter :expiry_date
   filter :created_at
   filter :updated_at
   filter :insured_value
 
-  actions :index
+  actions :index, :edit, :update, :show
 end

@@ -13,6 +13,15 @@ ActiveAdmin.register Customer, :as => "Lead"  do
     column "Phone #2", :alternate_number
   end
 
+  form do |f|
+    f.inputs "Customer Details" do
+        f.input :name
+        f.input :id_passport
+        f.input :email
+    end
+    f.actions
+  end
+
   show do |lead|
     panel "Lead Details" do
       attributes_table_for lead, :name, :id_passport, :email, :created_at
@@ -26,8 +35,8 @@ ActiveAdmin.register Customer, :as => "Lead"  do
         column "Year of Purchase", :yop
         column "Phone Number", :phone_number
         column :created_at
-        column :insured_value
-        column "Premium", :premium
+        column :insurance_value
+        column "Premium", :premium_value
       end
     end
 
@@ -42,10 +51,11 @@ ActiveAdmin.register Customer, :as => "Lead"  do
     column ("Tel No 1") { |customer| customer.phone_number }
     column ("Tel No 2") { |customer| customer.alternate_number }
     column ("Number of Enquiries") { |customer| customer.num_enquiries }
+    column ("Email") { |customer| customer.email }
     column ("Date Attempted") { |customer| customer.created_at }
     column ("passport/id") { |customer| customer.id_passport }
     column ("Phone") { |customer| customer.primary_device.device.marketing_name if !customer.primary_device.nil? }
-    column ("Insured Value") { |customer| customer.primary_device.quote.insured_value if !customer.primary_device.nil? }
+    column ("Insured Value") { |customer| customer.primary_device.insurance_value if !customer.primary_device.nil? }
     column ("Annual Premium") { |customer| customer.primary_device.quote.annual_premium if !customer.primary_device.nil? }
     column ("Installment Premium") { |customer| customer.primary_device.quote.monthly_premium if !customer.primary_device.nil? }
     #column :email
@@ -55,6 +65,8 @@ ActiveAdmin.register Customer, :as => "Lead"  do
   filter :id_passport
   filter :email
   filter :created_at
+  filter :phone_number
+  filter :alternate_number
 
   controller do
 
@@ -66,7 +78,7 @@ ActiveAdmin.register Customer, :as => "Lead"  do
       Customer.where(id: params[:id]).first!
     end
 
-    actions :all, :except => [:edit, :destroy]
+    actions :all, :except => [:destroy]
   end
 
   actions  :index, :show, :edit, :update

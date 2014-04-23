@@ -2,9 +2,14 @@ require 'test_helper'
 class ClaimTest < ActiveSupport::TestCase
 
   before do
-    
+    @quote = Quote.create!
+
+    @insured_device = InsuredDevice.create! 
+
     @policy = Policy.new({
-      :start_date => 3.days.ago
+      :start_date => 3.days.ago,
+      :quote_id => @quote.id,
+      :insured_device_id => @insured_device.id
     })
     @policy.save!
 
@@ -52,6 +57,7 @@ class ClaimTest < ActiveSupport::TestCase
     @theft_claim.copy_id = true
     @theft_claim.blocking_request = true
     @theft_claim.receipt = true
+    @theft_claim.agent_id = 1
 
     result = @theft_claim.valid?
     assert_equal true, result, "Should be true because of validation pass"
@@ -98,6 +104,64 @@ class ClaimTest < ActiveSupport::TestCase
     @test_claim.incident_date = 10.days.from_now
     #TODO: re-enable validity tests
     #assert_equal false, @test_claim.valid?
-    assert_equal true, @test_claim.valid?
+    assert_equal false, @test_claim.valid?
   end
+
+  test "A claim should be routed to STL only if the device is servicable by STL and the sales agent code is for STL" do
+    device = Device.create! :vendor => "Blackberry", :model => "N7", :marketing_name => "N7", :catalog_price => 5, :dealer_code => "Both"
+    enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
+    customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
+    insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => device.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
+    agent = Agent.create! :outlet_name => "STL", :code => "STL050"
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => agent.id
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => insured_device.id
+    payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
+    
+    claim = Claim.new ({:policy_id => policy.id})
+    assert_equal true, claim.is_stl_only
+  end
+
+  test "A claim should be routed to FXP only if the device is not servicable by STL regardless of the sales agent code" do
+    device = Device.create! :vendor => "Blackberry", :model => "N7", :marketing_name => "N7", :catalog_price => 5, :dealer_code => "FD"
+    enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
+    customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
+    insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => device.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
+    agent = Agent.create! :outlet_name => "STL", :code => "STL050"
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => agent.id
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => insured_device.id
+    payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
+    
+    claim = Claim.new ({:policy_id => policy.id})
+    assert_equal true, claim.is_fxp_only
+  end
+
+  test "A claim should be routed to FXP only if the device is servicable by both but the sales agent code is an FXP code" do
+    device = Device.create! :vendor => "Blackberry", :model => "N7", :marketing_name => "N7", :catalog_price => 5, :dealer_code => "Both"
+    enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
+    customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
+    insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => device.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
+    agent = Agent.create! :outlet_name => "STL", :code => "FXP001"
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => agent.id
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => insured_device.id
+    payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
+    
+    claim = Claim.new ({:policy_id => policy.id})
+    assert_equal true, claim.is_fxp_only
+  end
+
+  test "A claim should be routed to both FXP and STL if the device is servicable by both and the code is neither and stl of fd code" do
+    device = Device.create! :vendor => "Blackberry", :model => "N7", :marketing_name => "N7", :catalog_price => 5, :dealer_code => "Both"
+    enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
+    customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
+    insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => device.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
+    agent = Agent.create! :outlet_name => "STL", :code => "AG00000"
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => agent.id
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => insured_device.id
+    payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
+    
+    claim = Claim.new ({:policy_id => policy.id})
+    assert_equal true, claim.is_fxp_and_stl
+  end
+
+
 end

@@ -7,7 +7,7 @@ class SmsService
 
     #puts ">>> Params #{params}"
     msg_type = premium_service.get_message_type text
-
+    
     @message = Message.new
     @message.phone_number = mobile
     @message.status = "Received"

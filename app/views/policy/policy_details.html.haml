@@ -1,0 +1,66 @@
+= render "layouts/claims_header"
+- if @policy.nil? || @policy.length < 1
+  = render "layouts/policy_not_found"
+- else
+  .row
+    .large-12.large-centered.columns
+      %table
+        %thead
+          %td Customer Name
+          %td Contact Number
+          %td Policy Number
+          %td Start Date
+          %td Expiry
+          %td Payment Option
+          %td Total Due
+          %td Amount Paid
+          %td Total Balance
+          %td Next Payment Due
+          %td IMEI
+          %td Sales Agent Code
+          %td Sales Agent Name
+        %tbody
+          - @policy.each do |policy|
+            %tr
+              %td
+                - if !policy.customer.name.nil?
+                  = policy.customer.name
+              %td
+                - if !policy.quote.insured_device.phone_number.nil?
+                  = policy.quote.insured_device.phone_number
+              %td
+                - if !policy.policy_number.nil?
+                  = policy.policy_number
+              %td
+                - if !policy.start_date.nil?
+                  = policy.start_date
+              %td
+                - if !policy.expiry.nil?
+                  = policy.expiry
+              %td
+                - if !policy.payment_option.nil?
+                  = policy.payment_option
+              %td
+                - if !policy.premium.nil?
+                  = policy.premium
+              %td
+                - if !policy.amount_paid.nil?
+                  = policy.amount_paid
+              %td
+                - if !policy.pending_amount.nil?
+                  = policy.pending_amount
+              %td
+                - if !policy.minimum_due.nil?
+                  = policy.minimum_due
+              %td
+                - if !policy.imei.nil?
+                  = policy.imei
+              %td
+                - if !policy.sales_agent_code.nil?
+                  = policy.sales_agent_code
+              %td
+                - if !policy.sales_agent_name.nil?
+                  = policy.sales_agent_name
+      %p
+        %a.button.small{:href => root_path}
+          Back

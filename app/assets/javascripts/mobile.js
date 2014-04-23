@@ -31,6 +31,6 @@ $(document).bind('pageinit', function () {
       }
     });
 
-    $('#enquiry_customer_phone_number').attr('disabled', 'disabled');
+//    $('#enquiry_customer_phone_number').attr('disabled', 'disabled');
 });
 

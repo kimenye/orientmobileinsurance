@@ -10,10 +10,9 @@ class PremiumService
   end
 
   def calculate_insurance_value catalog_price, sales_code, year_of_purchase
-
-    if is_fx_code sales_code
+    if is_fx_code(sales_code) || is_stl_code(sales_code)
       return catalog_price
-    elsif !is_fx_code(sales_code) && year_of_purchase == Time.now.year
+    elsif !is_fx_code(sales_code) && !is_stl_code(sales_code) && year_of_purchase == Time.now.year
       return 0.875 * catalog_price
     else
       return 0.375 * catalog_price
@@ -117,6 +116,10 @@ class PremiumService
     fee
   end
 
+  def is_stl_code code
+    !code.nil? && code.start_with?("STL")
+  end
+
   def is_fx_code code
     !code.nil? && (code.start_with?("FXP") || code.start_with?("TSK") || code.start_with?("PLK") || code.start_with?("NVS") )
   end
@@ -139,14 +142,19 @@ class PremiumService
   def is_imei? text
     (!text.nil?) && text.strip.length == 15 && is_number?(text)
   end
-
+  
   def get_message_type message
-    if !message.nil? && message.downcase == ENV['KEYWORD'].downcase
-      return 1
-    elsif is_imei?(message)
-      return 2
-    else
-      return 3
+    if !message.nil?
+      ENV['KEYWORDS'].split(",").each do |keyword|
+        if message.downcase == keyword.strip.downcase
+          return 1  
+        end
+      end
+      if is_imei?(message)
+        return 2
+      else
+        return 3
+      end
     end
   end
 
@@ -167,11 +175,10 @@ class PremiumService
     end
   end
 
-  def activate_policy imei, phone_number
+  def activate_policy imei, phone_number    
+    if is_valid_imei? imei      
+      inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.nil? && !id.quote.policy.nil?) }
 
-    if is_valid_imei? imei
-
-      inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.policy.nil?) }
       if !inactive_devices.empty?
         device = inactive_devices.last
         device.imei = imei.strip

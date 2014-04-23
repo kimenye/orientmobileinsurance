@@ -1,0 +1,37 @@
+.row
+	.banner
+		%h4.subheader
+			CORPORATE BULK PAYMENTS
+.row.spacer
+	.large-12.columns.large-centered
+		%h4.subheader.centered
+			Welcome to Orient Mobile
+.row
+	.large-6.columns.large-centered
+		%form{:method => "POST", :action => corporate_payment_form_path}
+			- flash.each do |name, msg|
+				- if msg.is_a?(String)
+					= content_tag :div, msg, :id => "flash_#{name}", :class => "label error flash"
+			.row
+				.large-12.columns
+					%label{:for => "code"}
+						Please enter the account number
+			.row.collapse
+				.large-10.columns
+					%input{:type => "text", :name => "code", :id => "code", :placeholder => "OMBABCDEF"}
+			.row
+				.large-12.columns
+					%label{:for => "email"}
+						Please enter your email address
+			.row.collapse
+				.large-10.columns
+					%input{:type => "email", :name => "email", :id => "email", :placeholder => "me@domain.com"}
+			.row
+				.large-12.columns
+					%label{:for => "phone_number"}
+						Please enter your phone number
+			.row.collapse
+				.large-10.columns
+					%input{:type => "text", :name => "phone_number", :id => "phone_number", :placeholder => "254722200200"}
+				.large-2.columns 
+					%input.button.postfix.small{:type => "submit"}

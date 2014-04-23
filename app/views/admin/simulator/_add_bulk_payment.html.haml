@@ -1,0 +1,11 @@
+%h3
+  Add a Bulk Payment
+%form{:action => admin_simulator_add_bulk_payment_path, :method => "POST"}
+  .field
+    = label(:payment, :code)
+    = text_field(:payment, :code, {:placeholder => "OMBABCDEF"})
+  .field
+    = label(:payment, :amount)
+    = text_field(:payment, :amount, {:placeholder => "84343.00"})
+  .field
+    = submit_tag("Add")	

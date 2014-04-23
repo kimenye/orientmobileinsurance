@@ -1,8 +1,17 @@
 class Policy < ActiveRecord::Base
+  scope :pending, where(:status => "Pending")
+  scope :active, where("status = ? and start_date <= ? and expiry >= ?", "Active", Time.now, Time.now)
+  scope :expired, where("expiry <= ?", Time.now)
+  scope :all, where("")
+  scope :corporate, lambda { where("quote_type = ?", "Corporate").joins(:quote) }
+  scope :individual, lambda { where("quote_type = ?", "Individual").joins(:quote) }
+
   belongs_to :quote
+  belongs_to :insured_device
   has_many :claims
   has_many :payments
-  attr_accessible :expiry, :policy_number, :start_date, :status, :quote_id
+  attr_accessible :expiry, :policy_number, :start_date, :status, :quote_id, :insured_device_id, :quote_type
+  validates :insured_device_id, presence: true
 
   def is_open_for_claim
     days_after_start = Time.now - start_date
@@ -50,6 +59,10 @@ class Policy < ActiveRecord::Base
     quote.minimum_due - amount_paid
   end
 
+  def expired
+    Time.now > expiry
+  end
+
   def status_message
     if status == "Inactive"
       return "Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this it and SMS the word OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
@@ -64,11 +77,25 @@ class Policy < ActiveRecord::Base
   end
 
   def premium
-    quote.amount_due
+    if !quote.is_corporate? 
+      return quote.amount_due
+    else 
+      return insured_device.premium_value
+    end
+  end
+
+  def amount_due
+    if quote.monthly_premium >= pending_amount
+        return quote.monthly_premium
+    else
+        return pending_amount
+    end
   end
 
   def amount_paid
     amount_paid = 0
+    amount_paid = premium if quote.is_corporate?
+    
     payments.each do |payment|
       amount_paid += payment.amount.to_f
     end
@@ -77,6 +104,7 @@ class Policy < ActiveRecord::Base
 
   def pending_amount
     quote_amount = quote.amount_due
+    quote_amount = premium if quote.is_corporate?
     #if quote.premium_type == "Monthly"
     #  quote_amount *= 3
     #end
@@ -85,11 +113,7 @@ class Policy < ActiveRecord::Base
   end
 
   def payment_option
-    if quote.is_installment?
-      return "Installment"
-    else
-      return "Annual"
-    end
+    quote.payment_option
   end
 
   def next_payment_date
@@ -115,9 +139,9 @@ class Policy < ActiveRecord::Base
     end
   end
 
-  def insured_device
-    quote.insured_device
-  end
+  # def insured_device
+  #   quote.insured_device if !quote.is_corporate?
+  # end
 
   def imei
     if !insured_device.nil?
@@ -128,7 +152,7 @@ class Policy < ActiveRecord::Base
   end
 
   def customer
-    quote.insured_device.customer
+    quote.customer
   end
   
   def can_claim?
@@ -137,5 +161,9 @@ class Policy < ActiveRecord::Base
 
   def has_claim?
     !claim.nil?
+  end
+
+  def has_active_claim?
+    has_claim? && claim.is_in_customer_stage?
   end
 end

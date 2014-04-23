@@ -1,0 +1,71 @@
+.banner.row
+	.large-12.columns
+		%h4.subheader
+			CORPORATE PORTAL \
+.row
+	.large-12.columns
+		= form_tag(calculator_path, :remote => true, :id => "calculator_form") do
+			.row
+				.large-12.columns
+					%h6
+						Premium Calculator
+			.row
+				.large-4.columns
+					.row
+						.large-12.columns
+							%label{:for => "device"}
+								Device					
+							= collection_select(:quote, :device, Device.find_all_by_active(true), :id, :marketing_name)
+					.row.spacer
+						.large-12.columns
+							%label{:for => "quote[agent_code]"}
+								Sales Agent Code
+							%input{:type => "text", :name => "quote[agent_code]", :placeholder => "e.g. FXP000"}
+
+					.row
+						.large-12.columns
+							%label{:for => "quote[year_of_purchase]"}
+								Year of Purchase
+							%select{:name => "quote[year_of_purchase]"}
+								%option{:value => Time.now.year} 
+									= Time.now.year
+								%option{:value => Time.now.year - 1} 
+									= Time.now.year - 1
+					.row.spacer
+						.large-12.columns
+							%input.button.small{:type => "submit", :value => "Calculate"}
+				.large-1.columns
+				.large-7.columns.results.hidden
+					.row
+						%p
+							The following quote is applicable to your selected device
+					.row
+						%table
+							%thead
+								%th
+									Retail Price
+								%th
+									Insurance Value
+								%th
+									Annual Premium
+								%th
+									Installment Premium
+							%tbody
+								%tr
+									%td#retail_price
+									%td#iv
+									%td#annual_premium
+									%td#installment_premium
+
+
+
+:javascript
+	$('select').chosen();
+	$('.corporate-link').addClass('active')
+	$('#calculator_form').on("ajax:success", function(e, data, status, xhr) {        
+		$('.results #iv').html(data.insurance_value);		
+		$('.results #retail_price').html(data.retail_price);		
+		$('.results #annual_premium').html(data.annual_premium);		
+		$('.results #installment_premium').html(data.installment_premium);		
+		$('.results').removeClass('hidden');
+	});

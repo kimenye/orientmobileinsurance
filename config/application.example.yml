@@ -30,12 +30,24 @@ TZ: Africa/Nairobi
 SHORT_CODE: 22808
 SMS_MAX_SEGMENT_LENGTH: 160
 SPLIT_SMS: true
+SMS_USE_RECEIPTS: Y
 CLAIM_DATE_VALIDATION: false
 MANDRILL_APIKEY: <<MANDRILL_APIKEY>>
 MANDRILL_USERNAME: <<MANDRILL_USERNAME>>
 KEYWORD: Mobile
+KEYWORDS: "Mobile, mombile, mobi, phone"
 OMB_URL: http://korient.co.ke/omb
 SEED_POLICY_NO: 1
 CATALOG_VERSION: 1
 UPDATE_FILE: catalogue_october.csv
-
+FONEXPRESS_EMAIL: scadmin@fonexpress.net
+CLAIM_REGISTRATION_EMAILS: scadmin@fonexpress.net, ombclaims@korient.co.ke
+ANALYTICS_ID: sdfsdf
+SITE: korient.co.ke
+FEEDBACK_FROM_EMAIL: feedback@korient.co.ke
+FEEDBACK_TO_EMAIL: mobile@korient.co.ke
+ANALTICS_USERNAME: <<username>>
+ANALYTICS_PASSWORD: <<password>>
+DEBUG_DEVICE_ATLAS: false
+DEBUG_DEVICE_ATLAS_MODEL: Safari - OS X
+DEBUG_DEVICE_ATLAS_VENDOR: Apple

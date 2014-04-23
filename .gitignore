@@ -38,7 +38,7 @@ db/*.dump
 /doc/app/
 /doc/features.html
 /doc/specs.html
-/public/assets
+#/public/assets/
 /public/cache
 /public/stylesheets/compiled
 /public/system/*
@@ -77,3 +77,6 @@ pickle-email-*.html
 
 # Ignore application configuration
 /config/application.yml
+
+# Ignore linux directory files
+.directory

@@ -6,6 +6,8 @@
 //  margin-top: 20px;
 //}
 
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600,300italic,600italic);
+
 ul.nav {
   margin: 10px 0px;
   float: right;
@@ -15,6 +17,11 @@ ul.nav {
     padding: 0px 10px;
     display: inline-block;
   }
+}
+
+p.hide, small.hide, .hide {
+  display: none;
+  // color: #ffffff;
 }
 
 ul.errors {
@@ -31,8 +38,8 @@ h4.header {
 
 .details {
   padding: 10px;
-  border: 1px solid grey;
-  background-color: lightgrey;
+  // border: 1px solid grey;
+  background-color: #eee;
 }
 
 .spacer {
@@ -90,8 +97,8 @@ label.error {
 }
 
 .ui-widget-header {
-  background: #333399;
-  border:  1px solid #333399;
+  background: #202767;
+  border:  1px solid #202767;
 }
 
 .new_user {
@@ -101,7 +108,50 @@ label.error {
   }
 }
 
+.corporate_payment_form {
+  input.jambopay {
+    margin: auto;
+    display: block;
+  }
+
+  .due {
+    text-align: center;
+  }
+}
+
 .section_header  {
   font-weight: normal;
   border-bottom: 1px solid lightgrey;
+}
+
+[data-magellan-expedition] {
+  background: transparent;
+  min-width: 0;
+  position: relative;
+
+  padding-left: 50px;
+}
+
+[data-magellan-expedition].fxd {
+  background: #000000;
+  position: relative;
+}
+
+a.home{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background: url("/assets/home.png") no-repeat;
+  width: 24px;
+  height: 24px;
+}
+
+
+
+.menu-holder {
+  .fixed {
+    width: auto;
+    right: auto;
+    left: auto;
+  }
 }

@@ -480,7 +480,7 @@
                             The damaged device
                           </li>
                           <li>
-                            Original or certified copy of purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)
+                            Original or Certified Copy of ETR Receipt / warranty (must display device make, model & IMEI, seller and price & date of purchase)
                           </li>
                           <li>
                             Original ID or Passport
@@ -501,7 +501,7 @@
                             Completed and stamped Blocking Request Form from mobile network operator
                           </li>
                           <li>
-                            Original or certified copy of purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)
+                            Original or Certified Copy of ETR Receipt / warranty (must display device make, model & IMEI, seller and price & date of purchase)
                           </li>
                           <li>
                             Original ID or Passport
@@ -519,7 +519,7 @@
                       Please visit an authorized dealer in <%= @claim.nearest_town %> with the following:
                     </p>
 
-                    <%= render :partial => "dealers", locals: {brand: @brand} %>
+                    <%= render :partial => "dealers", locals: {dealers: @nearest_dealers} %>
 
                     <p>
                       <b>

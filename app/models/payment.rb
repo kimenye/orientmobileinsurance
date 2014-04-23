@@ -1,20 +1,21 @@
 class Payment < ActiveRecord::Base
   belongs_to :policy
-  attr_accessible :amount, :method, :reference, :status, :policy_id
+  belongs_to :quote
+  attr_accessible :amount, :method, :reference, :status, :policy_id, :quote_id
 
   def for
     policy.policy_number
   end
   
   def device
-    policy.quote.insured_device
+    quote.insured_device
   end
 
   def account
-    policy.quote.account_name
+    quote.account_name
   end
 
   def customer
-    policy.customer
+    quote.customer
   end
 end

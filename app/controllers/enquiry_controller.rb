@@ -7,11 +7,52 @@ class EnquiryController < Wicked::WizardController
   layout "mobile"
 
   skip_before_filter :verify_authenticity_token
-  steps :begin, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
+  steps :begin, :insure, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
+
+  def corporate_payment
+    render 'corporate_payment', :layout => "application"
+  end
+
+  def corporate_payment_form
+    @bp = BulkPayment.find_by_code(params[:code])
+    if @bp.nil?
+      redirect_to corporate_payment_path, :layout => "application", :notice => "No account with the code #{params[:code]} exists"
+    else
+      @bp.email = params[:email]
+      @bp.phone_number = params[:phone_number]
+      @bp.save!
+
+      render 'corporate_payment_form', :layout => "application"
+    end    
+  end
+
+  def corporate_receipt
+    @bp = BulkPayment.find_by_code(params[:JP_MERCHANT_ORDERID])
+    amount = params[:JP_AMOUNT]
+    if @bp.reference != params[:JP_TRANID]
+      @bp.amount_paid = 0 if @bp.amount_paid.nil?
+      @bp.amount_paid += amount.to_f
+      @bp.reference = params[:JP_TRANID]
+      @bp.save!
+    end
+
+    render 'corporate_receipt', :layout => "application"
+  end
 
   def show
     begin
-      @enquiry = Enquiry.find(session[:enquiry_id])
+      if Enquiry.find_by_id(session[:enquiry_id]).nil? || session[:enquiry_id].nil?        
+        code = nil
+        if params.has_key? "q"
+          a = Agent.find_by_tag params[:q]
+          code = a.code if !a.nil?
+        end
+        @enquiry = Enquiry.create!(:source => "DIRECT", :sales_agent_code => code)
+        
+        session[:enquiry_id] = @enquiry.id
+      else
+        @enquiry = Enquiry.find_by_id(session[:enquiry_id])
+      end
       case step
         when :complete_enquiry
           smsMessage = session[:sms_message]
@@ -24,12 +65,22 @@ class EnquiryController < Wicked::WizardController
       render_wizard
     rescue => error
       puts "Error occured #{error}"
+      logger.info "Error occured #{error}, Session: #{session}"
+      session[:enquiry] = nil
       redirect_to start_again_path
     end
   end
 
   def start_again
 
+  end
+
+  def insure
+    if params.has_key? "q"
+      redirect_to "/enquiry/insure?q=#{params[:q]}"
+    else 
+      redirect_to "/enquiry/insure" 
+    end
   end
 
   def payment_notification
@@ -77,6 +128,11 @@ class EnquiryController < Wicked::WizardController
         @enquiry.update_attributes(params[:enquiry])
         
         if @enquiry.valid?
+          if !@enquiry.phone_number.starts_with? "+"
+            @enquiry.phone_number = "+#{@enquiry.phone_number}"
+            @enquiry.save!
+          end
+
           code = agent.code if !agent.nil?
           if !@enquiry.year_of_purchase.nil?
             is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
@@ -87,7 +143,8 @@ class EnquiryController < Wicked::WizardController
           device_data = get_device_data
           session[:device] = device_data
           #Check for the devices among our supported devices
-          model = device_data["model"]
+          add_client_properties! device_data
+          model = get_model_name device_data
           vendor = device_data["vendor"]
           marketingName = device_data["marketingName"]
 
@@ -98,13 +155,7 @@ class EnquiryController < Wicked::WizardController
           @enquiry.vendor = vendor
           @enquiry.marketing_name = marketingName
 
-          iphone_5 = request.cookies["device.isPhone5"]
-          puts "Reporting #{model}, #{vendor}, #{marketingName} - #{iphone_5}"
-          if iphone_5 == "true"
-            model = "IPHONE 5"
-          end
-
-          puts ">> Searching for #{model}, #{vendor}, #{marketingName}"
+          logger.info ">> Searching for #{model}, #{vendor}, #{marketingName}"
 
           device = nil
 
@@ -160,12 +211,12 @@ class EnquiryController < Wicked::WizardController
               jump_to :serial_claimants
             end
 
-            insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number
+            insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number, :insurance_value => session[:quote_details]["insurance_value_uf"]
             q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
                               :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
                               :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
                               :insured_value => session[:quote_details]["insurance_value_uf"],
-                              :agent_id => @enquiry.agent_id)
+                              :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
 
             @gateway = SMSGateway.new
 
@@ -190,6 +241,10 @@ class EnquiryController < Wicked::WizardController
           q.premium_type = @enquiry.customer_payment_option
           q.save!
         end
+
+        id = q.insured_device
+        id.premium_value = q.amount_due
+        id.save!
 
         smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]
         session[:sms_message] = smsMessage

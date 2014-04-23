@@ -1,4 +1,8 @@
 = render "layouts/claims_header"
+.row.banner
+  .large-12.columns
+    %h4.subheader
+      ORIENT MOBILE CLAIMS
 - if @claim.nil?
   .row
     .large-10.large-centered.columns
@@ -106,6 +110,8 @@
 :javascript
   $(function(){
 
+    $('.customer-link').addClass('active');
+    $('.footer').hide();
     var car_rules = {
       required : {
           depends : function()  {

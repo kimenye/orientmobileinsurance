@@ -5,6 +5,10 @@
       %h4
         No such claim was found
 - else
+  .row.banner
+    .large-12.columns
+      %h4.subheader
+        ORIENT MOBILE CLAIMS
   = form_for(@claim, :method => :put) do |f|
     .row
       .large-10.large-centered.columns
@@ -79,7 +83,7 @@
                   %li
                     The damaged device
                   %li
-                    Original or certified copy of purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)
+                    Original or Certified Copy of ETR Receipt / warranty (must display device make, model & IMEI, seller and price & date of purchase)
                   %li
                     Original ID or Passport
                   %li
@@ -93,7 +97,7 @@
                   %li
                     Completed and stamped Blocking Request Form from mobile network operator
                   %li
-                    Original purchase receipt/ warranty (must display device make, model & IMEI, seller and price & date of purchase)
+                    Original or Certified Copy of ETR Receipt / warranty (must display device make, model & IMEI, seller and price & date of purchase)
                   %li
                     Original ID or Passport
                   %li
@@ -114,4 +118,8 @@
                 %p
                   If your device is to be replaced, please note the Replacement Limit will be arrived at by deducting an Excess of 10% of Insurance Value (minimum KES 1,000) from the Insurance Value. In case your device is to be repaired, no Excess will apply.
 
-
+:javascript
+  $(function(){
+    $('.footer').hide();
+    $('.customer-link').addClass('active');
+  });

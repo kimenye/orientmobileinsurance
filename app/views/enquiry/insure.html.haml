@@ -1,0 +1,7 @@
+#sales-info-page.direct{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %section{"data-role" => "content", :role => "main"}
+    %h1.logo
+      %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.jpg"}
+    .tip.ui-bar-a
+      Cover your phone or tablet against theft or accidental damage by filling the details below.
+    = render partial: "enquiry_form", locals: { enquiry: @enquiry }

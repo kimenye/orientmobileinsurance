@@ -1,3 +1,4 @@
+require 'json'
 class SMSGateway
 
   def initialize
@@ -23,30 +24,26 @@ class SMSGateway
 
         if Rails.env == "production"
           options = {
-              :body => xml
+              :body => xml,
+              :headers => { "content-type" => "text/xml;charset=utf8" }
           }
+
           response = HTTParty.post( @base_uri, options)
           # puts ">>>> before sleep"
           # sleep(1.seconds)
           # puts ">>>> after sleep"
         else
-          response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-          <methodResponse>
-            <params>
-              <param>
-                <value>
-            <struct>
-              <member>
-                <name>Identifier</name>
-                <value><string>1ec78fd8</string></value>
-              </member>
-            </struct></value>
-              </param>
-            </params>
-          </methodResponse>"
+          response = {"methodResponse"=>
+            {"params"=>
+              {"param"=>
+                {"value"=>
+                  {"struct"=>
+                    {"member"=>
+                      {"name"=>"Identifier", "value"=>{"string"=>"365d6a84"}}}}}}}}
         end
         resp = response.to_s
-        Sms.create! :to => to, :text => txt, :request => xml,  :response => resp, :receipt_id => nil
+        receipt_id = response["methodResponse"]["params"]["param"]["value"]["struct"]["member"]["value"]["string"]
+        Sms.create! :to => to, :text => txt, :request => xml,  :response => resp, :receipt_id => receipt_id
       end
     rescue
     #  Do nothing
@@ -89,7 +86,7 @@ class SMSGateway
                 </member>
                 <member>
                   <name>Receipt</name>
-                  <value>N</value>
+                  <value>#{ENV['SMS_USE_RECEIPTS']}</value>
                 </member>
                 <member>
                   <name>Channel</name>

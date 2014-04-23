@@ -17,7 +17,11 @@
   color: red;
 }
 
-
+.ui-mobile {
+  form.edit_enquiry {
+    padding: 15px;
+  }
+}
 
 .ui-body-b .ui-link, 
 .ui-body-b .ui-link:visited,
@@ -127,4 +131,10 @@ a.continue {
   padding: 5px;
   border-radius: 5px;
   opacity: .6;
+}
+
+.direct {
+  .tip.ui-bar-a {
+    margin-bottom: 10px;
+  }
 }
