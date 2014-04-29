@@ -45,6 +45,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_model_name device_data
+    device_data = {} if device_data.nil?
     model = device_data["model"]
     if device_data["osIOs"]
       numeric_version =  device_data["osVersion"].gsub("_", ".").to_f
