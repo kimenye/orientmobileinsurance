@@ -1,11 +1,27 @@
 require 'test_helper'
 
 class PremiumServiceTest < ActiveSupport::TestCase
-
   test "Should insure phones purchased in the current year if no sales code is provided" do
     service = PremiumService.new
     insurable = service.is_insurable Time.now.year
     assert true == insurable
+  end
+
+  test "Should insure phones purchased within the last two years" do
+    service = PremiumService.new
+    month = Device.month_ranges[15].split(" ")[0]
+    year = Device.month_ranges[15].split(" ")[1]
+    insurable = service.is_insurable_by_month_and_year month, year
+    assert_equal true, insurable
+  end
+
+  test "Should not insure phones not purchased within the last two years" do
+    service = PremiumService.new
+    month = Date::MONTHNAMES[Time.now.month - 1]
+    year = Time.now.year - 2
+    puts "Month => #{month} \n Year => #{year}"
+    insurable = service.is_insurable_by_month_and_year month, year
+    assert_equal false, insurable
   end
 
   test "Should return true for Fone Direct outlets" do

@@ -8,12 +8,86 @@ class DeviceTest < ActiveSupport::TestCase
       :vendor => "Test",
       :model => "iPhone",
       :marketing_name => "iPhone",
+      :catalog_price => 10.0,
       :fd_insured_value => 10.0,
       :yop_insured_value => 7.0,
       :stl_insured_value => 10.0,
       :prev_insured_value => 5.0
     })
+    
+    @month_yrs = Device.month_ranges
   end
+
+  test "For a code starting with FX purchased within the last calendar year, the insurace value equals the catalog price" do
+    month = @month_yrs[12].split(" ")[0]
+    year = @month_yrs[12].split(" ")[1]
+    v = @device.get_insurance_value_by_month_and_year "FXP0001", month, year
+    assert_equal @device.catalog_price, v
+  end
+
+  # test "For a code starting with FX purchased in the first period the insurace value equals the catalog price" do
+  #   month = @month_yrs[5].split(" ")[0]
+  #   year = @month_yrs[5].split(" ")[1]
+  #   v = @device.get_insurance_value_by_month_and_year "FXP0001", month, year
+  #   assert_equal @device.catalog_price, v
+  # end
+
+  test "For a code starting with FX purchased in the fourth period the insurace value equals 75% of the catalog price" do
+    month = @month_yrs[14].split(" ")[0]
+    year = @month_yrs[14].split(" ")[1]
+    v = @device.get_insurance_value_by_month_and_year "FXP0001", month, year
+    assert_equal 0.75 * @device.catalog_price, v
+  end
+
+  test "For a code starting with FX purchased in the fifth period the insurace value equals 50% of the catalog price" do
+    month = @month_yrs[17].split(" ")[0]
+    year = @month_yrs[17].split(" ")[1]
+    v = @device.get_insurance_value_by_month_and_year "FXP0001", month, year
+    assert_equal 0.5 * @device.catalog_price, v
+  end
+
+  test "For a code starting with FX purchased in the sixth period the insurace value equals 25% of the catalog price" do
+    month = @month_yrs[20].split(" ")[0]
+    year = @month_yrs[20].split(" ")[1]
+    v = @device.get_insurance_value_by_month_and_year "FXP0001", month, year
+    assert_equal 0.25 * @device.catalog_price, v
+  end
+
+  test "For a code not starting with FX purchased in the second period the insurace value equals 95% of the catalog price" do
+    month = @month_yrs[7].split(" ")[0]
+    year = @month_yrs[7].split(" ")[1]
+    v = @device.get_insurance_value_by_month_and_year "BLAH0001", month, year
+    assert_equal 0.95 * @device.catalog_price, v
+  end
+
+  test "For a code not starting with FX purchased in the third period the insurace value equals 87.5% of the catalog price" do
+    month = @month_yrs[11].split(" ")[0]
+    year = @month_yrs[11].split(" ")[1]
+    v = @device.get_insurance_value_by_month_and_year "BLAH0001", month, year
+    assert_equal 0.875 * @device.catalog_price, v
+  end
+
+  test "For a code not starting with FX purchased in the fourth period the insurace value equals 75% of the catalog price" do
+    month = @month_yrs[14].split(" ")[0]
+    year = @month_yrs[14].split(" ")[1]
+    v = @device.get_insurance_value_by_month_and_year "BLAH0001", month, year
+    assert_equal 0.75 * @device.catalog_price, v
+  end
+
+  test "For a code not starting with FX purchased in the fifth period the insurace value equals 50% of the catalog price" do
+    month = @month_yrs[17].split(" ")[0]
+    year = @month_yrs[17].split(" ")[1]
+    v = @device.get_insurance_value_by_month_and_year "BLAH0001", month, year
+    assert_equal 0.5 * @device.catalog_price, v
+  end
+
+  test "For a code not starting with FX purchased in the sixth period the insurace value equals 25% of the catalog price" do
+    month = @month_yrs[20].split(" ")[0]
+    year = @month_yrs[20].split(" ")[1]
+    v = @device.get_insurance_value_by_month_and_year "BLAH0001", month, year
+    assert_equal 0.25 * @device.catalog_price, v
+  end
+
 
   test "For a code starting with FX the fd_insured_value is used for the insurance value" do
     v = @device.get_insurance_value "FXP0001", Time.now.year

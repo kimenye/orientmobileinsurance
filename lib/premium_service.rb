@@ -9,6 +9,15 @@ class PremiumService
     end
   end
 
+  def is_insurable_by_month_and_year month_of_purchase, year_of_purchase
+    time_of_purchase = "#{month_of_purchase} #{year_of_purchase}"
+    if Device.month_ranges.include?(time_of_purchase)
+      return true
+    else
+      return false
+    end
+  end
+
   def calculate_insurance_value catalog_price, sales_code, year_of_purchase
     if is_fx_code(sales_code) || is_stl_code(sales_code)
       return catalog_price

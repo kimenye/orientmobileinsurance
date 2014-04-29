@@ -15,9 +15,10 @@
       %li
         %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
         %b
-          Year of Purchase:
+          Date of Purchase:
         %span.model
           = @enquiry.year_of_purchase
+          = @enquiry.month_of_purchase
       %li
         %b
           Insurance value:

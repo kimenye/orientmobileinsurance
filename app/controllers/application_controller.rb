@@ -68,5 +68,6 @@ class ApplicationController < ActionController::Base
     end
     model
   end
+
   helper_method :get_model_name
 end
