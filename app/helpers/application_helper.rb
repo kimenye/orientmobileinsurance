@@ -18,16 +18,20 @@ module ApplicationHelper
 
   def is_asha?
     if session[:is_asha].nil?
-      device = get_device_data
-      model = device["model"]
-      if !model.nil?
-        match = model.downcase.match /asha/
-        if !match.nil?
-          session[:is_asha] = true
+      begin
+        device = get_device_data
+        model = device["model"]
+        if !model.nil?
+          match = model.downcase.match /asha/
+          if !match.nil?
+            session[:is_asha] = true
+          else
+            session[:is_asha] = false
+          end
         else
           session[:is_asha] = false
         end
-      else
+      rescue
         session[:is_asha] = false
       end
     end
