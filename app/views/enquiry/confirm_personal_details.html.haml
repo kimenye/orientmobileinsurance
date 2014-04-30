@@ -5,7 +5,7 @@
   %section{"data-role" => "content", "role" => "main"}
     %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
       %li{"data-role" => "list-divider"}
-        A quote with the following details has been created
+        Here is your quotation
       %li
         %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
         %b
@@ -24,6 +24,11 @@
           Insurance value:
         %span.model
           = session[:quote_details]["insurance_value"]
+      %li
+        %b
+          Amount Due:
+        %span.model
+          = session[:quote_details]["annual_premium"]
       %li
         %b
           Name:
@@ -55,8 +60,8 @@
           %a.inline.continue{:href => "http://#{ENV['OMB_URL']}", :rel => "external", :target => "_blank"}
             Terms & Conditions of Orient Mobile
   = form_for(@enquiry, :url => wizard_path, :method => :put, :html => { "data-ajax" => "false"} ) do |f|
-    = f.label :customer_payment_option, 'Select preferred Payment'
-    = f.select :customer_payment_option, {"1-year premium of #{session[:quote_details]['annual_premium']}" => "Annual", "3 monthly payments of #{session[:quote_details]['quarterly_premium']}" => "Monthly"}, {}, { "data-theme" => "c"}
+    /= f.label :customer_payment_option, 'Select preferred Payment'
+    /= f.select :customer_payment_option, {"1-year premium of #{session[:quote_details]['annual_premium']}" => "Annual", "3 monthly payments of #{session[:quote_details]['quarterly_premium']}" => "Monthly"}, {}, { "data-theme" => "c"}
     %div{"data-role" => "fieldcontain"}
       %fieldset.accept_tac{"data-role" => "controlgroup"}
         %input.tac-checkbox.custom{:type => "checkbox", :name => "checkbox-1", :id => "checkbox-1"}
