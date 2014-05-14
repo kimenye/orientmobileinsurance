@@ -66,6 +66,7 @@ class EnquiryController < Wicked::WizardController
     rescue => error
       puts "Error occured #{error}"
       logger.info "Error occured #{error}, Session: #{session}"
+      logger.info "Error was #{error.backtrace.join("\n\t")}"
       session[:enquiry] = nil
       redirect_to start_again_path
     end

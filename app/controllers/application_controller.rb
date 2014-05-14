@@ -39,8 +39,10 @@ class ApplicationController < ActionController::Base
   protected
 
   def add_client_properties! device_data
-    device_data["device.devicePixelRatio"] = request.cookies["device.devicePixelRatio"]
-    device_data["device.availHeight"] = request.cookies["device.availHeight"]
+    if !device_data.nil?
+      device_data["device.devicePixelRatio"] = request.cookies["device.devicePixelRatio"]
+      device_data["device.availHeight"] = request.cookies["device.availHeight"]
+    end
   end
 
   def get_model_name device_data
