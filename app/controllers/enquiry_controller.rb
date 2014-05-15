@@ -240,11 +240,6 @@ class EnquiryController < Wicked::WizardController
         @enquiry.update_attributes(params[:enquiry])
         
         if @enquiry.valid?
-          if !@enquiry.phone_number.starts_with? "+"
-            @enquiry.phone_number = "+#{@enquiry.phone_number}"
-            @enquiry.save!
-          end
-
           code = agent.code if !agent.nil?
           if !@enquiry.year_of_purchase.nil?
             # is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
@@ -308,6 +303,8 @@ class EnquiryController < Wicked::WizardController
         end
       when :enter_sales_info
         if @enquiry.valid?
+          @enquiry.phone_number = (params[:enquiry][:phone_number].starts_with? "+") ? params[:enquiry][:phone_number] : "+#{params[:enquiry][:phone_number]}"
+          @enquiry.save!
           customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
           if(customer.nil?)
             customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => @enquiry.phone_number)

@@ -8,7 +8,7 @@ class Enquiry < ActiveRecord::Base
 
 
   validates_plausible_phone :phone_number, :country_code => '254', on: :update
-  validates :phone_number, length: { in: 12..13 }, allow_blank: false, on: :update
+  # validates :phone_number, length: { in: 12..13 }, allow_blank: false, on: :update
   validates :source, presence: true
 
   validates_format_of :customer_id, :with => /^[A-Za-z0-9.&]*\z/, if: :is_passport?
