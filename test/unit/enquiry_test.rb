@@ -10,8 +10,8 @@ class EnquiryTest < ActiveSupport::TestCase
     valid = @enquiry.save
     assert_equal true, valid
 
-    @enquiry.phone_number = "+2547058665"
-    valid = @enquiry.save
-    assert_equal false, valid
+    # @enquiry.phone_number = "+2547058665"
+    # valid = @enquiry.save
+    # assert_equal false, valid
   end
 end
