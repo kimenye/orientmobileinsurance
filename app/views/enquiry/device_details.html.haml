@@ -9,7 +9,7 @@
         / %b
         /   Device:
         %span.model
-          = session[:device]
+          = session[:device][:model]
       = form_for(@enquiry, :url => wizard_path(:device_details), :method => :put, :html => ({"data-ajax" => "false"} if is_asha?) ) do |f|
         %div
           = f.label :year_of_purchase, "Enter Year and Month of Purchase of device (as per original purchase receipt)"
