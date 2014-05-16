@@ -62,10 +62,13 @@ class EnquiryController < Wicked::WizardController
             @gateway.send(session[:sms_to], message)
           end
       end
+      device_data = get_device_data
+      device_data = {} if device_data.nil?
+      session[:device_details] = device_data
       render_wizard
     rescue => error
       puts "Error occured #{error}"
-      logger.info "Error occured #{error}, Session: #{session}"
+      logger.info "Error occured #{error.backtrace}, Session: #{session}"
       session[:enquiry] = nil
       redirect_to start_again_path
     end
@@ -242,8 +245,8 @@ class EnquiryController < Wicked::WizardController
         if @enquiry.valid?
           code = agent.code if !agent.nil?
           if !@enquiry.year_of_purchase.nil?
-            # is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
-            is_insurable = premium_service.is_insurable_by_month_and_year(@enquiry.month_of_purchase, @enquiry.year_of_purchase)
+            is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
+            # is_insurable = premium_service.is_insurable_by_month_and_year(@enquiry.month_of_purchase, @enquiry.year_of_purchase)
           else
             is_insurable = false
           end
@@ -283,8 +286,8 @@ class EnquiryController < Wicked::WizardController
             jump_to :not_insurable
           else
             session[:device] = device
-            # iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
-            iv = device.get_insurance_value_by_month_and_year(code, @enquiry.month_of_purchase, @enquiry.year_of_purchase)
+            iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
+            # iv = device.get_insurance_value_by_month_and_year(code, @enquiry.month_of_purchase, @enquiry.year_of_purchase)
             annual_premium = premium_service.calculate_annual_premium(code, iv, @enquiry.year_of_purchase)
             installment_premium = premium_service.calculate_monthly_premium(code, iv, @enquiry.year_of_purchase)
             details = {
@@ -298,8 +301,9 @@ class EnquiryController < Wicked::WizardController
             }
 
             session[:quote_details] = details
+            jump_to :enter_sales_info
           end
-          jump_to :enter_sales_info
+          
         end
       when :enter_sales_info
         if @enquiry.valid?
