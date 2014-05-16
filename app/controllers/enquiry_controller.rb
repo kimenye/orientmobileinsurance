@@ -64,7 +64,7 @@ class EnquiryController < Wicked::WizardController
       end
       device_data = get_device_data
       device_data = {} if device_data.nil?
-      session[:device_details] = device_data
+      session[:device_marketing_name] = device_data["marketingName"]
       render_wizard
     rescue => error
       puts "Error occured #{error}"
