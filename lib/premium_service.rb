@@ -100,9 +100,11 @@ class PremiumService
     raw += mpesa_fee if add_mpesa
 
     agent = Agent.find_by_code(agent_code)
-    percentage_after_discount = (100 - agent.discount) / 100
-    if agent.discount > 0 || !agent.discount.nil?
-      raw = percentage_after_discount * raw
+    if !agent.nil? && !agent.discount.nil?
+      percentage_after_discount = (100 - agent.discount) / 100
+      if agent.discount > 0
+        raw = percentage_after_discount * raw
+      end
     end
 
     # [raw.round, minimum_fee(agent_code)].max
