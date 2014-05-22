@@ -78,6 +78,29 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert insurance_value == (0.375 * 800), "Catalogue price should be 37.5%"
   end
 
+  test "Discount should be deducted from the insurance value if the agent has a discount set" do
+    service = PremiumService.new
+    Agent.delete_all
+    agent = Agent.create! outlet_name: "Blah", code: "JM001", discount: 10
+    percentage_after_discount = (100 - agent.discount) / 100
+    insurance_value = service.calculate_insurance_value(800, agent.code , Time.now.year - 1)
+    annual_premium = service.calculate_annual_premium(agent.code, insurance_value, Time.now.year - 1)
+    raw = service.calculate_premium_rate(agent.code, Time.now.year - 1) * insurance_value
+    raw = 1.0045 * raw
+    raw = [raw.round, service.minimum_fee(agent.code, Time.now.year - 1)].max
+    raw += 15
+    raw += service.calculate_mpesa_fee(raw)
+    expected_premium = service.round_off((percentage_after_discount * raw).round)
+    puts "insurance_value => #{insurance_value}, annual_premium => #{annual_premium}"
+    assert_equal expected_premium, annual_premium
+
+    base_premium = service.calculate_annual_premium agent.code, insurance_value, Time.now.year - 1, false, false, true
+    raw = service.calculate_total_installment base_premium
+    expected_premium = service.round_off((raw / 3).ceil)
+    monthly_premium = service.calculate_monthly_premium(agent.code, insurance_value, Time.now.year - 1)
+    assert_equal expected_premium, monthly_premium
+  end
+
   test "The correct premium rate is returned based on the sales agent code and year of purchase" do
     service = PremiumService.new
 
@@ -190,88 +213,103 @@ class PremiumServiceTest < ActiveSupport::TestCase
 
   test "Annual Premium calculation rules" do
     service = PremiumService.new
+    Agent.delete_all
+    agent_fx = Agent.create! outlet_name: "out", code: "FXP001", discount: 0
+    agent_xx = Agent.create! outlet_name: "out", code: "XXXXXX", discount: 0
+    agent_three = Agent.create! outlet_name: "out", code: "XXX000", discount: 0
+    agent_four = Agent.create! outlet_name: "out", code: "000000", discount: 0
 
     #Nokia ASHA 205
-    premium = service.calculate_annual_premium "FXP001", 6150, Time.now.year
+    premium = service.calculate_annual_premium agent_fx.code, 6150, Time.now.year
     assert_equal 915, premium
 
-    premium = service.calculate_annual_premium "XXX000", 5380, Time.now.year
+    premium = service.calculate_annual_premium agent_three.code, 5380, Time.now.year
     assert_equal 1025, premium
 
-    premium = service.calculate_annual_premium "FXP001", 2310, (Time.now.year - 1)
+    premium = service.calculate_annual_premium agent_fx.code, 2310, (Time.now.year - 1)
     assert_equal 1025, premium
 
-    premium = service.calculate_annual_premium "XXXXXX", 2310, (Time.now.year - 1)
+    premium = service.calculate_annual_premium agent_xx.code, 2310, (Time.now.year - 1)
     assert_equal 1025, premium
 
     #Samsung Note II
-    premium = service.calculate_annual_premium "FXP001", 58999, Time.now.year
+    premium = service.calculate_annual_premium agent_fx.code, 58999, Time.now.year
     assert_equal 5705, premium
     #
-    premium = service.calculate_annual_premium "000000", 51620, Time.now.year
+    premium = service.calculate_annual_premium agent_four.code, 51620, Time.now.year
     assert_equal 5260, premium
 
-    premium = service.calculate_annual_premium "000000", 22120, (Time.now.year - 1)
+    premium = service.calculate_annual_premium agent_four.code, 22120, (Time.now.year - 1)
     assert_equal 2250, premium
 
-    premium = service.calculate_annual_premium "FXP001", 22120, (Time.now.year - 1)
+    premium = service.calculate_annual_premium agent_fx.code, 22120, (Time.now.year - 1)
     assert_equal 2250, premium
   end
 
 
   test "Raw premium calculation rules" do
     service = PremiumService.new
+    Agent.delete_all
+    agent_fx = Agent.create! outlet_name: "out", code: "FXP001", discount: 0
+    agent_xx = Agent.create! outlet_name: "out", code: "XXXXXX", discount: 0
+    agent_three = Agent.create! outlet_name: "out", code: "XXX000", discount: 0
+    agent_four = Agent.create! outlet_name: "out", code: "000000", discount: 0
 
-    raw = service.calculate_raw_annual_premium "FXP001", 6150, Time.now.year
+    raw = service.calculate_raw_annual_premium agent_fx.code, 6150, Time.now.year
     assert_equal 899, raw
 
-    premium = service.calculate_raw_annual_premium "XXX000", 5380, Time.now.year
+    premium = service.calculate_raw_annual_premium agent_three.code, 5380, Time.now.year
     assert_equal 999, premium
 
-    premium = service.calculate_raw_annual_premium "FXP001", 2310, (Time.now.year - 1)
+    premium = service.calculate_raw_annual_premium agent_fx.code, 2310, (Time.now.year - 1)
     assert_equal 999, premium
 
-    premium = service.calculate_raw_annual_premium "XXXXXX", 2310, (Time.now.year - 1)
+    premium = service.calculate_raw_annual_premium agent_xx.code, 2310, (Time.now.year - 1)
     assert_equal 999, premium
 
-    premium = service.calculate_raw_annual_premium "FXP001", 58999, Time.now.year
+    premium = service.calculate_raw_annual_premium agent_fx.code, 58999, Time.now.year
     assert_equal 5605, premium
 
-    premium = service.calculate_raw_annual_premium "000000", 51620, Time.now.year
+    premium = service.calculate_raw_annual_premium agent_four.code, 51620, Time.now.year
     assert_equal 5162, premium
 
-    premium = service.calculate_raw_annual_premium "000000", 22120, (Time.now.year - 1)
+    premium = service.calculate_raw_annual_premium agent_four.code, 22120, (Time.now.year - 1)
     assert_equal 2212, premium
 
-    premium = service.calculate_raw_annual_premium "FXP001", 22120, (Time.now.year - 1)
+    premium = service.calculate_raw_annual_premium agent_fx.code, 22120, (Time.now.year - 1)
     assert_equal 2212, premium
   end
 
   test "Raw monthly premium calculation rules" do
     service = PremiumService.new
+    Agent.delete_all
+    agent_fx = Agent.create! outlet_name: "out", code: "FXP001", discount: 0
+    agent_xx = Agent.create! outlet_name: "out", code: "XXXXXX", discount: 0
+    agent_three = Agent.create! outlet_name: "out", code: "XXX000", discount: 0
+    agent_four = Agent.create! outlet_name: "out", code: "000000", discount: 0
 
-    raw = service.calculate_raw_monthly_premium "FXP001", 6150, Time.now.year
+    raw = service.calculate_raw_monthly_premium agent_fx.code, 6150, Time.now.year
     assert_equal 345, raw
 
-    premium = service.calculate_raw_monthly_premium "XXX000", 5380, Time.now.year
+    premium = service.calculate_raw_monthly_premium agent_three.code, 5380, Time.now.year
     assert_equal 383, premium
 
-    premium = service.calculate_raw_monthly_premium "FXP001", 2310, (Time.now.year - 1)
+    premium = service.calculate_raw_monthly_premium agent_fx.code, 2310, (Time.now.year - 1)
     assert_equal 383, premium
 
-    premium = service.calculate_raw_monthly_premium "XXXXXX", 2310, (Time.now.year - 1)
+    premium = service.calculate_raw_monthly_premium agent_xx.code, 2310, (Time.now.year - 1)
     assert_equal 383, premium
 
-    premium = service.calculate_raw_monthly_premium "FXP001", 58999, Time.now.year
+    premium = service.calculate_raw_monthly_premium agent_fx.code, 58999, Time.now.year
     assert_equal 2149, premium
 
-    premium = service.calculate_raw_monthly_premium "000000", 51620, Time.now.year
+    premium = service.calculate_raw_monthly_premium agent_four.code, 51620, Time.now.year
     assert_equal 1979, premium
 
-    premium = service.calculate_raw_monthly_premium "000000", 22120, (Time.now.year - 1)
+    premium = service.calculate_raw_monthly_premium agent_four.code, 22120, (Time.now.year - 1)
     assert_equal 848, premium
 
-    premium = service.calculate_raw_monthly_premium "FXP001", 22120, (Time.now.year - 1)
+    premium = service.calculate_raw_monthly_premium agent_fx.code, 22120, (Time.now.year - 1)
     assert_equal 848, premium
   end
 
@@ -284,31 +322,34 @@ class PremiumServiceTest < ActiveSupport::TestCase
 
   test "Monthly Premium calculation rules" do
     service = PremiumService.new
+    Agent.delete_all
+    agent_fx = Agent.create! outlet_name: "out", code: "FXP001", discount: 0
+    agent_xo = Agent.create! outlet_name: "out", code: "XXX000", discount: 0
 
     #Nokia ASHA
-    premium = service.calculate_monthly_premium "FXP001", 5199, Time.now.year
+    premium = service.calculate_monthly_premium agent_fx.code, 5199, Time.now.year
     assert_equal 350, premium
 
-    premium = service.calculate_monthly_premium "XX0000", 5380, Time.now.year
+    premium = service.calculate_monthly_premium agent_xo.code, 5380, Time.now.year
     assert_equal 390, premium
 
-    premium = service.calculate_monthly_premium "FXP001", 2310, (Time.now.year - 1)
+    premium = service.calculate_monthly_premium agent_fx.code, 2310, (Time.now.year - 1)
     assert_equal 390, premium
 
-    premium = service.calculate_monthly_premium "XX0000", 2310, (Time.now.year - 1)
+    premium = service.calculate_monthly_premium agent_xo.code, 2310, (Time.now.year - 1)
     assert_equal 390, premium
 
     #Samsung Note 2
-    premium = service.calculate_monthly_premium "FXP001", 58999, Time.now.year
+    premium = service.calculate_monthly_premium agent_fx.code, 58999, Time.now.year
     assert_equal 2175, premium
 
-    premium = service.calculate_monthly_premium "XX0000", 51620, Time.now.year
+    premium = service.calculate_monthly_premium agent_xo.code, 51620, Time.now.year
     assert_equal 2005, premium
 
-    premium = service.calculate_monthly_premium "FXP001", 22120, (Time.now.year - 1)
+    premium = service.calculate_monthly_premium agent_fx.code, 22120, (Time.now.year - 1)
     assert_equal 855, premium
 
-    premium = service.calculate_monthly_premium "XX0000", 22120, (Time.now.year - 1)
+    premium = service.calculate_monthly_premium agent_xo.code, 22120, (Time.now.year - 1)
     assert_equal 855, premium
   end
 
