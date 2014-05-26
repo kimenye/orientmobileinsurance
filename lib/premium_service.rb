@@ -128,7 +128,7 @@ class PremiumService
 
 
   def minimum_fee agent_code, yop
-    fee = 999
+    fee = 595
     fee = 899 if (is_fx_code(agent_code) && yop == Time.now.year)
     fee
   end

@@ -201,13 +201,13 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal 899, result
 
     result = service.minimum_fee "XXXXXX", Time.now.year
-    assert_equal 999, result
+    assert_equal 595, result
 
     result = service.minimum_fee "FXP001", (Time.now.year-1)
-    assert_equal 999, result
+    assert_equal 595, result
 
     result = service.minimum_fee "XXXXXX", (Time.now.year-1)
-    assert_equal 999, result
+    assert_equal 595, result
 
   end
 
@@ -224,13 +224,13 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal 915, premium
 
     premium = service.calculate_annual_premium agent_three.code, 5380, Time.now.year
-    assert_equal 1025, premium
+    assert_equal 610, premium
 
     premium = service.calculate_annual_premium agent_fx.code, 2310, (Time.now.year - 1)
-    assert_equal 1025, premium
+    assert_equal 610, premium
 
     premium = service.calculate_annual_premium agent_xx.code, 2310, (Time.now.year - 1)
-    assert_equal 1025, premium
+    assert_equal 610, premium
 
     #Samsung Note II
     premium = service.calculate_annual_premium agent_fx.code, 58999, Time.now.year
@@ -259,13 +259,13 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal 899, raw
 
     premium = service.calculate_raw_annual_premium agent_three.code, 5380, Time.now.year
-    assert_equal 999, premium
+    assert_equal 595, premium
 
     premium = service.calculate_raw_annual_premium agent_fx.code, 2310, (Time.now.year - 1)
-    assert_equal 999, premium
+    assert_equal 595, premium
 
     premium = service.calculate_raw_annual_premium agent_xx.code, 2310, (Time.now.year - 1)
-    assert_equal 999, premium
+    assert_equal 595, premium
 
     premium = service.calculate_raw_annual_premium agent_fx.code, 58999, Time.now.year
     assert_equal 5605, premium
@@ -292,13 +292,13 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal 345, raw
 
     premium = service.calculate_raw_monthly_premium agent_three.code, 5380, Time.now.year
-    assert_equal 383, premium
+    assert_equal 228, premium
 
     premium = service.calculate_raw_monthly_premium agent_fx.code, 2310, (Time.now.year - 1)
-    assert_equal 383, premium
+    assert_equal 228, premium
 
     premium = service.calculate_raw_monthly_premium agent_xx.code, 2310, (Time.now.year - 1)
-    assert_equal 383, premium
+    assert_equal 228, premium
 
     premium = service.calculate_raw_monthly_premium agent_fx.code, 58999, Time.now.year
     assert_equal 2149, premium
@@ -331,13 +331,13 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal 350, premium
 
     premium = service.calculate_monthly_premium agent_xo.code, 5380, Time.now.year
-    assert_equal 390, premium
+    assert_equal 235, premium
 
     premium = service.calculate_monthly_premium agent_fx.code, 2310, (Time.now.year - 1)
-    assert_equal 390, premium
+    assert_equal 235, premium
 
     premium = service.calculate_monthly_premium agent_xo.code, 2310, (Time.now.year - 1)
-    assert_equal 390, premium
+    assert_equal 235, premium
 
     #Samsung Note 2
     premium = service.calculate_monthly_premium agent_fx.code, 58999, Time.now.year
