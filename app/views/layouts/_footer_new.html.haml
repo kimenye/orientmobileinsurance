@@ -66,8 +66,8 @@
         Copyright &copy; 2013 Kenya Orient Insurance Limited
     .large-2.columns
       %p
-        %a{:href => "terms_and_conditions" }
+        %a{:href => tnc_short_path }
           Terms
         &nbsp;|&nbsp;
-        %a
-          Privacy Policy
+        / %a{:href => "/pages/privacy_policy" }
+        = link_to "Privacy Policy", pages_privacy_policy_path
