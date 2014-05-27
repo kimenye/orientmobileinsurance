@@ -1,5 +1,5 @@
 Orientmobileinsurance::Application.routes.draw do
-  get "pages/privacy_policy"
+  # get "pages/privacy_policy"
 
   get "feedbacks/create"
 
