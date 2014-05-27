@@ -314,6 +314,9 @@ class EnquiryController < Wicked::WizardController
             customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => @enquiry.phone_number)
           end
 
+          @enquiry.update_attributes(params[:enquiry])
+          session[:quote_details]["due"] = @enquiry.customer_payment_option == "Annual"? session[:quote_details]["annual_premium"] : session[:quote_details]["quarterly_premium"]
+
           account_name = "OMB#{premium_service.generate_unique_account_number}"
 
           user_details = {
@@ -348,14 +351,14 @@ class EnquiryController < Wicked::WizardController
       when :confirm_personal_details
         @enquiry.update_attributes(params[:enquiry])
 
-        if @enquiry.customer_payment_option == "Annual"
-          due = session[:quote_details]["annual_premium"]
-          session[:quote_details]["due"] = session[:quote_details]["annual_premium_uf"]
-        elsif(@enquiry.customer_payment_option == 'Monthly')
-          due = session[:quote_details]["quarterly_premium"]
-          session[:quote_details]["due"] = session[:quote_details]["quarterly_premium_uf"]
-        end
-
+        # if @enquiry.customer_payment_option == "Annual"
+        #   due = session[:quote_details]["annual_premium"]
+        #   session[:quote_details]["due"] = session[:quote_details]["annual_premium_uf"]
+        # elsif(@enquiry.customer_payment_option == 'Monthly')
+        #   due = session[:quote_details]["quarterly_premium"]
+        #   session[:quote_details]["due"] = session[:quote_details]["quarterly_premium_uf"]
+        # end
+        
         q = Quote.find_by_account_name(session[:user_details]["account_name"])
         if !q.nil?
           q.premium_type = @enquiry.customer_payment_option
@@ -366,7 +369,7 @@ class EnquiryController < Wicked::WizardController
         id.premium_value = q.amount_due
         id.save!
 
-        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]
+        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{session[:quote_details]["due"]}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]
         session[:sms_message] = smsMessage
         session[:sms_to] = @enquiry.phone_number
     end
