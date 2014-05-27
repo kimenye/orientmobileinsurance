@@ -1,4 +1,4 @@
-= form_for(enquiry, :url => wizard_path(:enter_sales_info), :method => :put, :html => ({"data-ajax" => "false"} if is_asha?) ) do |f|
+= form_for(enquiry, :url => wizard_path(:enter_sales_info), :method => :put, :html => {:class => "edit_enquiry personal_details", "data-ajax" => is_asha?? "false" : "true" } ) do |f|
   / = f.label :sales_agent_code, "Enter Sales Agent Code (0 if none)"
   / = f.text_field :sales_agent_code
   / %div
