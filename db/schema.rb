@@ -268,6 +268,37 @@ ActiveRecord::Schema.define(:version => 20140521144840) do
   add_index "policies", ["insured_device_id"], :name => "index_policies_on_insured_device_id"
   add_index "policies", ["quote_id"], :name => "index_policies_on_quote_id"
 
+  create_table "product_quotes", :force => true do |t|
+    t.string   "status",            :default => "PENDING"
+    t.integer  "product_id"
+    t.integer  "quote_id"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+    t.decimal  "price"
+    t.integer  "product_serial_id"
+  end
+
+  add_index "product_quotes", ["product_id"], :name => "index_product_quotes_on_product_id"
+  add_index "product_quotes", ["product_serial_id"], :name => "index_product_quotes_on_product_serial_id"
+  add_index "product_quotes", ["quote_id"], :name => "index_product_quotes_on_quote_id"
+
+  create_table "product_serials", :force => true do |t|
+    t.string   "serial"
+    t.integer  "product_id"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "used",       :default => false
+  end
+
+  add_index "product_serials", ["product_id"], :name => "index_product_serials_on_product_id"
+
+  create_table "products", :force => true do |t|
+    t.decimal  "price"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "quotes", :force => true do |t|
     t.integer  "insured_device_id"
     t.decimal  "annual_premium"
@@ -275,12 +306,13 @@ ActiveRecord::Schema.define(:version => 20140521144840) do
     t.string   "account_name"
     t.string   "premium_type"
     t.datetime "expiry_date"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.decimal  "insured_value"
     t.integer  "agent_id"
     t.string   "quote_type"
     t.integer  "customer_id"
+    t.string   "product_type",      :default => "Device"
   end
 
   add_index "quotes", ["agent_id"], :name => "index_quotes_on_agent_id"
