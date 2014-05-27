@@ -245,8 +245,8 @@ class EnquiryController < Wicked::WizardController
         if @enquiry.valid?
           code = agent.code if !agent.nil?
           if !@enquiry.year_of_purchase.nil?
-            is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
-            # is_insurable = premium_service.is_insurable_by_month_and_year(@enquiry.month_of_purchase, @enquiry.year_of_purchase)
+            # is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
+            is_insurable = premium_service.is_insurable_by_month_and_year(@enquiry.month_of_purchase, @enquiry.year_of_purchase)
           else
             is_insurable = false
           end
@@ -286,8 +286,8 @@ class EnquiryController < Wicked::WizardController
             jump_to :not_insurable
           else
             session[:device] = device
-            iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
-            # iv = device.get_insurance_value_by_month_and_year(code, @enquiry.month_of_purchase, @enquiry.year_of_purchase)
+            # iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
+            iv = device.get_insurance_value_by_month_and_year(code, @enquiry.month_of_purchase, @enquiry.year_of_purchase)
             annual_premium = premium_service.calculate_annual_premium(code, iv, @enquiry.year_of_purchase)
             installment_premium = premium_service.calculate_monthly_premium(code, iv, @enquiry.year_of_purchase)
             details = {
