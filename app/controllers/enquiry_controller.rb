@@ -53,15 +53,15 @@ class EnquiryController < Wicked::WizardController
       else
         @enquiry = Enquiry.find_by_id(session[:enquiry_id])
       end
-      case step
-        when :complete_enquiry
-          smsMessage = session[:sms_message]
-          @gateway = SMSGateway.new
+      # case step
+      #   when :complete_enquiry
+      #     smsMessage = session[:sms_message]
+      #     @gateway = SMSGateway.new
 
-          smsMessage.each do |message|
-            @gateway.send(session[:sms_to], message)
-          end
-      end
+      #     smsMessage.each do |message|
+      #       @gateway.send(session[:sms_to], message)
+      #     end
+      # end
       device_data = get_device_data
       device_data = {} if device_data.nil?
       session[:device_marketing_name] = device_data["marketingName"]
@@ -306,6 +306,7 @@ class EnquiryController < Wicked::WizardController
           
         end
       when :enter_sales_info
+        binding.pry
         if @enquiry.valid?
           @enquiry.phone_number = (params[:enquiry][:phone_number].starts_with? "+") ? params[:enquiry][:phone_number] : "+#{params[:enquiry][:phone_number]}"
           @enquiry.save!
@@ -338,9 +339,13 @@ class EnquiryController < Wicked::WizardController
           insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number, :insurance_value => session[:quote_details]["insurance_value_uf"]
           q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
                             :expiry_date => 336.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
-                            :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
+                            :insured_device_id => insured_device.id, :premium_type => params[:enquiry]["customer_payment_option"],
                             :insured_value => session[:quote_details]["insurance_value_uf"],
                             :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
+
+          insured_device = q.insured_device
+          insured_device.premium_value = q.amount_due
+          insured_device.save!
 
           @gateway = SMSGateway.new
 
@@ -349,29 +354,15 @@ class EnquiryController < Wicked::WizardController
           jump_to :confirm_personal_details
         end
       when :confirm_personal_details
-        @enquiry.update_attributes(params[:enquiry])
-
-        # if @enquiry.customer_payment_option == "Annual"
-        #   due = session[:quote_details]["annual_premium"]
-        #   session[:quote_details]["due"] = session[:quote_details]["annual_premium_uf"]
-        # elsif(@enquiry.customer_payment_option == 'Monthly')
-        #   due = session[:quote_details]["quarterly_premium"]
-        #   session[:quote_details]["due"] = session[:quote_details]["quarterly_premium_uf"]
-        # end
-        
-        q = Quote.find_by_account_name(session[:user_details]["account_name"])
-        if !q.nil?
-          q.premium_type = @enquiry.customer_payment_option
-          q.save!
-        end
-
-        id = q.insured_device
-        id.premium_value = q.amount_due
-        id.save!
-
         smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{session[:quote_details]["due"]}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]
-        session[:sms_message] = smsMessage
-        session[:sms_to] = @enquiry.phone_number
+        # session[:sms_message] = smsMessage
+        # session[:sms_to] = @enquiry.phone_number
+
+        @gateway = SMSGateway.new
+
+        smsMessage.each do |message|
+          @gateway.send(@enquiry.phone_number, message)
+        end
     end
     render_wizard @enquiry
   end
