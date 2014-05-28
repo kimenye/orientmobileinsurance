@@ -306,7 +306,6 @@ class EnquiryController < Wicked::WizardController
           
         end
       when :enter_sales_info
-        binding.pry
         if @enquiry.valid?
           @enquiry.phone_number = (params[:enquiry][:phone_number].starts_with? "+") ? params[:enquiry][:phone_number] : "+#{params[:enquiry][:phone_number]}"
           @enquiry.save!
