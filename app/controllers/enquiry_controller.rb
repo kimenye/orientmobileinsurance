@@ -290,6 +290,7 @@ class EnquiryController < Wicked::WizardController
             iv = device.get_insurance_value_by_month_and_year(code, @enquiry.month_of_purchase, @enquiry.year_of_purchase)
             annual_premium = premium_service.calculate_annual_premium(code, iv, @enquiry.year_of_purchase)
             installment_premium = premium_service.calculate_monthly_premium(code, iv, @enquiry.year_of_purchase)
+            six_monthly_premium = premium_service.calculate_monthly_premium(code, iv, @enquiry.year_of_purchase, 6)
             details = {
               "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0, :delimiter => ""),
               "insurance_value_uf" => iv,
@@ -297,6 +298,8 @@ class EnquiryController < Wicked::WizardController
               "annual_premium_uf" => annual_premium,
               "quarterly_premium" => number_to_currency(installment_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
               "quarterly_premium_uf" => installment_premium,
+              "six_monthly_premium" => number_to_currency(six_monthly_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
+              "six_monthly_premium_uf" => six_monthly_premium,
               "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
             }
 
@@ -337,14 +340,10 @@ class EnquiryController < Wicked::WizardController
 
           insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number, :insurance_value => session[:quote_details]["insurance_value_uf"]
           q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
-                            :expiry_date => 336.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
+                            :expiry_date => 336.hours.from_now, :monthly_premium => (params[:enquiry]["customer_payment_option"] == "Monthly"? session[:quote_details]["quarterly_premium_uf"] : session[:quote_details]["six_monthly_premium_uf"]),
                             :insured_device_id => insured_device.id, :premium_type => params[:enquiry]["customer_payment_option"],
                             :insured_value => session[:quote_details]["insurance_value_uf"],
                             :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
-
-          insured_device = q.insured_device
-          insured_device.premium_value = q.amount_due
-          insured_device.save!
 
           @gateway = SMSGateway.new
 
