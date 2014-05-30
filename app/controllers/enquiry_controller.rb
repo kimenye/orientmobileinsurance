@@ -65,6 +65,21 @@ class EnquiryController < Wicked::WizardController
       device_data = get_device_data
       device_data = {} if device_data.nil?
       session[:device_marketing_name] = device_data["marketingName"]
+      model = get_model_name(device_data).downcase
+      session[:device_model] = model
+      vendor = device_data["vendor"]
+      if model.starts_with?("iphone") || model.starts_with?("ipad")
+        if model.starts_with?("iphone 5") || model.starts_with?("ipad")
+          possible_devices = Device.model_like_search(vendor, model).collect { |d| d.model }.uniq
+          session[:possible_models] = possible_devices
+          # device = Device.model_like_search(vendor, model)
+        else
+          puts "<><><><><><><><><><><> I am here <><><><><><><><><><><>"
+          possible_devices = Device.model_like_search(vendor, "iPhone 4").collect { |d| d.model }.uniq
+          session[:possible_models] = possible_devices
+          # device = Device.model_like_search(vendor, model)
+        end
+      end
       render_wizard
     rescue => error
       puts "Error occured #{error}"

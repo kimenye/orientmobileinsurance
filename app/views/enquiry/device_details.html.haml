@@ -9,9 +9,14 @@
         / %b
         /   Device:
         %span.model
-          = session[:device_marketing_name]
+          - if !session[:device_model].nil? && !(session[:device_model].downcase.starts_with?("iphone") || session[:device_model].downcase.starts_with?("ipad"))
+            = session[:device_marketing_name]
+          - else
+            = "Please select your device from the dropdown below"
       = form_for(@enquiry, :url => wizard_path(:device_details), :method => :put, :html => ({"data-ajax" => "false"} if is_asha?) ) do |f|
         %div
+          - if !session[:device_model].nil? && session[:device_model].downcase.starts_with?("iphone") || session[:device_model].downcase.starts_with?("ipad")
+            = f.select :model, session[:possible_models].collect {|model| [model]}, {}, { "data-theme" => "c"}
           = f.label :year_of_purchase, "Enter Year and Month of Purchase of device (as per original purchase receipt)"
           = f.error_message_on :year_of_purchase
           %div{:style => "float:left; width: 49%;"}
