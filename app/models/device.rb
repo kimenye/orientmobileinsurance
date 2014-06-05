@@ -8,10 +8,13 @@ class Device < ActiveRecord::Base
   #validates :catalog_price, numericality: { :greater_than_or_equal_to => :wholesale_price }
   #validates :wholesale_price, numericality: { :less_than_or_equal_to => :catalog_price }
 
-  attr_accessible :vendor, :model, :marketing_name, :catalog_price, :wholesale_price, :fd_insured_value, :device_type,
-                  :fd_replacement_value, :fd_koil_invoice_value, :yop_insured_value, :yop_replacement_value,
-                  :yop_fd_koil_invoice_value, :prev_insured_value, :prev_replacement_value, :prev_fd_koil_invoice_value, 
-                  :stock_code, :active, :version, :stl_insured_value, :stl_replacement_value, :stl_koil_invoice_value, :dealer_code
+  attr_accessible :vendor, :model, :marketing_name, :catalog_price, :device_type,
+                  # :wholesale_price, :fd_insured_value, 
+                  # :fd_replacement_value, :fd_koil_invoice_value, :yop_insured_value, :yop_replacement_value,
+                  # :yop_fd_koil_invoice_value, :prev_insured_value, :prev_replacement_value, :prev_fd_koil_invoice_value, 
+                  :stock_code, :active, :version, :dealer_code
+                  # :stl_insured_value, 
+                  # :stl_replacement_value, :stl_koil_invoice_value, 
 
 
   scope :model_search, (lambda do |vendor, model|
@@ -31,20 +34,20 @@ class Device < ActiveRecord::Base
 
   end )
 
-  def get_insurance_value (code, year_of_purchase)
-    get_insurance_value_by_year(code, year_of_purchase)
-  end
+  # def get_insurance_value (code, year_of_purchase)
+  #   get_insurance_value_by_year(code, year_of_purchase)
+  # end
 
-  def get_insurance_value_by_year (code, year_of_purchase)
-    service = PremiumService.new
-    if (service.is_fx_code(code) || service.is_stl_code(code))  && Time.now.year == year_of_purchase
-      return fd_insured_value
-    elsif year_of_purchase == Time.now.year
-      return yop_insured_value
-    else
-      return prev_insured_value
-    end
-  end
+  # def get_insurance_value_by_year (code, year_of_purchase)
+  #   service = PremiumService.new
+  #   if (service.is_fx_code(code) || service.is_stl_code(code))  && Time.now.year == year_of_purchase
+  #     return fd_insured_value
+  #   elsif year_of_purchase == Time.now.year
+  #     return yop_insured_value
+  #   else
+  #     return prev_insured_value
+  #   end
+  # end
 
   def get_insurance_value_by_month_range (code, month_range)
     if month_range == 0
@@ -76,7 +79,7 @@ class Device < ActiveRecord::Base
     service = PremiumService.new
     time_of_purchase = "#{month_of_purchase} #{year_of_purchase}"
     month_ranges = Device.month_ranges
-    if service.is_fx_code(code) && month_ranges[0..12].include?(time_of_purchase)
+    if (service.is_fx_code(code) || service.is_stl_code(code)) && month_ranges[0..12].include?(time_of_purchase)
       return catalog_price
     else
       if month_ranges[0..6].include?(time_of_purchase)

@@ -74,7 +74,8 @@ class EnquiryController < Wicked::WizardController
           session[:possible_models] = possible_devices
           # device = Device.model_like_search(vendor, model)
         else
-          puts "<><><><><><><><><><><> I am here <><><><><><><><><><><>"
+          # puts "<><><><><><><><><><><> I am here <><><><><><><><><><><>"
+          # because there are no iPhone 3s in the catalogue
           possible_devices = Device.model_like_search(vendor, "iPhone 4").collect { |d| d.model }.uniq
           session[:possible_models] = possible_devices
           # device = Device.model_like_search(vendor, model)
