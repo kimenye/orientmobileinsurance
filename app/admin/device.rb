@@ -14,8 +14,9 @@ ActiveAdmin.register Device do
     main_sheet.rows[2..main_sheet.rows.length].each do |row|
       if !row[0].nil? && !row[0].empty?
         dealer_code = row[1]
-        stock_code = row[4]
-        marketing_name = row[3]
+        stock_code = row[4].lstrip
+        stock_code.rstrip!
+        marketing_name = row[3].lstrip
         vendor = row[5]
         model = row[6]
         device_type = row[7]
