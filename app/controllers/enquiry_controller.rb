@@ -7,7 +7,7 @@ class EnquiryController < Wicked::WizardController
   layout "mobile"
 
   skip_before_filter :verify_authenticity_token
-  steps :begin, :insure, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
+  steps :begin, :insure, :device_details, :enter_sales_info, :not_insurable, :confirm_device, :personal_details, :serial_claimants, :confirm_personal_details, :complete_enquiry
 
   def corporate_payment
     render 'corporate_payment', :layout => "application"
@@ -53,20 +53,38 @@ class EnquiryController < Wicked::WizardController
       else
         @enquiry = Enquiry.find_by_id(session[:enquiry_id])
       end
-      case step
-        when :complete_enquiry
-          smsMessage = session[:sms_message]
-          @gateway = SMSGateway.new
+      # case step
+      #   when :complete_enquiry
+      #     smsMessage = session[:sms_message]
+      #     @gateway = SMSGateway.new
 
-          smsMessage.each do |message|
-            @gateway.send(session[:sms_to], message)
-          end
+      #     smsMessage.each do |message|
+      #       @gateway.send(session[:sms_to], message)
+      #     end
+      # end
+      device_data = get_device_data
+      device_data = {} if device_data.nil?
+      session[:device_marketing_name] = device_data["marketingName"]
+      model = get_model_name(device_data).downcase
+      session[:device_model] = model
+      vendor = device_data["vendor"]
+      if model.starts_with?("iphone") || model.starts_with?("ipad")
+        if model.starts_with?("iphone 5") || model.starts_with?("ipad")
+          possible_devices = Device.model_like_search(vendor, model).collect { |d| d.model }.uniq
+          session[:possible_models] = possible_devices
+          # device = Device.model_like_search(vendor, model)
+        else
+          # puts "<><><><><><><><><><><> I am here <><><><><><><><><><><>"
+          # because there are no iPhone 3s in the catalogue
+          possible_devices = Device.model_like_search(vendor, "iPhone 4").collect { |d| d.model }.uniq
+          session[:possible_models] = possible_devices
+          # device = Device.model_like_search(vendor, model)
+        end
       end
       render_wizard
     rescue => error
       puts "Error occured #{error}"
-      logger.info "Error occured #{error}, Session: #{session}"
-      logger.info "Error was #{error.backtrace.join("\n\t")}"
+      logger.info "Error occured #{error.backtrace}, Session: #{session}"
       session[:enquiry] = nil
       redirect_to start_again_path
     end
@@ -117,10 +135,122 @@ class EnquiryController < Wicked::WizardController
   end
 
   def update
+    # @enquiry = Enquiry.find(session[:enquiry_id])
+    # premium_service = PremiumService.new
+    # case step
+    #   when :enter_sales_info
+    #     code = params[:enquiry][:sales_agent_code].upcase if !params[:enquiry][:sales_agent_code].nil?
+    #     agent = Agent.find_by_code(code)
+    #     if !agent.nil?
+    #       @enquiry.agent_id = agent.id
+    #     end
+    #     @enquiry.update_attributes(params[:enquiry])
+        
+    #     if @enquiry.valid?
+    #       if !@enquiry.phone_number.starts_with? "+"
+    #         @enquiry.phone_number = "+#{@enquiry.phone_number}"
+    #         @enquiry.save!
+    #       end
+
+    #       code = agent.code if !agent.nil?
+    #       if !@enquiry.year_of_purchase.nil?
+    #         # is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
+    #         is_insurable = premium_service.is_insurable_by_month_and_year(@enquiry.month_of_purchase, @enquiry.year_of_purchase)
+    #       else
+    #         is_insurable = false
+    #       end
+
+    #       device_data = get_device_data
+    #       device_data = {} if device_data.nil?
+    #       session[:device] = device_data
+    #       #Check for the devices among our supported devices
+    #       add_client_properties! device_data
+    #       model = get_model_name device_data
+    #       vendor = device_data["vendor"]
+    #       marketingName = device_data["marketingName"]
+
+    #       invalid_da = (vendor.nil? || vendor.empty?) && (model.nil? || model.empty?)
+    #       puts ">> Invalid match from device atlas : #{invalid_da}"
+
+    #       @enquiry.model = model
+    #       @enquiry.vendor = vendor
+    #       @enquiry.marketing_name = marketingName
+
+    #       logger.info ">> Searching for #{model}, #{vendor}, #{marketingName}"
+
+    #       device = nil
+
+    #       if !invalid_da
+    #         device = Device.model_search(vendor, model).first
+    #       end
+
+    #       puts ">> After device is nil ? #{device.nil?}"
+    #       @enquiry.user_agent = request.env['HTTP_USER_AGENT']
+    #       @enquiry.detected_device_id= device.id if ! device.nil?
+    #       @enquiry.detected = !device.nil?
+    #       @enquiry.save!
+
+    #       if device.nil? || is_insurable == false
+    #         jump_to :not_insurable
+    #       else
+    #         session[:device] = device
+    #         # iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
+    #         iv = device.get_insurance_value_by_month_and_year(code, @enquiry.month_of_purchase, @enquiry.year_of_purchase)
+    #         annual_premium = premium_service.calculate_annual_premium(code, iv, @enquiry.year_of_purchase)
+    #         installment_premium = premium_service.calculate_monthly_premium(code, iv, @enquiry.year_of_purchase)
+    #         details = {
+    #           "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0, :delimiter => ""),
+    #           "insurance_value_uf" => iv,
+    #           "annual_premium" => number_to_currency(annual_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
+    #           "annual_premium_uf" => annual_premium,
+    #           "quarterly_premium" => number_to_currency(installment_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
+    #           "quarterly_premium_uf" => installment_premium,
+    #           "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
+    #         }
+
+    #         session[:quote_details] = details
+
+    #         customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
+    #         if(customer.nil?)
+    #           customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => @enquiry.phone_number)
+    #         end
+
+    #         account_name = "OMB#{premium_service.generate_unique_account_number}"
+
+    #         user_details = {
+    #             "customer_name" => @enquiry.customer_name,
+    #             "customer_id" => @enquiry.customer_id,
+    #             "customer_email" => @enquiry.customer_email,
+    #             "customer_phone_number" => @enquiry.phone_number,
+    #             "account_name" => account_name
+    #         }
+
+    #         session[:user_details] = user_details
+
+    #         claim_service = ClaimService.new
+
+    #         if(claim_service.is_serial_claimant(params[:enquiry][:customer_id]))
+    #           jump_to :serial_claimants
+    #         end
+
+    #         insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number, :insurance_value => session[:quote_details]["insurance_value_uf"]
+    #         q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
+    #                           :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
+    #                           :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
+    #                           :insured_value => session[:quote_details]["insurance_value_uf"],
+    #                           :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
+
+    #         @gateway = SMSGateway.new
+
+    #         session[:quote] = q
+
+    #         jump_to :confirm_personal_details
+    #       end
+    #     end
     @enquiry = Enquiry.find(session[:enquiry_id])
     premium_service = PremiumService.new
     case step
-      when :enter_sales_info
+      when :device_details
         code = params[:enquiry][:sales_agent_code].upcase if !params[:enquiry][:sales_agent_code].nil?
         agent = Agent.find_by_code(code)
         if !agent.nil?
@@ -129,23 +259,24 @@ class EnquiryController < Wicked::WizardController
         @enquiry.update_attributes(params[:enquiry])
         
         if @enquiry.valid?
-          if !@enquiry.phone_number.starts_with? "+"
-            @enquiry.phone_number = "+#{@enquiry.phone_number}"
-            @enquiry.save!
-          end
-
           code = agent.code if !agent.nil?
           if !@enquiry.year_of_purchase.nil?
-            is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
+            # is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
+            is_insurable = premium_service.is_insurable_by_month_and_year(@enquiry.month_of_purchase, @enquiry.year_of_purchase)
           else
             is_insurable = false
           end
 
           device_data = get_device_data
+          device_data = {} if device_data.nil?
           session[:device] = device_data
           #Check for the devices among our supported devices
           add_client_properties! device_data
-          model = get_model_name device_data
+          if params[:enquiry][:model]
+            model = params[:enquiry][:model]
+          else
+            model = get_model_name device_data
+          end
           vendor = device_data["vendor"]
           marketingName = device_data["marketingName"]
 
@@ -171,12 +302,15 @@ class EnquiryController < Wicked::WizardController
           @enquiry.save!
 
           if device.nil? || is_insurable == false
+            puts "Device is nil"
             jump_to :not_insurable
           else
             session[:device] = device
-            iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
+            # iv = device.get_insurance_value(code, @enquiry.year_of_purchase)
+            iv = device.get_insurance_value_by_month_and_year(code, @enquiry.month_of_purchase, @enquiry.year_of_purchase)
             annual_premium = premium_service.calculate_annual_premium(code, iv, @enquiry.year_of_purchase)
             installment_premium = premium_service.calculate_monthly_premium(code, iv, @enquiry.year_of_purchase)
+            six_monthly_premium = premium_service.calculate_monthly_premium(code, iv, @enquiry.year_of_purchase, 6)
             details = {
               "insurance_value" => number_to_currency(iv, :unit => "KES ", :precision => 0, :delimiter => ""),
               "insurance_value_uf" => iv,
@@ -184,72 +318,69 @@ class EnquiryController < Wicked::WizardController
               "annual_premium_uf" => annual_premium,
               "quarterly_premium" => number_to_currency(installment_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
               "quarterly_premium_uf" => installment_premium,
+              "six_monthly_premium" => number_to_currency(six_monthly_premium, :unit => "KES ", :precision => 0, :delimiter => ""),
+              "six_monthly_premium_uf" => six_monthly_premium,
               "sales_agent" => ("#{agent.brand} #{agent.outlet_name}" if !agent.nil?)
             }
 
             session[:quote_details] = details
-
-            customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
-            if(customer.nil?)
-              customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => @enquiry.phone_number)
-            end
-
-            account_name = "OMB#{premium_service.generate_unique_account_number}"
-
-            user_details = {
-                "customer_name" => @enquiry.customer_name,
-                "customer_id" => @enquiry.customer_id,
-                "customer_email" => @enquiry.customer_email,
-                "customer_phone_number" => @enquiry.phone_number,
-                "account_name" => account_name
-            }
-
-            session[:user_details] = user_details
-
-            claim_service = ClaimService.new
-
-            if(claim_service.is_serial_claimant(params[:enquiry][:customer_id]))
-              jump_to :serial_claimants
-            end
-
-            insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number, :insurance_value => session[:quote_details]["insurance_value_uf"]
-            q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
-                              :expiry_date => 72.hours.from_now, :monthly_premium => session[:quote_details]["quarterly_premium_uf"],
-                              :insured_device_id => insured_device.id, :premium_type => session[:user_details]["customer_payment_option"],
-                              :insured_value => session[:quote_details]["insurance_value_uf"],
-                              :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
-
-            @gateway = SMSGateway.new
-
-            session[:quote] = q
-
-            jump_to :confirm_personal_details
+            jump_to :enter_sales_info
           end
+          
+        end
+      when :enter_sales_info
+        if @enquiry.valid?
+          @enquiry.phone_number = (params[:enquiry][:phone_number].starts_with? "+") ? params[:enquiry][:phone_number] : "+#{params[:enquiry][:phone_number]}"
+          @enquiry.save!
+          customer = Customer.find_by_id_passport(params[:enquiry][:customer_id])
+          if(customer.nil?)
+            customer = Customer.create!(:name => params[:enquiry][:customer_name], :id_passport => params[:enquiry][:customer_id], :email => params[:enquiry][:customer_email], :phone_number => @enquiry.phone_number)
+          end
+
+          @enquiry.update_attributes(params[:enquiry])
+          session[:quote_details]["due"] = @enquiry.customer_payment_option == "Annual"? session[:quote_details]["annual_premium"] : session[:quote_details]["quarterly_premium"]
+
+          account_name = "OMB#{premium_service.generate_unique_account_number}"
+
+          user_details = {
+              "customer_name" => params[:enquiry][:customer_name],
+              "customer_id" => params[:enquiry][:customer_id],
+              "customer_email" => params[:enquiry][:customer_email],
+              "customer_phone_number" => @enquiry.phone_number,
+              "account_name" => account_name
+          }
+
+          session[:user_details] = user_details
+
+          claim_service = ClaimService.new
+
+          if(claim_service.is_serial_claimant(params[:enquiry][:customer_id]))
+            jump_to :serial_claimants
+          end
+
+          insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => session[:device].id, :yop => @enquiry.year_of_purchase, :phone_number => @enquiry.phone_number, :insurance_value => session[:quote_details]["insurance_value_uf"]
+          q = Quote.create!(:account_name => account_name, :annual_premium => session[:quote_details]["annual_premium_uf"],
+                            :expiry_date => 336.hours.from_now, :monthly_premium => (params[:enquiry]["customer_payment_option"] == "Monthly"? session[:quote_details]["quarterly_premium_uf"] : session[:quote_details]["six_monthly_premium_uf"]),
+                            :insured_device_id => insured_device.id, :premium_type => params[:enquiry]["customer_payment_option"],
+                            :insured_value => session[:quote_details]["insurance_value_uf"],
+                            :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
+
+          @gateway = SMSGateway.new
+
+          session[:quote] = q
+
+          jump_to :confirm_personal_details
         end
       when :confirm_personal_details
-        @enquiry.update_attributes(params[:enquiry])
+        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{session[:quote_details]["due"]}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]
+        # session[:sms_message] = smsMessage
+        # session[:sms_to] = @enquiry.phone_number
 
-        if @enquiry.customer_payment_option == "Annual"
-          due = session[:quote_details]["annual_premium"]
-          session[:quote_details]["due"] = session[:quote_details]["annual_premium_uf"]
-        elsif(@enquiry.customer_payment_option == 'Monthly')
-          due = session[:quote_details]["quarterly_premium"]
-          session[:quote_details]["due"] = session[:quote_details]["quarterly_premium_uf"]
+        @gateway = SMSGateway.new
+
+        smsMessage.each do |message|
+          @gateway.send(@enquiry.phone_number, message)
         end
-
-        q = Quote.find_by_account_name(session[:user_details]["account_name"])
-        if !q.nil?
-          q.premium_type = @enquiry.customer_payment_option
-          q.save!
-        end
-
-        id = q.insured_device
-        id.premium_value = q.amount_due
-        id.save!
-
-        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{due}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]
-        session[:sms_message] = smsMessage
-        session[:sms_to] = @enquiry.phone_number
     end
     render_wizard @enquiry
   end

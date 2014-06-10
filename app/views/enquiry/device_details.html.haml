@@ -1,0 +1,43 @@
+#device-details{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Please confirm your device detail
+  %section{"data-role" => "content", "role" => "main"}
+    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+      %li
+        %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
+        / %b
+        /   Device:
+        %span.model
+          - if !session[:device_model].nil? && !(session[:device_model].downcase.starts_with?("iphone") || session[:device_model].downcase.starts_with?("ipad"))
+            = session[:device_marketing_name]
+          - else
+            = "Please select your device from the dropdown below"
+      = form_for(@enquiry, :url => wizard_path(:device_details), :method => :put, :html => ({"data-ajax" => "false"} if is_asha?) ) do |f|
+        %div
+          - if !session[:device_model].nil? && session[:device_model].downcase.starts_with?("iphone") || session[:device_model].downcase.starts_with?("ipad")
+            = f.select :model, session[:possible_models].collect {|model| [model]}, {}, { "data-theme" => "c"}
+          = f.label :year_of_purchase, "Enter Year and Month of Purchase of device (as per original purchase receipt)"
+          = f.error_message_on :year_of_purchase
+          %div{:style => "float:left; width: 49%;"}
+            = f.select :year_of_purchase, {"Year" => "Year", Time.now.year => Time.now.year, Time.now.year - 1 => Time.now.year - 1, Time.now.year - 2 => Time.now.year - 2 }, {}, { "data-theme" => "c"}
+          %div{:style => "float:right; width: 49%;"}
+            = f.error_message_on :month_of_purchase
+            = f.select :month_of_purchase, ["Month"]+Date::MONTHNAMES[1..12].collect {|month| [month]}, {}, { "data-theme" => "c"}
+        / %li
+        /   = f.label :year_of_purchase, "Enter Year of Purchase of device (as per original purchase receipt)"
+        /   = f.error_message_on :year_of_purchase
+        /   = f.text_field :year_of_purchase
+        %li
+          %span.model
+            = f.label :sales_agent_code, "Enter Sales Agent Code (0 if none)"
+            = f.text_field :sales_agent_code
+      
+        / .buttons
+        /   %a.ui-submit.ui-btn.ui-shadow.ui-btn-corner-all.ui-btn-up-b{:href => "/enquiry/begin"}
+        /     %span.ui-btn-inner
+        /       %span.ui-btn-text
+        /         Not Correct
+        %li   
+          = f.submit "Continue"
+          /= f.submit "Correct"

@@ -80,6 +80,7 @@ ActiveAdmin.register_page "Simulator" do
     customer_id = params["quote"]["id"]
     email = params["quote"]["email_address"]
     code = params["quote"]["sales_agent_code"]
+
     yop = params["quote"]["year_of_purchase"].to_i
     phone_number = params["quote"]["phone_number"]
     device_id = params["quote"]["device"]["0"]["id"]

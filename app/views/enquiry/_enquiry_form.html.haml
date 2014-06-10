@@ -1,21 +1,64 @@
-= form_for(enquiry, :url => wizard_path(:enter_sales_info), :method => :put, :html => ({"data-ajax" => "false"} if is_asha?) ) do |f|
-  = f.label :sales_agent_code, "Enter Sales Agent Code (0 if none)"
-  = f.text_field :sales_agent_code
-  = f.label :year_of_purchase, "Enter Year of Purchase of device (as per original purchase receipt)"
-  = f.error_message_on :year_of_purchase
-  = f.text_field :year_of_purchase
-  = f.label :customer_name, 'Full Name (as per ID / Passport)'
-  = f.text_field :customer_name, :class => "required"
-  = f.label :id_type, "Identification Type"
-  = f.select :id_type, {"National ID" => "National ID", "Passport" => "Passport" }, {}, { "data-theme" => "c"}
+= form_for(enquiry, :url => wizard_path(:enter_sales_info), :method => :put, :html => {:class => "edit_enquiry personal_details", "data-ajax" => is_asha?? "false" : "true" } ) do |f|
+  / = f.label :sales_agent_code, "Enter Sales Agent Code (0 if none)"
+  / = f.text_field :sales_agent_code
+  / %div
+  /   = f.label :year_of_purchase, "Enter Year and Month of Purchase of device (as per original purchase receipt)"
+  /   = f.error_message_on :year_of_purchase
+  /   %div{:style => "float:left; width: 49%;"}
+  /     / = f.label :year_of_purchase, "Year of Purchase (as per original purchase receipt)"
+  /     / = f.label "Enter Year of Purchase of device (as per original purchase receipt)"
+  /     / = f.error_message_on :year_of_purchase
+  /     = f.select :year_of_purchase, {"Year" => "Year", Time.now.year => Time.now.year, Time.now.year - 1 => Time.now.year - 1, Time.now.year - 2 => Time.now.year - 2 }, {}, { "data-theme" => "c"}
+  /   %div{:style => "float:right; width: 49%;"}
+  /     / = f.label :month_of_purchase, "Month of Purchase (as per original purchase receipt)"
+  /     = f.error_message_on :month_of_purchase
+  /     = f.select :month_of_purchase, ["Month"]+Date::MONTHNAMES[1..12].collect {|month| [month]}, {}, { "data-theme" => "c"}
+  / %section{"data-role" => "content", "role" => "main"}
+  /   %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+  /     %li
+  /       %b
+  /       %span{style: "padding-right:15%;"}
+  /         Total Insurance Value:
+  /         %span.model
+  /           = session[:quote_details]["insurance_value"]
+  /         / %br
+  /         / %br
+  /       %b
+  /       %span
+  /         Annual Premium:
+  /         %span.model
+  /           = session[:quote_details]["annual_premium"]
+  
+  %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+    %li{"data-role" => "list-divider"}
+      Insurance Value And Premium
+    %li
+      %b
+        Total Insurance Value:
+      %span.model
+        = session[:quote_details]["insurance_value"]
+    %li
+      %b
+        Annual Premium:
+      %span.model
+        = session[:quote_details]["annual_premium"]
+  %br
+  %div{style: "clear: both; overflow:hidden;"}
+    = f.label :customer_name, 'Full Name (as per ID / Passport)'
+    = f.text_field :customer_name, :class => "required"
+  / = f.label :id_type, "Identification Type"
+  / = f.select :id_type, {"National ID" => "National ID", "Passport" => "Passport" }, {}, { "data-theme" => "c"}
   = f.label :customer_id, 'National ID or Passport Number'
   = f.text_field :customer_id, :class => "required"
   = f.label :customer_email, 'Email Address'
   = f.email_field :customer_email, :class => "required email"
+  = f.label :customer_payment_option, 'Select preferred Payment'
+  = f.select :customer_payment_option, {"1-year premium of #{session[:quote_details]['annual_premium']}" => "Annual", "3 monthly payments of #{session[:quote_details]['quarterly_premium']}" => "Monthly", "6 monthly payments of #{session[:quote_details]['six_monthly_premium']}" => "six_monthly"}, {}, { "data-theme" => "c"}
   - if @enquiry.source == "SMS"
-    = f.label :customer_phone_number, 'Mobile Number'
+    = f.label :phone_number, 'Mobile Number'
     %label.phone_number{:style => "width:96%;display:block"}
       = @enquiry.phone_number
+    = f.hidden_field :phone_number, value: @enquiry.phone_number
   - else
     = f.label :phone_number, 'Mobile Number (2547XXXXXXXX)'
     = f.text_field :phone_number, :class => "required", :placeholder => "254722123456"
