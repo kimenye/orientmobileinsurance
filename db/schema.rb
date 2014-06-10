@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20141018094436) do
     t.datetime "updated_at",   :null => false
     t.string   "outlet_name"
     t.string   "tag"
+    t.float    "discount"
   end
 
   create_table "brands", :force => true do |t|
@@ -199,6 +200,7 @@ ActiveRecord::Schema.define(:version => 20141018094436) do
     t.string   "user_agent"
     t.string   "id_type"
     t.string   "customer_id"
+    t.string   "month_of_purchase"
   end
 
   create_table "feedbacks", :force => true do |t|

@@ -21,6 +21,7 @@
 
 $(document).bind('pageinit', function () {
     $('.edit_enquiry').validate();
+    $('.personal_details').validate();
 
     $('.buttons [type="submit"]').button('disable');
     $('.tac-checkbox').change(function() {

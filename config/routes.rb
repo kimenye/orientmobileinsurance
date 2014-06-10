@@ -1,4 +1,6 @@
 Orientmobileinsurance::Application.routes.draw do
+  # get "pages/privacy_policy"
+
   get "feedbacks/create"
 
   resources :claims
@@ -56,6 +58,7 @@ Orientmobileinsurance::Application.routes.draw do
   match 'result' => 'home#result', :as => :result
   match 'terms_and_conditions' => 'home#tnc', :as => :tnc
   match 'terms' => 'home#tnc', :as => :tnc_short
+  match 'privacy' => 'pages#privacy_policy', :as => :privacy_policy
   match 'analytics' => 'analytics#index', :as => :analytics
 
   match 'quotes/:id/download_pdf' => 'quotes#download_pdf', :as => :download_pdf

@@ -1,6 +1,6 @@
 class Enquiry < ActiveRecord::Base
 
-  attr_accessible :phone_number, :text, :date_of_enquiry, :source, :sales_agent_code, :agent_id, :year_of_purchase, :url,
+  attr_accessible :phone_number, :text, :date_of_enquiry, :source, :sales_agent_code, :agent_id, :year_of_purchase, :month_of_purchase, :url,
                   :hashed_phone_number, :detected_device_id, :undetected_device_id, :customer_name, :customer_id, :customer_email,
                   :customer_payment_option, :customer_phone_number, :hashed_timestamp, :model, :vendor, :marketing_name, :detected, :user_agent, :id_type
 
@@ -8,7 +8,7 @@ class Enquiry < ActiveRecord::Base
 
 
   validates_plausible_phone :phone_number, :country_code => '254', on: :update
-  validates :phone_number, length: { in: 12..13 }, allow_blank: false, on: :update
+  # validates :phone_number, length: { in: 12..13 }, allow_blank: false, on: :update
   validates :source, presence: true
 
   validates_format_of :customer_id, :with => /^[A-Za-z0-9.&]*\z/, if: :is_passport?

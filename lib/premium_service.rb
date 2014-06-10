@@ -9,6 +9,15 @@ class PremiumService
     end
   end
 
+  def is_insurable_by_month_and_year month_of_purchase, year_of_purchase
+    time_of_purchase = "#{month_of_purchase} #{year_of_purchase}"
+    if Device.month_ranges.include?(time_of_purchase)
+      return true
+    else
+      return false
+    end
+  end
+
   def calculate_insurance_value catalog_price, sales_code, year_of_purchase
     if is_fx_code(sales_code) || is_stl_code(sales_code)
       return catalog_price
@@ -63,10 +72,10 @@ class PremiumService
     installment.floor
   end
 
-  def calculate_monthly_premium agent_code, insurance_value, yop
+  def calculate_monthly_premium agent_code, insurance_value, yop, months=3
     base_premium = calculate_annual_premium agent_code, insurance_value, yop, false, false, true
     raw = calculate_total_installment base_premium
-    round_off((raw / 3).ceil)
+    round_off((raw / months).ceil)
   end
 
   def calculate_raw_annual_premium agent_code, insurance_value, yop
@@ -90,6 +99,14 @@ class PremiumService
     mpesa_fee = calculate_mpesa_fee raw
     raw += mpesa_fee if add_mpesa
 
+    agent = Agent.find_by_code(agent_code)
+    if !agent.nil? && !agent.discount.nil?
+      percentage_after_discount = (100 - agent.discount) / 100
+      if agent.discount > 0
+        raw = percentage_after_discount * raw
+      end
+    end
+
     # [raw.round, minimum_fee(agent_code)].max
     if round_off
       return round_off(raw.round)
@@ -111,7 +128,7 @@ class PremiumService
 
 
   def minimum_fee agent_code, yop
-    fee = 999
+    fee = 595
     fee = 899 if (is_fx_code(agent_code) && yop == Time.now.year)
     fee
   end

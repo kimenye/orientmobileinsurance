@@ -39,11 +39,13 @@ class ApplicationController < ActionController::Base
   protected
 
   def add_client_properties! device_data
+    device_data = {} if device_data.nil?
     device_data["device.devicePixelRatio"] = request.cookies["device.devicePixelRatio"]
     device_data["device.availHeight"] = request.cookies["device.availHeight"]
   end
 
   def get_model_name device_data
+    device_data = {} if device_data.nil?
     model = device_data["model"]
     if device_data["osIOs"]
       numeric_version =  device_data["osVersion"].gsub("_", ".").to_f
@@ -68,5 +70,6 @@ class ApplicationController < ActionController::Base
     end
     model
   end
+
   helper_method :get_model_name
 end
