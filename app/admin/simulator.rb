@@ -144,13 +144,13 @@ ActiveAdmin.register_page "Simulator" do
       end
     end
 
-    # columns do
-    #   column do
-    #     render "generate_quote"
-    #   end
-    #   column do
-    #   end
-    # end
+    columns do
+      column do
+        render "generate_quote"
+      end
+      column do
+      end
+    end
 
     columns  do
       reminder_service = ReminderService.new
