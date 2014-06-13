@@ -95,6 +95,7 @@ class Device < ActiveRecord::Base
       elsif month_ranges[19..24].include?(time_of_purchase)
         return 0.25 * catalog_price
       end
+      return 0
     end
   end
 

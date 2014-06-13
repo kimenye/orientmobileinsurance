@@ -20,6 +20,18 @@
     = label(:quote, :year_of_purchase)
     = text_field(:quote, :year_of_purchase, {:placeholder => "2004"})
   .field
+    = label(:quote, :month_of_purchase)
+    / = collection_select(:quote, :month_of_purchase, ["Month"]+Date::MONTHNAMES[1..12].collect {|month| [month]}, :month_of_purchase, )
+    / = text_field(:quote, :month_of_purchase, {:placeholder => "March"})
+    / = form.input :quote, :month_of_purchase, :as => :select, :collection => ["Month"]+Date::MONTHNAMES[1..12].map{|month| [month]}
+    / = form.input :quote, :as => :select, :collection => ["Month"]+Date::MONTHNAMES[1..12].map { |a| [ a ] }
+    %select{name: "month_of_purchase"}
+      %option{value: ""}
+        Please select One
+      - Date::MONTHNAMES[1..12].each do |month|
+        %option{value: month}
+          = month
+  .field
     = label(:quote, :device)
     = collection_select(:quote, :device, Device.where(active: true).order(:vendor, :model), :id, :name, {}, {:class => "searchable", :name => "quote[device][0][id]"})
   .field

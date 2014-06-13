@@ -82,12 +82,14 @@ ActiveAdmin.register_page "Simulator" do
     code = params["quote"]["sales_agent_code"]
 
     yop = params["quote"]["year_of_purchase"].to_i
+    mop = params["month_of_purchase"]
     phone_number = params["quote"]["phone_number"]
     device_id = params["quote"]["device"]["0"]["id"]
 
     device = Device.find(device_id)
 
-    iv = device.get_insurance_value(code, yop)
+    # iv = device.get_insurance_value(code, yop)
+    iv = device.get_insurance_value_by_month_and_year(code, mop, yop)
     premium_service = PremiumService.new
 
     annual_premium = premium_service.calculate_annual_premium(code, iv, yop)
