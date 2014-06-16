@@ -65,7 +65,7 @@ class Quote < ActiveRecord::Base
   end
   
   def is_installment?
-    premium_type == "Monthly"
+    premium_type == "Monthly" || premium_type == "six_monthly"
   end
 
   def is_corporate?
