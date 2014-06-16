@@ -23,4 +23,12 @@
     = label(:quote, :device)
     = collection_select(:quote, :device, Device.where(active: true).order(:vendor, :model), :id, :name, {}, {:class => "searchable", :name => "quote[device][0][id]"})
   .field
+    = label(:quote, "Payment Option")
+    %select{name: "payment_option"}
+      %option{value: ""}
+        Please select One
+      - ["Annual", "Monthly", "Six Monthly"].each do |p|
+        %option{value: p}
+          = p
+  .field
     = submit_tag("Add") 

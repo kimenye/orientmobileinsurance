@@ -63,10 +63,10 @@ class PremiumService
     installment.floor
   end
 
-  def calculate_monthly_premium agent_code, insurance_value, yop
+  def calculate_monthly_premium agent_code, insurance_value, yop, month=3
     base_premium = calculate_annual_premium agent_code, insurance_value, yop, false, false, true
     raw = calculate_total_installment base_premium
-    round_off((raw / 3).ceil)
+    round_off((raw / month).ceil)
   end
 
   def calculate_raw_annual_premium agent_code, insurance_value, yop

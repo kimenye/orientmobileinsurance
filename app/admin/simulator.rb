@@ -81,15 +81,31 @@ ActiveAdmin.register_page "Simulator" do
     email = params["quote"]["email_address"]
     code = params["quote"]["sales_agent_code"]
     yop = params["quote"]["year_of_purchase"].to_i
+    payment_option = params["payment_option"]
     phone_number = params["quote"]["phone_number"]
     device_id = params["quote"]["device"]["0"]["id"]
 
     device = Device.find(device_id)
 
     iv = device.get_insurance_value(code, yop)
+    # iv = device.get_insurance_value_by_month_and_year(code, mop, yop)
     premium_service = PremiumService.new
 
     annual_premium = premium_service.calculate_annual_premium(code, iv, yop)
+    installment_premium = premium_service.calculate_monthly_premium(code, iv, yop)
+    six_monthly_premium = premium_service.calculate_monthly_premium(code, iv, yop, 6)
+
+    if params["payment_option"] == "Monthly"
+      premium_value = premium_service.calculate_monthly_premium(code, iv, yop)
+      premium_type = "Monthly"
+    elsif params["payment_option"] == "Six Monthly"
+      premium_type = "six_monthly"
+      premium_value = premium_service.calculate_monthly_premium(code, iv, yop, 6)
+    else
+      premium_type = "Annual"
+    end
+
+    # puts "Premium Value => #{premium_value}, Premium Type => #{premium_type}"
 
     customer = Customer.find_by_id_passport(customer_id)
 
@@ -108,7 +124,9 @@ ActiveAdmin.register_page "Simulator" do
     insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => device_id, :yop => yop, :phone_number => phone_number, :insurance_value => iv
     q = Quote.create!(:account_name => account_name, :annual_premium => annual_premium,
                       :expiry_date => 72.hours.from_now,
-                      :insured_device_id => insured_device.id, :premium_type => "Annual",
+                      :monthly_premium => premium_value,
+                      :premium_type => premium_type,
+                      :insured_device_id => insured_device.id,
                       :insured_value => iv,
                       :agent_id => agent_id, :customer_id => customer.id, :quote_type => "Individual")
 
