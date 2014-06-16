@@ -9,12 +9,14 @@ class AdminController < ApplicationController
   def calculator
   	# binding.pry
   	device = params[:quote][:device]
-  	yop = params[:quote][:year_of_purchase]
+    yop = params[:quote][:year_of_purchase]
+  	# mop = params[:quote][:month_of_purchase]
   	sales_agent_code = params[:quote][:agent_code]
 
   	d = Device.find_by_id(device)
   	
   	iv = d.get_insurance_value(sales_agent_code, yop.to_i)
+    # iv = dget_insurance_value_by_month_and_year(sales_agent_code, mop.to_i, yop.to_i)
 
   	premium_service = PremiumService.new
 

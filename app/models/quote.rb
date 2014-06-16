@@ -30,9 +30,19 @@ class Quote < ActiveRecord::Base
     policies.first
   end
 
+  # def amount_due
+  #   if premium_type == "Monthly"
+  #     return monthly_premium.to_f * 3
+  #   else
+  #     return annual_premium
+  #   end
+  # end
+
   def amount_due
     if premium_type == "Monthly"
       return monthly_premium.to_f * 3
+    elsif premium_type == "six_monthly"
+      return monthly_premium.to_f * 6
     else
       return annual_premium
     end
@@ -55,7 +65,7 @@ class Quote < ActiveRecord::Base
   end
   
   def is_installment?
-    premium_type == "Monthly"
+    premium_type == "Monthly" || premium_type == "six_monthly"
   end
 
   def is_corporate?
