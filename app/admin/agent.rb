@@ -44,6 +44,7 @@ ActiveAdmin.register Agent do
       f.input :phone_number
       f.input :email
       f.input :tag
+      f.input :discount
     end
     f.actions
   end
