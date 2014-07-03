@@ -41,7 +41,35 @@ class SmsService
       @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{enquiry.url}")
     elsif msg_type == 2
       #user is sending an imei number
-      premium_service.activate_policy text, mobile
+      device = InsuredDevice.find_by_imei(text)
+      if !device.nil?
+        quote = Quote.create! quote_type: "Corporate"
+        customer = Customer.find_or_create_by_phone_number! phone_number: mobile, name: "name", email: "email", id_passport: "id"
+        quote.customer_id = customer.id
+        quote.insured_device_id = device.id
+        quote.save!
+        device.customer_id = customer.id
+        device.save!
+        if !device.activated?
+          hashed_phone_number = Digest::MD5.hexdigest(mobile)
+          url = "#{ENV['BASE_URL']}prepaid_devices/customer_details?number=#{hashed_phone_number}&imei=#{text}"
+          if Rails.env == "production"
+            puts ">>>>  in production"
+            auth = UrlShortener::Authorize.new ENV['BITLY_USERNAME'], ENV['BITLY_PASSWORD']
+            client = UrlShortener::Client.new auth
+            result = client.shorten(url)
+            shortened_url = result.result['nodeKeyVal']['shortUrl']
+            @gateway.send(mobile, "Click here to complete your policy confirmation: #{shortened_url}")
+          end
+          @gateway.send(mobile, "Click here to complete your policy confirmation: #{url}")
+          customer.hashed_phone_number = hashed_phone_number
+          customer.save!
+        else 
+          @gateway.send(mobile, "Sorry, that imei number has already been used. Please send the imei again.")
+        end
+      else
+        premium_service.activate_policy text, mobile
+      end
     else
       puts ">>> we were not able to understand the text message"
     end

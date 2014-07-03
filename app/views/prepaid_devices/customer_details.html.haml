@@ -1,0 +1,16 @@
+#device-details{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Please confirm your personal details
+  %section{"data-role" => "content", "role" => "main"}
+    = form_for @prepaid_customer, :url => prepaid_customer_path, :html => {:method => :post} do |f|
+      %div{style: "clear: both; overflow:hidden;"}
+        = f.label :id_passport, 'National ID or Passport Number'
+        = f.text_field :id_passport, :class => "required"
+        = f.label :name, 'Full Name (as per ID / Passport)'
+        = f.text_field :name, :class => "required"
+        = f.label :email, 'Email Address'
+        = f.email_field :email, :class => "required email"
+        = f.hidden_field :phone_number, value: "#{params[:number]}"
+      %li   
+        = f.submit "Continue"

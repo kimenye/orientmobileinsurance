@@ -1,4 +1,8 @@
 Orientmobileinsurance::Application.routes.draw do
+  get "prepaid_devices/customer_details"
+  # match 'prepaid_customer' => 'prepaid_devices#confirmation', :as => :prepaid_customer, method: [:post]
+  post "prepaid_customer/confirmation", to: 'prepaid_devices#confirmation', as: 'prepaid_customer'
+  get 'prepaid_devices/imei_activated' 
   # get "pages/privacy_policy"
 
   get "feedbacks/create"

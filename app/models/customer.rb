@@ -6,7 +6,7 @@ class Customer < ActiveRecord::Base
   validates :phone_number, presence: true
 
 
-  attr_accessible :name, :id_passport, :email, :phone_number, :alternate_phone_number, :lead, :customer_type, :company_name
+  attr_accessible :name, :id_passport, :email, :phone_number, :alternate_phone_number, :lead, :customer_type, :company_name, :hashed_phone_number
   has_many :insured_devices, :order => 'created_at DESC'
   
   def contact_number
@@ -76,4 +76,5 @@ class Customer < ActiveRecord::Base
     end
     has_policy
   end
+  # attr_accessor :imei
 end

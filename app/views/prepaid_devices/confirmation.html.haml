@@ -1,0 +1,26 @@
+#confirm-personal-details{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+  %header{"data-role" => "header"}
+    %h1
+      Your Details
+  %section{"data-role" => "content", "role" => "main"}
+    %ul{"data-role" => "listview", "data-inset" => "true", "data-theme" => "c", "data-divider-theme" => "b"}
+      %li{"data-role" => "list-divider"}
+        Congratulations! Your phone is now covered! Here are your details
+      %li
+        %b
+          Name:
+          = @prepaid_customer.name
+      %li
+        %b
+          ID:
+          = @prepaid_customer.id_passport
+      %li
+        %b
+          Email:
+          = @prepaid_customer.email
+
+      %li
+        %b
+          Phone Number:
+          = @prepaid_customer.phone_number
+        

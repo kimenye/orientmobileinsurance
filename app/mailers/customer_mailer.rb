@@ -48,6 +48,17 @@ class CustomerMailer < ActionMailer::Base
     end
   end
 
+  def prepaid_customer(policy)
+    begin
+      @policy = policy
+      attachments.inline['admin_banner_new.jpg'] = File.read("#{Rails.root}/app/assets/images/admin_banner_new.jpg")
+      attachments['omi.pdf'] = File.read("#{Rails.root}/doc/data/Orient Mobile - Policy Terms & Conditions.pdf")
+      mail(:from => "mobile@korient.co.ke", :to => "#{@policy.quote.insured_device.customer.name} <#{@policy.quote.insured_device.customer.email}>", :subject => "OMB Policy Purchase. Policy No. #{@policy.policy_number}")
+    rescue
+    #  Do nothing
+    end
+  end
+
   def claim_decline(claim)
     begin
       @claim = claim
