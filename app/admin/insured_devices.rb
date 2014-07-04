@@ -10,6 +10,7 @@ ActiveAdmin.register InsuredDevice do
     # binding.pry
     customer = Customer.create! id: 0, name: "Nokia Devices", email: "dummy", phone_number: "34341", id_passport: "35235325" 
     quote = Quote.create! id: 0, quote_type: "Corporate", customer_id: customer.id
+    Device.create! :vendor => "Nokia", :model => "Lumia 625", :marketing_name => "Nokia Lumia 625"
     main_sheet.rows[2..main_sheet.rows.length].each do |row|
       if !row[0].nil?
         imei = row[0].to_s[0..14]
