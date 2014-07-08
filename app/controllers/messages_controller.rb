@@ -83,7 +83,7 @@ class MessagesController < ApplicationController
 
       text = params["Text"]
 
-      if text.downcase != "test"
+      if !text.downcase.start_with?("test")
         mobile = params["MobileNumber"]
         service = SmsService.new
 
@@ -97,7 +97,8 @@ class MessagesController < ApplicationController
         #   # format.all { render json: @message, status: :created, location: @message }
         # end
         if Rails.env == "production"
-          HTTParty.post(ENV['DEVELOPEMENT_SERVER_URL'], :query => { "Text" => "Mobile", "MobileNumber" => params["MobileNumber"] })
+          msg = text.split(" ")[1]
+          HTTParty.post(ENV['DEVELOPEMENT_SERVER_URL'], :query => { "Text" => msg, "MobileNumber" => params["MobileNumber"] })
         end
         render text: "OK"
       end
