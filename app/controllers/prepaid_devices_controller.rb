@@ -19,7 +19,7 @@ class PrepaidDevicesController < ApplicationController
 
     quote = Quote.find_by_customer_id(@prepaid_customer.id)    
 
-    insured_device = @prepaid_customer.insured_devices.first
+    insured_device = @prepaid_customer.insured_devices.last
     insured_device.activated = true
     insured_device.save!
 
