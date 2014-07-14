@@ -104,15 +104,17 @@ ActiveAdmin.register Device do
       f.input :marketing_name
       f.input :active
       f.input :dealer_code
+      if current_admin_user.is_admin
+        f.input :catalog_price
+      end
     end
     f.actions
   end
 
   show do |device|
     panel "Device Details" do
-      attributes_table_for device, :vendor, :model, :marketing_name, :stock_code, :active, :dealer_code#, :yop_insured_value, :prev_insured_value
+      attributes_table_for device, :vendor, :model, :marketing_name, :stock_code, :active, :dealer_code, :catalog_price#, :yop_insured_value, :prev_insured_value
     end
   end
-
   # actions :index, :edit, :update, :show, :new
 end
