@@ -103,7 +103,7 @@ class PremiumService
     if !agent.nil? && !agent.discount.nil?
       percentage_after_discount = (100 - agent.discount) / 100
       if agent.discount > 0
-        raw = percentage_after_discount * raw
+        raw = [(percentage_after_discount * raw), minimum_fee(agent_code, yop)].max
       end
     end
 

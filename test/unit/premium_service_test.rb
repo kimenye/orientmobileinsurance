@@ -80,24 +80,25 @@ class PremiumServiceTest < ActiveSupport::TestCase
 
   test "Discount should be deducted from the insurance value if the agent has a discount set" do
     service = PremiumService.new
+    yop = Time.now.year - 1
     Agent.delete_all
     agent = Agent.create! outlet_name: "Blah", code: "JM001", discount: 10
     percentage_after_discount = (100 - agent.discount) / 100
-    insurance_value = service.calculate_insurance_value(800, agent.code , Time.now.year - 1)
-    annual_premium = service.calculate_annual_premium(agent.code, insurance_value, Time.now.year - 1)
-    raw = service.calculate_premium_rate(agent.code, Time.now.year - 1) * insurance_value
+    insurance_value = service.calculate_insurance_value(800, agent.code , yop)
+    annual_premium = service.calculate_annual_premium(agent.code, insurance_value, yop)
+    raw = service.calculate_premium_rate(agent.code, yop) * insurance_value
     raw = 1.0045 * raw
-    raw = [raw.round, service.minimum_fee(agent.code, Time.now.year - 1)].max
+    raw = [raw.round, service.minimum_fee(agent.code, yop)].max
     raw += 15
     raw += service.calculate_mpesa_fee(raw)
-    expected_premium = service.round_off((percentage_after_discount * raw).round)
+    expected_premium = [service.round_off((percentage_after_discount * raw).round), service.minimum_fee(agent.code, yop)].max
     puts "insurance_value => #{insurance_value}, annual_premium => #{annual_premium}"
     assert_equal expected_premium, annual_premium
 
-    base_premium = service.calculate_annual_premium agent.code, insurance_value, Time.now.year - 1, false, false, true
+    base_premium = service.calculate_annual_premium agent.code, insurance_value, yop, false, false, true
     raw = service.calculate_total_installment base_premium
     expected_premium = service.round_off((raw / 3).ceil)
-    monthly_premium = service.calculate_monthly_premium(agent.code, insurance_value, Time.now.year - 1)
+    monthly_premium = service.calculate_monthly_premium(agent.code, insurance_value, yop)
     assert_equal expected_premium, monthly_premium
   end
 
