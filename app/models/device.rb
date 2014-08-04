@@ -34,9 +34,18 @@ class Device < ActiveRecord::Base
 
   end )
 
-  # def get_insurance_value (code, year_of_purchase)
-  #   get_insurance_value_by_year(code, year_of_purchase)
-  # end
+  def get_insurance_value (code, year_of_purchase)
+    # get_insurance_value_by_year(code, year_of_purchase)
+    get_insurance_value_by_month_range(code, get_range_for_year(year_of_purchase))
+  end
+
+  def get_range_for_year(year_of_purchase)
+    if Time.now.year == year_of_purchase
+      return 0
+    elsif (Time.now.year-1) == year_of_purchase
+      return 4
+    end
+  end
 
   # def get_insurance_value_by_year (code, year_of_purchase)
   #   service = PremiumService.new

@@ -1,0 +1,5 @@
+simple:
+  vendor: "Apple"
+  model: "iPhone"
+  marketing_name: "Apple iPhone"
+  catalog_price: 10000
