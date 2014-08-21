@@ -100,6 +100,8 @@
 							%input.phone_number{:type => "text", :name => "quote[device][0][phone_number]", :required => "required", :placeholder => "+254722000000"}
 							%small.error
 								The Phone number is required
+						%td
+							%input.button.tiny{:onclick => "removeRow(this)", :type => "button", :value => "Remove"}
 	.row
 		.large-12.columns
 			%input.button.small{:type => "submit"}
@@ -125,3 +127,8 @@
 		last.after(clone);
 		clone.find('select.searchable').chosen();		
 	});
+
+	function removeRow(o) {
+		var p=o.parentNode.parentNode;
+		p.parentNode.removeChild(p);
+	}

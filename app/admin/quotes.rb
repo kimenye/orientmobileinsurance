@@ -12,7 +12,11 @@ ActiveAdmin.register Quote do
       quote.customer.phone_number
     end
     column "Account Name" do |quote|
-      link_to quote.account_name, admin_quote_path(quote)
+      if quote.quote_type == "Corporate"
+        link_to quote.account_name, quote_path(quote)
+      else
+        link_to quote.account_name, admin_quote_path(quote)
+      end
     end
     column :amount_due
     column :expiry_date

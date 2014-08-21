@@ -13,6 +13,6 @@
       = text_field(:payment, :transaction_ref, {:placeholder => "XXXXXX"})
     .field
       = label(:payment, :channel)
-      = select :payment, :channel, ["MPESA", "AIRTEL"], {}
+      = select :payment, :channel, ["MPESA", "AIRTEL", "Cheque", "Bank Transfer"], {}
     .field
       = submit_tag("Submit")
