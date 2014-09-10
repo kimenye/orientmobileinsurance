@@ -7,6 +7,7 @@ ActiveAdmin.register InsuredDevice do
   form do |f|
     f.inputs "Insured Device Details" do
         f.input :imei
+        f.input :phone_number
     end
     f.actions
   end

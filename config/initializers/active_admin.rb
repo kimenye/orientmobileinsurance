@@ -58,7 +58,8 @@ ActiveAdmin.setup do |config|
   config.authentication_method = :authenticate_admin_user!
 
 
-  config.authorization_adapter = "OnlyAdminsAuthorization"
+  # config.authorization_adapter = "OnlyAdminsAuthorization"
+  config.authorization_adapter = ActiveAdmin::CanCanAdapter
 
 
   # == Current User

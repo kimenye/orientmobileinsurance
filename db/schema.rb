@@ -176,6 +176,7 @@ ActiveRecord::Schema.define(:version => 20141018094436) do
     t.decimal  "stl_replacement_value"
     t.decimal  "stl_koil_invoice_value"
     t.string   "dealer_code"
+    t.string   "user_agent"
   end
 
   create_table "enquiries", :force => true do |t|
