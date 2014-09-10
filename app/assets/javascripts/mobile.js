@@ -17,7 +17,6 @@
 //= require jquery.validate.min
 //= require deviceatlas-1.1.min
 //= require cm
-//= require ios.detect
 
 $(document).bind('pageinit', function () {
     $('.edit_enquiry').validate();
