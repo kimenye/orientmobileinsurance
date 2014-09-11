@@ -1,5 +1,5 @@
 class Enquiry < ActiveRecord::Base
-
+  before_save :strip_whitespace
   attr_accessible :phone_number, :text, :date_of_enquiry, :source, :sales_agent_code, :agent_id, :year_of_purchase, :month_of_purchase, :url,
                   :hashed_phone_number, :detected_device_id, :undetected_device_id, :customer_name, :customer_id, :customer_email,
                   :customer_payment_option, :customer_phone_number, :hashed_timestamp, :model, :vendor, :marketing_name, :detected, :user_agent, :id_type
@@ -40,5 +40,14 @@ class Enquiry < ActiveRecord::Base
   end
 
   attr_accessor :customer_name, :customer_email, :customer_payment_option, :customer_phone_number
+
+  private
+
+  def strip_whitespace
+    if !phone_number.nil?
+      self.phone_number.gsub!(/\s+/, '')
+      # self.save!
+    end
+  end
 
 end
