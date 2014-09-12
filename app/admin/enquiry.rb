@@ -1,4 +1,6 @@
 ActiveAdmin.register Enquiry do
+  scope :device_detected
+  scope :device_not_detected
 
   controller do
     actions :all, :except => [:edit, :destroy]
