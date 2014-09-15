@@ -45,9 +45,9 @@ class ApplicationController < ActionController::Base
     client.settings.licence_key = ENV['DEVICE_ATLAS_LICENCE_KEY']
     device_data = client.get_device_data
     properties = device_data[DeviceAtlasCloudClient::KEY_PROPERTIES]
-    puts ">>>> #{properties[:vendor]}"
-    puts ">>>> #{properties[:model]}"
-    puts ">>>> #{properties[:marketingName]}"
+    logger.info ">>>> #{properties[:vendor]}"
+    logger.info ">>>> #{properties[:model]}"
+    logger.info ">>>> #{properties[:marketingName]}"
     properties
   end
 
