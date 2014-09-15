@@ -1,7 +1,6 @@
 source 'http://rubygems.org'
-# source 'http://ruby.taobao.org/'
-ruby '1.9.3'
-gem 'rails', '3.2.11'
+
+gem 'rails', '3.2.19'
 gem "mail"
 gem "rufus-scheduler"
 
@@ -17,7 +16,7 @@ gem 'figaro'
 gem 'haml-rails'
 gem 'rolify'
 gem 'thin'
-gem 'activeadmin'
+gem 'activeadmin', github: 'activeadmin'
 gem 'active_admin_importable'
 gem 'active_admin_import_anything'
 gem 'httparty'
@@ -29,7 +28,8 @@ gem 'mobile-fu'
 gem 'business_time'
 gem 'newrelic_rpm'
 gem 'dynamic_form'
-gem 'activeadmin-axlsx'
+# gem 'activeadmin-axlsx'
+gem 'fastercsv'
 gem 'spreadsheet'
 gem 'simple_xlsx_reader'
 gem 'google_visualr'

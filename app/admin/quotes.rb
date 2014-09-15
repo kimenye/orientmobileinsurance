@@ -25,27 +25,28 @@ ActiveAdmin.register Quote do
     column :quote_type
     # column :customer
     # column :insured_device
-    default_actions
+    # default_actions
+    actions defaults: true
   end
 
-  xlsx(:header_style => {:bg_color => 'C0BFBF', :fg_color => '000000' }) do
+  # xlsx(:header_style => {:bg_color => 'C0BFBF', :fg_color => '000000' }) do
     
-    delete_columns :id, :account_name, :annual_premium, :expiry_date, :monthly_premium, :insured_device_id, :premium_type, :insured_value, :agent_id, :quote_type, :customer_id, :created_at, :updated_at
+  #   delete_columns :id, :account_name, :annual_premium, :expiry_date, :monthly_premium, :insured_device_id, :premium_type, :insured_value, :agent_id, :quote_type, :customer_id, :created_at, :updated_at
     
-    column("Customer ID") { |quote| quote.customer.id }
-    column("Name") { |quote| quote.customer.name }
-    column("Phone Number") { |quote| quote.customer.phone_number }
-    column("Email") { |quote| quote.customer.email }
-    column :annual_premium
-    column :monthly_premium
-    column :account_name
-    column :premium_type
-    column :expiry_date
-    column :created_at
-    column :updated_at
-    column :insured_value
-    column :quote_type
-  end
+  #   column("Customer ID") { |quote| quote.customer.id }
+  #   column("Name") { |quote| quote.customer.name }
+  #   column("Phone Number") { |quote| quote.customer.phone_number }
+  #   column("Email") { |quote| quote.customer.email }
+  #   column :annual_premium
+  #   column :monthly_premium
+  #   column :account_name
+  #   column :premium_type
+  #   column :expiry_date
+  #   column :created_at
+  #   column :updated_at
+  #   column :insured_value
+  #   column :quote_type
+  # end
 
   form do |f|
     f.inputs "Details" do
