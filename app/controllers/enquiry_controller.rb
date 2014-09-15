@@ -1,8 +1,10 @@
 require 'premium_service'
-require 'deviceatlasapi'
+# require 'deviceatlasapi'
+require 'deviceatlas_cloud_client'
 
 class EnquiryController < Wicked::WizardController
-  include DeviceAtlasApi::ControllerHelpers
+  # include DeviceAtlasApi::ControllerHelpers
+  include DeviceAtlasCloudClient::ControllerHelper
   include ActionView::Helpers::NumberHelper
   layout "mobile"
 
@@ -53,45 +55,36 @@ class EnquiryController < Wicked::WizardController
       else
         @enquiry = Enquiry.find_by_id(session[:enquiry_id])
       end
-      # case step
-      #   when :complete_enquiry
-      #     smsMessage = session[:sms_message]
-      #     @gateway = SMSGateway.new
 
-      #     smsMessage.each do |message|
-      #       @gateway.send(session[:sms_to], message)
-      #     end
-      # end
       device_data = get_device_data
-      device_data = {} if device_data.nil?
-      session[:device_marketing_name] = device_data["marketingName"]
-      model = get_model_name(device_data).downcase
+      # device_data = {} if device_data.nil?
+      # session[:device_marketing_name] = device_data["marketingName"]
+      session[:device_marketing_name] = device_data[:marketingName]
+      # model = get_model_name(device_data).downcase
+      model = device_data[:model].downcase
       session[:device_model] = model
-      vendor = device_data["vendor"]
+      vendor = device_data[:vendor]
       if model.starts_with?("iphone") || model.starts_with?("ipad")
         if model.starts_with?("iphone 5") || model.starts_with?("ipad")
           possible_devices = Device.model_like_search(vendor, model).collect { |d| d.model }.uniq
           session[:possible_models] = possible_devices
           # device = Device.model_like_search(vendor, model)
-        else
-          # puts "<><><><><><><><><><><> I am here <><><><><><><><><><><>"
+        else      
           # because there are no iPhone 3s in the catalogue
           possible_devices = Device.model_like_search(vendor, "iPhone 4").collect { |d| d.model }.uniq
           session[:possible_models] = possible_devices
-          # device = Device.model_like_search(vendor, model)
         end
       end
+
       render_wizard
     rescue => error
-      puts "Error occured #{error}"
-      logger.info "Error occured #{error.backtrace}, Session: #{session}"
+      Rollbar.report_exception(error)
       session[:enquiry] = nil
       redirect_to start_again_path
     end
   end
 
   def start_again
-
   end
 
   def insure
@@ -103,11 +96,7 @@ class EnquiryController < Wicked::WizardController
   end
 
   def payment_notification
-
-    puts ">>>> #{params}"
-
     service = PaymentService.new
-
     channel = params[:JP_CHANNEL]
 
     account_id = params[:JP_MERCHANT_ORDERID]
@@ -118,20 +107,16 @@ class EnquiryController < Wicked::WizardController
     amount = params[:JP_AMOUNT]
     transaction_ref = params[:JP_TRANID]
 
-
     result = service.handle_payment(account_id, amount, transaction_ref, channel)
     @message = "Thank you for your payment of #{number_to_currency(amount, :unit => "KES ", :precision => 0, :delimiter => "")}"
 
     if result
       if channel == "MPESA" || channel == "AIRTEL"
-        puts ">>> Render OK #{channel}"
         render text: "OK"
       end
     else
-      puts ">> Don't know this account number #{account_id}"
       render text: "OK"
     end
-
   end
 
   def update
@@ -149,24 +134,22 @@ class EnquiryController < Wicked::WizardController
         if @enquiry.valid?
           code = agent.code if !agent.nil?
           if !@enquiry.year_of_purchase.nil?
-            # is_insurable = premium_service.is_insurable @enquiry.year_of_purchase
             is_insurable = premium_service.is_insurable_by_month_and_year(@enquiry.month_of_purchase, @enquiry.year_of_purchase)
           else
             is_insurable = false
           end
 
-          device_data = get_device_data
-          device_data = {} if device_data.nil?
+          device_data = get_device_data          
           session[:device] = device_data
           #Check for the devices among our supported devices
-          add_client_properties! device_data
+          # add_client_properties! device_data
           if params[:enquiry][:model]
             model = params[:enquiry][:model]
           else
-            model = get_model_name device_data
+            model = device_data[:model]
           end
-          vendor = device_data["vendor"]
-          marketingName = device_data["marketingName"]
+          vendor = device_data[:vendor]
+          marketingName = device_data[:marketingName]
 
           invalid_da = (vendor.nil? || vendor.empty?) && (model.nil? || model.empty?)
           puts ">> Invalid match from device atlas : #{invalid_da}"
@@ -260,9 +243,7 @@ class EnquiryController < Wicked::WizardController
           jump_to :confirm_personal_details
         end
       when :confirm_personal_details
-        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{session[:quote_details]["due"]}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]
-        # session[:sms_message] = smsMessage
-        # session[:sms_to] = @enquiry.phone_number
+        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{session[:quote_details]["due"]}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]        
 
         @gateway = SMSGateway.new
 

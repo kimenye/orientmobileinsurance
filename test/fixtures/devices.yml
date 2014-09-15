@@ -3,3 +3,9 @@ simple:
   model: "iPhone"
   marketing_name: "Apple iPhone"
   catalog_price: 10000
+
+lumia_930:
+  vendor: "Nokia"
+  model: "Lumia 930"
+  marketing_name: "Nokia Lumia 930"
+  user_agent: "Mozilla/5.0 (Windows Phone 8.1; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; NOKIA; Lumia 930) like Gecko"
