@@ -21,16 +21,17 @@ ActiveAdmin.register Claim do
     column :settlement_date
     column :authorization_type
     column ("Claim Registration Date") { |claim| claim.created_at.strftime("%d %b %Y")}
-    default_actions
+    # default_actions
+    actions defaults: true
   end
    actions :index, :show
 
-  xlsx(:header_style => {:bg_color => 'C0BFBF', :fg_color => '000000' }) do
+  # xlsx(:header_style => {:bg_color => 'C0BFBF', :fg_color => '000000' }) do
     
-    column ("Insured") {|claim| claim.policy.customer.name}
-    column ("Policy")  {|claim| claim.policy.policy_number }
+  #   column ("Insured") {|claim| claim.policy.customer.name}
+  #   column ("Policy")  {|claim| claim.policy.policy_number }
 
-  end
+  # end
 
   csv do
     column :id

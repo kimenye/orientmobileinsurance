@@ -10,7 +10,8 @@ ActiveAdmin.register User do
     column :email
     column :username
     column :user_type
-    default_actions
+    # default_actions
+    actions defaults: true
   end
 
   filter :name

@@ -58,7 +58,8 @@ ActiveAdmin.register Device do
     column :dealer_code
     column :active
     column :device_type
-    default_actions
+    # default_actions
+    actions defaults: true
   end
 
   form do |f|

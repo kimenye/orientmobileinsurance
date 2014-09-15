@@ -1,6 +1,6 @@
 class Enquiry < ActiveRecord::Base
   scope :device_detected, where(:detected => true)
-  scope :device_not_detected, where(:detected => false)
+  scope :device_not_detected, where(:detected => [false,nil])
 
   before_save :strip_whitespace
   

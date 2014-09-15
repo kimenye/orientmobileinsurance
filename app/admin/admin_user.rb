@@ -11,7 +11,8 @@ ActiveAdmin.register AdminUser do
     column :last_sign_in_at           
     column :sign_in_count
     column :is_admin
-    default_actions
+    # default_actions
+    actions defaults: true
   end                                 
 
   filter :email
