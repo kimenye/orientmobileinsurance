@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141018094436) do
+ActiveRecord::Schema.define(:version => 20140910083820) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(:version => 20141018094436) do
     t.boolean  "lead",                   :default => true
     t.string   "customer_type"
     t.string   "company_name"
+    t.string   "hashed_phone_number"
   end
 
   create_table "dealers", :force => true do |t|
@@ -176,6 +177,7 @@ ActiveRecord::Schema.define(:version => 20141018094436) do
     t.decimal  "stl_replacement_value"
     t.decimal  "stl_koil_invoice_value"
     t.string   "dealer_code"
+    t.string   "user_agent"
   end
 
   create_table "enquiries", :force => true do |t|
@@ -225,6 +227,8 @@ ActiveRecord::Schema.define(:version => 20141018094436) do
     t.decimal  "replacement_value"
     t.decimal  "premium_value"
     t.integer  "quote_id"
+    t.boolean  "prepaid"
+    t.boolean  "activated"
   end
 
   add_index "insured_devices", ["customer_id"], :name => "index_insured_devices_on_customer_id"
@@ -268,26 +272,6 @@ ActiveRecord::Schema.define(:version => 20141018094436) do
   add_index "policies", ["insured_device_id"], :name => "index_policies_on_insured_device_id"
   add_index "policies", ["quote_id"], :name => "index_policies_on_quote_id"
 
-  create_table "product_quotes", :force => true do |t|
-    t.string   "status"
-    t.integer  "product_id"
-    t.integer  "quote_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.decimal  "price"
-  end
-
-  add_index "product_quotes", ["product_id"], :name => "index_product_quotes_on_product_id"
-  add_index "product_quotes", ["quote_id"], :name => "index_product_quotes_on_quote_id"
-
-  create_table "products", :force => true do |t|
-    t.string   "serial"
-    t.decimal  "price"
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "quotes", :force => true do |t|
     t.integer  "insured_device_id"
     t.decimal  "annual_premium"
@@ -295,13 +279,12 @@ ActiveRecord::Schema.define(:version => 20141018094436) do
     t.string   "account_name"
     t.string   "premium_type"
     t.datetime "expiry_date"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.decimal  "insured_value"
     t.integer  "agent_id"
     t.string   "quote_type"
     t.integer  "customer_id"
-    t.string   "product_type",      :default => "Device"
   end
 
   add_index "quotes", ["agent_id"], :name => "index_quotes_on_agent_id"

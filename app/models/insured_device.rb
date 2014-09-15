@@ -1,4 +1,5 @@
 class InsuredDevice < ActiveRecord::Base
+  before_save :strip_whitespace
   belongs_to :customer
   belongs_to :device
   has_many :quotes
@@ -23,5 +24,14 @@ class InsuredDevice < ActiveRecord::Base
 
   def name
     "#{customer.name} - #{device.marketing_name} - #{imei}"
+  end
+
+  private
+
+  def strip_whitespace
+    if !phone_number.nil?
+      self.phone_number.gsub!(/\s+/, '')
+      # self.save!
+    end
   end
 end
