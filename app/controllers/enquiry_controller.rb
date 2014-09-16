@@ -76,9 +76,14 @@ class EnquiryController < Wicked::WizardController
         end
       end
 
+      # if session[:possible_models].count == 0
+      #   jump_to :not_insurable
+      # end
+
       render_wizard
     rescue => error
-      Rollbar.report_exception(error)
+      # puts error.backtrace
+      Rollbar.report_message(error, :phone_number => @enquiry.phone_number, :user_agent => request.user_agent)
       session[:enquiry] = nil
       redirect_to start_again_path
     end
