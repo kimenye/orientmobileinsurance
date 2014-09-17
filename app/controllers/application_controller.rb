@@ -41,10 +41,17 @@ class ApplicationController < ActionController::Base
   protected
 
   def get_device_data
-    client = get_deviceatlas_cloud_client_instance
-    client.settings.licence_key = ENV['DEVICE_ATLAS_LICENCE_KEY']
-    device_data = client.get_device_data
-    properties = device_data[DeviceAtlasCloudClient::KEY_PROPERTIES]
+    properties = {}
+    if ENV['DEBUG_DEVICE_ATLAS'] == 'false'
+      client = get_deviceatlas_cloud_client_instance
+      client.settings.licence_key = ENV['DEVICE_ATLAS_LICENCE_KEY']
+      device_data = client.get_device_data()
+      properties = device_data[DeviceAtlasCloudClient::KEY_PROPERTIES]
+    else
+      properties[:vendor] = ENV["DEBUG_DEVICE_ATLAS_VENDOR"]
+      properties[:model] = ENV["DEBUG_DEVICE_ATLAS_MODEL"]
+      properties[:marketingName] = ENV["DEBUG_DEVICE_ATLAS_MARKETING_NAME"]
+    end
     logger.info ">>>> #{properties[:vendor]}"
     logger.info ">>>> #{properties[:model]}"
     logger.info ">>>> #{properties[:marketingName]}"

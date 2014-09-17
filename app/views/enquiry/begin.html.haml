@@ -7,7 +7,7 @@
     %ul{"data-divider-theme" => "b", "data-inset" => "true", "data-role" => "listview", "data-theme" => "c"}
       %li{"data-role" => "list-divider"} I want to...
       %li{"data-icon" => "arrow-r"}
-        = link_to 'Secure My Phone / Tablet', wizard_path(:device_details), ({ "rel" => "external" } if is_asha? )
+        = link_to 'Secure My Phone / Tablet', start_wizard_path, ({ "rel" => "external" } if is_asha? )
       %li{"data-icon" => "arrow-r"}
         = link_to 'Check the status of my policy / claim', enquire_status_path, ({ "rel" => "external" } if is_asha? )
       %li{"data-icon" => "arrow-r"}
