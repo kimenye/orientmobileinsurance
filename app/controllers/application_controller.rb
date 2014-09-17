@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
 
   def get_device_data
     properties = {}
-    if ENV['DEBUG_DEVICE_ATLAS'] == 'true'
+    if ENV['DEBUG_DEVICE_ATLAS'] == 'false'
       client = get_deviceatlas_cloud_client_instance
       client.settings.licence_key = ENV['DEVICE_ATLAS_LICENCE_KEY']
       device_data = client.get_device_data()
