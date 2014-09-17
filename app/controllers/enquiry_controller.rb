@@ -65,7 +65,9 @@ class EnquiryController < Wicked::WizardController
       model = device_data[:model].downcase
       session[:device_model] = model
       vendor = device_data[:vendor]
+      session[:apple] = false
       if model.starts_with?("iphone") || model.starts_with?("ipad")
+        session[:apple] = true
         if model.starts_with?("iphone 5") || model.starts_with?("ipad")
           possible_devices = Device.model_like_search(vendor, model).collect { |d| d.model }.uniq
           session[:possible_models] = possible_devices
@@ -95,11 +97,13 @@ class EnquiryController < Wicked::WizardController
 
   def start_wizard
     @enquiry = Enquiry.find_by_id(session[:enquiry_id])
-    if session[:possible_models].count == 0
-      # render 'not_insurable', :layout => "mobile"
-      redirect_to wizard_path(:not_insurable)
+    if session[:apple]
+      if session[:possible_models].count == 0
+        redirect_to wizard_path(:not_insurable)
+      else
+        redirect_to wizard_path(:device_details)
+      end
     else
-      # render 'device_details', :layout => "mobile"
       redirect_to wizard_path(:device_details)
     end
   end
