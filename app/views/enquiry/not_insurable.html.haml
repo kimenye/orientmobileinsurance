@@ -14,7 +14,7 @@
         %b
           Make & Model:
         %span.model
-          = session[:device]['model']
+          = !session[:device].nil? ? session[:device]['model'] : session[:model]
       %li
         %img{:src => "/assets/calendar.png", :class =>"ui-li-icon ui-corner-none"}
         %b

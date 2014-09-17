@@ -25,6 +25,8 @@ Orientmobileinsurance::Application.routes.draw do
 
   match 'enquiry/secure' => 'enquiry#secure'
   match 'insure' => 'enquiry#insure'
+  match 'start_wizard' => 'enquiry#start_wizard'
+  # post "/start_wizard" => "enquiry#start_wizard", :as => "start_wizard", via: [:post]
   #match 'enquiry/insure' => 'enquiry#insure', :as => :secure
 
   match 'policy/show_details' => 'policy#show_details'

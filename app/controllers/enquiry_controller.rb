@@ -60,6 +60,7 @@ class EnquiryController < Wicked::WizardController
       # device_data = {} if device_data.nil?
       # session[:device_marketing_name] = device_data["marketingName"]
       session[:device_marketing_name] = device_data[:marketingName]
+      session[:model] = device_data[:model]
       # model = get_model_name(device_data).downcase
       model = device_data[:model].downcase
       session[:device_model] = model
@@ -90,6 +91,17 @@ class EnquiryController < Wicked::WizardController
   end
 
   def start_again
+  end
+
+  def start_wizard
+    @enquiry = Enquiry.find_by_id(session[:enquiry_id])
+    if session[:possible_models].count == 0
+      # render 'not_insurable', :layout => "mobile"
+      redirect_to wizard_path(:not_insurable)
+    else
+      # render 'device_details', :layout => "mobile"
+      redirect_to wizard_path(:device_details)
+    end
   end
 
   def insure
@@ -127,6 +139,10 @@ class EnquiryController < Wicked::WizardController
   def update
     @enquiry = Enquiry.find(session[:enquiry_id])
     premium_service = PremiumService.new
+
+    # if session[:possible_models].count == 0
+    #   render 'not_insurable', :layout => "mobile"
+    # end
     case step
       when :device_details
         code = params[:enquiry][:sales_agent_code].upcase if !params[:enquiry][:sales_agent_code].nil?
