@@ -141,7 +141,6 @@ ActiveRecord::Schema.define(:version => 20140910083820) do
     t.boolean  "lead",                   :default => true
     t.string   "customer_type"
     t.string   "company_name"
-    t.string   "hashed_phone_number"
   end
 
   create_table "dealers", :force => true do |t|
@@ -227,8 +226,6 @@ ActiveRecord::Schema.define(:version => 20140910083820) do
     t.decimal  "replacement_value"
     t.decimal  "premium_value"
     t.integer  "quote_id"
-    t.boolean  "prepaid"
-    t.boolean  "activated"
   end
 
   add_index "insured_devices", ["customer_id"], :name => "index_insured_devices_on_customer_id"
