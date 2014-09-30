@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140910083820) do
+ActiveRecord::Schema.define(:version => 20140930000233) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -92,11 +92,11 @@ ActiveRecord::Schema.define(:version => 20140910083820) do
     t.string   "claim_type"
     t.string   "contact_number"
     t.string   "contact_email"
-    t.string   "incident_description"
+    t.text     "incident_description", :limit => 255
     t.string   "status"
     t.string   "status_description"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.string   "nearest_town"
     t.integer  "step"
     t.string   "visible_damage"
