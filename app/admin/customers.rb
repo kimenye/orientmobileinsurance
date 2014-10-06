@@ -16,6 +16,7 @@ ActiveAdmin.register Customer, :as => "Lead"  do
   form do |f|
     f.inputs "Customer Details" do
         f.input :name
+        f.input :phone_number
         f.input :id_passport
         f.input :email
     end
