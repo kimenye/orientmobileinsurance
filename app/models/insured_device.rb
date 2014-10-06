@@ -31,7 +31,9 @@ class InsuredDevice < ActiveRecord::Base
   def strip_whitespace
     if !phone_number.nil?
       self.phone_number.gsub!(/\s+/, '')
-      # self.save!
+      if !phone_number.starts_with?("+")
+        self.phone_number = "+#{self.phone_number}"
+      end
     end
   end
 end
