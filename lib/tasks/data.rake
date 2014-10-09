@@ -25,8 +25,8 @@ namespace :data do
     enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
     customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "trevor@kimenye.com"
     insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
-    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.first.id
-    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.first.id, customer_id: customer.id
+    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, insured_device_id: insured_device.id
     payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 300, :reference => "ABC"
 
     claim = Claim.create! :policy_id => policy.id, :claim_type => "Loss / Theft", :contact_number => "254705866564", :police_abstract => true, :copy_id => true,
@@ -36,10 +36,19 @@ namespace :data do
 
   task :seed_expiring_policy => :environment do
     enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
-    customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
+    customer = Customer.create! :name => "John Doe", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
     insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
-    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Monthly", :annual_premium => 300, :monthly_premium => 100, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.first.id
-    policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 2.hours.from_now
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Monthly", :annual_premium => 300, :monthly_premium => 100, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.first.id, customer_id: customer.id
+    policy = Policy.create! :policy_number => "DDD/444", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 2.hours.from_now, insured_device_id: insured_device.id
+    payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 100, :reference => "ABC"
+  end
+
+  task :seed_lapsed_policy => :environment do
+    enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
+    customer = Customer.create! :name => "Jane Doe", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
+    insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => Device.first.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
+    quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Monthly", :annual_premium => 300, :monthly_premium => 100, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now, :agent_id => Agent.first.id, customer_id: customer.id
+    policy = Policy.create! :policy_number => "DDD/444", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.day.ago, insured_device_id: insured_device.id
     payment = Payment.create! :method => "JP", :policy_id => policy.id, :amount => 100, :reference => "ABC"
   end
 
