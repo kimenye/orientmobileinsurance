@@ -16,7 +16,8 @@
       = form_for(@enquiry, :url => wizard_path(:device_details), :method => :put, :html => ({"data-ajax" => "false"} if is_asha?) ) do |f|
         %div
           - if !session[:device_model].nil? && session[:device_model].downcase.starts_with?("iphone") || session[:device_model].downcase.starts_with?("ipad")
-            = f.select :model, session[:possible_models].collect {|model| [model]}, {}, { "data-theme" => "c"}
+            = f.select :model, session[:possible_models].map{ |device| [device.marketing_name, device.id] }, {}, { "data-theme" => "c"}
+            / = f.select :model, session[:possible_models].collect {|device| [model]}, {}, { "data-theme" => "c"}
           = f.label :year_of_purchase, "Enter Year and Month of Purchase of device (as per original purchase receipt)"
           = f.error_message_on :year_of_purchase
           %div{:style => "float:left; width: 49%;"}
