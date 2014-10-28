@@ -68,4 +68,7 @@ Orientmobileinsurance::Application.routes.draw do
   match 'corporate_payment' => 'enquiry#corporate_payment', :as => :corporate_payment
   match 'corporate_payment_form' => 'enquiry#corporate_payment_form', :as => :corporate_payment_form
   match 'corporate_receipt' => 'enquiry#corporate_receipt', :as => :corporate_receipt
+
+  get "/upload" => 'quotes#upload_page', as: :upload_page
+  post "/upload_policy_details" => "quotes#upload_policy_details", as: "upload_policy_details"
 end

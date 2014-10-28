@@ -1,0 +1,13 @@
+.banner.row
+	.large-12.columns
+		%h4.subheader
+			Prepaid Polices \	
+.row
+	.large-12.columns
+		%h5.subheader
+			Upload Policy Details
+.row
+	.large-12.columns
+		= form_tag(upload_policy_details_path, multipart: true) do
+			= file_field_tag "file"
+			= submit_tag
