@@ -108,8 +108,11 @@ class Policy < ActiveRecord::Base
     #if quote.premium_type == "Monthly"
     #  quote_amount *= 3
     #end
-
-    quote_amount.to_f - amount_paid.to_f
+    if quote.premium_type == "Prepaid"
+        return 0
+    else
+      quote_amount.to_f - amount_paid.to_f
+    end
   end
 
   def payment_option
