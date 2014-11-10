@@ -188,6 +188,8 @@ class PremiumService
     else
       if id.quote.policy.is_active?
         return false
+      else
+	return true
       end
     end
   end
