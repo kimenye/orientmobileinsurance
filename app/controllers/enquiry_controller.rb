@@ -68,15 +68,23 @@ class EnquiryController < Wicked::WizardController
       session[:apple] = false
       if model.starts_with?("iphone") || model.starts_with?("ipad")
         session[:apple] = true
-        if model.starts_with?("iphone 5") || model.starts_with?("ipad")
-          possible_devices = Device.model_like_search(vendor, model).collect { |d| d.model }.uniq
+        # if model.starts_with?("iphone 5") || model.starts_with?("ipad") || model.starts_with?("iphone 6")
+        if model.starts_with?("iphone 6")
+          possible_devices = Device.model_search(vendor, model)
           session[:possible_models] = possible_devices
-          # device = Device.model_like_search(vendor, model)
-        else      
-          # because there are no iPhone 3s in the catalogue
-          possible_devices = Device.model_like_search(vendor, "iPhone 4").collect { |d| d.model }.uniq
+        else
+          possible_devices = Device.model_like_search(vendor, model)
           session[:possible_models] = possible_devices
         end
+          # device = Device.model_like_search(vendor, model)
+        # elsif model.starts_with?("iphone 6") || model.starts_with?("iphone 6 Plus")
+          # possible_devices = Device.model_search(vendor, model).collect { |d| d.marketing_name }
+          # session[:possible_models] = possible_devices
+        # else      
+          # because there are no iPhone 3s in the catalogue
+          # possible_devices = Device.model_like_search(vendor, "iPhone 4").collect { |d| d.model }.uniq
+          # session[:possible_models] = possible_devices
+        # end
       end
 
       # if session[:possible_models].count == 0
@@ -168,8 +176,9 @@ class EnquiryController < Wicked::WizardController
           session[:device] = device_data
           #Check for the devices among our supported devices
           # add_client_properties! device_data
-          if params[:enquiry][:model]
-            model = params[:enquiry][:model]
+          model_id = params[:enquiry][:model]
+          if model_id
+            model = Device.find(model_id).model
           else
             model = device_data[:model]
           end
@@ -188,7 +197,7 @@ class EnquiryController < Wicked::WizardController
           device = nil
 
           if !invalid_da
-            device = Device.model_search(vendor, model).first
+            device = Device.find(model_id)
           end
 
           puts ">> After device is nil ? #{device.nil?}"

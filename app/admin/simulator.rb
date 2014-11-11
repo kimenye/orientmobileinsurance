@@ -219,7 +219,7 @@ ActiveAdmin.register_page "Simulator" do
     columns do
       column do
         h3 "Lapsed Policies"
-        policies = Policy.where("expiry < ?", ReminderService._get_start_of_day(Time.now))
+        policies = Policy.where("expiry < ?", ReminderService._get_start_of_day(Time.now)).order('expiry DESC')
         table_for policies, :class=> "index_table" do |p|
           column "Customer" do |p|
             p.customer.name if !p.customer.nil?
