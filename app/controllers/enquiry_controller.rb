@@ -94,7 +94,8 @@ class EnquiryController < Wicked::WizardController
       render_wizard
     rescue => error
       # puts error.backtrace
-      Rollbar.report_message(error, :phone_number => @enquiry.phone_number, :user_agent => request.env['HTTP_USER_AGENT'])
+      logger.error "Error #{error}"
+      Rollbar.report_message(error, :phone_number => @enquiry.phone_number)
       session[:enquiry] = nil
       redirect_to start_again_path
     end
