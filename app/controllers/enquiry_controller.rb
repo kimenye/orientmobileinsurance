@@ -94,8 +94,8 @@ class EnquiryController < Wicked::WizardController
       render_wizard
     rescue => error
       # puts error.backtrace
-      logger.error "Error #{error}"
-      Rollbar.report_message(error, :phone_number => @enquiry.phone_number)
+      logger.error "Error #{error.backtrace}"
+      Rollbar.error(error, :phone_number => @enquiry.phone_number)
       session[:enquiry] = nil
       redirect_to start_again_path
     end
@@ -177,14 +177,16 @@ class EnquiryController < Wicked::WizardController
           session[:device] = device_data
           #Check for the devices among our supported devices
           # add_client_properties! device_data
+
+          device = nil
           model_id = params[:enquiry][:model]
           if model_id
-            model = Device.find(model_id).model
-          else
-            model = device_data[:model]
+            device = Device.find(model_id)
+            model = device.model
           end
           vendor = device_data[:vendor]
           marketingName = device_data[:marketingName]
+          model = device_data[:model]
 
           invalid_da = (vendor.nil? || vendor.empty?) && (model.nil? || model.empty?)
           puts ">> Invalid match from device atlas : #{invalid_da}"
@@ -193,12 +195,10 @@ class EnquiryController < Wicked::WizardController
           @enquiry.vendor = vendor
           @enquiry.marketing_name = marketingName
 
-          logger.info ">> Searching for #{model}, #{vendor}, #{marketingName}"
+          logger.info ">> Searching for #{model}, #{vendor}, #{marketingName}"          
 
-          device = nil
-
-          if !invalid_da
-            device = Device.find(model_id)
+          if !invalid_da && device.nil?
+            device = Device.model_search(vendor, model).first
           end
 
           puts ">> After device is nil ? #{device.nil?}"
