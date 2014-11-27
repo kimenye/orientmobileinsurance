@@ -22,6 +22,13 @@ class ClaimServiceTest < ActionDispatch::IntegrationTest
     assert within, "Dates should be marked as being within 12 months"
   end
 
+  it "Dates are within the last 12-months" do
+    dates = [380.days.ago, 50.days.ago, 200.days.ago, 5.days.ago]
+    within = @service.dates_in_same_calendar_year dates
+
+    assert within, "Last 3 dates should be in the same calendar year"
+  end
+
   it "A serial claimant is an applicant that has made 3 claims in any 12-month period" do
 
     @device = Device.create! :vendor => "Apple", :model => "IPHONE 5 - 16GB", :marketing_name => "IPHONE 5 - 16GB", :catalog_price => 150.00

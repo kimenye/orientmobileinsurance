@@ -113,7 +113,7 @@ class ClaimService
   end
 
   def dates_in_same_calendar_year dates
-    dates.sort!
+    dates = dates.last(3).sort!
     first_date = dates.first
     last_date = dates.last
 
