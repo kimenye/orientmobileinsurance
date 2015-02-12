@@ -21,24 +21,35 @@ ActiveAdmin.register Device do
         model = row[6]
         device_type = row[7]
         catalog_price = row[8]
+        to_delete = row[9]
 
         device = Device.find_by_stock_code stock_code
-        if device.nil?
-          # create a new one
-          Device.create! :dealer_code => dealer_code, :stock_code => stock_code, :marketing_name => marketing_name, :vendor => vendor,
-            :model => model, :device_type => device_type, :catalog_price => catalog_price, :active => true
-        else
-          # update everything apart from the model
-          device.dealer_code = dealer_code
-          device.stock_code = stock_code
-          device.marketing_name = marketing_name
-          device.vendor = vendor
-          device.device_type = device_type
-          device.catalog_price = catalog_price
-          device.active = true
+        puts "To Delete #{to_delete}"
+        if to_delete == "Y"
+          if !device.nil?
+            device.active = false
+            device.save!
+          end
+        else      
+          if device.nil?
+            # create a new one
+            Device.create! :dealer_code => dealer_code, :stock_code => stock_code, :marketing_name => marketing_name, :vendor => vendor,
+              :model => model, :device_type => device_type, :catalog_price => catalog_price, :active => true
+          else
+            # update everything apart from the model
+            device.dealer_code = dealer_code
+            device.stock_code = stock_code
+            device.marketing_name = marketing_name
+            device.vendor = vendor
+            device.device_type = device_type
+            device.catalog_price = catalog_price
+            device.active = true
 
-          device.save!
+            device.save!
+          end
         end
+
+        
       end
     end
   end
