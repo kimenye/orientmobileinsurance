@@ -109,7 +109,7 @@ class Device < ActiveRecord::Base
   end
 
   def is_stl
-    return (vendor == "Tecno" || vendor == "G-Tide" || vendor == "iTel" || vendor == "Forme")
+    return (vendor == "G-Tide" || vendor == "iTel" || vendor == "Forme")
   end
 
   def is_servicable_at_stl
