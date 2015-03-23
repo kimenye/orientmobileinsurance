@@ -20,7 +20,6 @@ class SMSGateway
       segments.each do |txt|
         xml = create_message to, txt
         response = ""
-        puts ">>> Sent: #{txt} to #{to}"
 
         if Rails.env == "production"
           options = {
@@ -29,9 +28,6 @@ class SMSGateway
           }
 
           response = HTTParty.post( @base_uri, options)
-          # puts ">>>> before sleep"
-          # sleep(1.seconds)
-          # puts ">>>> after sleep"
         else
           response = {"methodResponse"=>
             {"params"=>
