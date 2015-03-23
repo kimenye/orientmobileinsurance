@@ -24,7 +24,7 @@ class ClaimServiceTest < ActiveSupport::TestCase
 	end
 
 	test "If a policy is for a device serviced by STL it should only return locations that have Simba Telecom" do		
-		device = Device.create! :vendor => "Tecno", :model => "N7", :marketing_name => "N7", :catalog_price => 5, :dealer_code => "STL"
+		device = Device.create! :vendor => "iTel", :model => "N7", :marketing_name => "N7", :catalog_price => 5, :dealer_code => "STL"
 		enquiry = Enquiry.create! :source => "SMS", :phone_number => "254705866564", :hashed_phone_number => "abc", :hashed_timestamp => "def"
     	customer = Customer.create! :name => "Test Customer", :id_passport => "1234567890", :phone_number => "254705866564", :email => "kimenye@gmail.com"
     	insured_device = InsuredDevice.create! :customer_id => customer.id, :device_id => device.id, :imei => "123456789012345", :yop => 2013, :phone_number => "254705866564"
