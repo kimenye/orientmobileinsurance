@@ -16,7 +16,7 @@ class SmsService
     @message.save!
 
 
-    puts ">>> message type #{msg_type}"
+    Rails.logger.info ">>> message type #{msg_type}"
     if msg_type == 1
       enquiry = Enquiry.new
       enquiry.phone_number = mobile
@@ -29,7 +29,6 @@ class SmsService
       url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}/#{enquiry.hashed_timestamp}"
       enquiry.url = url
       if Rails.env == "production"
-        puts ">>>>  in production"
         auth = UrlShortener::Authorize.new ENV['BITLY_USERNAME'], ENV['BITLY_PASSWORD']
         client = UrlShortener::Client.new auth
         result = client.shorten(url)
@@ -43,7 +42,7 @@ class SmsService
       #user is sending an imei number
       premium_service.activate_policy text, mobile
     else
-      puts ">>> we were not able to understand the text message"
+      Rails.logger.info ">>> we were not able to understand the text message"
     end
 
     return @message
