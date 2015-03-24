@@ -45,8 +45,8 @@ ActiveAdmin.register_page "Simulator" do
   end
 
   page_action :send_reminders, :method => :post do
-    reminder_service = ReminderService.new
-    count = reminder_service.send_reminders
+    # reminder_service = ReminderService.new
+    count = ReminderService.send_reminders
     redirect_to admin_simulator_path, :notice => "Sent #{count} Reminders"
   end
 
@@ -165,9 +165,9 @@ ActiveAdmin.register_page "Simulator" do
     end
 
     columns  do
-      reminder_service = ReminderService.new
+      # reminder_service = ReminderService.new
       column do        
-        today = reminder_service.get_policies_expiring_in_duration(0)
+        today = ReminderService.get_policies_expiring_in_duration(0)
         h3 "Policies Expiring Today"
         table_for today, :class=> "index_table" do |p|
           column "Customer" do |p|
@@ -185,7 +185,7 @@ ActiveAdmin.register_page "Simulator" do
         end        
       end
       column do
-        today = reminder_service.get_policies_expiring_in_duration(2)
+        today = ReminderService.get_policies_expiring_in_duration(2)
         h3 "Policies Expiring In 3 days"
         table_for today, :class=> "index_table" do |p|
           column "Customer" do |p|

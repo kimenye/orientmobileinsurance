@@ -1,10 +1,10 @@
 class ReminderService
 
-  def send_reminders
+  def self.send_reminders
     begin
       sms_gateway = SMSGateway.new
-      policies_in_two_days = get_policies_expiring_in_duration(2)
-      policies_today = get_policies_expiring_in_duration(0)
+      policies_in_two_days = self.get_policies_expiring_in_duration(2)
+      policies_today = self.get_policies_expiring_in_duration(0)
       Rails.logger.info "Policies expiring in 2 days #{policies_in_two_days.length}"
       Rails.logger.info "Policies expiring today #{policies_today.length}"
       count = 0
@@ -33,11 +33,15 @@ class ReminderService
       end
       count
     rescue => error
-      logger.error "Error when sending reminders #{error}"
+      Rails.logger.error "Error when sending reminders #{error}"
     end
   end
 
-  def get_policies_expiring_in_duration (duration, time=Time.now)
+  def self.expire_lapsed_policies!
+    Policy.where('expiry < ? and status = ?', Time.now, 'Active').update_all(status: 'Expired') 
+  end
+
+  def self.get_policies_expiring_in_duration (duration, time=Time.now)
     today_start = ReminderService._get_start_of_day(time)
     today_end = ReminderService._get_end_of_day(time)
     start_of_day = today_start + (24 * duration * 3600)
