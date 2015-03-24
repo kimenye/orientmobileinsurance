@@ -1,5 +1,7 @@
 ActiveAdmin.register InsuredDevice do
 
+  menu false
+
   controller do
     actions :all, :except => [:destroy]
   end
