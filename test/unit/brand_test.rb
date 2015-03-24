@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: brands
+#
+#  id         :integer          not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  town_name  :string(255)
+#  brand_1    :string(255)
+#  brand_2    :string(255)
+#  brand_3    :string(255)
+#  brand_4    :string(255)
+#  brand_5    :string(255)
+#
+
 require 'test_helper'
 class BrandTest < ActiveSupport::TestCase
 

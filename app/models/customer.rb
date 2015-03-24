@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: customers
+#
+#  id                     :integer          not null, primary key
+#  name                   :string(255)
+#  id_passport            :string(255)
+#  email                  :string(255)
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  phone_number           :string(255)
+#  alternate_phone_number :string(255)
+#  lead                   :boolean          default(TRUE)
+#  customer_type          :string(255)
+#  company_name           :string(255)
+#
+
 class Customer < ActiveRecord::Base
 
   validates :name, presence: true

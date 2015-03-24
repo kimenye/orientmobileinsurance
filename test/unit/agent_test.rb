@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: agents
+#
+#  id           :integer          not null, primary key
+#  town         :string(255)
+#  brand        :string(255)
+#  outlet       :string(255)
+#  location     :string(255)
+#  code         :string(255)
+#  email        :string(255)
+#  phone_number :string(255)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  outlet_name  :string(255)
+#  tag          :string(255)
+#  discount     :float
+#
+
 require 'test_helper'
 class AgentTest < ActiveSupport::TestCase
 

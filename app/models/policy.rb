@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: policies
+#
+#  id                :integer          not null, primary key
+#  quote_id          :integer
+#  status            :string(255)
+#  policy_number     :string(255)
+#  start_date        :datetime
+#  expiry            :datetime
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  insured_device_id :integer
+#
+
 class Policy < ActiveRecord::Base
   scope :pending, where(:status => "Pending")
   scope :active, where("status = ? and start_date <= ? and expiry >= ?", "Active", Time.now, Time.now)

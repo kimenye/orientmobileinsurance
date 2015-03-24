@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: payments
+#
+#  id         :integer          not null, primary key
+#  policy_id  :integer
+#  reference  :string(255)
+#  amount     :decimal(, )
+#  status     :string(255)
+#  method     :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  quote_id   :integer
+#
+
 class Payment < ActiveRecord::Base
   belongs_to :policy
   belongs_to :quote

@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: policies
+#
+#  id                :integer          not null, primary key
+#  quote_id          :integer
+#  status            :string(255)
+#  policy_number     :string(255)
+#  start_date        :datetime
+#  expiry            :datetime
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  insured_device_id :integer
+#
+
 require 'test_helper'
 
 class PolicyTest < ActiveSupport::TestCase
