@@ -21,7 +21,7 @@ class CustomerMailer < ActionMailer::Base
       attachments['quote.pdf'] = AttachmentService.generate_pdf(quote).render
       mail(:from => "mobile@korient.co.ke", :to => "#{@quote.customer.name} <#{@quote.customer.email}>", :subject => "OMB Quotation #{@quote.account_name}")
     rescue => error
-      puts "Error in bulk email #{error}"
+      Rails.logger.info "Error in bulk email #{error}"
     end
   end
 
@@ -33,7 +33,7 @@ class CustomerMailer < ActionMailer::Base
       attachments['omi.pdf'] = File.read("#{Rails.root}/doc/data/Orient Mobile - Policy Terms & Conditions.pdf")
       mail(:from => "mobile@korient.co.ke", :to => "#{@quote.customer.name} <#{@quote.customer.email}>", :subject => "Orient Mobile Policy Puchase")
     rescue => error
-      puts "Error in bulk email #{error}"
+      Rails.logger.info "Error in bulk email #{error}"
     end
   end
 

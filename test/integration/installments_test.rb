@@ -46,8 +46,6 @@ class InstallmentsTest < ActionDispatch::IntegrationTest
         assert_equal (@policy.start_date + 365.days).month, @policy.expiry.month
         assert_equal (@policy.start_date + 365.days).day, @policy.expiry.day
       end
-      # puts "Expiry => #{@policy.expiry}"
-      # puts "Start => #{@policy.start_date}"
       assert_equal 690 - (115*n), @policy.pending_amount
       n+=1
     end

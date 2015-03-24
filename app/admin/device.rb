@@ -24,7 +24,6 @@ ActiveAdmin.register Device do
         to_delete = row[9]
 
         device = Device.find_by_stock_code stock_code
-        puts "To Delete #{to_delete}"
         if to_delete == "Y"
           if !device.nil?
             device.active = false

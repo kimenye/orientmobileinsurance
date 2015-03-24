@@ -3,10 +3,6 @@ ActiveAdmin.register_page "Simulator" do
   #menu :parent => "Simulator"
 
   page_action :payment, :method => :post do
-    puts ">>>> #{params}"
-    #All payments are from MPESA
-    #create a random transaction ref
-
     service = PaymentService.new
 
     channel = params["payment"]["channel"]
@@ -107,8 +103,6 @@ ActiveAdmin.register_page "Simulator" do
     else
       premium_type = "Annual"
     end
-
-    # puts "Premium Value => #{premium_value}, Premium Type => #{premium_type}"
 
     customer = Customer.find_by_id_passport(customer_id)
 

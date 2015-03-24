@@ -1,9 +1,6 @@
 class OnlyAdminsAuthorization < ActiveAdmin::AuthorizationAdapter
 
   def authorized?(action, subject = nil)
-
-    puts "#{normalized(Device)}"
-
     case subject      
     when normalized(Device) || normalized(Agent)
       # Only let the admin create, update and delete devices

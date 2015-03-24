@@ -19,7 +19,6 @@ class PremiumServiceTest < ActiveSupport::TestCase
     service = PremiumService.new
     month = Date::MONTHNAMES[Time.now.month - 1]
     year = Time.now.year - 2
-    puts "Month => #{month} \n Year => #{year}"
     insurable = service.is_insurable_by_month_and_year month, year
     assert_equal false, insurable
   end
@@ -92,7 +91,6 @@ class PremiumServiceTest < ActiveSupport::TestCase
     raw += 15
     raw += service.calculate_mpesa_fee(raw)
     expected_premium = [service.round_off((percentage_after_discount * raw).round), service.minimum_fee(agent.code, yop)].max
-    puts "insurance_value => #{insurance_value}, annual_premium => #{annual_premium}"
     assert_equal expected_premium, annual_premium
 
     base_premium = service.calculate_annual_premium agent.code, insurance_value, yop, false, false, true

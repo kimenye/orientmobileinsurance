@@ -214,7 +214,7 @@ class PremiumService
           email = CustomerMailer.policy_purchase(policy).deliver
         end
       else
-        puts ">>> No devices found for the phone number #{phone_number}"
+        Rails.logger.info ">>> No devices found for the phone number #{phone_number}"
       end
     else
       sms_gateway = SMSGateway.new

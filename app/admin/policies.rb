@@ -22,8 +22,6 @@ ActiveAdmin.register Policy, :as => "Customer" do
     policy_type = main_sheet.rows[3][2]
     payment_mode = main_sheet.rows[4][2]
 
-    # puts "Processing #{corporate_name} - #{sales_agent_code} - #{policy_type} - #{payment_mode}"
-
     main_sheet.rows[6..main_sheet.rows.length].each do |row|      
       model = row[1]
       imei = row[2]
@@ -39,7 +37,6 @@ ActiveAdmin.register Policy, :as => "Customer" do
       number = row[14]
       id = row[15]
 
-      # puts "#{model} #{imei} #{date_of_purchase} #{insured_value}"
       if !row[0].nil? && !row[0].empty?
         PolicyService.create_corporate_policy corporate_name, id, email, number, policy_type, sales_agent_code, payment_mode, model,
           payment_date, insured_value, replacement_value, total_paid, payment_ref, imei, policy_start, policy_end
