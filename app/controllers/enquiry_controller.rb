@@ -163,9 +163,7 @@ class EnquiryController < Wicked::WizardController
           end
 
           device_data = get_device_data          
-          session[:device] = device_data
-          #Check for the devices among our supported devices
-          # add_client_properties! device_data
+          session[:device] = device_data          
 
           device = nil
           model_id = params[:enquiry][:model]
