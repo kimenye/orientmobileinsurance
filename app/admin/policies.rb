@@ -64,6 +64,7 @@ ActiveAdmin.register Policy, :as => "Customer" do
     end
     column :sales_agent_code
     column :sales_agent_name
+    column :status
   end
 
   filter :policy_number
