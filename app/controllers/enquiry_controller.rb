@@ -1,9 +1,7 @@
 require 'premium_service'
-# require 'deviceatlasapi'
 require 'deviceatlas_cloud_client'
 
 class EnquiryController < Wicked::WizardController
-  # include DeviceAtlasApi::ControllerHelpers
   include DeviceAtlasCloudClient::ControllerHelper
   include ActionView::Helpers::NumberHelper
   layout "mobile"
@@ -49,6 +47,7 @@ class EnquiryController < Wicked::WizardController
 
   def show
     begin
+      # find the enquiry that's saved on the session.
       if Enquiry.find_by_id(session[:enquiry_id]).nil? || session[:enquiry_id].nil?        
         code = nil
         if params.has_key? "q"
@@ -63,18 +62,19 @@ class EnquiryController < Wicked::WizardController
       end
 
       device_data = get_device_data
-      # device_data = {} if device_data.nil?
-      # session[:device_marketing_name] = device_data["marketingName"]
+      
       session[:device_marketing_name] = device_data[:marketingName]
-      session[:model] = device_data[:model]
-      # model = get_model_name(device_data).downcase
+      session[:model] = device_data[:model]      
+      
       model = device_data[:model].downcase
-      session[:device_model] = model
       vendor = device_data[:vendor]
+
+      session[:device_model] = model
       session[:apple] = false
+
       if model.starts_with?("iphone") || model.starts_with?("ipad")
         session[:apple] = true
-        # if model.starts_with?("iphone 5") || model.starts_with?("ipad") || model.starts_with?("iphone 6")
+
         if model.starts_with?("iphone 6")
           possible_devices = Device.model_search(vendor, model)
           session[:possible_models] = possible_devices
@@ -82,20 +82,7 @@ class EnquiryController < Wicked::WizardController
           possible_devices = Device.model_like_search(vendor, model)
           session[:possible_models] = possible_devices
         end
-          # device = Device.model_like_search(vendor, model)
-        # elsif model.starts_with?("iphone 6") || model.starts_with?("iphone 6 Plus")
-          # possible_devices = Device.model_search(vendor, model).collect { |d| d.marketing_name }
-          # session[:possible_models] = possible_devices
-        # else      
-          # because there are no iPhone 3s in the catalogue
-          # possible_devices = Device.model_like_search(vendor, "iPhone 4").collect { |d| d.model }.uniq
-          # session[:possible_models] = possible_devices
-        # end
       end
-
-      # if session[:possible_models].count == 0
-      #   jump_to :not_insurable
-      # end
 
       render_wizard
     rescue => error
@@ -158,9 +145,6 @@ class EnquiryController < Wicked::WizardController
     @enquiry = Enquiry.find(session[:enquiry_id])
     premium_service = PremiumService.new
 
-    # if session[:possible_models].count == 0
-    #   render 'not_insurable', :layout => "mobile"
-    # end
     case step
       when :device_details
         code = params[:enquiry][:sales_agent_code].upcase if !params[:enquiry][:sales_agent_code].nil?
