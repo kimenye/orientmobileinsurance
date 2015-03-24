@@ -4,18 +4,9 @@ Orientmobileinsurance::Application.routes.draw do
   get "feedbacks/create"
 
   resources :claims
-
-
   resources :insured_devices, :subscriptions, :feedbacks
 
-
   devise_for :admin_users, ActiveAdmin::Devise.config
-
-
-  #authenticated :user do
-  #  root :to => 'home#index'
-  #end
-
 
   root :to => "home#index"
 
@@ -26,14 +17,13 @@ Orientmobileinsurance::Application.routes.draw do
   match 'enquiry/secure' => 'enquiry#secure'
   match 'insure' => 'enquiry#insure'
   match 'start_wizard' => 'enquiry#start_wizard'
-  # post "/start_wizard" => "enquiry#start_wizard", :as => "start_wizard", via: [:post]
-  #match 'enquiry/insure' => 'enquiry#insure', :as => :secure
-
   match 'policy/show_details' => 'policy#show_details'
 
+  match 'enquiry/airtel' => 'enquiry#airtel'
   match 'enquiry/status_check' => 'enquiry#status_check'
 
   match 'enquiries/:hashed_phone_number/:hashed_timestamp' => 'enquiries#show'
+
 
   devise_for :users, :controllers => { :sessions => "users/sessions" }
   ActiveAdmin.routes(self)

@@ -43,7 +43,6 @@ class MessagesController < ApplicationController
   end
 
   def receipts
-    puts ">>>> #{params.has_key?(:receipts)} <<< Params - #{params}"
     if params.has_key? (:receipts)
       if params[:receipts][:receipt].kind_of? Array
         params[:receipts][:receipt].each do |receipt|
@@ -93,17 +92,13 @@ class MessagesController < ApplicationController
           format.all { render json: @message, status: :created, location: @message }
         end
       else
-        # respond_to do |format|
-        #   # format.all { render json: @message, status: :created, location: @message }
-        # end
         if Rails.env == "production"
           msg = text.split(" ")[1]
           HTTParty.post(ENV['DEVELOPEMENT_SERVER_URL'], :query => { "Text" => msg, "MobileNumber" => params["MobileNumber"] })
         end
         render text: "OK"
       end
-    rescue => error
-      puts ">>>>> in error #{error}"
+    rescue => error      
       respond_to do |format|
         format.all { render json: (@message.errors if !@message.nil?), status: :unprocessable_entity }
       end

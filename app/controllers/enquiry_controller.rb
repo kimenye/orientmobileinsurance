@@ -41,6 +41,12 @@ class EnquiryController < Wicked::WizardController
     render 'corporate_receipt', :layout => "application"
   end
 
+  def airtel
+    @enquiry = Enquiry.create!({ source: 'USSD', enquiry_type: 'Airtel' })
+    session[:enquiry_id] = @enquiry.id
+    redirect_to enquiry_index_path
+  end
+
   def show
     begin
       if Enquiry.find_by_id(session[:enquiry_id]).nil? || session[:enquiry_id].nil?        
@@ -93,7 +99,6 @@ class EnquiryController < Wicked::WizardController
 
       render_wizard
     rescue => error
-      # puts error.backtrace
       logger.error "Error #{error.backtrace}"
       Rollbar.error(error, :phone_number => @enquiry.phone_number)
       session[:enquiry] = nil
@@ -189,7 +194,7 @@ class EnquiryController < Wicked::WizardController
           model = device_data[:model]
 
           invalid_da = (vendor.nil? || vendor.empty?) && (model.nil? || model.empty?)
-          puts ">> Invalid match from device atlas : #{invalid_da}"
+          logger.info ">> Invalid match from device atlas : #{invalid_da}"
 
           @enquiry.model = model
           @enquiry.vendor = vendor
@@ -201,14 +206,14 @@ class EnquiryController < Wicked::WizardController
             device = Device.model_search(vendor, model).first
           end
 
-          puts ">> After device is nil ? #{device.nil?}"
+          logger.info ">> After device is nil ? #{device.nil?}"
           @enquiry.user_agent = request.env['HTTP_USER_AGENT']
           @enquiry.detected_device_id= device.id if ! device.nil?
           @enquiry.detected = !device.nil?
           @enquiry.save!
 
           if device.nil? || is_insurable == false
-            puts "Device is nil"
+            logger.info "Device is nil"
             jump_to :not_insurable
           else
             session[:device] = device

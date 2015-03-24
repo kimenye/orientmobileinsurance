@@ -1,7 +1,7 @@
-#home-page{"data-role" => "page", "data-theme" => "b"}
+#home-page{"data-role" => "page", "data-theme" => "b", class: "enquiry #{@enquiry.enquiry_type.downcase}" }
   %section{"data-role" => "content", :role => "main"}
     %h1.logo
-      %img.logo.smaller{:alt => "Kenya Orient", :src => "../assets/koil_logo.jpg"}
+      %a.logo
     .tip.ui-bar-a
       Cover your phone against theft or accidental damage. Click 'Secure my Phone / tablet' for a quotation
     %ul{"data-divider-theme" => "b", "data-inset" => "true", "data-role" => "listview", "data-theme" => "c"}

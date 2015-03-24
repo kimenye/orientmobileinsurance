@@ -1,0 +1,24 @@
+.enquiry {
+
+  $airtel-red: #ed1c24;
+
+  a.logo {
+    display: block;
+    width: 200px;
+    height: 189px;
+    background: asset-url('koil_logo.jpg', 'images') no-repeat;
+  }
+
+  &.airtel {
+    a.logo {          
+      height: 88px;
+      background: asset-url("airtel.jpg", 'images') no-repeat;
+    }
+
+    .ui-bar-a,
+    .ui-bar-b {
+      background: $airtel-red;
+      border-color: $airtel-red;
+    }
+  }
+}
