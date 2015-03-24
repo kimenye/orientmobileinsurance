@@ -2,13 +2,17 @@
   %section{"data-role" => "content", :role => "main"}
     %h1.logo
       %a.logo
-    .tip.ui-bar-a
-      Cover your phone against theft or accidental damage. Click 'Secure my Phone / tablet' for a quotation
-    %ul{"data-divider-theme" => "b", "data-inset" => "true", "data-role" => "listview", "data-theme" => "c"}
-      %li{"data-role" => "list-divider"} I want to...
-      %li{"data-icon" => "arrow-r"}
-        = link_to 'Secure My Phone / Tablet', start_wizard_path, ({ "rel" => "external" } if is_asha? )
-      %li{"data-icon" => "arrow-r"}
-        = link_to 'Check the status of my policy / claim', enquire_status_path, ({ "rel" => "external" } if is_asha? )
-      %li{"data-icon" => "arrow-r"}
-        = link_to 'Report a Claim', make_new_claim_path, ({ "rel" => "external" } if is_asha? )
+    .active-component
+      .tip.ui-bar-a
+        Cover your phone against theft or accidental damage. Click 'Secure my Phone / tablet' for a quotation
+      %ul{"data-divider-theme" => "b", "data-inset" => "true", "data-role" => "listview", "data-theme" => "c"}
+        %li{"data-role" => "list-divider"} I want to...
+        %li{"data-icon" => "arrow-r"}
+          = link_to 'Secure My Phone / Tablet', start_wizard_path, ({ "rel" => "external" } if is_asha? )
+        %li{"data-icon" => "arrow-r"}
+          = link_to 'Check the status of my policy / claim', enquire_status_path, ({ "rel" => "external" } if is_asha? )
+        %li{"data-icon" => "arrow-r"}
+          = link_to 'Report a Claim', make_new_claim_path, ({ "rel" => "external" } if is_asha? )
+    .promo
+      .tip.ui-bar-a
+        Cover your phone against theft or accidental damage. Coming soon...

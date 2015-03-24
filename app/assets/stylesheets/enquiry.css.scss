@@ -9,6 +9,10 @@
     background: asset-url('koil_logo.jpg', 'images') no-repeat;
   }
 
+  .promo {
+    display: none;
+  }
+
   &.airtel {
     a.logo {          
       height: 88px;
@@ -16,9 +20,23 @@
     }
 
     .ui-bar-a,
-    .ui-bar-b {
+    .ui-bar-b,
+    .ui-btn-up-b, .ui-btn-hover-b {
       background: $airtel-red;
       border-color: $airtel-red;
     }
+
+    .tip {
+      opacity: 1;
+      font-weight: 100;
+    }
+
+    .active-component {
+      display: none;
+    }
+
+    .promo {
+      display: block;
+    }    
   }
 }
