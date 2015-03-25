@@ -178,19 +178,19 @@ class EnquiryController < Wicked::WizardController
           model = device_data[:model]
 
           invalid_da = (vendor.nil? || vendor.empty?) && (model.nil? || model.empty?)
-          logger.info ">> Invalid match from device atlas : #{invalid_da}"
+          logger.debug "Invalid match from device atlas : #{invalid_da}"
 
           @enquiry.model = model
           @enquiry.vendor = vendor
           @enquiry.marketing_name = marketingName
 
-          logger.info ">> Searching for #{model}, #{vendor}, #{marketingName}"          
+          logger.debug "Searching for #{model}, #{vendor}, #{marketingName}"          
 
           if !invalid_da && device.nil?
             device = Device.model_search(vendor, model).first
           end
 
-          logger.debug ">> After device is nil ? #{device.nil?}"
+          logger.debug "After device is nil ? #{device.nil?}"
           @enquiry.user_agent = request.env['HTTP_USER_AGENT']
           @enquiry.detected_device_id= device.id if ! device.nil?
           @enquiry.detected = !device.nil?
