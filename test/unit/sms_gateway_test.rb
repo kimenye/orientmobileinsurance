@@ -84,7 +84,7 @@ class SMSGatewayTest < ActiveSupport::TestCase
                 </member>
                 <member>
                   <name>Channel</name>
-                  <value>#{ENV['SMS_GATEWAY_CHANNEL_ID']}</value>
+                  <value>#{ENV['SMS_GATEWAY_AIRTEL_CHANNEL_ID']}</value>
                 </member>
                 <member>
                   <name>Priority</name>
@@ -102,7 +102,7 @@ class SMSGatewayTest < ActiveSupport::TestCase
         </params>
       </methodCall>"
 
-    xml = SMSGateway.create_message "254722200200", "Hello World"
+    xml = SMSGateway.create_message "254722200200", "Hello World", 'airtel'
     assert_equal valid_xml, xml
   end
 
