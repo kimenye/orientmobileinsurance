@@ -1,4 +1,5 @@
-#sales-info-page{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true"}
+= render 'title'
+#sales-info-page{"data-role" => "page", "data-theme" => "b", "data-add-back-btn" => "true", class: "enquiry #{@enquiry.enquiry_type.downcase}"}
   %header{"data-role" => "header"}
     %h1
       Sales Details
