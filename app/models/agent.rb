@@ -32,6 +32,9 @@ class Agent < ActiveRecord::Base
     "#{code} - #{outlet_name}"
   end
 
+  def is_airtel?
+    code == ENV['AIRTEL_CODE']
+  end
 
   def is_fd
   	premium_service = PremiumService.new

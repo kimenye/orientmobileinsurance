@@ -36,4 +36,9 @@ class AgentTest < ActiveSupport::TestCase
 		assert_equal false, a.is_stl
 		assert_equal true, a.is_neither_fd_nor_stl 
 	end
+
+	test 'Is an airtel code' do
+		agent = agents(:airtel)
+		assert agent.is_airtel?
+	end
 end
