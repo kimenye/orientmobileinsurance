@@ -20,7 +20,6 @@ class PaymentService
 
     quote = Quote.find_by_account_name account_name.upcase
     service = PremiumService.new
-    sms = SMSGateway.new
     if !quote.nil?
       
       customer = quote.insured_device.customer if !quote.is_corporate?
@@ -54,16 +53,16 @@ class PaymentService
 
           if quote.insured_device.imei.nil?
             if policy.minimum_paid
-              sms.send quote.insured_device.phone_number, "Dial *#06# to retrieve your device IMEI no.  Record the first 15 digits of the IMEI and SMS them to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation"
+              SMSGateway.send quote.insured_device.phone_number, "Dial *#06# to retrieve your device IMEI no.  Record the first 15 digits of the IMEI and SMS them to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation"
             else
-              sms.send quote.insured_device.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency(policy.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")} to proceed."
+              SMSGateway.send quote.insured_device.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency(policy.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")} to proceed."
             end
           else
             service.set_policy_dates policy
             policy.save!
             
             insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-            sms.send quote.insured_device.phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
+            SMSGateway.send quote.insured_device.phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
             email = CustomerMailer.policy_purchase(policy).deliver
           end
 
@@ -77,7 +76,7 @@ class PaymentService
           payment = Payment.create! :quote_id => quote.id, :amount => amount, :method => channel, :reference => transaction_ref
 
           if is_pending_payment?(quote.account_name)
-            sms.send quote.customer.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency(quote.amount_due - quote.corporate_amount_paid, :unit => "KES ", :precision => 0, :delimiter => "")} to proceed."
+            SMSGateway.send quote.customer.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency(quote.amount_due - quote.corporate_amount_paid, :unit => "KES ", :precision => 0, :delimiter => "")} to proceed."
             # send an email as well
           else
             # create policies for all the devices

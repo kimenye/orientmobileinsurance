@@ -1,24 +1,15 @@
 require 'json'
 class SMSGateway
 
-  def initialize
-    @service_id = ENV['SMS_GATEWAY_SERVICE_ID']
-    @channel_id = ENV['SMS_GATEWAY_CHANNEL_ID']
-    @password = ENV['SMS_GATEWAY_PASSWORD']
-    @base_uri = ENV['SMS_GATEWAY_URL']
-    @max_segment = ENV['SMS_MAX_SEGMENT_LENGTH'].to_i
-    @split = ENV['SPLIT_SMS']
-  end
-
-  def send to, message
+  def self.send to, message
     begin
       segments = [message]
-      if @split
-        segments = split_message(message)
+      if ENV['SPLIT_SMS']
+        segments = self.split_message(message)
       end
 
       segments.each do |txt|
-        xml = create_message to, txt
+        xml = self.create_message to, txt
         response = ""
 
         if Rails.env == "production"
@@ -46,15 +37,15 @@ class SMSGateway
     end
   end
   
-  def should_split_message message
-    message.length > @max_segment
+  def self.should_split_message message
+    message.length > ENV['SMS_MAX_SEGMENT_LENGTH'].to_i
   end
   
-  def split_message message
-    message.chars.each_slice(@max_segment).map(&:join)
+  def self.split_message message
+    message.chars.each_slice(ENV['SMS_MAX_SEGMENT_LENGTH'].to_i).map(&:join)
   end
 
-  def create_message to, message
+  def self.create_message to, message
      xml = "<?xml version=\"1.0\"?>
       <methodCall>
         <methodName>EAPIGateway.SendSMS</methodName>
@@ -72,12 +63,12 @@ class SMSGateway
                 </member>
                 <member>
                   <name>Password</name>
-                  <value>#{@password}</value>
+                  <value>#{ENV['SMS_GATEWAY_PASSWORD']}</value>
                 </member>
                 <member>
                   <name>Service</name>
                   <value>
-                    <int>#{@service_id}</int>
+                    <int>#{ENV['SMS_GATEWAY_SERVICE_ID']}</int>
                   </value>
                 </member>
                 <member>
@@ -86,7 +77,7 @@ class SMSGateway
                 </member>
                 <member>
                   <name>Channel</name>
-                  <value>#{@channel_id}</value>
+                  <value>#{ENV['SMS_GATEWAY_CHANNEL_ID']}</value>
                 </member>
                 <member>
                   <name>Priority</name>

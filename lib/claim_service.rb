@@ -34,20 +34,19 @@ class ClaimService
   end
 
   def resolve_claim claim
-    sms = SMSGateway.new
     to = claim.policy.customer.contact_number
     replacement = ActionController::Base.helpers.number_to_currency(claim.replacement_limit, :unit => "KES ", :precision => 0, :delimiter => "")
     if claim.is_damage? && claim.authorized
       # send an sms to the customer
       if claim.dealer_can_fix && claim.authorization_type == "Repair"
         text = "Your #{claim.policy.insured_device.device.model} is under repair. Collect it from #{claim.agent.name} on #{(claim.days_to_fix + 1).business_days.from_now.to_s(:simple)}. Carry your ID / Passport"
-        sms.send to, text
+        SMSGateway.send to, text
         claim.status_description = text
         claim.save!
         CustomerMailer.reparable_damage_claim(claim).deliver
       else
         text =  "Your #{claim.policy.insured_device.device.model} cannot be repaired. Visit #{claim.agent.name} with ID or Passport for a replacement. Limit #{replacement}"
-        sms.send to, text
+        SMSGateway.send to, text
         claim.status_description = text
         claim.save!
         CustomerMailer.irreparable_damage_claim(claim).deliver
@@ -55,7 +54,7 @@ class ClaimService
     else
       if claim.is_theft? && claim.authorized
         text = "Your claim has been processed. Visit #{claim.agent.name} with ID or Passport for a replacement device. Limit #{replacement}"
-        sms.send to, text
+        SMSGateway.send to, text
         claim.status_description = text
         claim.authorization_type = "Replace"
         claim.save!
@@ -64,13 +63,13 @@ class ClaimService
         CustomerMailer.claim_decline(claim).deliver
         claim.authorization_type = "Decline"
         text = "We regret to inform you that your Orient Mobile DAMAGE claim has been declined. Check your email for details."
-        sms.send to, text
+        SMSGateway.send to, text
         claim.status_description = text
         claim.save!
       elsif claim.is_theft? && !claim.authorized
         CustomerMailer.claim_decline(claim).deliver
         text = "We regret to inform you that your Orient Mobile THEFT claim has been declined. Check your email for details."
-        sms.send to, text
+        SMSGateway.send to, text
         claim.authorization_type = "Decline"
         claim.status_description = text
         claim.save!
@@ -79,7 +78,6 @@ class ClaimService
   end
 
   def notify_customer claim
-    gateway = SMSGateway.new
     device = claim.policy.insured_device.device.marketing_name
     yop = claim.policy.insured_device.yop
     claim_type = "DAMAGE" if claim.is_damage?
@@ -92,8 +90,8 @@ class ClaimService
 
     insured_value_str = ActionController::Base.helpers.number_to_currency(claim.policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
     text = "#{device}, Year #{claim.policy.insured_device.yop}, Value #{insured_value_str}. #{claim_type} claim booked under Ref #{claim.claim_no}. Check email for Claim Registration Form."
-    gateway.send(customer.contact_number, text)
-    gateway.send(customer.contact_number, "Visit #{brand} with #{requirements}")
+    SMSGateway.send(customer.contact_number, text)
+    SMSGateway.send(customer.contact_number, "Visit #{brand} with #{requirements}")
   end
   
   def is_serial_claimant id_number

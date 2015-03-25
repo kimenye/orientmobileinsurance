@@ -4,26 +4,24 @@ class SMSGatewayTest < ActiveSupport::TestCase
 
   test "If a text has more than 160 characters it should be split" do
     one_sixty_chars = (0..84).to_a.join
-    service = SMSGateway.new
     
-    response = service.should_split_message one_sixty_chars
+    response = SMSGateway.should_split_message one_sixty_chars
     assert_equal false, response
     
     one_sity_one_chars = (0..90).to_a.join
-    response = service.should_split_message one_sity_one_chars
+    response = SMSGateway.should_split_message one_sity_one_chars
     assert_equal true, response    
   end
   
   test "Should not split a text if it is less than 160 characters" do
     exp = ["1235"]
-    service = SMSGateway.new
     
-    result = service.split_message "1235"
+    result = SMSGateway.split_message "1235"
     assert_equal exp, result
     
     one_sixty_chars = (0..84).to_a.join
     exp = [one_sixty_chars]
-    result = service.split_message one_sixty_chars
+    result = SMSGateway.split_message one_sixty_chars
 
     assert_equal exp, result
   end
@@ -35,8 +33,7 @@ class SMSGatewayTest < ActiveSupport::TestCase
     arr = [seg_one,seg_two]
     msg = arr.join
     
-    service = SMSGateway.new
-    result = service.split_message msg
+    result = SMSGateway.split_message msg
     assert_equal arr.length, result.length    
     assert_equal arr[0], result[0]
     assert_equal arr[1], result[1]
@@ -49,9 +46,8 @@ class SMSGatewayTest < ActiveSupport::TestCase
     arr = [seg_one,seg_two]
     msg = arr.join
     
-    service = SMSGateway.new
     Sms.delete_all
-    service.send "123", msg
+    SMSGateway.send "123", msg
     assert_equal 2, Sms.count
   end
 
@@ -106,16 +102,13 @@ class SMSGatewayTest < ActiveSupport::TestCase
         </params>
       </methodCall>"
 
-    service = SMSGateway.new
-    xml = service.create_message "254722200200", "Hello World"
+    xml = SMSGateway.create_message "254722200200", "Hello World"
     assert_equal valid_xml, xml
   end
 
   test "The sms identifier from the gateway is saved to the sms record" do
     Sms.delete_all
-
-    service = SMSGateway.new
-    xml = service.send "254722200200", "Hello World"
+    xml = SMSGateway.send "254722200200", "Hello World"
 
     assert_equal 1, Sms.count
     sms = Sms.first

@@ -2,7 +2,6 @@ class SmsService
 
   def handle_sms_sending(text, mobile)
 
-    @gateway = SMSGateway.new
     premium_service = PremiumService.new
 
     msg_type = premium_service.get_message_type text
@@ -36,7 +35,7 @@ class SmsService
         enquiry.url = shortened_url
       end
       enquiry.save!
-      @gateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{enquiry.url}")
+      SMSGateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{enquiry.url}")
     elsif msg_type == 2
       #user is sending an imei number
       premium_service.activate_policy text, mobile
