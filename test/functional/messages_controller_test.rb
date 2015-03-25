@@ -36,8 +36,7 @@ class MessagesControllerTest < ActionController::TestCase
   test "Mark message as delivered if receipt id matches the respose's reference" do
     Sms.delete_all
 
-    service = SMSGateway.new
-    xml = service.send "254722200200", "Hello World"
+    xml = SMSGateway.send "254722200200", "Hello World"
 
     assert_equal 1, Sms.count
     sms = Sms.first
@@ -51,8 +50,7 @@ class MessagesControllerTest < ActionController::TestCase
   test "Save the message's delivery time" do
     Sms.delete_all
 
-    service = SMSGateway.new
-    xml = service.send "254722200200", "Hello World"
+    xml = SMSGateway.send "254722200200", "Hello World"
 
     assert_equal 1, Sms.count
     sms = Sms.first

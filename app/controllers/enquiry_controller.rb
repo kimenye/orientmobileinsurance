@@ -258,19 +258,15 @@ class EnquiryController < Wicked::WizardController
                             :insured_value => session[:quote_details]["insurance_value_uf"],
                             :agent_id => @enquiry.agent_id, :customer_id => customer.id, :quote_type => "Individual")
 
-          @gateway = SMSGateway.new
-
           session[:quote] = q
 
           jump_to :confirm_personal_details
         end
       when :confirm_personal_details
-        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{session[:quote_details]["due"]}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]        
-
-        @gateway = SMSGateway.new
+        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{session[:quote_details]["due"]}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]                
 
         smsMessage.each do |message|
-          @gateway.send(@enquiry.phone_number, message)
+          SMSGateway.send(@enquiry.phone_number, message)
         end
     end
     render_wizard @enquiry
