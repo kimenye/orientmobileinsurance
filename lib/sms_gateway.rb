@@ -1,7 +1,7 @@
 require 'json'
 class SMSGateway
 
-  def self.send to, message
+  def self.send to, message, mode='default'
     begin
       segments = [message]
       if ENV['SPLIT_SMS']
@@ -9,7 +9,7 @@ class SMSGateway
       end
 
       segments.each do |txt|
-        xml = self.create_message to, txt
+        xml = self.create_message to, txt, mode
         response = ""
 
         if Rails.env == "production"
@@ -45,8 +45,9 @@ class SMSGateway
     message.chars.each_slice(ENV['SMS_MAX_SEGMENT_LENGTH'].to_i).map(&:join)
   end
 
-  def self.create_message to, message
-     xml = "<?xml version=\"1.0\"?>
+  def self.create_message to, message, mode="default"
+    channel = mode == 'default' ? ENV['SMS_GATEWAY_CHANNEL_ID'] : ENV['SMS_GATEWAY_AIRTEL_CHANNEL_ID']
+    xml = "<?xml version=\"1.0\"?>
       <methodCall>
         <methodName>EAPIGateway.SendSMS</methodName>
         <params>
@@ -77,7 +78,7 @@ class SMSGateway
                 </member>
                 <member>
                   <name>Channel</name>
-                  <value>#{ENV['SMS_GATEWAY_CHANNEL_ID']}</value>
+                  <value>#{channel}</value>
                 </member>
                 <member>
                   <name>Priority</name>
