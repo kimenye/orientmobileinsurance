@@ -23,6 +23,7 @@ class Ability
     if user.is_admin
         can :manage, ActiveAdmin::Page, name: "Simulator"
         can :manage, Device
+        can :manage, Agent
         can :create, Customer
         can :update, Customer
         can :update, InsuredDevice
