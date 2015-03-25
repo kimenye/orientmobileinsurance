@@ -190,14 +190,14 @@ class EnquiryController < Wicked::WizardController
             device = Device.model_search(vendor, model).first
           end
 
-          logger.info ">> After device is nil ? #{device.nil?}"
+          logger.debug ">> After device is nil ? #{device.nil?}"
           @enquiry.user_agent = request.env['HTTP_USER_AGENT']
           @enquiry.detected_device_id= device.id if ! device.nil?
           @enquiry.detected = !device.nil?
           @enquiry.save!
 
           if device.nil? || is_insurable == false
-            logger.info "Device is nil"
+            logger.debug "Device is nil"
             jump_to :not_insurable
           else
             session[:device] = device
