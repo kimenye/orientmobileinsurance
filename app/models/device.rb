@@ -59,7 +59,6 @@ class Device < ActiveRecord::Base
   end )
 
   def get_insurance_value (code, year_of_purchase)
-    # get_insurance_value_by_year(code, year_of_purchase)
     get_insurance_value_by_month_range(code, get_range_for_year(year_of_purchase))
   end
 
@@ -70,17 +69,6 @@ class Device < ActiveRecord::Base
       return 4
     end
   end
-
-  # def get_insurance_value_by_year (code, year_of_purchase)
-  #   service = PremiumService.new
-  #   if (service.is_fx_code(code) || service.is_stl_code(code))  && Time.now.year == year_of_purchase
-  #     return fd_insured_value
-  #   elsif year_of_purchase == Time.now.year
-  #     return yop_insured_value
-  #   else
-  #     return prev_insured_value
-  #   end
-  # end
 
   def get_insurance_value_by_month_range (code, month_range)
     if month_range == 0
@@ -102,8 +90,7 @@ class Device < ActiveRecord::Base
     months = Date::MONTHNAMES
 
     current_month = Time.now.month
-    month_yrs = months[1..current_month].collect{|m| "#{m} #{Time.now.year}"}.reverse + months[1..12].collect{|m| "#{m} #{Time.now.year - 1}"}.reverse + months[current_month..12].collect{|m| "#{m} #{Time.now.year - 2}"}.reverse
-    # month_ranges = [[month_yrs[6],month_yrs[0]].join(" - "), [month_yrs[9],month_yrs[7]].join(" - "), [month_yrs[12],month_yrs[10]].join(" - "), [month_yrs[15],month_yrs[13]].join(" - "), [month_yrs[18],month_yrs[16]].join(" - "), [month_yrs[24],month_yrs[19]].join(" - ")]
+    month_yrs = months[1..current_month].collect{|m| "#{m} #{Time.now.year}"}.reverse + months[1..12].collect{|m| "#{m} #{Time.now.year - 1}"}.reverse + months[current_month..12].collect{|m| "#{m} #{Time.now.year - 2}"}.reverse    
     
     return month_yrs
   end
