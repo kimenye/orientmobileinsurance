@@ -16,18 +16,14 @@ ActiveAdmin.register Agent do
     end
   end
 
-  # index do
-#     column :town
-#     column :brand
-#     column :outlet
-#     column :outlet_name
-#     column :location
-#     column :code
-#     column :email
-#     column :phone_number
-#   end
-  
-  # actions :index, :delete
+  index do
+    column :town
+    column :brand
+    column :outlet
+    column :outlet_name
+    column :location
+    column :code
+  end
 
   filter :town
   filter :code
