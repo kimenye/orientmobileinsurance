@@ -40,7 +40,9 @@ class EnquiryController < Wicked::WizardController
   end
 
   def airtel
-    @enquiry = Enquiry.create!({ source: 'USSD', enquiry_type: 'Airtel' })
+    agent = Agent.find_by_code(ENV['AIRTEL_CODE'])
+    @enquiry = Enquiry.create!({ source: 'USSD', enquiry_type: 'Airtel', agent_id: agent.id, sales_agent_code: agent.code })
+  
     session[:enquiry_id] = @enquiry.id
     redirect_to enquiry_index_path
   end

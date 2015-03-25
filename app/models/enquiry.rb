@@ -73,6 +73,10 @@ class Enquiry < ActiveRecord::Base
     "Enquiry"
   end
 
+  def is_airtel?
+    enquiry_type == 'Airtel'
+  end
+
   attr_accessor :customer_name, :customer_email, :customer_payment_option, :customer_phone_number
 
   private
