@@ -1,8 +1,13 @@
+require 'simplecov'
+SimpleCov.start 'rails' do 
+  add_filter '/app/admin'
+end
+
+
 ENV["RAILS_ENV"] = "test"
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require 'minitest/rails'
-#require 'minitest/rails/capybara'
 require 'minitest/focus'
 require 'minitest/colorize'
 
@@ -19,6 +24,9 @@ class ActiveSupport::TestCase
   fixtures :all
 
   Turn.config.format = :progress
+
+  
+  # Dir[Rails.root.join('lib/**/*.rb')].each { |f| require f }
 
   def self.prepare
     # Add code that needs to be executed before test suite start

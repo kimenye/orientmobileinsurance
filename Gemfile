@@ -56,6 +56,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'factory_girl_rails'
+  gem 'spring'
 end
 
 group :production do  
@@ -70,3 +71,4 @@ gem 'minitest-focus'
 gem 'minitest-spec-rails'
 gem 'capybara_minitest_spec'
 gem 'turn'
+gem 'simplecov'
