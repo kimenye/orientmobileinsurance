@@ -85,7 +85,7 @@ class PremiumServiceTest < ActiveSupport::TestCase
     raw = 1.0045 * raw
     raw = [raw.round, service.minimum_fee(agent.code, yop)].max
     raw += 15
-    raw += service.calculate_mpesa_fee(raw)
+    raw += PremiumService.calculate_mpesa_fee(raw)
     expected_premium = [service.round_off((percentage_after_discount * raw).round), service.minimum_fee(agent.code, yop)].max
     assert_equal expected_premium, annual_premium
 
@@ -113,39 +113,37 @@ class PremiumServiceTest < ActiveSupport::TestCase
   end
 
   test "MPESA service charges should be correctly calculated" do
-    service = PremiumService.new
-
-    fee = service.calculate_mpesa_fee(10)
+    fee = PremiumService.calculate_mpesa_fee(10)
     assert fee == 0, "Fee should be free from 0-999"
 
-    fee = service.calculate_mpesa_fee(1000)
+    fee = PremiumService.calculate_mpesa_fee(1000)
     assert fee == 11, "Fee should be 11 for greater than 999"
 
-    fee = service.calculate_mpesa_fee(2499)
+    fee = PremiumService.calculate_mpesa_fee(2499)
     assert fee == 11, "Fee should be 11 for greater than 999"
 
-    fee = service.calculate_mpesa_fee(2500)
+    fee = PremiumService.calculate_mpesa_fee(2500)
     assert fee == 33, "Fee should be 33 for greater than 2499"
 
-    fee = service.calculate_mpesa_fee(5000)
+    fee = PremiumService.calculate_mpesa_fee(5000)
     assert fee == 61, "Fee should be 61 for greater than 5000"
 
-    fee = service.calculate_mpesa_fee(9998)
+    fee = PremiumService.calculate_mpesa_fee(9998)
     assert fee == 61, "Fee should be 61 for greater than 5000"
 
-    fee = service.calculate_mpesa_fee(10001)
+    fee = PremiumService.calculate_mpesa_fee(10001)
     assert fee == 77, "Fee should be 77 for greater than 10000"
 
-    fee = service.calculate_mpesa_fee(19999)
+    fee = PremiumService.calculate_mpesa_fee(19999)
     assert fee == 77, "Fee should be 77 for greater than 10000"
 
-    fee = service.calculate_mpesa_fee(21000)
+    fee = PremiumService.calculate_mpesa_fee(21000)
     assert fee == 132, "Fee should be 132 for greater than 20000"
 
-    fee = service.calculate_mpesa_fee(36000)
+    fee = PremiumService.calculate_mpesa_fee(36000)
     assert fee == 154, "Fee should be 154 for greater than 35000"
 
-    fee = service.calculate_mpesa_fee(65000)
+    fee = PremiumService.calculate_mpesa_fee(65000)
     assert fee == 165, "Fee should be 165 for greater than 50000"
   end
 

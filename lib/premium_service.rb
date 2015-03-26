@@ -28,7 +28,7 @@ class PremiumService
     end
   end
 
-  def calculate_mpesa_fee transfer_value
+  def self.calculate_mpesa_fee transfer_value
     fee = 0
     if transfer_value >= 1000 && transfer_value <= 2499
       fee = 11
@@ -65,7 +65,7 @@ class PremiumService
   def calculate_total_installment base_premium
     installment = 1.15 * base_premium  # 115% of annual premium
     installment += 15 # add sms charges
-    mpesa_fee_per_installment = calculate_mpesa_fee (installment / 3)
+    mpesa_fee_per_installment = PremiumService.calculate_mpesa_fee (installment / 3)
     mpesa_fee_per_installment *= 3
     installment += mpesa_fee_per_installment # add mpesa charges for installment
 
@@ -96,7 +96,7 @@ class PremiumService
     raw = raw * 1.0045 if add_levy
     raw = [raw.round, minimum_fee(agent_code, yop)].max
     raw += 15 if add_sms_charges #sms charges
-    mpesa_fee = calculate_mpesa_fee raw
+    mpesa_fee = PremiumService.calculate_mpesa_fee raw
     raw += mpesa_fee if add_mpesa
 
     agent = Agent.find_by_code(agent_code)
