@@ -247,7 +247,6 @@ class PremiumService
         policy.status = "Active"
       end
     end
-    # end
   end
 
   private
