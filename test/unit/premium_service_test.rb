@@ -2,8 +2,8 @@ require 'test_helper'
 
 class PremiumServiceTest < ActiveSupport::TestCase
   test "Should insure phones purchased in the current year if no sales code is provided" do
-    service = PremiumService.new
-    insurable = service.is_insurable Time.now.year
+    # service = PremiumService.new
+    insurable = PremiumService.is_insurable? Time.now.year
     assert true == insurable
   end
 
@@ -38,8 +38,7 @@ class PremiumServiceTest < ActiveSupport::TestCase
   end
 
   test "Should insure phones purchased in the previous year if no sales code is provided" do
-    service = PremiumService.new
-    insurable = service.is_insurable Time.now.year-1
+    insurable = PremiumService.is_insurable? Time.now.year-1
     assert true == insurable
   end
 
@@ -49,8 +48,7 @@ class PremiumServiceTest < ActiveSupport::TestCase
   end
 
   test "Should not insure phones purchased more than a year ago if no sales code is provided" do
-    service = PremiumService.new
-    insurable = service.is_insurable Time.now.year-2
+    insurable = PremiumService.is_insurable? Time.now.year-2
     assert false == insurable
   end
 
