@@ -1,6 +1,6 @@
 class SmsService
 
-  def handle_sms_sending(text, mobile)
+  def self.handle_sms_sending(text, mobile)
 
     premium_service = PremiumService.new
 
@@ -14,7 +14,7 @@ class SmsService
     @message.save!
 
 
-    Rails.logger.info ">>> message type #{msg_type}"
+    Rails.logger.debug ">>> message type #{msg_type}"
     if msg_type == 1
       enquiry = Enquiry.new
       enquiry.phone_number = mobile
@@ -24,23 +24,22 @@ class SmsService
       enquiry.hashed_phone_number = Digest::MD5.hexdigest(mobile)
       enquiry.hashed_timestamp = Digest::MD5.hexdigest(Time.now.to_s)
 
-      url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}/#{enquiry.hashed_timestamp}"
-      enquiry.url = url
-      if Rails.env == "production"
+      url = "#{ENV['BASE_URL']}enquiries/#{enquiry.hashed_phone_number}/#{enquiry.hashed_timestamp}"      
+      if Rails.env.production?
         auth = UrlShortener::Authorize.new ENV['BITLY_USERNAME'], ENV['BITLY_PASSWORD']
         client = UrlShortener::Client.new auth
         result = client.shorten(url)
-        shortened_url = result.result['nodeKeyVal']['shortUrl']
-
-        enquiry.url = shortened_url
+        url = result.result['nodeKeyVal']['shortUrl']
       end
+
+      enquiry.url = url
       enquiry.save!
       SMSGateway.send(enquiry.phone_number, "Click here to access Orient Mobile: #{enquiry.url}")
     elsif msg_type == 2
       #user is sending an imei number
-      premium_service.activate_policy text, mobile
+      PremiumService.activate_policy! text, mobile
     else
-      Rails.logger.info ">>> we were not able to understand the text message"
+      Rails.logger.debug ">>> we were not able to understand the text message"
     end
 
     return @message

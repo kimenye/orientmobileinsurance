@@ -352,20 +352,19 @@ class PremiumServiceTest < ActiveSupport::TestCase
     quote = Quote.create! :insured_device_id => insured_device.id, :insured_value => 1000, :premium_type => "Annual", :annual_premium => 300, :monthly_premium => 200, :account_name => "OMIXRY9832", :expiry_date => 3.days.from_now
     policy = Policy.create! :policy_number => "AAA/000", :quote_id => quote.id, :status => "Active", :start_date => Time.now, :expiry => 1.year.from_now, :insured_device_id => insured_device.id
 
-    service = PremiumService.new
-    result = service.is_valid_imei? "animeinumberthatdoesntexist"
+    result = PremiumService.is_valid_imei? "animeinumberthatdoesntexist"
 
     assert_equal result, true
 
-    result = service.is_valid_imei? "123456789012345"
+    result = PremiumService.is_valid_imei? "123456789012345"
     assert_equal result, false
 
     # disable the policy
     policy.status = 'Expired'
     policy.expiry = 30.days.ago
     policy.save!
-    
-    assert service.is_valid_imei? '123456789012345'
+
+    assert PremiumService.is_valid_imei? '123456789012345'
   end
 
   test "Should generate the right policy number in the case where some data may have been deleted" do
@@ -442,6 +441,9 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert policy.is_active?    
     assert policy.expiry <= 30.days.from_now
 
+  end
+
+  test 'Can correctly activate policies' do
   end
 
 end
