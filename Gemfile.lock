@@ -296,7 +296,6 @@ GEM
     smarter_csv (1.0.11)
     spreadsheet (0.6.5.9)
       ruby-ole (>= 1.0)
-    spring (1.2.0)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -390,7 +389,6 @@ DEPENDENCIES
   simplecov
   smarter_csv
   spreadsheet
-  spring
   sqlite3
   therubyracer
   thin

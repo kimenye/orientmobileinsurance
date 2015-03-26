@@ -56,7 +56,6 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'factory_girl_rails'
-  gem 'spring'
 end
 
 group :production do  
@@ -64,11 +63,13 @@ group :production do
   gem 'therubyracer', :platforms => :ruby
 end
 
-gem 'minitest-rails'
-gem 'minitest-rails-capybara'
-gem 'minitest-colorize'
-gem 'minitest-focus'
-gem 'minitest-spec-rails'
-gem 'capybara_minitest_spec'
-gem 'turn'
+group :test do
+  gem 'minitest-rails'
+  gem 'minitest-rails-capybara'
+  gem 'minitest-colorize'
+  gem 'minitest-focus'
+  gem 'minitest-spec-rails'
+  gem 'capybara_minitest_spec'
+  gem 'turn'
+end
 gem 'simplecov'
