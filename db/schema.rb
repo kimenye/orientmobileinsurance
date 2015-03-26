@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150323152312) do
+ActiveRecord::Schema.define(:version => 20150326101825) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -283,10 +283,12 @@ ActiveRecord::Schema.define(:version => 20150323152312) do
     t.integer  "agent_id"
     t.string   "quote_type"
     t.integer  "customer_id"
+    t.integer  "enquiry_id"
   end
 
   add_index "quotes", ["agent_id"], :name => "index_quotes_on_agent_id"
   add_index "quotes", ["customer_id"], :name => "index_quotes_on_customer_id"
+  add_index "quotes", ["enquiry_id"], :name => "index_quotes_on_enquiry_id"
   add_index "quotes", ["insured_device_id"], :name => "index_quotes_on_insured_device_id"
 
   create_table "roles", :force => true do |t|
