@@ -186,37 +186,41 @@ class PremiumService
     if id.nil?
       return true
     else
-      if id.quote.policy.is_active?
+      if id.quote && id.quote.policy && id.quote.policy.is_active?
         return false
       else
-	return true
+        return true
       end
     end
   end
 
-  def self.activate_policy! imei, phone_number    
-    if self.is_valid_imei? imei      
-      inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.nil? && !id.quote.policy.nil?) }
+  def self.activate_policy! imei, phone_number        
+    # first check if there is an IMEI for that insured device
+    possible_devices = InsuredDevice.find_all_by_phone_number(phone_number)
+    if possible_devices.empty?
+      Rails.logger.info ">>> No devices found for the phone number #{phone_number}"
+    else
+      if self.is_valid_imei? imei      
+        inactive_devices = possible_devices.select { |id| id.imei.nil? && (!id.quote.nil? && !id.quote.policy.nil?) }
 
-      if !inactive_devices.empty?
-        device = inactive_devices.last
-        device.imei = imei.strip
-        device.save!
+        if !inactive_devices.empty?
+          device = inactive_devices.last
+          device.imei = imei.strip
+          device.save!
 
-        policy = device.quote.policy
-        set_policy_dates policy
-        policy.save!
+          policy = device.quote.policy
+          set_policy_dates policy
+          policy.save!
 
-        if policy.status == "Active"
-          insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
-          SMSGateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
-          email = CustomerMailer.policy_purchase(policy).deliver
+          if policy.status == "Active"
+            insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
+            SMSGateway.send phone_number, "You have successfully covered your device, value #{insured_value_str}. Orient Mobile policy #{policy.policy_number} valid till #{policy.expiry.to_s(:simple)}. Policy details: #{ENV['OMB_URL']}"
+            email = CustomerMailer.policy_purchase(policy).deliver
+          end
         end
       else
-        Rails.logger.info ">>> No devices found for the phone number #{phone_number}"
+        SMSGateway.send phone_number, "That IMEI number has already been activated for another policy. Please confirm and send again or call 0202962000."
       end
-    else
-      SMSGateway.send phone_number, "That IMEI number has already been activated for another policy. Please confirm and send again or call 0202962000."
     end
   end
 

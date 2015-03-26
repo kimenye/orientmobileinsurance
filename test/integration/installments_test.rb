@@ -16,7 +16,7 @@ class InstallmentsTest < ActionDispatch::IntegrationTest
   end
 
   it "A serial claimant is an applicant that has made 3 claims in any 12-month period" do
-
+    Policy.delete_all
     @device = Device.create! :vendor => "Apple", :model => "IPHONE 5 - 16GB", :marketing_name => "IPHONE 5 - 16GB", :catalog_price => 3000.00
     @customer = Customer.create! :name => "Test", :id_passport => "123456789", :email => "test@domain.com", :phone_number => "254705866564"
     @insured_device = InsuredDevice.create! :customer_id => @customer.id, :device_id => @device.id

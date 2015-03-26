@@ -20,3 +20,5 @@
 
 insured_apple:
   device: simple
+  phone_number: 254705123456
+  imei: 123456789012345

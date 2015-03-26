@@ -443,7 +443,52 @@ class PremiumServiceTest < ActiveSupport::TestCase
 
   end
 
-  test 'Can correctly activate policies' do
+  test 'Can correctly detect already activated policies' do
+    id = insured_devices(:insured_apple)
+    quote = quotes(:airtel_iphone)
+
+    id.quote_id = quote.id
+    id.save!
+    
+    quote.insured_device_id = id.id
+    quote.save!
+
+    PremiumService.activate_policy! id.imei, id.phone_number
+
+    sms = Sms.last
+    assert_equal 'That IMEI number has already been activated for another policy. Please confirm and send again or call 0202962000.', sms.text
+  end
+
+  test 'Can correctly detect when the user does not have any devices' do
+    Sms.delete_all
+    id = insured_devices(:insured_apple)
+
+    PremiumService.activate_policy! id.imei, '254donthaveaphone'
+    
+    assert_equal 0, Sms.count
+  end
+
+  test 'Can correctly activate ready polcies' do
+    Sms.delete_all
+    policy = policies(:apple_airtel)
+    policy.status = nil
+    policy.save!
+
+    id = insured_devices(:insured_apple)
+    imei = id.imei
+    id.imei = nil
+    id.save!
+
+    quote = quotes(:airtel_iphone)
+
+    id.quote_id = quote.id
+    id.save!
+    
+    quote.insured_device_id = id.id
+    quote.save!
+
+    PremiumService.activate_policy! imei, id.phone_number
+    assert_equal 1, Sms.count    
   end
 
 end
