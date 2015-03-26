@@ -48,15 +48,14 @@ class PremiumService
     fee
   end
 
-  def get_status_message quote    
+  def self.get_status_message quote    
     if quote.policy.nil?
       amount_due = ActionController::Base.helpers.number_to_currency(quote.amount_due, :unit => "KES ", :precision => 0, :delimiter => "")
       expected = "The Orient Mobile policy for this device has an outstanding balance of #{amount_due}. Your account no. is #{quote.account_name}. Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}).  You can register your claim after payment confirmation."
       return expected
     elsif quote.policy.is_owing?
       amount_due = ActionController::Base.helpers.number_to_currency(quote.policy.pending_amount, :unit => "KES ", :precision => 0, :delimiter => "")
-      expected = "The Orient Mobile policy for this device has an outstanding balance of #{amount_due}. Your account no. is #{quote.account_name}. Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}).  You can register your claim after payment confirmation."
-      return expected
+      return "The Orient Mobile policy for this device has an outstanding balance of #{amount_due}. Your account no. is #{quote.account_name}. Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}).  You can register your claim after payment confirmation."
     elsif quote.policy.is_pending?
       return "To activate your policy Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this & SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
     end
