@@ -221,7 +221,7 @@ class PremiumService
     end
   end
 
-  def set_policy_dates policy
+  def self.set_policy_dates policy
     # if policy.status == "Inactive" || policy.status == "Pending"
     pending = policy.pending_amount
     if policy.quote.premium_type == "Annual"

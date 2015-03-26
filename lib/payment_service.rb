@@ -58,7 +58,7 @@ class PaymentService
               SMSGateway.send quote.insured_device.phone_number, "Thank you for your payment. The amount due was #{number_to_currency(quote.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")}. Please top up with #{number_to_currency(policy.minimum_due, :unit => "KES ", :precision => 0, :delimiter => "")} to proceed."
             end
           else
-            service.set_policy_dates policy
+            PremiumService.set_policy_dates policy
             policy.save!
             
             insured_value_str = ActionController::Base.helpers.number_to_currency(policy.quote.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
