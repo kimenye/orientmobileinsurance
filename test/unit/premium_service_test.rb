@@ -179,11 +179,30 @@ class PremiumServiceTest < ActiveSupport::TestCase
   end
 
   test "A status message is displayed for a policy that cannot be claimed" do
-    service = PremiumService.new
     quote = Quote.new ({ :account_name => "account", :premium_type => "Annual", :annual_premium => 10 })
 
     expected = "The Orient Mobile policy for this device has an outstanding balance of KES 10. Your account no. is account. Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}).  You can register your claim after payment confirmation."
-    msg = service.get_status_message quote
+    msg = PremiumService.get_status_message quote
+    assert_equal expected, msg
+  end
+
+  test 'A status message for when a policy is owing' do
+    quote = Quote.create!({ :account_name => "account", :premium_type => "Annual", :annual_premium => 10000 })        
+    policy = Policy.create! quote_id: quote.id, insured_device_id: insured_devices(:insured_apple).id
+
+    msg = PremiumService.get_status_message quote
+    amount_due = ActionController::Base.helpers.number_to_currency(quote.policy.pending_amount, :unit => "KES ", :precision => 0, :delimiter => "")
+    expected = "The Orient Mobile policy for this device has an outstanding balance of #{amount_due}. Your account no. is #{quote.account_name}. Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}).  You can register your claim after payment confirmation."
+    assert_equal expected, msg
+  end
+
+  test 'A status message for when a policy is owing' do
+    quote = Quote.create!({ :account_name => "account", :premium_type => "Annual", :annual_premium => 10000 })    
+    policy = Policy.create! quote_id: quote.id, insured_device_id: insured_devices(:insured_apple).id, status: 'Pending'
+    payment = Payment.create! quote_id: quote.id, policy_id: policy.id, amount: 10000
+
+    msg = PremiumService.get_status_message quote
+    expected = "To activate your policy Dial *#06# to retrieve the 15-digit IMEI no. of your device. Record this & SMS starting with OMI and the number to #{ENV['SHORT_CODE']} to receive your Orient Mobile policy confirmation."
     assert_equal expected, msg
   end
 
