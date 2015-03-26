@@ -181,7 +181,7 @@ class PremiumService
     rate
   end
 
-  def is_valid_imei? imei
+  def self.is_valid_imei? imei
     id = InsuredDevice.find_by_imei imei
     if id.nil?
       return true
@@ -194,8 +194,8 @@ class PremiumService
     end
   end
 
-  def activate_policy imei, phone_number    
-    if is_valid_imei? imei      
+  def self.activate_policy! imei, phone_number    
+    if self.is_valid_imei? imei      
       inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.nil? && !id.quote.policy.nil?) }
 
       if !inactive_devices.empty?

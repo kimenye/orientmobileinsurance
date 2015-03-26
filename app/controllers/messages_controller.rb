@@ -86,7 +86,7 @@ class MessagesController < ApplicationController
         mobile = params["MobileNumber"]
         service = SmsService.new
 
-        @message = service.handle_sms_sending(text, mobile)
+        @message = SmsService.handle_sms_sending(text, mobile)
 
         respond_to do |format|
           format.all { render json: @message, status: :created, location: @message }
