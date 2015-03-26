@@ -15,6 +15,7 @@
 #  agent_id          :integer
 #  quote_type        :string(255)
 #  customer_id       :integer
+#  enquiry_id        :integer
 #
 
 class Quote < ActiveRecord::Base
@@ -27,6 +28,7 @@ class Quote < ActiveRecord::Base
   belongs_to :insured_device
   belongs_to :agent
   belongs_to :customer
+  belongs_to :enquiry
   has_many :policies
   has_many :payments
   attr_accessible :account_name, :annual_premium, :expiry_date, :monthly_premium, :insured_device_id, :premium_type, :insured_value, :agent_id, :quote_type, :customer_id
@@ -82,6 +84,10 @@ class Quote < ActiveRecord::Base
       return annual_premium
     end
   end
+
+  def is_airtel?
+    enquiry && enquiry.is_airtel?
+  end
   
   def is_installment?
     premium_type == "Monthly" || premium_type == "six_monthly"
@@ -95,15 +101,7 @@ class Quote < ActiveRecord::Base
     return agent.code if !agent.nil?
   end
 
-  # def customer
-  #   if policy.nil?
-  #     return ""
-  #   else
-  #     policy.customer.name
-  #   end
-  # end
-
-  def is_expired
+  def is_expired?
     expired = expiry_date - Time.now < 0
   end
 
