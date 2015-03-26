@@ -35,7 +35,7 @@ class InstallmentsTest < ActionDispatch::IntegrationTest
     6.times do
       Payment.create! :policy_id => @policy.id, :amount => 115.00
       @policy = Policy.first
-      @service.set_policy_dates @policy
+      PremiumService.set_policy_dates @policy
       @policy.save!
       if n != 6
         assert_equal 30.days.from_now.year, @policy.expiry.year

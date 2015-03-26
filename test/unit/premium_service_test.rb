@@ -402,4 +402,43 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal 5085, service.round_off(number04)
   end
 
+  test 'Can correctly set policy dates' do
+    quote = Quote.create!  quote_type: 'Individual', premium_type: 'Annual', annual_premium: 5000
+    policy = Policy.create! quote_id: quote.id, insured_device_id: insured_devices(:insured_apple).id
+    payment = Payment.create! quote_id: quote.id, amount: 5000, policy_id: policy.id
+    
+    assert !policy.is_owing?    
+
+    # Paid annual policy
+    PremiumService.set_policy_dates policy
+    assert policy.is_active?
+    assert policy.expiry <= 365.days.from_now
+
+    quote.premium_type = 'Monthly'
+    quote.monthly_premium = 1500
+    quote.save!
+    
+    policy.reload
+
+    assert !policy.is_owing?
+    PremiumService.set_policy_dates policy
+    assert policy.is_active?
+
+    # if policy had already started e.g. a prior installment was paid
+    policy.reload
+    policy.start_date = 30.days.ago
+    PremiumService.set_policy_dates policy
+    assert policy.is_active?
+
+    # if the policy is owing only extend for 30 days
+    policy.reload
+    quote.monthly_premium = 2000
+    quote.save!    
+
+    PremiumService.set_policy_dates policy
+    assert policy.is_active?    
+    assert policy.expiry <= 30.days.from_now
+
+  end
+
 end
