@@ -1,6 +1,6 @@
 class PremiumService
 
-  def is_insurable year_of_purchase
+  def self.is_insurable? year_of_purchase
     current_year = Time.now.year
     if current_year - year_of_purchase <= 1
       return true
@@ -194,7 +194,6 @@ class PremiumService
     end
   end
 
-  # TODO: Not tested!!!
   def activate_policy imei, phone_number    
     if is_valid_imei? imei      
       inactive_devices = InsuredDevice.find_all_by_phone_number(phone_number).select { |id| id.imei.nil? && (!id.quote.nil? && !id.quote.policy.nil?) }
