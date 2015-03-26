@@ -359,6 +359,13 @@ class PremiumServiceTest < ActiveSupport::TestCase
 
     result = service.is_valid_imei? "123456789012345"
     assert_equal result, false
+
+    # disable the policy
+    policy.status = 'Expired'
+    policy.expiry = 30.days.ago
+    policy.save!
+    
+    assert service.is_valid_imei? '123456789012345'
   end
 
   test "Should generate the right policy number in the case where some data may have been deleted" do
