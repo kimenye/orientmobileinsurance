@@ -288,10 +288,15 @@ GEM
     simple_xlsx_reader (0.9.8)
       nokogiri
       rubyzip
+    simplecov (0.7.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.7.1)
+    simplecov-html (0.7.1)
     slop (3.4.6)
     smarter_csv (1.0.11)
     spreadsheet (0.6.5.9)
       ruby-ole (>= 1.0)
+    spring (1.2.0)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -382,8 +387,10 @@ DEPENDENCIES
   rufus-scheduler
   sass-rails (~> 3.2.3)
   simple_xlsx_reader
+  simplecov
   smarter_csv
   spreadsheet
+  spring
   sqlite3
   therubyracer
   thin
