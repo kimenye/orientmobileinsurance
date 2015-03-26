@@ -19,9 +19,9 @@ class PremiumService
   end
 
   def calculate_insurance_value catalog_price, sales_code, year_of_purchase
-    if is_fx_code(sales_code) || is_stl_code(sales_code)
+    if PremiumService.is_fx_code(sales_code) || PremiumService.is_stl_code(sales_code)
       return catalog_price
-    elsif !is_fx_code(sales_code) && !is_stl_code(sales_code) && year_of_purchase == Time.now.year
+    elsif !PremiumService.is_fx_code(sales_code) && !PremiumService.is_stl_code(sales_code) && year_of_purchase == Time.now.year
       return 0.875 * catalog_price
     else
       return 0.375 * catalog_price
@@ -92,7 +92,7 @@ class PremiumService
   end
 
   def calculate_annual_premium agent_code, insurance_value, yop, add_mpesa = true, add_sms_charges = true, round_off = true, add_levy = true
-    raw = calculate_premium_rate(agent_code, yop) * insurance_value
+    raw = PremiumService.calculate_premium_rate(agent_code, yop) * insurance_value
     raw = raw * 1.0045 if add_levy
     raw = [raw.round, minimum_fee(agent_code, yop)].max
     raw += 15 if add_sms_charges #sms charges
@@ -129,15 +129,15 @@ class PremiumService
 
   def minimum_fee agent_code, yop
     fee = 595
-    fee = 899 if (is_fx_code(agent_code) && yop == Time.now.year)
+    fee = 899 if (PremiumService.is_fx_code(agent_code) && yop == Time.now.year)
     fee
   end
 
-  def is_stl_code code
+  def self.is_stl_code code
     !code.nil? && code.start_with?("STL")
   end
 
-  def is_fx_code code
+  def self.is_fx_code code
     !code.nil? && (code.start_with?("FXP") || code.start_with?("TSK") || code.start_with?("PLK") || code.start_with?("NVS") )
   end
 
@@ -175,7 +175,7 @@ class PremiumService
     end
   end
 
-  def calculate_premium_rate agent_code, yop
+  def self.calculate_premium_rate agent_code, yop
     rate = 0.1
     rate = 0.095 if (is_fx_code(agent_code) && yop == Time.now.year)
     rate

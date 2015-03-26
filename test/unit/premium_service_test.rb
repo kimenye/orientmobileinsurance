@@ -24,17 +24,16 @@ class PremiumServiceTest < ActiveSupport::TestCase
   end
 
   test "Should return true for Fone Direct outlets" do
-    service = PremiumService.new
-    result = service.is_fx_code "FXP002"
+    result = PremiumService.is_fx_code "FXP002"
     assert_equal result, true, "Should return true for FX codes"
 
-    result = service.is_fx_code "TSK001"
+    result = PremiumService.is_fx_code "TSK001"
     assert_equal result, true, "Should return true for TSK codes"
 
-    result = service.is_fx_code "NVS008"
+    result = PremiumService.is_fx_code "NVS008"
     assert_equal result, true, "Should return true for NVS codes"
 
-    result = service.is_fx_code "PLK004"
+    result = PremiumService.is_fx_code "PLK004"
     assert_equal result, true, "Should return true for PLK codes"
   end
 
@@ -45,9 +44,8 @@ class PremiumServiceTest < ActiveSupport::TestCase
   end
 
   test "An STL code starts with STL" do
-    service = PremiumService.new
-    assert_equal true, service.is_stl_code("STL001")
-    assert_equal false, service.is_stl_code("FXP000")
+    assert_equal true, PremiumService.is_stl_code("STL001")
+    assert_equal false, PremiumService.is_stl_code("FXP000")
   end
 
   test "Should not insure phones purchased more than a year ago if no sales code is provided" do
@@ -85,7 +83,7 @@ class PremiumServiceTest < ActiveSupport::TestCase
     percentage_after_discount = (100 - agent.discount) / 100
     insurance_value = service.calculate_insurance_value(800, agent.code , yop)
     annual_premium = service.calculate_annual_premium(agent.code, insurance_value, yop)
-    raw = service.calculate_premium_rate(agent.code, yop) * insurance_value
+    raw = PremiumService.calculate_premium_rate(agent.code, yop) * insurance_value
     raw = 1.0045 * raw
     raw = [raw.round, service.minimum_fee(agent.code, yop)].max
     raw += 15
@@ -101,18 +99,18 @@ class PremiumServiceTest < ActiveSupport::TestCase
   end
 
   test "The correct premium rate is returned based on the sales agent code and year of purchase" do
-    service = PremiumService.new
+    # service = PremiumService.new
 
-    rate = service.calculate_premium_rate "FXP000", Time.now.year
+    rate = PremiumService.calculate_premium_rate "FXP000", Time.now.year
     assert rate == 0.095, "Premium rate should be 9.5% for FX codes if year of purchase is current year"
 
-    rate = service.calculate_premium_rate "83000", Time.now.year
+    rate = PremiumService.calculate_premium_rate "83000", Time.now.year
     assert rate == 0.1, "Premium rate should be 10% for non FX codes"
 
-    rate = service.calculate_premium_rate nil, Time.now.year
+    rate = PremiumService.calculate_premium_rate nil, Time.now.year
     assert rate == 0.1, "Premium rate should be 10% for empty"
 
-    rate = service.calculate_premium_rate "FXP000", (Time.now.year - 1)
+    rate = PremiumService.calculate_premium_rate "FXP000", (Time.now.year - 1)
     assert rate == 0.1, "Premium rate should be 10% for FX codes if year of purchase is previous year"
   end
 

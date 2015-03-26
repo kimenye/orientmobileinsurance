@@ -40,6 +40,24 @@ class EnquiryTest < ActiveSupport::TestCase
 	  	assert_equal "+254722123456", enquiry.phone_number
 	end
 
+	test 'Returns correct ID types' do
+		enq = Enquiry.new({ id_type: 'Passport' })
+		assert enq.is_passport? 
+
+		enq.id_type = 'National ID'
+		assert enq.is_id?
+	end
+
+	test 'Returns correct name' do
+		enq = Enquiry.new()
+		assert_equal 'Enquiry', enq.name
+	end
+
+	test 'Returns whether enquiry is an airtel enquiry' do
+		enq = Enquiry.new({ enquiry_type: 'Airtel' })
+		assert enq.is_airtel?
+	end
+
 	# test "Should prepend insured device phone numbers with a +" do
 	#   	enquiry = Enquiry.new(phone_number: " 254 722123456 ", source: "SMS")
 	#   	enquiry.save!
