@@ -1,3 +1,5 @@
+require 'csv'
+
 namespace :data do
   desc "Cleans up the data in the database"
   task :clean_up => :environment do
@@ -205,5 +207,42 @@ namespace :data do
 
   task :set_settlement_date => :environment do
     Claim.update_all ['settlement_date = updated_at'], ['status = ?', 'Settled']
+  end
+
+  task :fix_policy_dates => :environment do
+    sample = Policy.find_by_policy_number('OMB/AAAA/0005')
+    wrong_expiry = sample.expiry
+
+    affected = Policy.where(expiry: wrong_expiry).order(:created_at)
+    puts "Affected #{affected.count}"
+
+    # affected_annual = affected.select { |p| p.quote.premium_type == 'Annual' }
+
+    # puts "Affected annual #{affected_annual.count}"
+
+    regex = /\d{1,2}\/\d{1,2}\/\d{1,2}/
+
+    # CSV.open("policies.csv", "wb") do |csv|
+      # csv << ["Policy Number", "Start Date", "Expiry"]
+      affected.each do |policy|
+        phone_number = policy.customer.phone_number
+
+        messages = Sms.where(to: phone_number)
+        sms = messages.select { |s| s.text.match(policy.policy_number) }
+        
+        if !sms.first.nil?
+          text = sms.first.text
+          old_expiry = text.match(regex)
+
+          # t = DateTime.parse(old_expiry.to_s)
+          d = Date.strptime(old_expiry.to_s, "%d/%m/%y")
+
+          # puts old_expiry.to_s
+          # csv << [policy.policy_number, policy.created_at, d.to_time]
+          policy.expiry = d.to_time
+          policy.save!
+        end
+      end
+    # end
   end
 end
