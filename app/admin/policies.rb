@@ -59,6 +59,9 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column "Amount Paid", :amount_paid
     column "Total Balance", :pending_amount
     column "Next Payment Due", :pending_amount
+    column "YOP" do |policy|
+      policy.quote.insured_device.yop
+    end
     column "IMEI", :imei do |policy|
       link_to policy.insured_device.imei, admin_insured_device_path(policy.insured_device)
     end
