@@ -60,7 +60,7 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column "Total Balance", :pending_amount
     column "Next Payment Due", :pending_amount
     column "YOP" do |policy|
-      policy.quote.insured_device.yop
+      policy.insured_device.yop
     end
     column "IMEI", :imei do |policy|
       link_to policy.insured_device.imei, admin_insured_device_path(policy.insured_device)
@@ -153,6 +153,7 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column("Total Balance") { |p| p.pending_amount }
     column("Next Payment Due") { |p| p.minimum_due }
     column("IMEI") { |p| p.imei }
+    column("YOP") { |p| p.insured_device.yop }
     column :sales_agent_code
     column :sales_agent_name
     column ("Phone Number") { |p| p.customer.phone_number }
