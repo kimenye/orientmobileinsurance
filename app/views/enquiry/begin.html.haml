@@ -11,9 +11,10 @@
         %li{"data-icon" => "arrow-r"}
           = link_to 'Secure My Phone / Tablet', start_wizard_path, ({ "rel" => "external" } if is_asha? )
         %li{"data-icon" => "arrow-r"}
-          = link_to 'Check the status of my policy / claim', enquire_status_path, ({ "rel" => "external" } if is_asha? )
-        %li{"data-icon" => "arrow-r"}
-          = link_to 'Report a Claim', make_new_claim_path, ({ "rel" => "external" } if is_asha? )
+          = link_to 'Check the status of my policy / claim', "#{enquire_status_path}?enquiry_type=#{@enquiry.enquiry_type.downcase}" , ({ "rel" => "external" } if is_asha? )
+        - if !@enquiry.is_airtel?
+          %li{"data-icon" => "arrow-r"}
+            = link_to 'Report a Claim', make_new_claim_path, ({ "rel" => "external" } if is_asha? )
     .promo
       .tip.ui-bar-a
         Cover your phone against theft or accidental damage. Coming soon...
