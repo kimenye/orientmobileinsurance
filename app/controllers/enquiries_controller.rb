@@ -28,6 +28,7 @@ class EnquiriesController < ApplicationController
   def enquire_status
     status = Status.new
     status.action = "new-status"
+    status.enquiry_type = params[:enquiry_type]
     session[:status] = status
     redirect_to status_path
   end
