@@ -116,6 +116,11 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert rate == 0.1, "Premium rate should be 10% for FX codes if year of purchase is previous year"
   end
 
+  test "The premium rate should be 15% for airtel devices" do
+    rate = PremiumService.calculate_premium_rate("AIRTELINS", Time.now.year)
+    assert_equal 0.15, rate  
+  end
+
   test "MPESA service charges should be correctly calculated" do
     fee = PremiumService.calculate_mpesa_fee(10)
     assert fee == 0, "Fee should be free from 0-999"
