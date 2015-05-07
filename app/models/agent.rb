@@ -37,7 +37,7 @@ class Agent < ActiveRecord::Base
   end
 
   def is_fd
-  	PremiumService.is_fx_code code
+  	PremiumService.is_fx_code? code
   end
 
   def is_neither_fd_nor_stl

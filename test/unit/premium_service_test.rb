@@ -24,16 +24,16 @@ class PremiumServiceTest < ActiveSupport::TestCase
   end
 
   test "Should return true for Fone Direct outlets" do
-    result = PremiumService.is_fx_code "FXP002"
+    result = PremiumService.is_fx_code? "FXP002"
     assert_equal result, true, "Should return true for FX codes"
 
-    result = PremiumService.is_fx_code "TSK001"
+    result = PremiumService.is_fx_code? "TSK001"
     assert_equal result, true, "Should return true for TSK codes"
 
-    result = PremiumService.is_fx_code "NVS008"
+    result = PremiumService.is_fx_code? "NVS008"
     assert_equal result, true, "Should return true for NVS codes"
 
-    result = PremiumService.is_fx_code "PLK004"
+    result = PremiumService.is_fx_code? "PLK004"
     assert_equal result, true, "Should return true for PLK codes"
   end
 
@@ -42,9 +42,13 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert true == insurable
   end
 
+  test "An airtel code is AIRTELINS" do
+    assert PremiumService.is_airtel_code?("airtelins")
+  end
+
   test "An STL code starts with STL" do
-    assert_equal true, PremiumService.is_stl_code("STL001")
-    assert_equal false, PremiumService.is_stl_code("FXP000")
+    assert_equal true, PremiumService.is_stl_code?("STL001")
+    assert_equal false, PremiumService.is_stl_code?("FXP000")
   end
 
   test "Should not insure phones purchased more than a year ago if no sales code is provided" do
