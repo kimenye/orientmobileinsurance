@@ -265,7 +265,8 @@ class EnquiryController < Wicked::WizardController
           jump_to :confirm_personal_details
         end
       when :confirm_personal_details
-        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{session[:quote_details]["due"]}.","Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{session[:user_details]["account_name"]} is valid till #{session[:quote].expiry_date.utc.to_s(:full)}."]                
+        smsMessage = ["#{session[:device].marketing_name}, Year #{@enquiry.year_of_purchase}. Insurance Value is #{session[:quote_details]["insurance_value"]}. Payment due is #{session[:quote_details]["due"]}.",
+          SmsService.payment_instructions(session[:user_details]["account_name"], session[:quote].expiry_date, @enquiry.enquiry_type)]                
 
         smsMessage.each do |message|
           SMSGateway.send(@enquiry.phone_number, message)
