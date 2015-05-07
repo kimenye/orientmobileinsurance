@@ -1,5 +1,10 @@
 class SmsService
 
+  def self.payment_instructions account_name,expiry, enquiry_type="omb"
+    message = "Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{account_name} is valid till #{expiry.utc.to_s(:full)}."                
+    message
+  end
+
   def self.handle_sms_sending(text, mobile)
 
     premium_service = PremiumService.new

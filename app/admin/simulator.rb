@@ -128,7 +128,7 @@ ActiveAdmin.register_page "Simulator" do
 
     
     SMSGateway.send(phone_number, "#{device.marketing_name}, Year #{yop}. Insurance Value is #{ActionController::Base.helpers.number_to_currency(iv, :unit => 'KES ', :precision => 0, :delimiter => '')}. Payment due is #{ActionController::Base.helpers.number_to_currency(annual_premium, :unit => 'KES ', :precision => 0, :delimiter => '')}")
-    SMSGateway.send(phone_number, "Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{account_name} is valid till #{q.expiry_date.utc.to_s(:full)}.")
+    SMSGateway.send(phone_number, SmsService.payment_instructions(account_name, q.expiry_date))
 
     redirect_to admin_simulator_path, :notice => "#{customer_name}, #{iv}"
   end
