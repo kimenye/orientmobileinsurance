@@ -20,4 +20,9 @@ class SmsServiceTest < ActiveSupport::TestCase
     message = SmsService.payment_instructions('OMB12345', Time.now)
     assert_equal "Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. OMB12345 is valid till #{Time.now.utc.to_s(:full)}.", message
   end
+
+  test 'The default airtel payment instructions' do
+    message = SmsService.payment_instructions('OMB12345', Time.now, 'Airtel')
+    assert_equal "Please pay via Airtel Money (Business Name -). Your account no. OMB12345 is valid till #{Time.now.utc.to_s(:full)}.", message 
+  end
 end

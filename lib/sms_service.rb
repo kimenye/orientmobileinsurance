@@ -1,7 +1,11 @@
 class SmsService
 
-  def self.payment_instructions account_name,expiry, enquiry_type="omb"
-    message = "Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{account_name} is valid till #{expiry.utc.to_s(:full)}."                
+  def self.payment_instructions account_name, expiry, enquiry_type="omb"
+    if enquiry_type == "Airtel"
+      message = "Please pay via Airtel Money (Business Name -). Your account no. #{account_name} is valid till #{expiry.utc.to_s(:full)}."
+    else
+      message = "Please pay via MPesa (Business No. #{ENV['MPESA']}) or Airtel Money (Business Name #{ENV['AIRTEL']}). Your account no. #{account_name} is valid till #{expiry.utc.to_s(:full)}."                      
+    end
     message
   end
 
