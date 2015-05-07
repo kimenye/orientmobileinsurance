@@ -98,7 +98,7 @@ class Device < ActiveRecord::Base
   def get_insurance_value_by_month_and_year (code, month_of_purchase, year_of_purchase)
     time_of_purchase = "#{month_of_purchase} #{year_of_purchase}"
     month_ranges = Device.month_ranges
-    if (PremiumService.is_fx_code(code) || PremiumService.is_stl_code(code)) && month_ranges[0..12].include?(time_of_purchase)
+    if (PremiumService.is_fx_code?(code) || PremiumService.is_stl_code?(code)) && month_ranges[0..12].include?(time_of_purchase)
       return catalog_price
     else
       if month_ranges[0..6].include?(time_of_purchase)

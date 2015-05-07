@@ -19,9 +19,9 @@ class PremiumService
   end
 
   def calculate_insurance_value catalog_price, sales_code, year_of_purchase
-    if PremiumService.is_fx_code(sales_code) || PremiumService.is_stl_code(sales_code)
+    if PremiumService.is_fx_code?(sales_code) || PremiumService.is_stl_code?(sales_code)
       return catalog_price
-    elsif !PremiumService.is_fx_code(sales_code) && !PremiumService.is_stl_code(sales_code) && year_of_purchase == Time.now.year
+    elsif !PremiumService.is_fx_code?(sales_code) && !PremiumService.is_stl_code?(sales_code) && year_of_purchase == Time.now.year
       return 0.875 * catalog_price
     else
       return 0.375 * catalog_price
@@ -128,16 +128,20 @@ class PremiumService
 
   def minimum_fee agent_code, yop
     fee = 595
-    fee = 899 if (PremiumService.is_fx_code(agent_code) && yop == Time.now.year)
+    fee = 899 if (PremiumService.is_fx_code?(agent_code) && yop == Time.now.year)
     fee
   end
 
-  def self.is_stl_code code
+  def self.is_stl_code? code
     !code.nil? && code.start_with?("STL")
   end
 
-  def self.is_fx_code code
+  def self.is_fx_code? code
     !code.nil? && (code.start_with?("FXP") || code.start_with?("TSK") || code.start_with?("PLK") || code.start_with?("NVS") )
+  end
+
+  def self.is_airtel_code? code
+    !code.blank? && code.downcase == 'airtelins'
   end
 
   def generate_unique_account_number
@@ -176,7 +180,7 @@ class PremiumService
 
   def self.calculate_premium_rate agent_code, yop
     rate = 0.1
-    rate = 0.095 if (is_fx_code(agent_code) && yop == Time.now.year)
+    rate = 0.095 if (is_fx_code?(agent_code) && yop == Time.now.year)
     rate
   end
 
