@@ -42,6 +42,8 @@ gem 'prawn'
 gem 'axlsx'
 gem 'axlsx_rails'
 gem 'rollbar'
+gem 'ruby-smpp'
+gem 'iconv'
 
 group :development do
   gem 'better_errors'
