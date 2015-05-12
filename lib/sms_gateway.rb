@@ -18,7 +18,7 @@ class SMSGateway
               :headers => { "content-type" => "text/xml;charset=utf8" }
           }
 
-          response = HTTParty.post( @base_uri, options)
+          response = HTTParty.post(ENV['SMS_GATEWAY_URL'], options)
         else
           response = {"methodResponse"=>
             {"params"=>
