@@ -29,7 +29,7 @@
     = f.hidden_field :phone_number, value: @enquiry.phone_number
   - else
     = f.label :phone_number, 'Mobile Number (2547XXXXXXXX)'
-    = f.text_field :phone_number, :class => "required", :placeholder => "254722123456"
+    = f.text_field :phone_number, :class => "required", :placeholder => @enquiry.is_airtel?? "254733123456" : "254722123456"
     = f.error_message_on :phone_number
   %p
     = f.submit "Continue"
