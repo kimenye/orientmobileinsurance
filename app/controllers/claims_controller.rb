@@ -109,9 +109,8 @@ class ClaimsController < ApplicationController
       @claim.policy_id = policy.id
       @claim.policy = policy
       
-      premium_service = PremiumService.new()
       if !policy.can_claim?
-        session[:status_message] = premium_service.get_status_message policy.quote
+        session[:status_message] = PremiumService.get_status_message policy.quote
       end
     end
   

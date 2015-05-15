@@ -55,7 +55,6 @@ class StatusController < ApplicationController
       when :claim_select_device
         quote = Quote.find_by_insured_device_id @status.insured_device_id
         policy = quote.policy
-        premium_service = PremiumService.new
 
         if !policy.nil?
           session[:policy] = policy
@@ -67,7 +66,7 @@ class StatusController < ApplicationController
           session[:towns] = towns
           jump_to :claim_type
         elsif policy.nil? || !policy.can_claim?
-          session[:status_message] = premium_service.get_status_message quote
+          session[:status_message] = PremiumService.get_status_message quote
           jump_to :cannot_claim
         end
       when :claim_type
