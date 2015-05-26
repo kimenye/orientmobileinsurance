@@ -82,6 +82,10 @@ class Customer < ActiveRecord::Base
     insured_devices.first
   end
 
+  def is_corporate?
+    customer_type == "Corporate"
+  end
+
   def has_policy?
     has_policy = false
     if insured_devices.any?

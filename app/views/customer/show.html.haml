@@ -62,51 +62,93 @@
           %td Policy No
           %td
         %tbody
-          - @customer.insured_devices.each do |id|
-            - if !id.quote.policy.nil?
+          - if @customer.is_corporate?
+            - Policy.get_customer_policies(@customer.id_passport).each do |policy|
               %tr
                 %td
-                  -if id.quote.policy.has_claim?
-                    - if id.quote.policy.claim.is_in_customer_stage?
-                      %a{:href => edit_claim_path(id.quote.policy.claim)}
-                        = id.device.marketing_name
-                    - elsif (!id.quote.policy.claim.is_in_customer_stage?) && (id.quote.policy.expiry - Time.now > 0)
-                      %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
-                        = id.device.marketing_name
-                    -else
-                      %a{:href => claim_path(id.quote.policy.claim)}
-                        = id.device.marketing_name
-                  -else
-                    %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
-                      = id.device.marketing_name
+                  - if policy.has_claim?
+                    - if policy.claim.is_in_customer_stage?
+                      %a{href: edit_claim_path(policy.claim)}
+                        = policy.insured_device.device.marketing_name
+                    - elsif !policy.claim.is_in_customer_stage? && policy.expiry - Time > 0
+                      %a{href: "/claims/new?policy_id=#{policy.id}"}
+                        = policy.insured_device.device.marketing_name
+                    - else
+                      %a{href: claim_path(policy.claim)}
+                        = policy.insured_device.device.marketing_name
+                  - else
+                    = policy.insured_device.device.marketing_name
                 %td
-                  -if !id.quote.policy.expiry.nil?
-                    = id.quote.policy.expiry.to_s(:simple)
+                  - if !policy.expiry.nil?
+                    = policy.expiry.to_s(:simple)
                 %td
-                  = number_to_currency(id.quotes.first.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
+                  = number_to_currency(policy.insured_device.insurance_value, unit: 'KES ', precision: 0, delimiter: ",")
                 %td
-                  - if !id.customer.phone_number.nil?
-                    = id.customer.phone_number
+                  = policy.insured_device.phone_number
                 %td
-                  - if !id.imei.nil?
-                    = id.imei
+                  = policy.insured_device.imei
                 %td
-                  - if !id.quote.policy.policy_number.nil?
-                    = id.quote.policy.policy_number
+                  = policy.policy_number
                 %td
-                  - if id.quote.policy.has_claim?
-                    - if id.quote.policy.claim.is_in_customer_stage?
-                      %a.button.small{:href => edit_claim_path(id.quote.policy.claim)}
+                  - if policy.has_claim?
+                    - if policy.claim.is_in_customer_stage?
+                      %a.button.small{:href => edit_claim_path(policy.claim)}
                         Edit Claim 
-                    - elsif (!id.quote.policy.claim.is_in_customer_stage?) && (id.quote.policy.expiry - Time.now > 0)
-                      %a.button.small{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                    - elsif (!policy.claim.is_in_customer_stage?) && (policy.expiry - Time.now > 0)
+                      %a.button.small{:href => "/claims/new?policy_id=#{policy.id}"}
                         New Claim
                     - else
-                      %a.button.small{:href => claim_path(id.quote.policy.claim)}
+                      %a.button.small{:href => claim_path(policy.claim)}
                         View Claim
                   - else
-                    %a.button.small{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
-                      New
+                    %a.button.small{:href => "/claims/new?policy_id=#{policy.id}"}
+                      New              
+          - else
+            - @customer.insured_devices.each do |id|
+              - if !id.quote.policy.nil?
+                %tr
+                  %td
+                    -if id.quote.policy.has_claim?
+                      - if id.quote.policy.claim.is_in_customer_stage?
+                        %a{:href => edit_claim_path(id.quote.policy.claim)}
+                          = id.device.marketing_name
+                      - elsif (!id.quote.policy.claim.is_in_customer_stage?) && (id.quote.policy.expiry - Time.now > 0)
+                        %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                          = id.device.marketing_name
+                      -else
+                        %a{:href => claim_path(id.quote.policy.claim)}
+                          = id.device.marketing_name
+                    -else
+                      %a{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                        = id.device.marketing_name
+                  %td
+                    -if !id.quote.policy.expiry.nil?
+                      = id.quote.policy.expiry.to_s(:simple)
+                  %td
+                    = number_to_currency(id.quotes.first.insured_value, :unit => "KES ", :precision => 0, :delimiter => "")
+                  %td
+                    - if !id.customer.phone_number.nil?
+                      = id.customer.phone_number
+                  %td
+                    - if !id.imei.nil?
+                      = id.imei
+                  %td
+                    - if !id.quote.policy.policy_number.nil?
+                      = id.quote.policy.policy_number
+                  %td
+                    - if id.quote.policy.has_claim?
+                      - if id.quote.policy.claim.is_in_customer_stage?
+                        %a.button.small{:href => edit_claim_path(id.quote.policy.claim)}
+                          Edit Claim 
+                      - elsif (!id.quote.policy.claim.is_in_customer_stage?) && (id.quote.policy.expiry - Time.now > 0)
+                        %a.button.small{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                          New Claim
+                      - else
+                        %a.button.small{:href => claim_path(id.quote.policy.claim)}
+                          View Claim
+                    - else
+                      %a.button.small{:href => "/claims/new?policy_id=#{id.quote.policy.id}"}
+                        New
 
 
   / .row.spacer

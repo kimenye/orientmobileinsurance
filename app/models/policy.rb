@@ -181,4 +181,8 @@ class Policy < ActiveRecord::Base
   def has_active_claim?
     has_claim? && claim.is_in_customer_stage?
   end
+
+  def self.get_customer_policies id_passport
+    Policy.joins('left outer join quotes on quotes.id = policies.quote_id').joins('left outer join customers on customers.id = quotes.customer_id').where('customers.id_passport like ?', "%#{id_passport}%")
+  end
 end
