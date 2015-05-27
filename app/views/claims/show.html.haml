@@ -15,7 +15,7 @@
         %h4.centered
           CLAIM REGISTRATION FORM
         %h5.centered
-          This document has been emailed to #{@claim.policy.quote.insured_device.customer.email}. Please print it and carry it with you to our authorized repair/ supply partner           
+          This document has been emailed to #{@claim.policy.customer.email}. Please print it and carry it with you to our authorized repair/ supply partner           
     .large-10.large-centered.columns.disabled
       .row
         .large-10.large-centered.columns
@@ -61,12 +61,12 @@
               %span
                 Device:
               %b
-                = @claim.policy.quote.insured_device.device.model
+                = @claim.policy.insured_device.device.nil?? @claim.policy.quote.insured_device.device.model : @claim.policy.insured_device.device.model 
             .large-6.columns
               %span
                 IMEI:
               %b
-                = @claim.policy.quote.insured_device.imei
+                = @claim.policy.insured_device.device.nil?? @claim.policy.quote.insured_device.imei : @claim.policy.insured_device.imei
           .row.spacer
             .large-12.columns
               %hr

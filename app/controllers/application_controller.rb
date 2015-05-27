@@ -24,7 +24,11 @@ class ApplicationController < ActionController::Base
     claim = Claim.find_by_id claim_id
     if logged_in && !claim.nil?
       customer_id = session[:customer].id
-      return claim.policy.quote.insured_device.customer_id == customer_id
+
+      insured_device = claim.policy.insured_device
+      insured_device = claim.policy.quote.insured_device if insured_device.nil?
+      # return claim.policy.quote.insured_device.customer_id == customer_id
+      return insured_device.customer_id == customer_id
     end
     return false
   end
