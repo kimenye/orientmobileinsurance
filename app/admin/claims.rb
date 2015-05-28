@@ -14,8 +14,7 @@ ActiveAdmin.register Claim do
     column :claim_no
     column :policy
     column :claim_type
-    column ("Mobile Device") {|claim| claim.policy.quote.insured_device.device.vendor + " " +
-                                      claim.policy.quote.insured_device.device.model }
+    column ("Mobile Device") { |claim| claim.policy.insured_device.device.name }
     column ("Claim Amount") {|claim| if claim.claim_type == "Damage"; claim.repair_limit 
                                      else claim.replacement_limit end}
     column :settlement_date
