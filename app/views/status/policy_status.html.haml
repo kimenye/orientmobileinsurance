@@ -14,13 +14,13 @@
           %b
             Client:
           %span.model
-            = session[:policy].quote.insured_device.customer.name
+            = session[:policy].insured_device.customer.name
         %li
           %img{:src => "/assets/phone.png", :class =>"ui-li-icon ui-corner-none"}
           %b
             Device:
           %span.model
-            = session[:policy].quote.insured_device.device.marketing_name
+            = session[:policy].insured_device.device.marketing_name
         %li
           %img{:src => "/assets/cash.png", :class => "ui-li-icon ui-corner-none"}
           %b
