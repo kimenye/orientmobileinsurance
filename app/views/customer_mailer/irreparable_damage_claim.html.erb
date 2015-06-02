@@ -399,7 +399,7 @@
                           padding-bottom:20px;
                           padding-left:20px;
                           text-align:left;">
-                    <p><b>Dear <%= @claim.policy.quote.insured_device.customer.name %>,</b></p>
+                    <p><b>Dear <%= @claim.policy.insured_device.customer.name %>,</b></p>
 
                     <h1 style="color:#202020 !important;
                             display:block;
@@ -430,7 +430,7 @@
                             text-align:left;">Claim # <%= @claim.claim_no %></h3>
 
                     <p>
-                      Your <%= @claim.policy.quote.insured_device.device.marketing_name %> cannot be repaired.
+                      Your <%= @claim.policy.insured_device.device.marketing_name %> cannot be repaired.
                     </p>
                     <p>
                       Please visit an authorized dealer in <%= @claim.nearest_town %> with ID or Passport for a replacement device. Limit <%= number_to_currency(@claim.replacement_limit, :unit => 'KES ', :delimiter => "")  %>

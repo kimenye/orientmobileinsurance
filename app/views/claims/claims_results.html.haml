@@ -21,8 +21,8 @@
                 - if !claim.incident_date.nil?
                   = claim.incident_date
               %td
-                - if !claim.policy.quote.insured_device.customer.name.nil?
-                  = claim.policy.quote.insured_device.customer.name
+                - if !claim.policy.insured_device.customer.name.nil?
+                  = claim.policy.insured_device.customer.name
               %td
                 - if claim.status == 'Settled'
                   Yes

@@ -386,7 +386,7 @@
                           padding-bottom:20px;
                           padding-left:20px;
                           text-align:left;">
-                    <p><b>Dear <%= @claim.policy.quote.insured_device.customer.name %>,</b></p>
+                    <p><b>Dear <%= @claim.policy.insured_device.customer.name %>,</b></p>
 
                     <h1 style="color:#202020 !important;
                             display:block;
@@ -430,15 +430,15 @@
                             border-right-style: solid;">
                       <tr style="background-color: #eee;">
                         <td width="30%"><b style="color: #16276d;">Insured:</b></td>
-                        <td width="70%" style="text-align: left;font-size: 14px"><%= @claim.policy.quote.insured_device.customer.name %></td>
+                        <td width="70%" style="text-align: left;font-size: 14px"><%= @claim.policy.insured_device.customer.name %></td>
                       </tr>
                       <tr>
                         <td width="25%"><b style="color: #16276d;">ID / Passport:</b></td>
-                        <td width="75%" style="text-align: left;font-size: 14px"><%= @claim.policy.quote.insured_device.customer.id_passport %></td>
+                        <td width="75%" style="text-align: left;font-size: 14px"><%= @claim.policy.insured_device.customer.id_passport %></td>
                       </tr>
                       <tr style="background-color: #eee">
                         <td width="25%"><b style="color: #16276d;">Tel:</b></td>
-                        <td width="75%" style="text-align: left;font-size: 14px"><%= @claim.policy.quote.insured_device.customer.phone_number %></td>
+                        <td width="75%" style="text-align: left;font-size: 14px"><%= @claim.policy.insured_device.customer.phone_number %></td>
                       </tr>
                       <tr>
                         <td width="25%"><b style="color: #16276d;">Claim Reporting Date:</b></td>
@@ -446,11 +446,11 @@
                       </tr>
                       <tr style="background-color: #eee">
                         <td width="25%"><b style="color: #16276d;">Device:</b></td>
-                        <td width="75%" style="text-align: left;font-size: 14px"><%= @claim.policy.quote.insured_device.device.marketing_name %></td>
+                        <td width="75%" style="text-align: left;font-size: 14px"><%= @claim.policy.insured_device.device.marketing_name %></td>
                       </tr>
                       <tr>
                         <td width="25%"><b style="color: #16276d;">IMEI No:</b></td>
-                        <td width="75%" style="text-align: left;font-size: 14px"><%= @claim.policy.quote.insured_device.imei %></td>
+                        <td width="75%" style="text-align: left;font-size: 14px"><%= @claim.policy.insured_device.imei %></td>
                       </tr>
                       <tr style="background-color: #eee">
                         <td width="25%"><b style="color: #16276d;">Claim Type:</b></td>

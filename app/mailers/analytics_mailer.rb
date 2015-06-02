@@ -3,7 +3,6 @@ class AnalyticsMailer < ActionMailer::Base
 
   def daily to
   	begin
-  		# mail(:from => "ombclaims@korient.co.ke", :to => "#{@claim.policy.quote.insured_device.customer.name} <#{@claim.policy.quote.insured_device.customer.email}>", :subject => "OMB Claim Registration Details. Claim No. #{@claim.claim_no}", :bcc => ["#{ENV['CLAIM_REGISTRATION_EMAILS']}"])
 		attachments.inline['logo_landscape.png'] = File.read("#{Rails.root}/app/assets/images/logo_landscape.png")
 		attachments.inline['d-up.jpg'] = File.read("#{Rails.root}/app/assets/images/d-up.jpg")
 		attachments.inline['d-down.png'] = File.read("#{Rails.root}/app/assets/images/d-down.png")
