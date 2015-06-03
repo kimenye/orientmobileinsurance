@@ -9,7 +9,7 @@ ActiveAdmin.register Quote do
 
   index do
     column "Contact Number" do |quote|
-      quote.customer.phone_number
+      quote.customer.phone_number if !quote.customer.nil?
     end
     column "Account Name" do |quote|
       if quote.quote_type == "Corporate"
