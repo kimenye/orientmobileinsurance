@@ -61,12 +61,12 @@
               %span
                 Device:
               %b
-                = @claim.policy.insured_device.device.nil?? @claim.policy.quote.insured_device.device.model : @claim.policy.insured_device.device.model 
+                = @claim.policy.insured_device.device.model
             .large-6.columns
               %span
                 IMEI:
               %b
-                = @claim.policy.insured_device.device.nil?? @claim.policy.quote.insured_device.imei : @claim.policy.insured_device.imei
+                = @claim.policy.insured_device.imei
           .row.spacer
             .large-12.columns
               %hr
