@@ -70,7 +70,7 @@
                     - if policy.claim.is_in_customer_stage?
                       %a{href: edit_claim_path(policy.claim)}
                         = policy.insured_device.device.marketing_name
-                    - elsif !policy.claim.is_in_customer_stage? && policy.expiry - Time > 0
+                    - elsif !policy.claim.is_in_customer_stage? && policy.expiry - Time.now > 0
                       %a{href: "/claims/new?policy_id=#{policy.id}"}
                         = policy.insured_device.device.marketing_name
                     - else
