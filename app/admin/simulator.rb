@@ -132,6 +132,14 @@ ActiveAdmin.register_page "Simulator" do
     redirect_to admin_simulator_path, :notice => "#{customer_name}, #{iv}"
   end
 
+  page_action :expire_policy, method: :post do
+    policy = Policy.find(params[:id])
+    policy.status = "Expired"
+    policy.save!
+
+    redirect_to admin_simulator_path, notice: "#{policy.policy_number} has been finalized"
+  end
+
   content do
 
     columns do
@@ -213,7 +221,7 @@ ActiveAdmin.register_page "Simulator" do
         policies = Policy.where("expiry < ?", ReminderService._get_start_of_day(Time.now)).order('expiry DESC')
         table_for policies, :class=> "index_table" do |p|
           column "Customer" do |p|
-            p.customer.name if !p.customer.nil?
+            p.try(:customer).name            
           end
           column "Number" do |p|
             p.quote.insured_device.phone_number if !p.quote.insured_device.nil?
@@ -224,8 +232,11 @@ ActiveAdmin.register_page "Simulator" do
           column "Expiry Date" do |p|
             p.expiry.to_s(:simple)
           end
+          column do |p|
+            link_to 'End Policy', "#{admin_simulator_expire_policy_path}?id=#{p.id}", confirm: 'Are you sure you want to end the policy?', method: :post
+          end
         end 
-        render "update"
+        # render "update"
       end
     end
   end
