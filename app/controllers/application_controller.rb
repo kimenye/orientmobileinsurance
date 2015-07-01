@@ -27,8 +27,8 @@ class ApplicationController < ActionController::Base
 
       insured_device = claim.policy.insured_device
       insured_device = claim.policy.quote.insured_device if insured_device.nil?
-      # return claim.policy.quote.insured_device.customer_id == customer_id
-      return insured_device.customer_id == customer_id
+      logged_in_customer = Customer.find(customer_id)
+      return insured_device.customer_id == customer_id || logged_in_customer.id_passport == insured_device.customer.id_passport
     end
     return false
   end
