@@ -45,6 +45,7 @@ ActiveAdmin.register Claim do
     column :settlement_date
     column :authorization_type
     column ("Claim Registration Date") { |claim| claim.created_at.strftime("%d %b %Y")}
+    column ("Outlet") { |claim| claim.agent.try(:name) }
   end
 
   filter :policy_insured_device_customer_name, :as => :string, :label => "Customer Name"
