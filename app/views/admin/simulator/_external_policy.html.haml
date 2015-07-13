@@ -1,0 +1,47 @@
+%h3
+  Generate an External Policy
+%form{:action => admin_simulator_external_policy_path, :method => "POST"}
+  .field
+    = label(:policy, :customer_name)
+    = text_field(:policy, :customer_name, {:placeholder => "John Kamau", required: true})
+  .field
+    = label(:policy, :phone_number)
+    = text_field(:policy, :phone_number, {:placeholder => "+254722200200", required: true})
+  .field
+    = label(:policy, :id)
+    = text_field(:policy, :id, {:placeholder => "24333333", required: true})
+  .field
+    = label(:policy, :sales_agent_code)
+    = text_field(:policy, :sales_agent_code, {:placeholder => "AGXXXXX"})
+  .field
+    = label(:policy, :email_address)
+    = text_field(:policy, :email_address, {:placeholder => "me@example.com"})
+  / .field
+  /   = label(:policy, :month_of_purchase)
+  /   %select{name: "month_of_purchase"}
+  /     %option{value: ""}
+  /       Please select One
+  /     - Date::MONTHNAMES[1..12].each do |month|
+  /       %option{value: month}
+  /         = month  
+  .field
+    = label(:policy, :year_of_purchase)
+    = text_field(:policy, :year_of_purchase, {:placeholder => "#{Time.now.year}"})    
+  .field
+    = label(:policy, :device)
+    = collection_select(:policy, :device, Device.where(active: true).order(:vendor, :model), :id, :name, {}, {:class => "searchable", :name => "policy[device][0][id]"})
+  .field
+    = label(:policy, :imei)
+    = text_field(:policy, :imei, { placeholder: '123456789012345', required: true })
+  .field
+    = label(:policy, :sum_insured)
+    = text_field(:policy, :sum_insured, {:placeholder => "83000"})
+  .field
+    = label(:policy, :premium_paid)
+    = text_field(:policy, :premium_paid, {:placeholder => "6440"})
+  .field
+    = label(:policy, :payment_ref)
+    = text_field(:policy, :payment_ref, {:placeholder => "EB837312"})
+  
+  .field
+    = submit_tag("Add") 

@@ -69,6 +69,52 @@ ActiveAdmin.register_page "Simulator" do
     redirect_to admin_simulator_path, :notice => "Changed #{count} expiry dates"
   end
 
+  page_action :external_policy,  method: :post do
+    customer_name = params['policy']['customer_name']
+    agent_code = params['policy']['agent_code']
+    phone_number = params['policy']['phone_number']
+    id = params['policy']['id']
+    imei = params['policy']['imei']
+    email = params['policy']['email_address']
+
+    device_id = params['policy']['device']['0']['id']
+    device = Device.find(device_id)
+
+    sum_insured = params['policy']['sum_insured']
+    premium_paid = params['policy']['premium_paid']
+    yop = params['policy']['yop']
+    payment_ref = params['policy']['payment_ref']
+
+    customer = Customer.find_or_create_by_id_passport_and_name_and_email_and_phone_number!(id, customer_name, email, phone_number)
+    customer.customer_type = 'Individual' if customer.customer_type.blank?    
+    customer.save!
+
+    agent = Agent.find_by_code(agent_code).try(:id)
+
+    # create a quote
+    premium_service = PremiumService.new
+    
+    quote = Quote.new(:quote_type => "Individual", :premium_type => "Annual", :annual_premium => premium_paid, :agent_id => agent, :customer_id => customer.id, :insured_value => sum_insured, :expiry_date => 3.days.from_now)
+    quote.account_name = "OMB#{premium_service.generate_unique_account_number}"
+    quote.save!
+    
+    id = InsuredDevice.new({ :premium_value => premium_paid, :customer_id => customer.id, :device_id => device.id,
+          :imei => imei, :phone_number => phone_number, :insurance_value => sum_insured, :quote_id => quote.id, :yop => yop.to_i })
+    id.save!
+
+    quote.insured_device_id = id.id
+    quote.save!
+
+    service = PaymentService.new()
+    service.handle_payment(quote.account_name, premium_paid, payment_ref, "Agent")
+
+    policy = Policy.last
+
+    redirect_to admin_simulator_path, notice: "Created policy #{policy.policy_number}" 
+  end
+
+
+
   page_action :generate_quote, method: :post do
     customer_name = params["quote"]["customer_name"]
     customer_id = params["quote"]["id"]
@@ -166,6 +212,7 @@ ActiveAdmin.register_page "Simulator" do
         render "generate_quote"
       end
       column do
+        render 'external_policy'
       end
     end
 
