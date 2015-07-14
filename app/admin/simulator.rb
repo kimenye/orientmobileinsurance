@@ -71,7 +71,7 @@ ActiveAdmin.register_page "Simulator" do
 
   page_action :external_policy,  method: :post do
     customer_name = params['policy']['customer_name']
-    agent_code = params['policy']['agent_code']
+    agent_code = params['policy']['sales_agent_code']
     phone_number = params['policy']['phone_number']
     id = params['policy']['id']
     imei = params['policy']['imei']
