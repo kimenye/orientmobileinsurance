@@ -82,7 +82,7 @@ ActiveAdmin.register_page "Simulator" do
 
     sum_insured = params['policy']['sum_insured']
     premium_paid = params['policy']['premium_paid']
-    yop = params['policy']['yop']
+    yop = params['policy']['year_of_purchase']
     payment_ref = params['policy']['payment_ref']
 
     customer = Customer.find_or_create_by_id_passport_and_name_and_email_and_phone_number!(id, customer_name, email, phone_number)
