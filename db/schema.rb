@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150326101825) do
+ActiveRecord::Schema.define(:version => 20150817044628) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -134,13 +134,14 @@ ActiveRecord::Schema.define(:version => 20150326101825) do
     t.string   "name"
     t.string   "id_passport"
     t.string   "email"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "phone_number"
     t.string   "alternate_phone_number"
     t.boolean  "lead",                   :default => true
     t.string   "customer_type"
     t.string   "company_name"
+    t.boolean  "blocked",                :default => false
   end
 
   create_table "dealers", :force => true do |t|

@@ -13,6 +13,7 @@
 #  lead                   :boolean          default(TRUE)
 #  customer_type          :string(255)
 #  company_name           :string(255)
+#  blocked                :boolean          default(FALSE)
 #
 
 require "test_helper"

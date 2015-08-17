@@ -249,7 +249,7 @@ class EnquiryController < Wicked::WizardController
 
           claim_service = ClaimService.new
 
-          if(claim_service.is_serial_claimant(params[:enquiry][:customer_id]))
+          if(claim_service.is_serial_claimant(params[:enquiry][:customer_id]) || customer.blocked)
             jump_to :serial_claimants
           end
 

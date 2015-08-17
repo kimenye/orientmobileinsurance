@@ -19,6 +19,7 @@ ActiveAdmin.register Customer, :as => "Lead"  do
         f.input :phone_number
         f.input :id_passport
         f.input :email
+        f.input :blocked
     end
     f.actions
   end
