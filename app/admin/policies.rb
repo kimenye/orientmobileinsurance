@@ -155,9 +155,11 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column :expiry
     column :payment_option
     column("Total Due") { |p| p.premium }
+    column("Insured Value") { |p| p.insured_device.insurance_value }
     column("Amount Paid") { |p| p.amount_paid }
     column("Total Balance") { |p| p.pending_amount }
     column("Next Payment Due") { |p| p.minimum_due }
+    column("Device") { |p| p.insured_device.device.to_s }
     column("IMEI") { |p| p.imei }
     column("YOP") { |p| p.insured_device.yop }
     column :sales_agent_code
