@@ -55,12 +55,18 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column :start_date
     column :expiry
     column :payment_option
+    column "Insured Value" do |policy|
+      policy.insured_device.insurance_value
+    end
     column "Total Due", :premium
     column "Amount Paid", :amount_paid
     column "Total Balance", :pending_amount
     column "Next Payment Due", :pending_amount
     column "YOP" do |policy|
       policy.insured_device.yop
+    end
+    column "Device" do |policy|
+      policy.insured_device.device.to_s
     end
     column "IMEI", :imei do |policy|
       link_to policy.insured_device.imei, admin_insured_device_path(policy.insured_device)
