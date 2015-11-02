@@ -23,6 +23,7 @@ ActiveAdmin.register Agent do
     column :outlet_name
     column :location
     column :code
+    actions
   end
 
   filter :town
@@ -44,4 +45,6 @@ ActiveAdmin.register Agent do
     end
     f.actions
   end
+
+  actions :index, :edit, :show, :update
 end
