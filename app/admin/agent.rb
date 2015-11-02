@@ -42,6 +42,7 @@ ActiveAdmin.register Agent do
       f.input :email
       f.input :tag
       f.input :discount
+      f.input :premium_rate
     end
     f.actions
   end

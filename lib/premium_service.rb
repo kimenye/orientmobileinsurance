@@ -179,7 +179,8 @@ class PremiumService
   end
 
   def self.calculate_premium_rate agent_code, yop
-    rate = 0.1
+    agent = Agent.find_by_code(agent_code)
+    rate = (agent.nil? || agent.premium_rate.blank?) ? 0.1 : agent.premium_rate / 100
     rate = 0.095 if (is_fx_code?(agent_code) && yop == Time.now.year)
     rate = 0.15 if is_airtel_code?(agent_code)
     rate

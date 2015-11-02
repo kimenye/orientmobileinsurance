@@ -100,6 +100,12 @@ class PremiumServiceTest < ActiveSupport::TestCase
     assert_equal expected_premium, monthly_premium
   end
 
+  test "If a premium rate is provided for the agent it should be used" do
+    agent = Agent.create! outlet_name: 'Hey', code: 'BB123456', premium_rate: 8.5
+
+    assert_equal 0.085, PremiumService.calculate_premium_rate(agent.code, Time.now.year) 
+  end  
+
   test "The correct premium rate is returned based on the sales agent code and year of purchase" do
     # service = PremiumService.new
 

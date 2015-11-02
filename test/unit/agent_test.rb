@@ -15,6 +15,7 @@
 #  outlet_name  :string(255)
 #  tag          :string(255)
 #  discount     :float
+#  premium_rate :float
 #
 
 require 'test_helper'

@@ -15,6 +15,7 @@
 #  outlet_name  :string(255)
 #  tag          :string(255)
 #  discount     :float
+#  premium_rate :float
 #
 
 class Agent < ActiveRecord::Base
@@ -22,7 +23,7 @@ class Agent < ActiveRecord::Base
   validates :outlet_name, presence: true
   validates :code, presence: true
 
-  attr_accessible :town, :brand, :outlet, :location, :code, :email, :phone_number, :outlet_name, :tag, :discount
+  attr_accessible :town, :brand, :outlet, :location, :code, :email, :phone_number, :outlet_name, :tag, :discount, :premium_rate
 
   def is_stl
   	code.start_with?("STL")
