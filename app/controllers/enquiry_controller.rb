@@ -64,6 +64,8 @@ class EnquiryController < Wicked::WizardController
       end
 
       device_data = get_device_data
+
+      logger.info "Device data #{device_data}"
       
       session[:device_marketing_name] = device_data[:marketingName]
       session[:model] = device_data[:model]      
