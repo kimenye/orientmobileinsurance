@@ -226,7 +226,7 @@ ActiveAdmin.register_page "Simulator" do
             p.customer.name
           end
           column "Number" do |p|
-            p.quote.insured_device.phone_number
+            p.quote.insured_device.phone_number if !p.quote.insured_device.nil?
           end
           column "Policy Number" do |p|
             p.policy_number
@@ -244,7 +244,7 @@ ActiveAdmin.register_page "Simulator" do
             p.customer.name
           end
           column "Number" do |p|
-            p.quote.insured_device.phone_number
+            p.quote.insured_device.phone_number if !p.quote.insured_device.nil?
           end
           column "Policy Number" do |p|
             p.policy_number
