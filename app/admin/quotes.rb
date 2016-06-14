@@ -47,6 +47,22 @@ ActiveAdmin.register Quote do
   #   column :insured_value
   #   column :quote_type
   # end
+  
+  csv do
+    column :id
+    column "Contact Number" do |quote|
+      quote.customer.phone_number if !quote.customer.nil?
+    end
+    column :account_name
+    column :amount_due
+    column :expiry_date
+    column :premium_type
+    column :annual_premium
+    column :monthly_premium
+    column :insured_value
+    column :quote_type
+    column :created_at
+  end
 
   form do |f|
     f.inputs "Details" do

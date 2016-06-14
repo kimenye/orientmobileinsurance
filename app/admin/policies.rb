@@ -165,5 +165,6 @@ ActiveAdmin.register Policy, :as => "Customer" do
     column :sales_agent_code
     column :sales_agent_name
     column ("Phone Number") { |p| p.customer.phone_number }
+    column ("Email") { |p| p.customer.email }
   end
 end
