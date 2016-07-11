@@ -42,7 +42,7 @@ class MessagesController < ApplicationController
     @message = Message.find(params[:id])
   end
 
-  def receipts
+  def old_receipts
     if params.has_key? (:receipts)
       if params[:receipts][:receipt].kind_of? Array
         params[:receipts][:receipt].each do |receipt|
@@ -72,6 +72,11 @@ class MessagesController < ApplicationController
       end
     end
     render text: "OK"
+  end
+
+  def receipts
+    puts ">>> Params: #{params} <<<"
+    render text: 'OK'
   end
 
   # POST /messages
