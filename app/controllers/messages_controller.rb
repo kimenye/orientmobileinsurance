@@ -91,13 +91,18 @@ class MessagesController < ApplicationController
 
       if !text.downcase.start_with?("test")
         mobile = params["MSISDN"]
+        if !mobile.start_with?("+")
+          mobile = "+#{mobile}"
+        end
+        
         service = SmsService.new
 
         @message = SmsService.handle_sms_sending(text, mobile)
 
-        respond_to do |format|
-          format.all { render json: @message, status: :created, location: @message }
-        end
+        # respond_to do |format|
+        #   format.all { render json: @message, status: :created, location: @message }
+        # end
+        render text: 'OK'
       else
         if Rails.env == "production"
           msg = text.split(" ")[1]
