@@ -42,40 +42,15 @@ class MessagesController < ApplicationController
     @message = Message.find(params[:id])
   end
 
-  def old_receipts
-    if params.has_key? (:receipts)
-      if params[:receipts][:receipt].kind_of? Array
-        params[:receipts][:receipt].each do |receipt|
-          receipt_id = receipt[:reference]
-          delivered = receipt[:status]
-          time_of_delivery = receipt[:timestamp]
-          sms = Sms.find_by_receipt_id receipt_id
-          if !sms.nil?
-            sms.delivered = delivered == "D"
-            sms.time_of_delivery = time_of_delivery
-            sms.save!
-          end
-        end
-      else
-        if params[:receipts][:receipt].any?
-          receipt = params[:receipts][:receipt]
-          receipt_id = receipt[:reference]
-          delivered = receipt[:status]
-          time_of_delivery = receipt[:timestamp]
-          sms = Sms.find_by_receipt_id receipt_id
-          if !sms.nil?
-            sms.delivered = delivered == "D"
-            sms.time_of_delivery = time_of_delivery
-            sms.save!
-          end
-        end
-      end
-    end
-    render text: "OK"
-  end
-
   def receipts
-    puts ">>> Params: #{params} <<<"
+    # puts ">>> Params: #{params} <<<"
+    sms = Sms.find_by_receipt_id params[:Reference]
+    if !sms.nil?
+      sms.delivered = params[:Status] == 'DELIVRD'
+      date_time = Time.at(params[:DateDelivered].to_i).to_datetime
+      sms.time_of_delivery = date_time
+      sms.save!
+    end
     render text: 'OK'
   end
 
@@ -87,21 +62,16 @@ class MessagesController < ApplicationController
 
       text = params["Content"]
 
-      puts ">> The content is #{text} from #{params["MSISDN"]} <<"
-
       if !text.downcase.start_with?("test")
         mobile = params["MSISDN"]
         if !mobile.start_with?("+")
           mobile = "+#{mobile}"
         end
-        
+
         service = SmsService.new
 
         @message = SmsService.handle_sms_sending(text, mobile)
 
-        # respond_to do |format|
-        #   format.all { render json: @message, status: :created, location: @message }
-        # end
         render text: 'OK'
       else
         if Rails.env == "production"

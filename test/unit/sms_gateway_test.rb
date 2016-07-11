@@ -39,7 +39,7 @@ class SMSGatewayTest < ActiveSupport::TestCase
     assert_equal arr[1], result[1]
   end
   
-  test "Should send two messages if the text is more than 160 characters" do
+  test "Should not send two messages if the text is more than 160 characters" do
     seg_one = "I wish i was a little bit taller baller grom wiht fds fsdlf sdlfjlkdsjf adfhd fjd flkdsjfkdjs fdsfdkfjsk fhds fkdshf asfjdsfsAnd here is where the string start."
     seg_two = "the second component"
     
@@ -48,7 +48,7 @@ class SMSGatewayTest < ActiveSupport::TestCase
     
     Sms.delete_all
     SMSGateway.send "123", msg
-    assert_equal 2, Sms.count
+    assert_equal 1, Sms.count
   end
 
   test "the gateway creates the correct xml" do
@@ -113,6 +113,6 @@ class SMSGatewayTest < ActiveSupport::TestCase
     assert_equal 1, Sms.count
     sms = Sms.first
 
-    assert_equal "365d6a84", sms.receipt_id
+    assert_equal nil, sms.receipt_id
   end
 end

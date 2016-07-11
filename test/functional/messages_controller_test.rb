@@ -45,10 +45,15 @@ class MessagesControllerTest < ActionController::TestCase
 
     assert_equal 1, Sms.count
     sms = Sms.first
+    sms.receipt_id = "test"
+    sms.save!
 
-    post :receipts, {"receipts"=> {"receipt"=> [{"msgid"=> "26567958","reference"=> "365d6a84","msisdn"=> "+254722200200","status"=> "D","timestamp"=> "20080831T15:59:24","billed"=> "NO"}]}}
+    post :receipts, { Reference: sms.receipt_id, Status: 'DELIVRD', DateDelivered: '1468236360' }
+    assert_response :success
+    # {"Reference"=>"12.2283.1468236299.3", "Status"=>"DELIVRD", "Datedelivered"=>"1468236360"}
+
     
-    sms = Sms.first
+    sms.reload
     assert_equal true, sms.delivered
   end
 
@@ -59,13 +64,13 @@ class MessagesControllerTest < ActionController::TestCase
 
     assert_equal 1, Sms.count
     sms = Sms.first
+    sms.receipt_id = "test2"
+    sms.save!
 
-    post :receipts, {"receipts"=> {"receipt"=> [{"msgid"=> "26567958","reference"=> "365d6a84","msisdn"=> "+254722200200","status"=> "D","timestamp"=> "20080831T15:59:24","billed"=> "NO"}]}}
-    
-    sms = Sms.first
-    d = DateTime.parse('20080831T15:59:24')
-    d = d.to_s.gsub("+00:00"," +0300").gsub("T", " ")
-    
-    assert_equal d, sms.time_of_delivery.to_s
+    post :receipts, { Reference: sms.receipt_id, Status: 'DELIVRD', DateDelivered: '1468236360' }
+    assert_response :success
+  
+    sms.reload    
+    assert_not_nil sms.time_of_delivery
   end
 end

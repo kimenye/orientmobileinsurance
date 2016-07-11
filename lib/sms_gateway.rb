@@ -1,7 +1,38 @@
 require 'json'
 class SMSGateway
 
-  def self.send to, message, mode='default'
+  def self.send to, message
+    begin
+      url = ENV['SMS_GATEWAY_URL']
+      auth = { :username => ENV['SMS_GATEWAY_USERNAME'], :password => ENV['SMS_GATEWAY_PASSWORD'] }
+
+      body = {
+        :MSISDN => to,
+        :Content => message,
+        :Shortcode => ENV['SMS_GATEWAY_SHORT_CODE'],
+        :CampaignID => ENV['SMS_GATEWAY_CAMPAIGN_ID'],        
+        :Premium => '1',
+        :Channel => 'KENYA.SAFARICOM',
+        :Multitarget => '1'
+      }
+
+      response_id = nil
+      response_string = nil
+
+      if Rails.env == "production"
+        response = HTTParty.post(url, body, :basic_auth => auth )
+        # 101\nMessage accepted\n12.2283.1468236299.3
+        results = response.split("\n")
+        response_id = results.last
+        response_string = response.body
+      end
+      Sms.create! :to => to, :text => message, :request => nil,  :response => response_string, :receipt_id => response_id
+    rescue
+      # do nothing
+    end
+  end
+
+  def self.old_send to, message, mode='default'
     begin
       segments = [message]
       if ENV['SPLIT_SMS']
