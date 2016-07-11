@@ -77,6 +77,13 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.json
   def create
+    puts ">>> Params: #{params} <<<"
+    render text: 'OK'
+  end
+
+  # POST /messages
+  # POST /messages.json
+  def old_create
 
     begin
 
