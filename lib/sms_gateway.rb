@@ -7,7 +7,7 @@ class SMSGateway
       auth = { :username => ENV['SMS_GATEWAY_USERNAME'], :password => ENV['SMS_GATEWAY_PASSWORD'] }
 
       body = {
-        :MSISDN => to,
+        :MSISDN => to.gsub("+",""),
         :Content => message,
         :Shortcode => ENV['SMS_GATEWAY_SHORT_CODE'],
         :CampaignID => ENV['SMS_GATEWAY_CAMPAIGN_ID'],        
@@ -20,7 +20,7 @@ class SMSGateway
       response_string = nil
 
       if Rails.env == "production"
-        response = HTTParty.post(url, body, :basic_auth => auth )
+        response = HTTParty.post(url, :body => body, :basic_auth => auth )
         # 101\nMessage accepted\n12.2283.1468236299.3
         results = response.split("\n")
         response_id = results.last
