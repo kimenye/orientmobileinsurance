@@ -13,21 +13,26 @@ class MessagesControllerTest < ActionController::TestCase
   end
 
   test 'create a valid enquiry message' do
-    post :create, { "MobileNumber" => "254705876765", "Text" => "Mobile" }
+    post :create, { "MSISDN" => "254705876765", "Content" => "Mobile" }
     assert_response :success
   end
 
   test 'it handles messages with the keyword mobile' do
     Message.delete_all
-    post :create, { "MobileNumber" => "254705876765", "Text" => "Mobile" }
+    post :create, { "MSISDN" => "254705876765", "Content" => "Mobile" }
     assert_response :success
 
     assert_equal 1, Message.count
   end
 
+  test "Can receive inbound MO" do
+    post :create, { MSISDN: '254705866564', Shortcode: '70707', Content: 'Mobile', Channel: 'KENYA.SAFARICOM', DataType: '0', DateReceived: '1468230428', CampaignID: '128323' }
+    assert_response :success
+  end
+
   test 'it forwards the message with keyword test to the development server' do
     Message.delete_all
-    post :create, { "MobileNumber" => "254705876765", "Text" => "test" }
+    post :create, { "MSISDN" => "254705876765", "Content" => "test" }
     assert_response :success
 
     assert_equal 0, Message.count

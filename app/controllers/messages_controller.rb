@@ -82,20 +82,13 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.json
   def create
-    puts ">>> Params: #{params} <<<"
-    render text: 'OK'
-  end
-
-  # POST /messages
-  # POST /messages.json
-  def old_create
 
     begin
 
-      text = params["Text"]
+      text = params["Content"]
 
       if !text.downcase.start_with?("test")
-        mobile = params["MobileNumber"]
+        mobile = params["MSISDN"]
         service = SmsService.new
 
         @message = SmsService.handle_sms_sending(text, mobile)
@@ -106,7 +99,7 @@ class MessagesController < ApplicationController
       else
         if Rails.env == "production"
           msg = text.split(" ")[1]
-          HTTParty.post(ENV['DEVELOPEMENT_SERVER_URL'], :query => { "Text" => msg, "MobileNumber" => params["MobileNumber"] })
+          HTTParty.post(ENV['DEVELOPEMENT_SERVER_URL'], :query => { "Content" => msg, "MSISDN" => params["MSISDN"] })
         end
         render text: "OK"
       end
