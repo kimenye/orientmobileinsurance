@@ -87,6 +87,8 @@ class MessagesController < ApplicationController
 
       text = params["Content"]
 
+      puts ">> The content is #{text} from #{params["MSISDN"]} <<"
+
       if !text.downcase.start_with?("test")
         mobile = params["MSISDN"]
         service = SmsService.new
