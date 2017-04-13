@@ -48,6 +48,7 @@ class ApplicationController < ActionController::Base
       client = get_deviceatlas_cloud_client_instance
       client.settings.licence_key = ENV['DEVICE_ATLAS_LICENCE_KEY']
       device_data = client.get_device_data()
+      logger.info "Returned data #{device_data}"
       properties = device_data[DeviceAtlasCloudClient::KEY_PROPERTIES]
     else
       properties[:vendor] = ENV["DEBUG_DEVICE_ATLAS_VENDOR"]
