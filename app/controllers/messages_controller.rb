@@ -72,15 +72,15 @@ class MessagesController < ApplicationController
 
         @message = SmsService.handle_sms_sending(text, mobile)
 
-        render text: 'OK'
+        render text: 'success', status: 200
       else
         if Rails.env == "production"
           msg = text.split(" ")[1]
           HTTParty.post(ENV['DEVELOPEMENT_SERVER_URL'], :query => { "Content" => msg, "MSISDN" => params["MSISDN"] })
         end
-        render text: "OK"
+        render text: 'success', status: 200
       end
-    rescue => error      
+    rescue => error
       respond_to do |format|
         format.all { render json: (@message.errors if !@message.nil?), status: :unprocessable_entity }
       end

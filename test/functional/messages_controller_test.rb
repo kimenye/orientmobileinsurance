@@ -28,6 +28,7 @@ class MessagesControllerTest < ActionController::TestCase
   test "Can receive inbound MO" do
     post :create, { MSISDN: '254705866564', Shortcode: '70707', Content: 'Mobile', Channel: 'KENYA.SAFARICOM', DataType: '0', DateReceived: '1468230428', CampaignID: '128323' }
     assert_response :success
+    assert_equal "success", response.body
   end
 
   test 'it forwards the message with keyword test to the development server' do
@@ -52,7 +53,7 @@ class MessagesControllerTest < ActionController::TestCase
     assert_response :success
     # {"Reference"=>"12.2283.1468236299.3", "Status"=>"DELIVRD", "Datedelivered"=>"1468236360"}
 
-    
+
     sms.reload
     assert_equal true, sms.delivered
   end
@@ -69,8 +70,8 @@ class MessagesControllerTest < ActionController::TestCase
 
     post :receipts, { Reference: sms.receipt_id, Status: 'DELIVRD', DateDelivered: '1468236360' }
     assert_response :success
-  
-    sms.reload    
+
+    sms.reload
     assert_not_nil sms.time_of_delivery
   end
 end
